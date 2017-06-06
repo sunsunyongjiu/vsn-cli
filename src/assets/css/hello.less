@@ -1,0 +1,31 @@
+.duration(@x){
+	transition-duration: @x;
+	-moz-transition-duration: @x; /* Firefox 4 */
+	-webkit-transition-duration: @x; /* Safari 和 Chrome */
+	-o-transition-duration: @x;
+}
+#app{
+	.header{
+		text-align: center;
+	}
+}
+.nav{
+  li{
+    background: rgb(65, 183, 111);
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    vertical-align: center;
+    a{
+    	color: white;
+    	text-decoration: none;
+    }
+  }
+  li:hover a{
+  	position: absolute;
+  	font-size: 30px;
+  	.duration(1s);
+	transform:translate(-20px);
+	text-shadow:2px 2px 4px #000000
+  }
+}
