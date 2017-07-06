@@ -1,3 +1,5 @@
+//背景颜色
+@bgcolor:#181818;
 .duration(@x){
 	transition-duration: @x;
 	-moz-transition-duration: @x; /* Firefox 4 */
@@ -87,13 +89,208 @@
 }
 .index-page{
   height: 100%;
-  background: #181818
+  background: @bgcolor
 }
 .index-page-mypoints{
-  height: 40vw;
-  background: yellow;
+  height: 25.53vw;
+  background: @bgcolor;
   text-align: center
+}
+.index-page-mypoints2{
+  height: 20.53vw;
+  background: @bgcolor;
+  text-align: center;
+  padding: 0 6.985vw 0 6.985vw;
+  box-sizing: border-box;
+  i{
+    font-size: 24px;
+    color: #fff;
+  }
+  .flex-demo div{
+    font-size: 12px;
+    padding-top: 5px;
+    color: #fff;
+    font-weight: 100
+  }
 }
 .swiper-demo-img img{
   height: 100%
 }
+.index-middle-tittle{
+  width: 21.9713vw;
+  border: 1px solid #4a4a4a;
+  border-radius: 8px;
+  height: 4.517vw;
+  font-size: 10px;
+  line-height: 4.517vw;
+  margin: 2vh auto;
+  color:#fff;
+  position: relative;
+}
+.index-middle-tittle::before,.index-middle-tittle::after{
+    content: '';
+    display: block;
+    height: 1vw;
+    width: 1vw;
+    border-radius: 100%;
+    background: #fff;
+    position: absolute;
+    top: 1.7585vw
+  }
+  .index-middle-tittle::before{
+    left: 2vw
+  }
+  .index-middle-tittle::after{
+    right: 2vw
+  }
+  .index-page-classification{
+    padding: 0 6.985vw 0 6.985vw;
+    box-sizing: border-box;
+    .flex-demo{
+      height: 33.6vw;
+      text-align: center;
+      box-sizing: border-box;
+      margin-bottom: 2vh;
+      div:first-child{
+        width: 23.466vw;
+        height: 100%;
+        margin: 0 auto;
+        background:#292929;
+        box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
+        img{
+          height: 14.4vw;
+          width: 14.4vw;
+          margin-top: 3vw;
+          margin-bottom: 3vw
+        }
+        div{
+          color: #fff;
+          font-size: 10px;
+          padding: 0 10px 0
+        }
+
+      }
+    }
+  }
+  .index-page{
+    background: @bgcolor
+  }
+  .myCard{
+    height: 14.37vw;
+    margin: 0 auto
+  }
+  .myPoints{
+    font-size: 12px;
+    color: #fff;
+    span{
+      line-height: 10vw;
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: 600
+    }
+  }
+  .my-club{
+    width: 100%;
+    height: 3vh;
+    text-align: left;
+    padding-left: 6.985vw;
+    font-size: 12px;
+    color: #fff
+  }
+  .soonBtn{
+    background: #1dafed;
+    border:0;
+    color: #fff;
+    border-radius: 1px;
+    font-size: 12px;
+    padding: 2px 5px 2px
+  }
+  .index-page-classification-img{
+    width: 80%
+  }
+  .index-page-classification-img+div{
+    font-size: 9px
+  }
+  .index-Boutique{
+    .index-Boutique-div{
+      margin-bottom: 6px;
+      background-image:linear-gradient(0deg, #535353 0%, #292929 65%);
+      height: 32vw;
+      text-align: left;
+      box-sizing: border-box;
+      padding: 5vw 6.985vw 5vw;
+      overflow: hidden;
+      position: relative;
+      .index-Boutique-div-left{
+        height: 22.93vw;
+        width: 25.06vw;
+        float: left;
+        img{
+          height: 22.93vw;
+          width: 25.06vw;
+        }
+      }
+      .index-Boutique-div-right{
+        height: 22.93vw;
+        overflow: hidden;
+        border-top: 1px solid #4a4a4a;
+        border-bottom: 1px solid #4a4a4a;
+        box-sizing: border-box;
+        padding-left: 10vw;
+        position: relative;
+        box-sizing: border-box;
+        div:nth-child(1){
+          color: #fff;
+          font-size: 16px;
+          padding-top: 0.6vh;
+          font-weight: 800;
+          padding-bottom:5px
+        }
+        div{
+          font-size: 12px;
+          font-family:.AppleSystemUIFont;
+          font-size:10px;
+          color:#9b9b9b;
+          letter-spacing:0;
+        }
+        div:nth-child(2){
+          font-family:.AppleSystemUIFont;
+          font-size:10px;
+          color:#676767;
+          letter-spacing:0;
+          text-align:left;
+          padding-bottom: 1vh
+        }
+        button{
+          border:1px solid #1dafed;
+          box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
+          border-radius:1px;
+          width:62px;
+          height:19px;
+          position: absolute;
+          right: 0;
+          bottom:0;
+          font-size: 10px;
+          background: rgba(255, 255, 255, 0);
+          color: #1dafed
+
+        }
+      }
+    }
+  }
+  .index-Boutique-div:nth-child(1):after{
+    content: 'HOT';
+    display: block;
+    position: absolute;
+    right: -14vw;
+    color: #fff;
+    top: 5vw;
+    transform:rotate(45deg);
+    background-image:linear-gradient(-220deg, #737373 0%, #a4a1a5 53%, #817e82 69%, #5d5d5d 84%, #848284 100%);
+    box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
+    width: 40vw;
+    text-align: center;
+    font-size: 12px;
+    height: 4vw;
+    line-height: 4vw;
+  }
