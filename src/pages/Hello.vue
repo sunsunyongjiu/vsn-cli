@@ -1,23 +1,46 @@
 <template>
-  <div class="hello">
-    <h1 class="header">{{ msg }}</h1>
-    <my-nav uuu="我来了" :yes='yes'></my-nav>
+  <div class="index-page">
+    <swiper :aspect-ratio="160/375" auto>
+      <swiper-item class="swiper-demo-img" v-for="(item, index) in demo04_list" :key="index"><img :src="item"></swiper-item>
+    </swiper>
+    <flexbox class="index-page-mypoints">
+      <flexbox-item><div class="flex-demo">1</div></flexbox-item>
+      <flexbox-item><div class="flex-demo">2</div></flexbox-item>
+    </flexbox>
   </div>
 </template>
 
 <script>
 import myNav from '../components/nav'
 import {state} from 'vuex'
+import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider} from 'vux'
+
+const imgList = [
+  'http://placeholder.qiniudn.com/800x300/FF3B3B/ffffff',
+  'http://placeholder.qiniudn.com/800x300/FFEF7D/ffffff',
+  'http://placeholder.qiniudn.com/800x300/8AEEB1/ffffff'
+]
+
 export default {
   name: 'hello',
   data () {
     return {
       msg: '这是起始页',
-      yes:false
+      yes:false,
+      demo04_list: imgList,
     }
   },
   components:{
-    myNav
+    myNav,
+    Swiper,
+    SwiperItem,
+    Grid, 
+    GridItem, 
+    GroupTitle,
+    Flexbox, 
+    FlexboxItem, 
+    Divider
+    
   },
   mounted:function(){
     console.log(this.$store)
@@ -46,4 +69,5 @@ a {
   width: 0;
   vertical-align: middle;
 }
+
 </style>

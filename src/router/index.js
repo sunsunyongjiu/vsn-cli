@@ -9,7 +9,7 @@ const router = new Router({
   routes: [
     {
       path: '/path',
-      name: 'Hello',
+      name: '首页',
       component: Hello,
     },
     {
@@ -19,7 +19,7 @@ const router = new Router({
     },
     {
       path: '*',
-      name: 'Hello',
+      name: '首页',
       redirect: '/path'
     },
   ]
