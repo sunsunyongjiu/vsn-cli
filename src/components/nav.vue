@@ -5,7 +5,7 @@
 			{{uuu}}
 		</span>
 	    <ul class="nav">
-	    	<li v-for='item in routers'><router-link  :to="item.path">{{item.name}}</router-link></li>
+	    	<li v-for='(item,index) in routers'><router-link  :to="item.path">{{item.name}}</router-link></li>
 	    </ul>
 	</div>
 	

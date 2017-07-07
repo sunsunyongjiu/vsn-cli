@@ -53,8 +53,8 @@
       分类推荐
     </div>
     <flexbox :gutter="0" wrap="wrap" class="index-page-classification" >
-      <flexbox-item :span="1/3" v-for="item in myPics">
-        <div class="flex-demo">
+      <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index" >
+        <div class="flex-demo" @click="goDetails">
           <div>
             <img :src="item.src" class="index-page-classification-img">
             <div v-text="item.title"></div>
@@ -75,7 +75,7 @@
       主编推荐
     </div>
     <div class="index-Boutique">
-      <div class="index-Boutique-div" v-for="item in myBoutique">
+      <div class="index-Boutique-div" v-for="(item, index) in myBoutique">
         <div class="index-Boutique-div-left">
           <img :src="item.src">
         </div>
@@ -116,6 +116,7 @@ export default {
   name: 'hello',
   data () {
     return {
+      show:true,
       msg: '这是起始页',
       yes:false,
       demo04_list: imgList,
@@ -197,8 +198,19 @@ export default {
     Divider
     
   },
+  methods:{
+    goDetails:function(){
+      this.$router.push('details')
+    }
+  },
   mounted:function(){
-    console.log(this.$store)
+    console.log(this.$Api('/home/getIndexPicList'))
+    // this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
+    //     console.log(response)
+    // }, (response) => {
+    //     // error callback
+    // });
+
   }
 }
 </script>
@@ -224,5 +236,10 @@ a {
   width: 0;
   vertical-align: middle;
 }
-
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
 </style>

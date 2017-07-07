@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/pages/Hello'
-import test from '@/pages/test'
+import details from '@/pages/details'
 
 Vue.use(Router)
 // name为页面跳转后的页面标题
@@ -13,9 +13,9 @@ const router = new Router({
       component: Hello,
     },
     {
-      path: '/test',
-      name: 'Test',
-      component: test,
+      path: '/details',
+      name: 'details',
+      component: details,
     },
     {
       path: '*',
