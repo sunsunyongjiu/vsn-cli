@@ -5,7 +5,10 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import store from './store';
-import  { AlertPlugin } from 'vux'
+import  { AlertPlugin } from 'vux';
+import AppConfig from './configers/appconfig'
+
+Vue.use(new AppConfig())
 Vue.use(AlertPlugin)
 Vue.use(VueResource);
 
@@ -19,3 +22,5 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
+
+

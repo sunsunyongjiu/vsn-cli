@@ -21,6 +21,7 @@ export default {
   },
   mounted:function(){
     console.log(this.$store)
+    console.log(this.$Api)
   }
 }
 </script>
