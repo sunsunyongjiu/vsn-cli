@@ -128,27 +128,27 @@ export default {
         },
         {
           src:require('../assets/imgs/box.png'),
-          title:'品牌生活',
+          title:'超值礼品',
           titleEn:'Mercedes me'
         },
         {
           src:require('../assets/imgs/work.png'),
-          title:'品牌生活',
+          title:'精英课选',
           titleEn:'Mercedes me'
         },
         {
           src:require('../assets/imgs/fue.png'),
-          title:'品牌生活',
+          title:'尊享礼券',
           titleEn:'Mercedes me'
         },
         {
           src:require('../assets/imgs/car.png'),
-          title:'品牌生活',
+          title:'无忧出行',
           titleEn:'Mercedes me'
         },
         {
           src:require('../assets/imgs/bag.png'),
-          title:'品牌生活',
+          title:'缤纷旅途',
           titleEn:'Mercedes me'
         },
       ],
