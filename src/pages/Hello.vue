@@ -1,7 +1,7 @@
 <template>
   <div class="index-page">
     <swiper :aspect-ratio="160/375" auto class="index-swiper">
-      <swiper-item class="swiper-demo-img" v-for="(item, index) in demo04_list" :key="index"><img :src="item"></swiper-item>
+      <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.src" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
     </swiper>
     <flexbox class="index-page-mypoints">
       <flexbox-item>
@@ -54,7 +54,7 @@
     </div>
     <flexbox :gutter="0" wrap="wrap" class="index-page-classification" >
       <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index" >
-        <div class="flex-demo" @click="goDetails">
+        <div class="flex-demo" @click="goDetails(item.title)">
           <div>
             <img :src="item.src" class="index-page-classification-img">
             <div v-text="item.title"></div>
@@ -69,35 +69,12 @@
       主编推荐
     </div>
     <swiper :aspect-ratio="160/375" auto>
-      <swiper-item class="swiper-demo-img" v-for="(item, index) in demo04_list" :key="index"><img :src="item"></swiper-item>
+      <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
     </swiper>
     <div class="index-middle-tittle">
-      主编推荐
+      精品推荐
     </div>
-    <div class="index-Boutique">
-      <div class="index-Boutique-div" v-for="(item, index) in myBoutique">
-        <div class="index-Boutique-div-left">
-          <img :src="item.src">
-        </div>
-        <div class="index-Boutique-div-right">
-          <div v-text="item.title">
-            上门取车保养
-          </div>
-          <div v-text="item.text">
-            全店维护，更换机油，定制服务
-          </div>
-          <div>
-            市场价：￥<span v-text="item.money"></span>
-          </div>
-          <div>
-            兑换：<span v-text="item.change"></span>积分
-          </div>
-          <button>
-            立即兑换
-          </button>
-        </div>
-      </div>
-    </div>
+    <my-nav :items="myBoutique"></my-nav>
   </div>
 </template>
 
@@ -119,8 +96,9 @@ export default {
       show:true,
       msg: '这是起始页',
       yes:false,
-      demo04_list: imgList,
+      demo05_list: imgList,
       myCardSrc: require('../assets/imgs/bccard.png'),
+      imgList:[],
       myPics:[
         {
           src:require('../assets/imgs/benz.png'),
@@ -199,18 +177,30 @@ export default {
     
   },
   methods:{
-    goDetails:function(){
-      this.$router.push('details')
+    //路由跳转
+    goDetails:function(title){
+      this.$router.push({path: 'lists', query: { 'title': title}})
+    },
+    goWWW:function(url){
+      window.location.href=url
+    },
+    init:function(){
+      //初始化时候调取imgurl
+      this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
+          let imgList=JSON.parse(response.bodyText).data
+          for(let n=0;n<imgList.length;n++){
+            this.$http.get(this.$Api('/img/bigImg'),{params: {'imgUrl':imgList[n].img}}).then((response) => {
+              let img={id:imgList[n].id,link:imgList[n].link,title:imgList[n].title,src:response.url}
+              this.imgList.push(img)
+            });
+          }
+      }, (response) => {
+          // error callback
+      });
     }
-  },
+  },          
   mounted:function(){
-    console.log(this.$Api('/home/getIndexPicList'))
-    // this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
-    //     console.log(response)
-    // }, (response) => {
-    //     // error callback
-    // });
-
+    this.init()
   }
 }
 </script>

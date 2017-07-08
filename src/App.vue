@@ -1,15 +1,22 @@
 <template>
   <div id="app">
-    <transition name="fade" mode="out-in" appear>
-      <router-view transition="back" keep-alive>
-      </router-view>
-    </transition>
+    <view-box ref="viewBox">
+      <transition name="fade" mode="out-in" appear>
+        <router-view transition="back" keep-alive>
+        </router-view>
+      </transition>
+    </view-box>
+    
   </div>
 </template>
 
 <script>
+import { ViewBox } from 'vux'
 export default {
-  name: 'app'
+  name: 'app',
+  components:{
+    ViewBox
+  }
 }
 </script>
 
@@ -22,10 +29,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
 
 // css重铸
-body,html{height: 100%}
+body,html{height: 100%;overflow: hidden;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}
 table{border-collapse:collapse;border-spacing:0}
 fieldset,img{border:0}

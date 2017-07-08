@@ -1,30 +1,10 @@
-# my-project
+这是一个基于vue2.0+vueresouce+vuex的项目
+页面文件在src文件夹下的pages中
+组件在src下components中
 
-> A Vue.js project
+项目运行指令：
+cd到项目目录 cnpm或者 npm install //用于下载依赖 第一次需要，之后不需要
+npm run dev 本地测试
+npm run build 打包，打包形成的文件在dist文件夹
 
-## Build Setup
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

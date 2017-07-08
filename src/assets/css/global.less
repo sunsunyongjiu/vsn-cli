@@ -1,3 +1,4 @@
+@bgcolor:#181818;
 .index-page .vux-indicator{
   left: 44vw
 }
@@ -6,4 +7,30 @@
 }
 .index-page .vux-slider > .vux-indicator > a > .vux-icon-dot, .vux-slider .vux-indicator-right > a > .vux-icon-dot{
 	background-color: #7f7f7f
+}
+body{
+	background: @bgcolor
+}
+.pageTitle{
+	width: 100%;
+	height: 10.66vw;
+	background: #000;
+	line-height: 10.66vw;
+	color: #fff;
+	position: relative;
+	.back{
+	  color: #fff;
+	  position: absolute;
+	  left: 5vw;
+	  top: 3.33vw;
+	  height: 3vw;
+	  width: 3vw;
+	  border-left:3px solid #fff;
+	  border-top:3px solid #fff;
+	  transform:rotate(-45deg);
+	}
+}
+.swiper-demo-img img {
+  width: 100%;
+  height: 100%
 }
