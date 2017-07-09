@@ -7,6 +7,23 @@
     <swiper :aspect-ratio="160/375" auto>
       <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
     </swiper>
+    <div class="myPro">
+    	<div class="myPro-left">
+    		<img :src="myPro.img">
+    	</div>
+    	<div class="myPro-right">
+    		<div v-text="myPro.title" class="myPro-right-title"></div>
+    		<button>{{myPro.points}}积分</button>
+    		<div class="myPro-right-detail">
+    			<div v-text="myPro.xilie"></div>
+	    		<div v-text="myPro.color"></div>
+	    		<div v-text="myPro.size"></div>
+    		</div>
+    		
+    	</div>
+    	
+    </div>
+    <my-slider></my-slider>
     <div class="bootomNav">
     	<flexbox :gutter="0">
     		<flexbox-item><div class="flex-demo points">10000<span>积分</span></div></flexbox-item>
@@ -19,6 +36,7 @@
 
 <script>
 import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,ViewBox} from 'vux'
+import mySlider from '../components/slider'
 const imgList = [
   'http://www.wallcoo.com/engine/Mercedes-Benz_SLK-Class/wallpapers/1920x1200/SLK-Class_05_02-2011.jpg',
   'http://a0.att.hudong.com/86/56/19300001355547133325564075948.jpg',
@@ -30,6 +48,14 @@ export default {
     return {
     	demo05_list: imgList,
     	pageTitle:this.$route.query.title,
+    	myPro:{
+    		img:require('../assets/imgs/detailPic1.png'),
+    		title:'梅赛德斯 车载固定小型香氛喷雾香水运动激情系列',
+    		points:10000,
+    		xilie:'香氛系列：绿植类，花香类，柑橘',
+    		color:'颜色：淡琥珀色',
+    		size:'规格：15ml'
+    	}
     }
   },
   components:{
@@ -41,7 +67,8 @@ export default {
     Flexbox, 
     FlexboxItem, 
     Divider,
-    ViewBox
+    ViewBox,
+    mySlider
   },
   methods:{
     goback:function(){
@@ -57,41 +84,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
-.bootomNav{
-	position: absolute;
-	bottom: 0;
-	color: #fff;
-	width: 100%;
-	height:13.33vw;
-	line-height: 13.33vw;
-	.flex-demo{
-		text-align: center;
-		font-family:AppleSystemUIFont;
-		font-size:16px;
-		color:#ffffff;
-		letter-spacing:0;
-	}
-	.points{
-		background:#292929;
-		font-family:PingFangSC-Regular;
-		font-size:18px;
-		color:#ffffff;
-		letter-spacing:0;
-		span{
-			font-size: 12px;
-			display: inline-block;
-			padding-left: 10px;
-			color: #888
-		}
-	}
-	.car{
-		background:#4a4a4a;
-	}
-	.now{
-		background:#1dafed;
-		box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
-		border-radius:0 1px 1px 1px;
+@import '../assets/css/detail.less';
 
-	}
-}
+
 </style>
