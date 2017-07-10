@@ -1,22 +1,26 @@
 <template>
 	<div class="index-Boutique">
       <div class="index-Boutique-div" v-for="(item, index) in myBoutique" @click="goWhere(item.title)">
+      	<div class="hot" v-if="item.is_hot==='Y'">HOT</div>
         <div class="index-Boutique-div-left">
-          <img :src="item.src">
+          <img :src="item.pic">
         </div>
         <div class="index-Boutique-div-right">
-          <div v-text="item.title">
+          <div v-text="item.name" class="index-Boutique-div-right-name">
             
           </div>
-          <div v-text="item.text">
+          <div v-text="item.brief">
             
           </div>
-          <div>
-            市场价：￥<span v-text="item.money"></span>
+          <div class="index-Boutique-div-right-points">
+          	<div>
+				市场价：￥<span v-text="item.cash"></span>
+			</div>
+			<div>
+				兑换：<span>10000 </span>积分
+			</div>
           </div>
-          <div>
-            兑换：<span v-text="item.change"></span>积分
-          </div>
+          
           <button>
             立即兑换
           </button>
@@ -72,46 +76,54 @@
         padding-left: 10vw;
         position: relative;
         box-sizing: border-box;
-        div:nth-child(1){
+        .index-Boutique-div-right-name{
           color: #fff;
-          font-size: 16px;
+          font-size: 4vw;
           padding-top: 0.6vh;
           font-weight: 800;
-          padding-bottom:5px
+          
         }
-        div{
-          font-size: 12px;
-          font-family:.AppleSystemUIFont;
-          font-size:10px;
-          color:#9b9b9b;
-          letter-spacing:0;
+        .index-Boutique-div-right-points{
+          position: absolute;
+          bottom:0;
+          div{
+			font-size: 12px;
+			font-family:.AppleSystemUIFont;
+			font-size:10px;
+			color:#9b9b9b;
+			letter-spacing:0;
+          }
+          
         }
         div:nth-child(2){
           font-family:.AppleSystemUIFont;
-          font-size:10px;
+          font-size:2.6vw;
           color:#676767;
           letter-spacing:0;
           text-align:left;
-          padding-bottom: 1vh
+          
         }
         button{
           border:1px solid #1dafed;
           box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
           border-radius:1px;
-          width:62px;
-          height:19px;
+          width:16.5vw;
+          height:5vw;
           position: absolute;
           right: 0;
           bottom:0;
-          font-size: 10px;
+          font-size: 2.6vw;
           background: rgba(255, 255, 255, 0);
-          color: #1dafed
+          color: #1dafed;
+          padding: 0;
+          text-align: center;
+          line-height: 5vw
 
         }
       }
     }
   }	
-.index-Boutique-div:nth-child(1):after{
+.hot{
     content: 'HOT';
     display: block;
     position: absolute;
@@ -126,5 +138,6 @@
     font-size: 12px;
     height: 4vw;
     line-height: 4vw;
+    z-index: 10;
   }
 </style>

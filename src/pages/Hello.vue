@@ -1,6 +1,6 @@
 <template>
   <div class="index-page">
-    <swiper :aspect-ratio="160/375" auto class="index-swiper">
+    <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
       <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.src" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
     </swiper>
     <flexbox class="index-page-mypoints">
@@ -132,35 +132,7 @@ export default {
         },
       ],
       myBoutique:[
-        {
-          src:require('../assets/imgs/women.png'),
-          title:'上门取车保养',
-          text:'全点维护，更换机油，定制服务',
-          money:'165.00',
-          change:'8000'
-        },
-        {
-          src:require('../assets/imgs/radio.png'),
-          title:'上门取车保养',
-          text:'全点维护，更换机油，定制服务',
-          money:'165.00',
-          change:'8000'
-        },
-        {
-          src:require('../assets/imgs/box.png'),
-          title:'上门取车保养',
-          text:'全点维护，更换机油，定制服务',
-          money:'165.00',
-          change:'8000'
-        },
-        {
-          src:require('../assets/imgs/door.png'),
-          title:'上门取车保养',
-          text:'全点维护，更换机油，定制服务',
-          money:'165.00',
-          change:'8000'
-        },
-        
+  
       ]
     }
   },
@@ -193,6 +165,30 @@ export default {
               let img={id:imgList[n].id,link:imgList[n].link,title:imgList[n].title,src:response.url}
               this.imgList.push(img)
             });
+          }
+      }, (response) => {
+          // error callback
+      });
+
+      //获取精品推荐列表
+      this.$http.get(this.$Api('/home/getCommendProdList')).then((response) => {
+          console.log(JSON.parse(response.bodyText))
+          let lists=JSON.parse(response.bodyText).data
+          for(let n=0;n<lists.length;n++){
+            this.$http.get(this.$Api('/img/bigImg'),{params: {'imgUrl':lists[n].pic}}).then((response) => {
+              let img={
+                prod_id:lists[n].prod_id,
+                name:lists[n].name,
+                brief:lists[n].brief,
+                small_pic:lists[n].small_pic,
+                pic:response.url,
+                price:lists[n].price,
+                cash:lists[n].cash,
+                is_hot:lists[n].is_hot
+              }
+              this.myBoutique.push(img)
+            });
+            
           }
       }, (response) => {
           // error callback
