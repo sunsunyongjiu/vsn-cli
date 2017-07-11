@@ -2,11 +2,17 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/pages/Index'
 import test from '@/pages/test'
+import login from '@/pages/login'
 
 Vue.use(Router)
 // name为页面跳转后的页面标题
 const router = new Router({
   routes: [
+    {
+      path: '/login',
+      name: 'Login',
+      component: login,
+    },
     {
       path: '/Index',
       name: 'Index',
@@ -19,8 +25,8 @@ const router = new Router({
     },
     {
       path: '*',
-      name: 'Index',
-      redirect: '/Index'
+      name: 'Login',
+      redirect: '/login'
     },
   ]
 })

@@ -1,14 +1,18 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view>
-    </router-view>
+    <view-box ref="viewBox">
+     <router-view></router-view>
+   </view-box>
   </div>
 </template>
 
 <script>
+import { ViewBox } from 'vux'
 export default {
-  name: 'app'
+  name: 'app',
+  components:{
+    ViewBox
+  },
 }
 </script>
 
@@ -20,6 +24,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+html,body{
+  height: 100%;
+  width: 100%;
 }
 
 // css重铸
