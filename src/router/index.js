@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/pages/Hello'
+import Index from '@/pages/Index'
 import test from '@/pages/test'
 
 Vue.use(Router)
@@ -8,9 +8,9 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     {
-      path: '/path',
-      name: 'Hello',
-      component: Hello,
+      path: '/Index',
+      name: 'Index',
+      component: Index,
     },
     {
       path: '/test',
@@ -19,8 +19,8 @@ const router = new Router({
     },
     {
       path: '*',
-      name: 'Hello',
-      redirect: '/path'
+      name: 'Index',
+      redirect: '/Index'
     },
   ]
 })

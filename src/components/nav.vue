@@ -5,22 +5,21 @@
 			{{uuu}}
 		</span>
 	    <ul class="nav">
-	    	<li v-for='item in routers'><router-link  :to="item.path">{{item.name}}</router-link></li>
+	    
 	    </ul>
 	</div>
 	
 </template>
 <script type="text/javascript">
-import configer from '../configers/router-configer'
 	export default {
 	  name: 'nav',
 	  data () {
 	    return {
-	     	routers:configer.routers
+	     	
 	    }
 	  },
 	  mounted:function(){
-	  	console.log(this.routers)
+	  	
 	  },
 	  props:['uuu','yes']
 	}
