@@ -12,16 +12,23 @@
       Mercedes 车主俱乐部钻卡
     </div>
       </flexbox-item>
-      <flexbox-item><div class="flex-demo myPoints" >
-        <div>您当前的个人积分是</div>
-        <div >
-          <span>5000</span>
-          <span>分</span>
+      <flexbox-item v-if="login">
+        <div class="flex-demo myPoints" >
+          <div>您当前的个人积分是</div>
+          <div >
+            <span v-text="loginUser.score"></span>
+            <span>分</span>
+          </div>
+          <div>
+            <button class="soonBtn">立即兑换</button>
+          </div>
         </div>
+      </flexbox-item>
+      <flexbox-item v-else="login">
         <div>
-          <button class="soonBtn">立即兑换</button>
+          您当前没有登陆
         </div>
-      </div></flexbox-item>
+      </flexbox-item>
     </flexbox>
     <flexbox class="index-page-mypoints2">
       <flexbox-item>
@@ -82,6 +89,7 @@
 import myNav from '../components/nav'
 import {state} from 'vuex'
 import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider} from 'vux'
+import { mapGetters } from 'vuex'
 
 const imgList = [
   'http://www.wallcoo.com/engine/Mercedes-Benz_SLK-Class/wallpapers/1920x1200/SLK-Class_05_02-2011.jpg',
@@ -93,6 +101,8 @@ export default {
   name: 'hello',
   data () {
     return {
+      
+      login:false,
       show:true,
       msg: '这是起始页',
       yes:false,
@@ -157,6 +167,23 @@ export default {
       window.location.href=url
     },
     init:function(){
+      //判断当前用户是否登录
+      let userToken=this.$route.query.token
+      if(userToken){
+        this.$http.post(this.$Api('/login'),{token:userToken},{emulateJSON: true}).then((response)=>{
+          if(response.data.code===1){
+            this.login=true
+            let userDetail=JSON.parse(response.bodyText).data 
+            this.$store.dispatch({type: 'setLogin',data: userDetail})
+          }else{
+            return
+          }
+          
+        },(error)=>{
+                console.log(error);
+          }
+        );
+      }
       //初始化时候调取imgurl
       this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
           let imgList=JSON.parse(response.bodyText).data
@@ -197,6 +224,13 @@ export default {
   },          
   mounted:function(){
     this.init()
+  },
+  computed: {
+  // 使用对象展开运算符将 getters 混入 computed 对象中
+    ...mapGetters({
+      loginUser:'getLogin'
+      
+    })
   }
 }
 </script>
