@@ -33,7 +33,7 @@
 	  name: 'nav',
 	  data () {
 	    return {
-	     	myBoutique:this.items
+	     	myBoutique:''
 	    }
 	  },
 	  methods:{
@@ -42,8 +42,13 @@
 	  	}
 	  },
 	  mounted:function(){
-	  	
+	  	console.log(this.items)
 	  },
+	  watch: {
+		items() {
+			this.myBoutique = this.items
+	    }
+      },
 	  props:['items','yes']
 	}
 </script>

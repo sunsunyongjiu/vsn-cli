@@ -1,18 +1,15 @@
 <template>
   <div class="index-page">
     <search
-    @result-click="resultClick"
-    @on-change="getResult"
-    :results="results"
-    v-model="value"
+    v-model="searchValue"
     position="absolute"
     :auto-fixed="autoFixed"
-    @on-focus="onFocus"
-    @on-cancel="onCancel"
-    @on-submit="onSubmit"
+    @on-cancel="submit"
+    auto-scroll-to-top
+    cancel-text="搜索"
     ref="search"></search>
     <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
-      <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.src" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
+      <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
     </swiper>
     <flexbox class="index-page-mypoints">
       <flexbox-item>
@@ -124,6 +121,7 @@ export default {
       show:true,
       msg: '这是起始页',
       yes:false,
+      searchValue:'',
       demo05_list: imgList,
       myCardSrc: require('../assets/imgs/bccard.png'),
       imgList:[],
@@ -160,7 +158,7 @@ export default {
         },
       ],
       myBoutique:[
-  
+        
       ]
     }
   },
@@ -185,6 +183,9 @@ export default {
     goWWW:function(url){
       window.location.href=url
     },
+    submit:function(){
+      this.$router.push({path:'/search',query: { 'search': this.searchValue}})
+    },
     init:function(){
       //判断当前用户是否登录
       let userToken=this.$route.query.token
@@ -206,36 +207,16 @@ export default {
       //初始化时候调取imgurl
       this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
           let imgList=JSON.parse(response.bodyText).data
-          for(let n=0;n<imgList.length;n++){
-            this.$http.get(this.$Api('/img/bigImg'),{params: {'imgUrl':imgList[n].img}}).then((response) => {
-              let img={id:imgList[n].id,link:imgList[n].link,title:imgList[n].title,src:response.url}
-              this.imgList.push(img)
-            });
-          }
+          this.imgList=imgList
+          
       }, (response) => {
           // error callback
       });
 
       //获取精品推荐列表
       this.$http.get(this.$Api('/home/getCommendProdList')).then((response) => {
-          console.log(JSON.parse(response.bodyText))
-          let lists=JSON.parse(response.bodyText).data
-          for(let n=0;n<lists.length;n++){
-            this.$http.get(this.$Api('/img/bigImg'),{params: {'imgUrl':lists[n].pic}}).then((response) => {
-              let img={
-                prod_id:lists[n].prod_id,
-                name:lists[n].name,
-                brief:lists[n].brief,
-                small_pic:lists[n].small_pic,
-                pic:response.url,
-                price:lists[n].price,
-                cash:lists[n].cash,
-                is_hot:lists[n].is_hot
-              }
-              this.myBoutique.push(img)
-            });
-            
-          }
+          this.myBoutique=JSON.parse(response.bodyText).data
+          
       }, (response) => {
           // error callback
       });

@@ -33,24 +33,7 @@ export default {
     init:function(){
       //获取精品推荐列表
       this.$http.get(this.$Api('/home/getCommendProdList')).then((response) => {
-          console.log(JSON.parse(response.bodyText))
-          let lists=JSON.parse(response.bodyText).data
-          for(let n=0;n<lists.length;n++){
-            this.$http.get(this.$Api('/img/bigImg'),{params: {'imgUrl':lists[n].pic}}).then((response) => {
-              let img={
-                prod_id:lists[n].prod_id,
-                name:lists[n].name,
-                brief:lists[n].brief,
-                small_pic:lists[n].small_pic,
-                pic:response.url,
-                price:lists[n].price,
-                cash:lists[n].cash,
-                is_hot:lists[n].is_hot
-              }
-              this.myBoutique.push(img)
-            });
-            
-          }
+          this.myBoutique=JSON.parse(response.bodyText).data
       }, (response) => {
           // error callback
       });

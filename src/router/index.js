@@ -3,11 +3,17 @@ import Router from 'vue-router'
 import Hello from '@/pages/Hello'
 import lists from '@/pages/lists'
 import detail from '@/pages/detail'
+import search from '@/pages/search'
 
 Vue.use(Router)
 // name为页面跳转后的页面标题
 const router = new Router({
   routes: [
+    {
+      path: '/search',
+      name: '搜索列表',
+      component: search,
+    },
     {
       path: '/path',
       name: '积分商城',
