@@ -1,5 +1,16 @@
 <template>
   <div class="index-page">
+    <search
+    @result-click="resultClick"
+    @on-change="getResult"
+    :results="results"
+    v-model="value"
+    position="absolute"
+    :auto-fixed="autoFixed"
+    @on-focus="onFocus"
+    @on-cancel="onCancel"
+    @on-submit="onSubmit"
+    ref="search"></search>
     <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
       <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.src" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
     </swiper>
@@ -25,9 +36,16 @@
         </div>
       </flexbox-item>
       <flexbox-item v-else="login">
-        <div>
-          您当前没有登陆
-        </div>
+        <div class="flex-demo myPoints" >
+          <div class="font-11">您好，欢迎来到</div>
+            <div >
+              <span class="font-13">积分商城</span>
+              
+            </div>
+            <div>
+              <button class="soonBtn">登陆/注册</button>
+            </div>
+          </div>
       </flexbox-item>
     </flexbox>
     <flexbox class="index-page-mypoints2">
@@ -88,7 +106,7 @@
 <script>
 import myNav from '../components/nav'
 import {state} from 'vuex'
-import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider} from 'vux'
+import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,Search} from 'vux'
 import { mapGetters } from 'vuex'
 
 const imgList = [
@@ -101,7 +119,7 @@ export default {
   name: 'hello',
   data () {
     return {
-      
+      autoFixed:false,
       login:false,
       show:true,
       msg: '这是起始页',
@@ -155,7 +173,8 @@ export default {
     GroupTitle,
     Flexbox, 
     FlexboxItem, 
-    Divider
+    Divider,
+    Search
     
   },
   methods:{
