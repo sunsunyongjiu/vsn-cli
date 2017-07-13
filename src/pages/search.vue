@@ -10,7 +10,9 @@
 	    cancel-text="搜索"
 	    ref="search"
 	    ></search>
+	    <div></div>
 	    <my-nav :items="imgList"></my-nav>
+	    
 	</div>
   
 </template>
@@ -24,7 +26,7 @@ export default {
     return {
     	autoFixed:false,
     	imgList:[],
-    	placeholder:'',
+    	placeholder:'请搜索',
     	searchValue:'',
     	value:''
     }
@@ -50,10 +52,10 @@ export default {
 		});
     },
     submit:function(){
-    	console.log(this.searchValue)
+    	this.placeholder=this.searchValue 
     	this.$http.get(this.$Api('/home/searchProdList'),{params: { 'searchStr': this.searchValue }}).then((response) => {
     		this.imgList=response.data.data
-    		this.placeholder=this.searchValue 
+    		
 		}, (response) => {
 		  // error callback
 		});
@@ -64,7 +66,7 @@ export default {
     this.init()
   },
   computed:{
-  	
+
   },
 }
 </script>

@@ -46,30 +46,13 @@
       </flexbox-item>
     </flexbox>
     <flexbox class="index-page-mypoints2">
-      <flexbox-item>
-        <div class="flex-demo">
-          <i class="iconfont icon-gouwuche"></i>
-          <div>购物车</div>
+      <flexbox-item v-for="(item,index) in indexBtns" :key="index">
+        <div class="flex-demo" @click="goNext(item.path)">
+          <i class="iconfont" :class="item.icon"></i>
+          <div v-text="item.title"></div>
         </div>
       </flexbox-item>
-      <flexbox-item>
-        <div class="flex-demo">
-          <i class="iconfont icon-gerenzhongxindingdan"></i>
-          <div>个人订单</div>
-        </div>
-      </flexbox-item>
-      <flexbox-item>
-        <div class="flex-demo">
-          <i class="iconfont icon-gerenziliao"></i>
-          <div>个人信息</div>
-        </div>
-      </flexbox-item>
-      <flexbox-item>
-        <div class="flex-demo">
-          <i class="iconfont icon-call-center"></i>
-          <div>联系客服</div>
-        </div>
-      </flexbox-item>
+      
     </flexbox>
     <div class="index-middle-tittle">
       分类推荐
@@ -125,6 +108,28 @@ export default {
       demo05_list: imgList,
       myCardSrc: require('../assets/imgs/bccard.png'),
       imgList:[],
+      indexBtns:[
+        {
+          title:'购物车',
+          path:'/cart',
+          icon:'icon-gouwuche'
+        },
+        {
+          title:'个人订单',
+          path:'/order',
+          icon:'icon-gerenzhongxindingdan'
+        },
+        {
+          title:'个人信息',
+          path:'/personal',
+          icon:'icon-gerenziliao'
+        },
+        {
+          title:'联系客服',
+          path:'/contact',
+          icon:'icon-call-center'
+        },
+      ],
       myPics:[
         {
           src:require('../assets/imgs/benz.png'),
@@ -176,12 +181,15 @@ export default {
     
   },
   methods:{
-    //路由跳转
+    //跳转细节页
     goDetails:function(title){
       this.$router.push({path: 'lists', query: { 'title': title}})
     },
     goWWW:function(url){
       window.location.href=url
+    },
+    goNext:function(pathUrl){
+      this.$router.push({path:pathUrl})
     },
     submit:function(){
       this.$router.push({path:'/search',query: { 'search': this.searchValue}})

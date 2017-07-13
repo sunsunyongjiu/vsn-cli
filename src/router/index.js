@@ -4,6 +4,10 @@ import Hello from '@/pages/Hello'
 import lists from '@/pages/lists'
 import detail from '@/pages/detail'
 import search from '@/pages/search'
+import cart from '@/pages/cart'
+import personal from '@/pages/personal'
+import order from '@/pages/order'
+import contact from '@/pages/contact'
 
 Vue.use(Router)
 // name为页面跳转后的页面标题
@@ -13,6 +17,26 @@ const router = new Router({
       path: '/search',
       name: '搜索列表',
       component: search,
+    },
+    {
+      path: '/cart',
+      name: '购物车',
+      component: cart,
+    },
+    {
+      path: '/personal',
+      name: '个人信息',
+      component: personal,
+    },
+    {
+      path: '/order',
+      name: '个人订单',
+      component: order,
+    },
+    {
+      path: '/contact',
+      name: '联系客服',
+      component: contact,
     },
     {
       path: '/path',

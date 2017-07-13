@@ -42,7 +42,7 @@
 	  	}
 	  },
 	  mounted:function(){
-	  	console.log(this.items)
+	  	
 	  },
 	  watch: {
 		items() {
