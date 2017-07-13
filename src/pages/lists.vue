@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back title="pageTitle"></back>
+    <back :title="pageTitle"></back>
     <my-nav :items="myBoutique"></my-nav>
   </div>
 </template>
