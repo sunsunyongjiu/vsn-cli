@@ -9,7 +9,7 @@
           <div v-text="item.name" class="index-Boutique-div-right-name">
             
           </div>
-          <div v-text="item.brief">
+          <div v-text="item.brief" class="text">
             
           </div>
           <div class="index-Boutique-div-right-points">
@@ -78,7 +78,8 @@
         border-top: 1px solid #4a4a4a;
         border-bottom: 1px solid #4a4a4a;
         box-sizing: border-box;
-        padding-left: 10vw;
+        padding-left: 6vw;
+        padding-right: 4vw;
         position: relative;
         box-sizing: border-box;
         .index-Boutique-div-right-name{
@@ -92,15 +93,15 @@
           position: absolute;
           bottom:0;
           div{
-			font-size: 12px;
-			font-family:.AppleSystemUIFont;
-			font-size:10px;
-			color:#9b9b9b;
-			letter-spacing:0;
+      			font-size: 12px;
+      			font-family:.AppleSystemUIFont;
+      			font-size:10px;
+      			color:#9b9b9b;
+      			letter-spacing:0;
           }
           
         }
-        div:nth-child(2){
+        .text{
           font-family:.AppleSystemUIFont;
           font-size:2.6vw;
           color:#676767;
@@ -108,6 +109,7 @@
           text-align:left;
           
         }
+        
         button{
           border:1px solid #1dafed;
           box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
