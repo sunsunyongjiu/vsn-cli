@@ -11,16 +11,16 @@
     <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
       <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
     </swiper>
-    <flexbox class="index-page-mypoints">
+    <flexbox class="index-page-mypoints flex1">
       <flexbox-item>
         <div class="flex-demo">
           <img :src="myCardSrc" class="myCard">
         </div>
         <div class="my-club">
-      Mercedes 车主俱乐部钻卡
+        <span v-if="login">Mercedes 车主俱乐部钻卡</span>
     </div>
       </flexbox-item>
-      <flexbox-item v-if="login">
+      <flexbox-item v-show="login">
         <div class="flex-demo myPoints" >
           <div>您当前的个人积分是</div>
           <div >
@@ -32,7 +32,7 @@
           </div>
         </div>
       </flexbox-item>
-      <flexbox-item v-else="login">
+      <flexbox-item v-show="!login">
         <div class="flex-demo myPoints" >
           <div class="font-11">您好，欢迎来到</div>
             <div >
@@ -40,7 +40,7 @@
               
             </div>
             <div>
-              <button class="soonBtn">登陆/注册</button>
+              <button class="soonBtn" @click="goWWW('https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin？pointsmall_url=http://123.57.157.212:8080/pmall/index.html#/path')">登陆/注册</button>
             </div>
           </div>
       </flexbox-item>
