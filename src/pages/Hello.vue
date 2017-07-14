@@ -59,11 +59,14 @@
     </div>
     <flexbox :gutter="0" wrap="wrap" class="index-page-classification" >
       <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index" >
-        <div class="flex-demo" @click="goDetails(item.title)">
+        <div class="flex-demo fenleiBox" @click="goDetails(item.title)">
           <div>
-            <img :src="item.src" class="index-page-classification-img">
-            <div v-text="item.title"></div>
-            <div v-text="item.titleEn"></div>
+            <img :src="item.src" :class="item.class">
+            <div class="index-bottom">
+              <div v-text="item.title"></div>
+              <div v-text="item.titleEn"></div>
+            </div>
+            
             
           </div>
         </div>
@@ -134,32 +137,38 @@ export default {
         {
           src:require('../assets/imgs/benz.png'),
           title:'品牌生活',
-          titleEn:'Mercedes me'
+          titleEn:'Mercedes me',
+          class:'index-page-classification-img'
         },
         {
           src:require('../assets/imgs/box.png'),
           title:'超值礼品',
-          titleEn:'Mercedes me'
+          titleEn:'Mercedes me',
+          class:'index-page-classification-img1'
         },
         {
           src:require('../assets/imgs/work.png'),
           title:'精英课选',
-          titleEn:'Mercedes me'
+          titleEn:'Mercedes me',
+          class:'index-page-classification-img2'
         },
         {
           src:require('../assets/imgs/fue.png'),
           title:'尊享礼券',
-          titleEn:'Mercedes me'
+          titleEn:'Mercedes me',
+          class:'index-page-classification-img3'
         },
         {
           src:require('../assets/imgs/car.png'),
           title:'无忧出行',
-          titleEn:'Mercedes me'
+          titleEn:'Mercedes me',
+          class:'index-page-classification-img4'
         },
         {
           src:require('../assets/imgs/bag.png'),
           title:'缤纷旅途',
-          titleEn:'Mercedes me'
+          titleEn:'Mercedes me',
+          class:'index-page-classification-img5'
         },
       ],
       myBoutique:[
@@ -270,4 +279,5 @@ a {
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
   opacity: 0
 }
+
 </style>
