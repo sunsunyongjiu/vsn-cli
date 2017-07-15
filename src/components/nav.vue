@@ -84,11 +84,17 @@
         box-sizing: border-box;
         .index-Boutique-div-right-name{
           color: #fff;
-          font-size: 16px;
-          line-height: 18px;
+          font-size: 4vw;
+          line-height: 5vw;
           padding-top: 0.6vh;
           font-weight: 800;
-          
+          height: 10vw;
+          overflow: hidden;
+          text-overflow: -o-ellipsis-lastline;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
         }
         .index-Boutique-div-right-points{
           position: absolute;

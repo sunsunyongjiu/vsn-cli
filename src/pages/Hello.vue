@@ -11,14 +11,17 @@
     <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
       <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
     </swiper>
+    <div class="index-middle-tittle">
+      会员信息
+    </div>
     <flexbox class="index-page-mypoints flex1">
       <flexbox-item>
         <div class="flex-demo">
           <img :src="myCardSrc" class="myCard">
         </div>
-        <div class="my-club">
-        <span v-if="login">Mercedes 车主俱乐部钻卡</span>
-    </div>
+          <div class="my-club">
+          <span v-if="login">Mercedes 车主俱乐部钻卡</span>
+      </div>
       </flexbox-item>
       <flexbox-item v-show="login">
         <div class="flex-demo myPoints" >
