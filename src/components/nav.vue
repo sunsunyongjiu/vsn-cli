@@ -84,7 +84,8 @@
         box-sizing: border-box;
         .index-Boutique-div-right-name{
           color: #fff;
-          font-size: 4vw;
+          font-size: 16px;
+          line-height: 18px;
           padding-top: 0.6vh;
           font-weight: 800;
           
