@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="mubu" v-if="show"></div>
     <back :title="pageTitle"></back>
     <my-nav :items="myBoutique"></my-nav>
   </div>
@@ -19,17 +20,21 @@ export default {
   data () {
     return {
       pageTitle:this.$route.query.title,
-      myBoutique:[
-        
-        
-      ]
+      id:this.$route.query.id,
+      myBoutique:[],
+      show:true
     }
   },
   methods: {
     init:function(){
+      this.$vux.loading.show({
+       text: 'loading'
+      })
       //获取精品推荐列表
-      this.$http.get(this.$Api('/home/getCommendProdList')).then((response) => {
+      this.$http.get(this.$Api('/home/getProdListByCategory'),{params: { 'id': this.id }}).then((response) => {
           this.myBoutique=JSON.parse(response.bodyText).data
+          this.$vux.loading.hide()
+          this.show=false
       }, (response) => {
           // error callback
       });
@@ -37,7 +42,6 @@ export default {
   },
   mounted:function(){
     this.init()
-    
   }
 }
 </script>

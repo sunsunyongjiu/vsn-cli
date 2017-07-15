@@ -62,6 +62,7 @@ const router = new Router({
 })
 // 页面跳转后修改网页title
 router.beforeEach((to, from, next) => {
+  Vue.$vux.loading.hide()
   document.title = to.name
   next()
 })

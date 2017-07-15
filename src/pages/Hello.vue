@@ -59,7 +59,7 @@
     </div>
     <flexbox :gutter="0" wrap="wrap" class="index-page-classification" >
       <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index" >
-        <div class="flex-demo fenleiBox" @click="goDetails(item.title)">
+        <div class="flex-demo fenleiBox" @click="goList(item.title,item.id)">
           <div>
             <img :src="item.src" :class="item.class">
             <div class="index-bottom">
@@ -138,37 +138,43 @@ export default {
           src:require('../assets/imgs/benz.png'),
           title:'品牌生活',
           titleEn:'Mercedes me',
-          class:'index-page-classification-img'
+          class:'index-page-classification-img',
+          id:'767'
         },
         {
           src:require('../assets/imgs/box.png'),
           title:'超值礼品',
           titleEn:'Mercedes me',
-          class:'index-page-classification-img1'
+          class:'index-page-classification-img1',
+          id:'776'
         },
         {
           src:require('../assets/imgs/work.png'),
           title:'精英课选',
           titleEn:'Mercedes me',
-          class:'index-page-classification-img2'
+          class:'index-page-classification-img2',
+          id:'778'
         },
         {
           src:require('../assets/imgs/fue.png'),
           title:'尊享礼券',
           titleEn:'Mercedes me',
-          class:'index-page-classification-img3'
+          class:'index-page-classification-img3',
+          id:'779'
         },
         {
           src:require('../assets/imgs/car.png'),
           title:'无忧出行',
           titleEn:'Mercedes me',
-          class:'index-page-classification-img4'
+          class:'index-page-classification-img4',
+          id:'780'
         },
         {
           src:require('../assets/imgs/bag.png'),
           title:'缤纷旅途',
           titleEn:'Mercedes me',
-          class:'index-page-classification-img5'
+          class:'index-page-classification-img5',
+          id:'781'
         },
       ],
       myBoutique:[
@@ -190,9 +196,9 @@ export default {
     
   },
   methods:{
-    //跳转细节页
-    goDetails:function(title){
-      this.$router.push({path: 'lists', query: { 'title': title}})
+    //跳转分类列表页
+    goList:function(title,id){
+      this.$router.push({path: 'lists', query: { 'title': title,'id':id}})
     },
     goWWW:function(url){
       window.location.href=url

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="mubu" v-if="show"></div>
     <div class="pageTitle">
       <span>商品详情</span>
       <div class="back" @click="goback"></div>
@@ -47,6 +48,7 @@ export default {
   data () {
     return {
     	demo05_list: imgList,
+      show:true,
     	pageTitle:this.$route.query.title,
     	myPro:{
     		img:require('../assets/imgs/detailPic1.png'),
@@ -76,7 +78,13 @@ export default {
     }
   },          
   mounted:function(){
-    
+    this.$vux.loading.show({
+     text: 'loading'
+    })
+    setTimeout(() => {
+      this.$vux.loading.hide()
+      this.show=false
+    }, 2000)
 
   }
 }

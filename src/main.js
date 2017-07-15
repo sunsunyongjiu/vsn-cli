@@ -5,12 +5,13 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import store from './store';
-import  { AlertPlugin } from 'vux';
+import  { AlertPlugin,LoadingPlugin  } from 'vux';
 import AppConfig from './configers/appconfig'
 
 Vue.use(new AppConfig())
 Vue.use(AlertPlugin)
 Vue.use(VueResource);
+Vue.use(LoadingPlugin)
 
 Vue.config.productionTip = false
 
