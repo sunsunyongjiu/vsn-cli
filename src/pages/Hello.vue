@@ -48,7 +48,7 @@
     <flexbox class="index-page-mypoints2">
       <flexbox-item v-for="(item,index) in indexBtns" :key="index">
         <div class="flex-demo" @click="goNext(item.path)">
-          <i class="iconfont" :class="item.icon"></i>
+          <div :class="item.class" class="index-icon"></div>
           <div v-text="item.title"></div>
         </div>
       </flexbox-item>
@@ -73,10 +73,10 @@
       </flexbox-item>
       
     </flexbox>
-    <div class="index-middle-tittle">
+    <div class="index-middle-tittle" v-if=false>
       主编推荐
     </div>
-    <swiper :aspect-ratio="160/375" auto>
+    <swiper :aspect-ratio="160/375" auto v-if=false>
       <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
     </swiper>
     <div class="index-middle-tittle">
@@ -115,22 +115,22 @@ export default {
         {
           title:'购物车',
           path:'/cart',
-          icon:'icon-gouwuche'
+          class:'index-cart'
         },
         {
           title:'个人订单',
           path:'/order',
-          icon:'icon-gerenzhongxindingdan'
+          class:'index-order'
         },
         {
           title:'个人信息',
           path:'/personal',
-          icon:'icon-gerenziliao'
+          class:'index-personal'
         },
         {
           title:'联系客服',
           path:'/contact',
-          icon:'icon-call-center'
+          class:'index-contact'
         },
       ],
       myPics:[
