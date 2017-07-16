@@ -88,7 +88,6 @@
           line-height: 5vw;
           padding-top: 0.6vh;
           font-weight: 800;
-          height: 10vw;
           overflow: hidden;
           text-overflow: -o-ellipsis-lastline;
           text-overflow: ellipsis;
