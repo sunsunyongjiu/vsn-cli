@@ -62,7 +62,7 @@
     </div>
     <flexbox :gutter="0" wrap="wrap" class="index-page-classification" >
       <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index" >
-        <div class="flex-demo fenleiBox" @click="goList(item.title,item.id)">
+        <div class="flex-demo fenleiBox" @click="goList(item.title,item.id,item.path)">
           <div>
             <img :src="item.src" :class="item.class">
             <div class="index-bottom">
@@ -142,7 +142,8 @@ export default {
           title:'品牌生活',
           titleEn:'Mercedes me',
           class:'index-page-classification-img',
-          id:'767'
+          id:'767',
+          path:'/life'
         },
         {
           src:require('../assets/imgs/box.png'),
@@ -200,8 +201,10 @@ export default {
   },
   methods:{
     //跳转分类列表页
-    goList:function(title,id){
-      this.$router.push({path: 'lists', query: { 'title': title,'id':id}})
+    goList:function(title,id,path){
+      let p= path==undefined?'lists':path
+      console.log(p)
+      this.$router.push({path: p, query: { 'title': title,'id':id}})
     },
     goWWW:function(url){
       window.location.href=url

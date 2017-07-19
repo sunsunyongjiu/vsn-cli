@@ -8,6 +8,7 @@ import cart from '@/pages/cart'
 import personal from '@/pages/personal'
 import order from '@/pages/order'
 import contact from '@/pages/contact'
+import lifeList from '@/pages/list/list-life'
 
 Vue.use(Router)
 // name为页面跳转后的页面标题
@@ -37,6 +38,11 @@ const router = new Router({
       path: '/contact',
       name: '联系客服',
       component: contact,
+    },
+    {
+      path: '/life',
+      name: '品牌生活',
+      component: lifeList,
     },
     {
       path: '/path',

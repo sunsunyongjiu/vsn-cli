@@ -15,7 +15,7 @@
     <div class="detail-btn">
       <flexbox-item>
         <div class="detail-pointBtn flex-demo">
-          10000积分
+          10000 <span class="detail-pointBtn-point">积分</span>
         </div>
       </flexbox-item>
       <flexbox-item>
@@ -31,7 +31,9 @@
         </div>
       </flexbox-item>
     </flexbox>
-    
+    <div>
+      <img :src="page" style="width:100%">
+    </div>
   </div>
 </template>
 
@@ -59,7 +61,8 @@ export default {
         
     	},
       cartBtn:require('../assets/imgs/cart1.png'),
-      changeBtn:require('../assets/imgs/change.png')
+      changeBtn:require('../assets/imgs/change.png'),
+      page:require('../assets/imgs/page.png')
     }
   },
   components:{
@@ -113,7 +116,8 @@ export default {
   width: 40.8vw;
   background:#4a4a4a;
   line-height: 14.6vw;
-  color: #fff
+  color: #fff;
+  font-size: 20px;
 }
 .detail-pointBtn{
   height: 14.6vw;
@@ -123,6 +127,10 @@ export default {
   text-align: center;
   color: #1dafed;
   box-sizing:border-box;
+  font-size: 24px;
+  .detail-pointBtn-point{
+    font-size: 13px
+  }
 }
 .detail-btn{
   width: 100%;
@@ -143,10 +151,11 @@ export default {
   box-sizing:border-box;
   padding: 5vw 6.4vw 5vw;
   box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 5vw;
   div{
     background:#1dafed;
-  }
-  
-  
+  }  
 }
 </style>
