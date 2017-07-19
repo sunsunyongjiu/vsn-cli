@@ -7,6 +7,8 @@ import VueResource from 'vue-resource'
 import store from './store';
 import  { AlertPlugin,LoadingPlugin  } from 'vux';
 import AppConfig from './configers/appconfig'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+Vue.use(VueAwesomeSwiper)
 
 Vue.use(new AppConfig())
 Vue.use(AlertPlugin)

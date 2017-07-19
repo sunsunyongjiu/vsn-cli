@@ -76,12 +76,23 @@
       </flexbox-item>
       
     </flexbox>
-    <div class="index-middle-tittle" v-if=false>
+    <div class="index-middle-tittle">
       主编推荐
     </div>
-    <swiper :aspect-ratio="160/375" auto v-if=false>
-      <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
-    </swiper>
+    <new-swiper :options="swiperOption"  ref="mySwiper">  
+        <!-- 这部分放你要渲染的那些内容 -->  
+        <swiper-slide>  
+        1
+        </swiper-slide>  
+        <swiper-slide>  
+        1
+        </swiper-slide> 
+        <swiper-slide>  
+        1
+        </swiper-slide> 
+        <!-- 这是轮播的小圆点 -->  
+        <div class="swiper-pagination" slot="pagination"></div>  
+    </new-swiper>  
     <div class="index-middle-tittle">
       精品推荐
     </div>
@@ -94,7 +105,7 @@ import myNav from '../components/nav'
 import {state} from 'vuex'
 import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,Search} from 'vux'
 import { mapGetters } from 'vuex'
-
+import { swiper as newSwiper, swiperSlide }from 'vue-awesome-swiper' 
 const imgList = [
   'http://www.wallcoo.com/engine/Mercedes-Benz_SLK-Class/wallpapers/1920x1200/SLK-Class_05_02-2011.jpg',
   'http://a0.att.hudong.com/86/56/19300001355547133325564075948.jpg',
@@ -180,6 +191,20 @@ export default {
           id:'781'
         },
       ],
+      swiperOption:{  
+          //是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true  
+          notNextTick: true,  
+          pagination: '.swiper-pagination',  
+          slidesPerView: 'auto',  
+          centeredSlides: true,  
+          paginationClickable: true,  
+          spaceBetween: 30,  
+              onSlideChangeEnd: swiper => {  
+                  //这个位置放swiper的回调方法  
+                  this.page = swiper.realIndex+1;  
+                  this.index = swiper.realIndex;  
+              }  
+          } ,
       myBoutique:[
         
       ]
@@ -195,7 +220,9 @@ export default {
     Flexbox, 
     FlexboxItem, 
     Divider,
-    Search
+    Search,
+    newSwiper, 
+    swiperSlide
     
   },
   methods:{
