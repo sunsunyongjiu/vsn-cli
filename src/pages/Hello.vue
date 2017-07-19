@@ -210,7 +210,16 @@ export default {
       window.location.href=url
     },
     goNext:function(pathUrl){
-      this.$router.push({path:pathUrl})
+      if(this.login||pathUrl=="/contact"){
+        this.$router.push({path:pathUrl})
+      }else{
+        this.$vux.toast.show({
+          text: '请先登陆',
+          type: 'warn',
+          isShowMask:true,
+          position:'middle'
+        })
+      }
     },
     submit:function(){
       this.$router.push({path:'/search',query: { 'search': this.searchValue}})
