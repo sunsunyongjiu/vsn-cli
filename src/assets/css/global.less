@@ -1,5 +1,9 @@
 @bgcolor:#181818;
-
+@font-face
+{
+	font-family: chinese;
+	src: url('font/chinese.ttf'),
+}
 .index-page .vux-slider > .vux-indicator > a > .vux-icon-dot.active, .vux-slider .vux-indicator-right > a > .vux-icon-dot.active{
 	background-color: #fff
 }
@@ -7,7 +11,8 @@
 	background-color: #7f7f7f
 }
 body{
-	background: @bgcolor
+	background: @bgcolor;
+	font-family: chinese
 }
 .pageTitle{
 	width: 100%;
@@ -70,4 +75,13 @@ body{
   position: absolute;
   z-index: 10;
   background: rgba(0,0,0,0.5);
+}
+.detail-swiper .vux-icon-dot{
+	width: 10px !important;
+	height: 10px !important;
+	border-radius: 100% !important;
+	background-color:#fff !important
+}
+.detail-swiper .vux-icon-dot.active{
+	background-color:#1dafed !important
 }

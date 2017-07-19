@@ -86,7 +86,8 @@
           color: #fff;
           font-size: 4vw;
           line-height: 5vw;
-          padding-top: 0.6vh;
+          margin-top: 0.6vh;
+          height: 9vw;
           font-weight: 800;
           overflow: hidden;
           text-overflow: -o-ellipsis-lastline;

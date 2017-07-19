@@ -43,7 +43,7 @@
               
             </div>
             <div>
-              <button class="soonBtn" @click="goWWW('https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=http://123.57.157.212:8080/pmall/index.html#/path')">登陆/注册</button>
+              <button class="soonBtn" @click="goWWW('https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=http://123.57.157.212:8080/pmall/index.html#/path')">登录/注册</button>
             </div>
           </div>
       </flexbox-item>
