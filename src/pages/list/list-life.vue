@@ -12,7 +12,7 @@
 	  	</div>
 	  	<div class="list-box">
 	  		<div v-for="(item,index) in myBoutique" key=index class="list-box-inner">
-	  			<div>
+	  			<div class="list-box-inner-inner">
 	  				<div class="left">
 	  					<img :src="item.pic">
 	  				</div>
@@ -124,6 +124,9 @@ export default {
 	.list-title{
 		color: #dfdfdf;
 		font-size: 20px;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
 	}
 	.list-title-en{
 		color: #dfdfdf;
@@ -134,6 +137,12 @@ export default {
 		margin: 2vw 0;
 		font-size: 9px;
 		color: #ffffff;
+		overflow: hidden;
+		text-overflow: -o-ellipsis-lastline;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 	}
 	.list-point{
 		font-size: 18px;
@@ -168,6 +177,7 @@ export default {
 	.left{
 		float: left;
 		img{
+			margin-top: 5vw;
 			width: 32.2vw
 		}
 	}
@@ -200,6 +210,9 @@ export default {
 	.left{
 		padding-top: 5vw
 	}
+	img{
+		margin-top: 0!important
+	}
 }
 .list-box-inner:nth-child(odd):after{
 	content: '';
@@ -207,9 +220,13 @@ export default {
 	width: 130%;
 	display: block;
 	position: absolute;
-	bottom: 10.5vw;
+	bottom: 7.5vw;
 	transform:rotate(7deg);
-	left: -10vw
+	left: -10vw;
+	img{
+		max-height: 100%;
+		margin-top: 5vw
+	}
 }
 .list-box-inner:nth-child(even):after{
 	content: '';
@@ -218,12 +235,19 @@ export default {
 
 	display: block;
 	position: absolute;
-	bottom: 10.5vw;
+	bottom: 7.5vw;
 	transform:rotate(353deg);
 	left: -10vw
 }
 .list-box-inner:after{
 	background: url(../../assets/imgs/line.png) repeat center center;
 	background-size:auto 100%; 
+}
+.list-box-inner-inner{
+	overflow: hidden;
+	height: 100%;
+	img{
+		max-height: 38vw
+	}
 }
 </style>
