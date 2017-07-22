@@ -91,7 +91,7 @@ export default {
     setTimeout(() => {
       this.$vux.loading.hide()
       this.show=false
-    }, 0)
+    }, 1000)
 
   }
 }

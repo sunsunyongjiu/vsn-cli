@@ -5,30 +5,31 @@
         <div class="index-Boutique-div-left">
           <img :src="item.pic">
         </div>
-        <div class="index-Boutique-div-right">
+        <div class="index-Boutique-div-right ">
           <div v-text="item.name" class="index-Boutique-div-right-name">
             
           </div>
           <div v-text="item.brief" class="text">
             
           </div>
-          <div class="index-Boutique-div-right-points">
+          <div class="index-Boutique-div-right-points english">
           	<div>
-				市场价：￥<span v-text="item.cash"></span>
+				Price：￥<span v-text="item.cash"></span>
 			</div>
-			<div>
-				兑换：<span>10000 </span>积分
+			<div class="english">
+				Points：<span>10000 </span>
 			</div>
           </div>
           
           <button>
-            立即兑换
+            {{"立即兑换"|tr}}
           </button>
         </div>
       </div>
     </div>
 </template>
 <script type="text/javascript">
+import EnJson from "../configers/En"
 	export default {
 	  name: 'nav',
 	  data () {
@@ -45,11 +46,17 @@
 	  	
 	  },
 	  watch: {
-		items() {
-			this.myBoutique = this.items
+  		items() {
+  			this.myBoutique = this.items
 	    }
-      },
-	  props:['items','yes']
+    },
+	  props:['items','yes'],
+    filters: {
+      tr:function(v){
+        return EnJson[v]
+        //   return v
+      }
+    }
 	}
 </script>
 <style lang='less' scoped>
@@ -153,5 +160,8 @@
     height: 4vw;
     line-height: 4vw;
     z-index: 10;
+  }
+  .english{
+    font-family: english !important
   }
 </style>

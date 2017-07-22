@@ -5,14 +5,15 @@
     position="absolute"
     :auto-fixed="autoFixed"
     @on-cancel="submit"
+    placeholder="Search"
     auto-scroll-to-top
-    cancel-text="搜索"
+    cancel-text="Search"
     ref="search"></search>
     <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
       <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
     </swiper>
-    <div class="index-middle-tittle">
-      会员信息
+    <div class="index-middle-tittle english">
+      {{"会员信息"|tr}}
     </div>
     <flexbox class="index-page-mypoints flex1">
       <flexbox-item>
@@ -37,36 +38,40 @@
       </flexbox-item>
       <flexbox-item v-show="!login">
         <div class="flex-demo myPoints" >
-          <div class="font-11">您好，欢迎来到</div>
+          <div class="font-11 english">Welcome to</div>
             <div >
-              <span class="font-13">积分商城</span>
+              <span class="font-13 english">Points Mall</span>
               
             </div>
             <div>
-              <button class="soonBtn" @click="goWWW('https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=http://123.57.157.212:8080/pmall/index.html#/path')">登录/注册</button>
+              <button class="soonBtn english" @click="goWWW('https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=http://123.57.157.212:8080/pmall/index.html#/path')">{{"登录/注册"|tr}}</button>
             </div>
           </div>
       </flexbox-item>
     </flexbox>
-    <flexbox class="index-page-mypoints2">
+    <flexbox class="index-page-mypoints2" :gutter="0">
       <flexbox-item v-for="(item,index) in indexBtns" :key="index">
-        <div class="flex-demo" @click="goNext(item.path)">
+        <div class="flex-demo english" @click="goNext(item.path)">
           <div :class="item.class" class="index-icon"></div>
-          <div v-text="item.title"></div>
+          <div v-text="">
+            {{item.title|tr}}
+          </div>
         </div>
       </flexbox-item>
       
     </flexbox>
-    <div class="index-middle-tittle">
-      分类推荐
+    <div class="index-middle-tittle english">
+      {{"分类推荐"|tr}}
     </div>
     <flexbox :gutter="0" wrap="wrap" class="index-page-classification" >
       <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index" >
         <div class="flex-demo fenleiBox" @click="goList(item.title,item.id,item.path)">
           <div>
             <img :src="item.src" :class="item.class">
-            <div class="index-bottom">
-              <div v-text="item.title"></div>
+            <div class="index-bottom english">
+              <div>
+                {{item.title|tr}}
+              </div>
               <div v-text="item.titleEn"></div>
             </div>
             
@@ -76,14 +81,14 @@
       </flexbox-item>
       
     </flexbox>
-    <div class="index-middle-tittle" v-if=false>
-      主编推荐
+    <div class="index-middle-tittle english" v-if=false>
+      {{"主编推荐"|tr}}
     </div>
     <swiper :aspect-ratio="160/375" auto v-if=false>
       <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
     </swiper>
-    <div class="index-middle-tittle">
-      精品推荐
+    <div class="index-middle-tittle english">
+      {{"精品推荐"|tr}}
     </div>
     <my-nav :items="myBoutique"></my-nav>
   </div>
@@ -94,6 +99,7 @@ import myNav from '../components/nav'
 import {state} from 'vuex'
 import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,Search} from 'vux'
 import { mapGetters } from 'vuex'
+import EnJson from "../configers/En"
 
 const imgList = [
   'http://www.wallcoo.com/engine/Mercedes-Benz_SLK-Class/wallpapers/1920x1200/SLK-Class_05_02-2011.jpg',
@@ -225,10 +231,13 @@ export default {
       this.$router.push({path:'/search',query: { 'search': this.searchValue}})
     },
     init:function(){
+      console.log(EnJson)
       //判断当前用户是否登录
       let userToken=this.$route.query.token
-      if(userToken){
-        this.$http.post(this.$Api('/login'),{token:userToken},{emulateJSON: true}).then((response)=>{
+      let user=this.$route.query.user
+      console.log(this.$route.query.user)
+      if(userToken&&user){
+        this.$http.post(this.$Api('/login'),{token:userToken,'user':user},{emulateJSON: true}).then((response)=>{
           if(response.data.code===1){
             this.login=true
             let userDetail=JSON.parse(response.bodyText).data 
@@ -261,6 +270,7 @@ export default {
     }
   },          
   mounted:function(){
+    console.log(this.$store)
     this.init()
   },
   computed: {
@@ -269,6 +279,12 @@ export default {
       loginUser:'getLogin'
       
     })
+  },
+  filters: {
+    tr:function(v){
+      return EnJson[v]
+        // return v
+    }
   }
 }
 </script>
@@ -300,5 +316,7 @@ a {
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
   opacity: 0
 }
-
+.english{
+  font-family: english !important
+}
 </style>

@@ -205,7 +205,8 @@ export default {
 	.list-name{
 		position: absolute;
 		top: -12vw;
-		right: 0
+		right: 0;
+		width: inherit;
 	}
 	.left{
 		padding-top: 5vw
