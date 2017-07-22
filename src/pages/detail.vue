@@ -19,14 +19,14 @@
         </div>
       </flexbox-item>
       <flexbox-item>
-        <div class="detail-cartBtn flex-demo">
+        <div class="detail-cartBtn flex-demo" @click="doChange">
           加入购物车
         </div>
       </flexbox-item>
     </div>
     <flexbox class="detail-changeBtn">
       <flexbox-item>
-        <div class="flex-demo " >
+        <div class="flex-demo " @click="doChange">
           立即兑换
         </div>
       </flexbox-item>
@@ -34,11 +34,53 @@
     <div>
       <img :src="page" style="width:100%">
     </div>
+    <div v-transfer-dom>
+      <popup v-model="popShow" position="bottom" height="70%" class="detailPop">
+        <div class="pop-title">
+          <div class="pop-left">
+            <img src="../assets/imgs/goods.png">
+          </div>
+          <div class="pop-right">
+            <div class="pop-right-title font-18">罗马系列腕表</div>
+            <div class="pop-right-en font-14">Merdeces Me</div>
+            <div class="pop-right-point font-18"><span class="basicColor">6000</span><span class="font-9">积分</span></div>
+          </div>
+        </div>
+        <div class="pop-size fff">
+          <div class="pop-size-title">颜色</div>
+          <div class="box">
+            <checker v-model="size1" default-item-class="demo1-item" selected-item-class="demo1-item-selected">
+              <checker-item :value="item" v-for="(item, index) in items1" :key="index">{{item.value}}</checker-item>
+            </checker>
+          </div>
+          <div class="pop-size-title">规格</div>
+          <div class="box">
+            <checker v-model="size2" default-item-class="demo1-item" selected-item-class="demo1-item-selected">
+              <checker-item :value="item" v-for="(item, index) in items2" :key="index">{{item.value}}</checker-item>
+            </checker>
+          </div>
+          <div  class="pop-num">
+            <div  class="pop-num-zi">数量</div>
+            <div  class="pop-num-shu">
+              <div class="left" @click="plus(-1)">-</div>
+              <div v-text="countNum" class="count"></div>
+              <div class="right" @click="plus(1)">+</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 15px;">
+          <x-button @click.native="popShow = false" plain class="pop-Btn"> 确定 </x-button>
+        </div>
+      </popup>
+    </div>
   </div>
+
+  <!-- 选择规格 -->
+
 </template>
 
 <script>
-import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,ViewBox} from 'vux'
+import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,ViewBox,TransferDom, Popup, Group, Cell, XButton,Checker, CheckerItem} from 'vux'
 const imgList = [
   require('../assets/imgs/detail1.png'),
   require('../assets/imgs/detail2.png'),
@@ -46,6 +88,9 @@ const imgList = [
 ]
 export default {
   name: '',
+  directives: {
+    TransferDom
+  },
   data () {
     return {
     	demo05_list: imgList,
@@ -62,7 +107,22 @@ export default {
     	},
       cartBtn:require('../assets/imgs/cart1.png'),
       changeBtn:require('../assets/imgs/change.png'),
-      page:require('../assets/imgs/page.png')
+      page:require('../assets/imgs/page.png'),
+      popShow:false,
+      size1:{key: '1', value: '贵族金'},
+      size2:{key: '1', value: '标准'},
+      countNum:1,
+      items1: [{
+        key: '1',
+        value: '贵族金'
+      }, {
+        key: '2',
+        value: '骑士银'
+      }],
+      items2: [{
+        key: '1',
+        value: '标准'
+      }],
     }
   },
   components:{
@@ -75,6 +135,13 @@ export default {
     FlexboxItem, 
     Divider,
     ViewBox,
+    TransferDom, 
+    Popup, 
+    Group, 
+    Cell, 
+    XButton,
+    Checker, 
+    CheckerItem
   },
   methods:{
     goback:function(){
@@ -82,6 +149,16 @@ export default {
     },
     background:function(item){
       return 'background:url('+item+') no-repeat center center;background-size:50% auto'
+    },
+    doChange:function(){
+      this.popShow=true
+    },
+    plus:function(n){
+      if(n){
+        this.countNum++
+      }else{
+        this.countNum--
+      }
     }
   },          
   mounted:function(){
@@ -93,7 +170,8 @@ export default {
       this.show=false
     }, 1000)
 
-  }
+  },
+
 }
 </script>
 
@@ -157,5 +235,110 @@ export default {
   div{
     background:#1dafed;
   }  
+}
+.detailPop{
+  background: #171717;
+  position: absolute;
+  overflow: visible;
+}
+.pop-left{
+  width: 31.2vw;
+  height: 31.2vw;
+  background: #292929;
+  position: absolute;
+  top: -5vw;
+  left: 5vw;
+  img{
+    height: 100%;
+    display: block;
+    margin: 0 auto
+  }
+}
+.pop-title{
+  height: 35.2vw;
+  width: 100%;
+  box-sizing:border-box;
+  padding-left: 41.5vw;
+  padding-top: 5vw;
+  color: #dfdfdf;
+  letter-spacing:0;
+  text-align:left;
+  margin-bottom: 9vw;
+  box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
+  .pop-right{
+    height: 21.2vw;
+    position: relative;
+    .pop-right-point{
+      position: absolute;
+      bottom: 0
+    }
+  }
+}
+.demo1-item {
+  border:1px solid #7f7f7f;
+  border-radius:1px;
+  width:16vw;
+  height:5vw;
+  text-align: center;
+  font-size: 14px;
+  line-height: 5vw;
+  color: #7f7f7f;
+  margin-right: 7vw;
+}
+.demo1-item-selected {
+  border:1px solid #1ea7ef;
+  border-radius:1px;
+  color:#1ea7ef;
+}
+.box{
+  margin-bottom: 7.4vw
+}
+.pop-size{
+  padding-left: 5.3vw;
+  padding-right: 5.3vw;
+  .pop-size-title{
+    margin-bottom: 2vw
+  }
+}
+.pop-num{
+  width: 100%;
+  .pop-num-zi{
+    float: left;
+  }
+  .pop-num-shu{
+    float: right;
+    width: 26.4vw;
+    height: 7.4vw;
+    background: rgba(255,255,255,0.05);
+    border-radius:100px;
+    line-height: 7.4vw;
+    text-align: center;
+    position: relative;
+    .left{
+      position: absolute;
+      left: 5vw
+    }
+    .right{
+      position: absolute;
+      right: 5vw
+    }
+    .count{
+      float: left;
+      width: 100%
+    }
+  }
+}
+.pop-Btn{
+  background:#1dafed;
+  border-radius: 0;
+  box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
+  width:330px;
+  height:55px;
+  font-size:24px;
+  color:#ffffff;
+  letter-spacing:0;
+  text-align:center;
+  position: absolute;
+  bottom: 9vw
 }
 </style>
