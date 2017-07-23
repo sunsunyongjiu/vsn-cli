@@ -209,6 +209,9 @@ export default {
     //跳转分类列表页
     goList:function(title,id,path){
       let p= path==undefined?'lists':path
+      if(path==undefined){
+        return
+      }
       console.log(p)
       this.$router.push({path: p, query: { 'title': title,'id':id}})
     },

@@ -13,7 +13,7 @@ const EnJson={
 "个人信息":	"Personal Info",
 "联系客服":	"Contact Us",
 	
-"分类推荐":	"MB Accessories",
+"分类推荐":	"Category",
 "品牌生活":	"Premium Lifestyle",
 "超值礼品":	"Luxury Collection",
 "精英课选":	"Premium Education",
