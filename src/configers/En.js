@@ -14,9 +14,9 @@ const EnJson={
 "联系客服":	"Contact Us",
 	
 "分类推荐":	"Category",
-"品牌生活":	"Premium Lifestyle",
-"超值礼品":	"Luxury Collection",
-"精英课选":	"Premium Education",
+"品牌生活":	"MB Accessories",
+"超值礼品":	"Premium Lifestyle",
+"精英课选":	"Topend Education",
 "尊享礼券":	"Coupon",
 "无忧出行":	"Mobility",
 "缤纷旅途":	"Fantastic Journey",

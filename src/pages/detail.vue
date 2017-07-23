@@ -5,7 +5,7 @@
       <span>商品详情</span>
       <div class="back" @click="goback"></div>
     </div>
-    <swiper :aspect-ratio="160/375" auto dots-position="center" height="86.6vw" class="detail-swiper">
+    <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper">
       <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index" :style="background(item)"></swiper-item>
     </swiper>
     <div class="detail-title">
