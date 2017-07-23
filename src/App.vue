@@ -24,7 +24,7 @@ export default {
 @import 'assets/css/global.less';
 @import 'assets/css/iconfont.css';
 #app {
-  font-family: chinese;
+  font-family: chinese !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

@@ -9,6 +9,9 @@ import personal from '@/pages/personal'
 import order from '@/pages/order'
 import contact from '@/pages/contact'
 import lifeList from '@/pages/list/list-life'
+import sureOrder from '@/pages/order/sureOrder'
+import pay from '@/pages/pay/pay'
+import paySc from '@/pages/pay/paySuccess'
 
 Vue.use(Router)
 // name为页面跳转后的页面标题
@@ -58,6 +61,21 @@ const router = new Router({
       path: '/detail',
       name: '商品详情',
       component: detail,
+    },
+    {
+      path: '/sureOrder',
+      name: '确认订单',
+      component: sureOrder,
+    },
+    {
+      path: '/pay',
+      name: '支付订单',
+      component: pay,
+    },
+    {
+      path: '/success',
+      name: '支付成功',
+      component: paySc,
     },
     {
       path: '*',

@@ -14,10 +14,10 @@
           </div>
           <div class="index-Boutique-div-right-points english">
           	<div>
-				Price：￥<span v-text="item.cash"></span>
+				<!-- Price：￥<span v-text="item.cash"></span> -->
 			</div>
 			<div class="english">
-				Points：<span>10000 </span>
+				Points：<span v-text="item.point"> </span>
 			</div>
           </div>
           
@@ -76,7 +76,9 @@ import EnJson from "../configers/En"
         float: left;
         img{
           height: 22.93vw;
-          width: 25.06vw;
+          max-width: 25.06vw;
+          display: block;
+          margin: 0 auto
         }
       }
       .index-Boutique-div-right{

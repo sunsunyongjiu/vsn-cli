@@ -10,7 +10,7 @@
     </swiper>
     <div class="detail-title">
       <div class="detail-title-cn">罗马系列腕表</div>
-      <div class="detail-title-en">Merdeces me</div>
+      <!-- <div class="detail-title-en">Merdeces me</div> -->
     </div>
     <div class="detail-btn">
       <flexbox-item>
@@ -19,7 +19,7 @@
         </div>
       </flexbox-item>
       <flexbox-item>
-        <div class="detail-cartBtn flex-demo" @click="doChange">
+        <div class="detail-cartBtn flex-demo" @click="doChange(1)">
           加入购物车
         </div>
       </flexbox-item>
@@ -42,25 +42,25 @@
           </div>
           <div class="pop-right">
             <div class="pop-right-title font-18">罗马系列腕表</div>
-            <div class="pop-right-en font-14">Merdeces Me</div>
+            <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
             <div class="pop-right-point font-18"><span class="basicColor">6000</span><span class="font-9">积分</span></div>
           </div>
         </div>
         <div class="pop-size fff">
-          <div class="pop-size-title">颜色</div>
+          <div class="pop-size-title font-15">颜色</div>
           <div class="box">
             <checker v-model="size1" default-item-class="demo1-item" selected-item-class="demo1-item-selected">
               <checker-item :value="item" v-for="(item, index) in items1" :key="index">{{item.value}}</checker-item>
             </checker>
           </div>
-          <div class="pop-size-title">规格</div>
+          <div class="pop-size-title font-15">规格</div>
           <div class="box">
             <checker v-model="size2" default-item-class="demo1-item" selected-item-class="demo1-item-selected">
               <checker-item :value="item" v-for="(item, index) in items2" :key="index">{{item.value}}</checker-item>
             </checker>
           </div>
           <div  class="pop-num">
-            <div  class="pop-num-zi">数量</div>
+            <div  class="pop-num-zi font-15">数量</div>
             <div  class="pop-num-shu">
               <div class="left" @click="plus(-1)">-</div>
               <div v-text="countNum" class="count"></div>
@@ -69,7 +69,7 @@
           </div>
         </div>
         <div style="padding: 15px;">
-          <x-button @click.native="popShow = false" plain class="pop-Btn"> 确定 </x-button>
+          <x-button @click.native="goCart" plain class="pop-Btn"> 确定 </x-button>
         </div>
       </popup>
     </div>
@@ -93,6 +93,7 @@ export default {
   },
   data () {
     return {
+      isCart:false,
     	demo05_list: imgList,
       show:true,
     	pageTitle:this.$route.query.title,
@@ -112,6 +113,7 @@ export default {
       size1:{key: '1', value: '贵族金'},
       size2:{key: '1', value: '标准'},
       countNum:1,
+      path:"",
       items1: [{
         key: '1',
         value: '贵族金'
@@ -150,14 +152,32 @@ export default {
     background:function(item){
       return 'background:url('+item+') no-repeat center center;background-size:50% auto'
     },
-    doChange:function(){
+    doChange:function(n){
       this.popShow=true
+      if(n==1){
+        this.isCart=true
+      }else{
+        this.isCart=false
+      }
     },
     plus:function(n){
-      if(n){
+      console.log(n)
+      if(n==1){
         this.countNum++
+      }else if(this.countNum<=1){
+        return
       }else{
+        console.log(2)
         this.countNum--
+      }
+
+       
+    },
+    goCart:function(){
+      if(this.isCart){
+        this.$router.push({path:'/cart'})
+      }else{
+        this.$router.push({path:'/sureOrder'})
       }
     }
   },          
@@ -263,7 +283,7 @@ export default {
   color: #dfdfdf;
   letter-spacing:0;
   text-align:left;
-  margin-bottom: 9vw;
+  margin-bottom: 6vw;
   box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
   .pop-right{
     height: 21.2vw;
@@ -291,7 +311,7 @@ export default {
   color:#1ea7ef;
 }
 .box{
-  margin-bottom: 7.4vw
+  margin-bottom: 5.4vw
 }
 .pop-size{
   padding-left: 5.3vw;
@@ -332,13 +352,14 @@ export default {
   background:#1dafed;
   border-radius: 0;
   box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
-  width:330px;
-  height:55px;
+  width:88vw;
+  height:14.6vw;
   font-size:24px;
   color:#ffffff;
   letter-spacing:0;
   text-align:center;
   position: absolute;
-  bottom: 9vw
+  bottom: 9vw;
+  left: 6vw
 }
 </style>

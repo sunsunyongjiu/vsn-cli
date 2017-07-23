@@ -21,18 +21,18 @@
           <img :src="myCardSrc" class="myCard">
         </div>
           <div class="my-club">
-          <span v-if="login">Mercedes 车主俱乐部钻卡</span>
+          <span v-if="login">{{"Mercedes 车主俱乐部钻卡"|tr}}</span>
       </div>
       </flexbox-item>
       <flexbox-item v-show="login">
         <div class="flex-demo myPoints" >
-          <div>您当前的个人积分是</div>
+          <div>{{"您当前的个人积分是"|tr}}</div>
           <div >
             <span v-text="loginUser.score"></span>
-            <span>分</span>
+            <span></span>
           </div>
           <div>
-            <button class="soonBtn">立即兑换</button>
+            <button class="soonBtn">{{"立即兑换"|tr}}</button>
           </div>
         </div>
       </flexbox-item>
@@ -72,7 +72,7 @@
               <div>
                 {{item.title|tr}}
               </div>
-              <div v-text="item.titleEn"></div>
+              <!-- <div v-text="item.titleEn"></div> -->
             </div>
             
             
@@ -231,12 +231,13 @@ export default {
       this.$router.push({path:'/search',query: { 'search': this.searchValue}})
     },
     init:function(){
-      console.log(EnJson)
+      
       //判断当前用户是否登录
       let userToken=this.$route.query.token
       let user=this.$route.query.user
-      console.log(this.$route.query.user)
-      if(userToken&&user){
+      let pandunLogin=this.$store.state.loginUser.name==undefined
+      console.log(pandunLogin)
+      if(userToken&&user&&pandunLogin){
         this.$http.post(this.$Api('/login'),{token:userToken,'user':user},{emulateJSON: true}).then((response)=>{
           if(response.data.code===1){
             this.login=true
@@ -250,6 +251,10 @@ export default {
                 console.log(error);
           }
         );
+      }else if(!pandunLogin){
+        this.login=true
+      }else{
+        this.login=false
       }
       //初始化时候调取imgurl
       this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
@@ -270,7 +275,7 @@ export default {
     }
   },          
   mounted:function(){
-    console.log(this.$store)
+    
     this.init()
   },
   computed: {

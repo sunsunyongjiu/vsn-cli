@@ -2,10 +2,10 @@
   <div class="life">
     <div class="mubu" v-if="show"></div>
     <back :title="pageTitle"></back>
-    <tab :line-width="1" custom-bar-width="60px" active-color='#ffffff' class="life-bar" bar-active-color="#1dafed">
+    <!-- <tab :line-width="1" custom-bar-width="60px" active-color='#ffffff' class="life-bar" bar-active-color="#1dafed">
       <tab-item selected @click.native="showMe(1)">男士精品</tab-item>
       <tab-item @click.native="showMe(2)">女士精品</tab-item>
-    </tab>
+    </tab> -->
     <div v-if="manShow">
 	    <div class="life-img">
 	  		<img :src="lifeTopImg">
@@ -19,14 +19,14 @@
 	  				<div class="right">
 	  					<div class="list-name">
 	  						<div v-text="item.name" class="list-title"></div>
-	  						<div class="list-title-en">Merdeces me</div>
+	  						<!-- <div class="list-title-en">Merdeces me</div> -->
 	  					</div>
 	  					<div v-text="item.brief" class="list-brief"></div>
 	  					<div>
 	  						<span v-text="item.point" class="list-point"></span>
 	  						<span>积分</span>
 	  					</div>
-	  					<div class="changeBtn">立即兑换</div>
+	  					<div class="changeBtn" @click="goWhere">立即兑换</div>
 	  				</div>
 	  			</div>
 	  		</div>
@@ -83,6 +83,10 @@ export default {
       	this.manShow=false
       }
     },
+  	goWhere:function(){
+  		console.log(1)
+  		this.$router.push({path: 'detail'})
+  	}
   },
   mounted:function(){
     this.init()
