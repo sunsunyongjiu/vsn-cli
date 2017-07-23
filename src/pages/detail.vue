@@ -15,7 +15,7 @@
     <div class="detail-btn">
       <flexbox-item>
         <div class="detail-pointBtn flex-demo">
-          10000 <span class="detail-pointBtn-point">积分</span>
+          5000 <span class="detail-pointBtn-point">积分</span>
         </div>
       </flexbox-item>
       <flexbox-item>
@@ -38,12 +38,12 @@
       <popup v-model="popShow" position="bottom" height="70%" class="detailPop">
         <div class="pop-title">
           <div class="pop-left">
-            <img src="../assets/imgs/goods.png">
+            <img src="../assets/imgs/watch.png">
           </div>
           <div class="pop-right">
             <div class="pop-right-title font-18">罗马系列腕表</div>
             <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
-            <div class="pop-right-point font-18"><span class="basicColor">6000</span><span class="font-9">积分</span></div>
+            <div class="pop-right-point font-18"><span class="basicColor">5000</span><span class="font-9">积分</span></div>
           </div>
         </div>
         <div class="pop-size fff">
@@ -82,9 +82,9 @@
 <script>
 import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,ViewBox,TransferDom, Popup, Group, Cell, XButton,Checker, CheckerItem} from 'vux'
 const imgList = [
-  require('../assets/imgs/detail1.png'),
-  require('../assets/imgs/detail2.png'),
-  require('../assets/imgs/detail3.png'),
+  require('../assets/imgs/watch-big.png'),
+  require('../assets/imgs/watch-big.png'),
+  require('../assets/imgs/watch-big.png'),
 ]
 export default {
   name: '',
@@ -262,7 +262,7 @@ export default {
   overflow: visible;
 }
 .pop-left{
-  width: 31.2vw;
+  width: 34.2vw;
   height: 31.2vw;
   background: #292929;
   position: absolute;
@@ -278,7 +278,7 @@ export default {
   height: 35.2vw;
   width: 100%;
   box-sizing:border-box;
-  padding-left: 41.5vw;
+  padding-left: 43.5vw;
   padding-top: 5vw;
   color: #dfdfdf;
   letter-spacing:0;

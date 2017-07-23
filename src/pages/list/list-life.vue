@@ -26,7 +26,7 @@
 	  						<span v-text="item.point" class="list-point"></span>
 	  						<span>积分</span>
 	  					</div>
-	  					<div class="changeBtn" @click="goWhere">立即兑换</div>
+	  					<div class="changeBtn" @click="goWhere(item)">立即兑换</div>
 	  				</div>
 	  			</div>
 	  		</div>
@@ -83,9 +83,11 @@ export default {
       	this.manShow=false
       }
     },
-  	goWhere:function(){
-  		console.log(1)
-  		this.$router.push({path: 'detail'})
+  	goWhere:function(item){
+  		if(item.prod_id==844){
+  			this.$router.push({path: 'detail'})
+  		}
+  		// this.$router.push({path: 'detail'})
   	}
   },
   mounted:function(){
@@ -197,7 +199,8 @@ export default {
 	.left{
 		float: right;
 		img{
-			height: 56.3vw
+			height: 56.3vw;
+			max-width: 100%;
 		}
 	}
 	.right{
@@ -208,15 +211,18 @@ export default {
 .list-box-inner:nth-child(1){
 	.list-name{
 		position: absolute;
-		top: -12vw;
+		top: -6vw;
 		right: 0;
 		width: inherit;
 	}
 	.left{
-		padding-top: 5vw
+		padding-top:0
 	}
 	img{
 		margin-top: 0!important
+	}
+	.right{
+		padding-top: 2vw;
 	}
 }
 .list-box-inner:nth-child(odd):after{

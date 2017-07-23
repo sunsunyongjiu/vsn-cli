@@ -29,7 +29,7 @@
 						<div class="font-11 color-92">颜色：贵族金，规格：标准</div>
 						<div class="font-11 color-92">数量×2</div>
 						<div class=" bottom">
-							<span class="basicColor font-16">6000</span>
+							<span class="basicColor font-16">5000</span>
 							<span class="font-9 color-9b">积分</span>
 						</div>
 					</div>
@@ -43,7 +43,7 @@
 						<div class="font-11 color-92">颜色：贵族金，规格：标准</div>
 						<div class="font-11 color-92">数量×2</div>
 						<div class=" bottom">
-							<span class="basicColor font-16">6000</span>
+							<span class="basicColor font-16">5000</span>
 							<span class="font-9 color-9b">积分</span>
 						</div>
 					</div>
@@ -54,7 +54,7 @@
 
 		<!-- 底部按钮 -->
 		<div class="order-bottom">
-			<div class="total font-15">合计：<span class="font-10  basicColor"></span><span class="font-18 basicColor">1000</span><span class="font-9 basicColor">积分</span></div>
+			<div class="total font-15">合计：<span class="font-10  basicColor"></span><span class="font-18 basicColor">10000</span><span class="font-9 basicColor">积分</span></div>
 			<div class="commit-btn" @click="goPay">提交订单</div>
 		
 			

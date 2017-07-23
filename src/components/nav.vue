@@ -1,6 +1,6 @@
 <template>
 	<div class="index-Boutique">
-      <div class="index-Boutique-div" v-for="(item, index) in myBoutique" @click="goWhere(item.title)">
+      <div class="index-Boutique-div" v-for="(item, index) in myBoutique" @click="goWhere(item.title,item)">
       	<div class="hot" v-if="item.is_hot==='Y'">HOT</div>
         <div class="index-Boutique-div-left">
           <img :src="item.pic">
@@ -38,8 +38,11 @@ import EnJson from "../configers/En"
 	    }
 	  },
 	  methods:{
-	  	goWhere:function(title){
-	  		this.$router.push({path: 'detail', query: { 'title': title}})
+	  	goWhere:function(title,item){
+        if(item.prod_id==844){
+          this.$router.push({path: 'detail', query: { 'title': title}})
+        }
+	  		// this.$router.push({path: 'detail', query: { 'title': title}})
 	  	}
 	  },
 	  mounted:function(){
@@ -48,6 +51,7 @@ import EnJson from "../configers/En"
 	  watch: {
   		items() {
   			this.myBoutique = this.items
+        console.log(this.items)
 	    }
     },
 	  props:['items','yes'],
