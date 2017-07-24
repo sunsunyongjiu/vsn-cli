@@ -15,7 +15,7 @@
     <div class="detail-btn">
       <flexbox-item>
         <div class="detail-pointBtn flex-demo">
-          5000 <span class="detail-pointBtn-point">积分</span>
+          50000 <span class="detail-pointBtn-point">积分</span>
         </div>
       </flexbox-item>
       <flexbox-item>
@@ -43,7 +43,7 @@
           <div class="pop-right">
             <div class="pop-right-title font-18">罗马系列腕表</div>
             <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
-            <div class="pop-right-point font-18"><span class="basicColor">5000</span><span class="font-9">积分</span></div>
+            <div class="pop-right-point font-18"><span class="basicColor">50000</span><span class="font-9">积分</span></div>
           </div>
         </div>
         <div class="pop-size fff">
