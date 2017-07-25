@@ -56,8 +56,8 @@ import EnJson from "../configers/En"
 	  props:['items','yes'],
     filters: {
       tr:function(v){
-        return EnJson[v]
-        //   return v
+        // return EnJson[v]
+          return v
       }
     }
 	}

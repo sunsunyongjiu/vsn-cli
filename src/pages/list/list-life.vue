@@ -24,9 +24,9 @@
 	  					<div v-text="item.brief" class="list-brief"></div>
 	  					<div>
 	  						<span v-text="item.point" class="list-point"></span>
-	  						<span>points</span>
+	  						<span>积分</span>
 	  					</div>
-	  					<div class="changeBtn" @click="goWhere(item)">Redeem Now</div>
+	  					<div class="changeBtn" @click="goWhere(item)">立即兑换</div>
 	  				</div>
 	  			</div>
 	  		</div>
@@ -84,9 +84,9 @@ export default {
       }
     },
   	goWhere:function(item){
-  		if(item.prod_id==844){
-  			this.$router.push({path: 'detail'})
-  		}
+  		
+  		this.$router.push({path: 'detail',query:{prod_id:item.prod_id}})
+  		
   		// this.$router.push({path: 'detail'})
   	}
   },
