@@ -34,7 +34,7 @@
       </flexbox-item>
     </flexbox>
     <div>
-      <img :src="page" style="width:100%">
+      <div v-html="detailObj.content"></div>
     </div>
     <div v-transfer-dom>
       <popup v-model="popShow" position="bottom" height="70%" class="detailPop">
