@@ -72,7 +72,7 @@
             <checker v-model="size2" default-item-class="demo1-item" selected-item-class="demo1-item-selected">
               <checker-item :value="item" v-for="(item, index) in items2" :key="index">{{item.value}}</checker-item>
             </checker>
-          </div>
+          </div> -->
           <div  class="pop-num">
             <div  class="pop-num-zi font-15">数量</div>
             <div  class="pop-num-shu">
@@ -80,7 +80,7 @@
               <div v-text="countNum" class="count"></div>
               <div class="right" @click="plus(1)">+</div>
             </div>
-          </div> -->
+          </div>
         </div>
         <div style="padding: 15px;">
           <x-button @click.native="goCart" plain class="pop-Btn"> 确定 </x-button>
