@@ -24,9 +24,9 @@
 	  					<div v-text="item.brief" class="list-brief"></div>
 	  					<div>
 	  						<span v-text="item.point" class="list-point"></span>
-	  						<span>积分</span>
+	  						<span>points</span>
 	  					</div>
-	  					<div class="changeBtn" @click="goWhere(item)">立即兑换</div>
+	  					<div class="changeBtn" @click="goWhere(item)">Redeem Now</div>
 	  				</div>
 	  			</div>
 	  		</div>

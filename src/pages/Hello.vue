@@ -29,7 +29,7 @@
           <div>{{"您当前的个人积分是"|tr}}</div>
           <div >
             <!-- <span v-text="loginUser.score"></span> -->
-            <span>5000</span>
+            <span>50000</span>
           </div>
           <div>
             <button class="soonBtn">{{"立即兑换"|tr}}</button>

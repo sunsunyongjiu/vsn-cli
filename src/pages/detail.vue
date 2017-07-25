@@ -15,7 +15,9 @@
     <div class="detail-btn">
       <flexbox-item>
         <div class="detail-pointBtn flex-demo">
+
           <span v-text="detailObj.point"></span> <span class="detail-pointBtn-point">积分</span>
+
         </div>
       </flexbox-item>
       <flexbox-item>
@@ -43,7 +45,9 @@
           <div class="pop-right">
             <div class="pop-right-title font-18" v-text="detailObj.name"></div>
             <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
+
             <div class="pop-right-point font-18"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
+
           </div>
         </div>
         <div class="pop-size fff">

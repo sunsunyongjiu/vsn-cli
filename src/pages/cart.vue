@@ -28,7 +28,7 @@
       </div>
       <div class="bottom">
         <div class="bottom-left">全选</div>
-       <span class="font-14 fff">合计:</span><span class="color-1dafed font-18" v-text="totalPoint">10000</span><span class="font-9 color-9b">积分</span>
+       <span class="font-14 fff">合计:</span><span class="color-1dafed font-18" v-text="totalPoint">100000</span><span class="font-9 color-9b">积分</span>
         <div class="bottom-right" @click="goSure">兑换</div>
       </div>
   </div>
