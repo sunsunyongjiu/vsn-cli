@@ -40,16 +40,16 @@ export default {
     	this.placeholder=this.$route.query.search
     	//获取搜索结果
     	this.$http.get(this.$Api('/home/searchProdList'),{params: { 'searchStr': this.placeholder }}).then((response) => {
-    		let list=response.data.data
-    		
-		  	for(let n=0;n<list.length;n++){
-		  		
-		  		this.imgList.push(list[n])
-		  	}
-		  	
-		}, (response) => {
-		  // error callback
-		});
+      		let list=response.data.data
+      		
+  		  	for(let n=0;n<list.length;n++){
+  		  		
+  		  		this.imgList.push(list[n])
+  		  	}
+  		  	
+  		}, (response) => {
+  		  // error callback
+  		});
     },
     submit:function(){
     	this.placeholder=this.searchValue 

@@ -38,9 +38,9 @@
       </flexbox-item>
       <flexbox-item v-show="!login">
         <div class="flex-demo myPoints" >
-          <div class="font-11 english">Welcome to</div>
+          <div class="font-11">您好，欢迎来到</div>
             <div >
-              <span class="font-13 english">Points Mall</span>
+              <span class="font-13">积分商城</span>
               
             </div>
             <div>
@@ -290,8 +290,8 @@ export default {
   },
   filters: {
     tr:function(v){
-      return EnJson[v]
-        // return v
+      // return EnJson[v]
+      return v
     }
   }
 }

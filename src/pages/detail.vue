@@ -6,16 +6,16 @@
       <div class="back" @click="goback"></div>
     </div>
     <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper">
-      <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index" :style="background(item)"></swiper-item>
+      <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
     </swiper>
     <div class="detail-title">
-      <div class="detail-title-cn">罗马系列腕表</div>
+      <div class="detail-title-cn" v-text="detailObj.name"></div>
       <!-- <div class="detail-title-en">Merdeces me</div> -->
     </div>
     <div class="detail-btn">
       <flexbox-item>
         <div class="detail-pointBtn flex-demo">
-          5000 <span class="detail-pointBtn-point">积分</span>
+          <span v-text="detailObj.point"></span> <span class="detail-pointBtn-point">积分</span>
         </div>
       </flexbox-item>
       <flexbox-item>
@@ -38,16 +38,26 @@
       <popup v-model="popShow" position="bottom" height="70%" class="detailPop">
         <div class="pop-title">
           <div class="pop-left">
-            <img src="../assets/imgs/watch.png">
+            <img :src="detailObj.pic">
           </div>
           <div class="pop-right">
-            <div class="pop-right-title font-18">罗马系列腕表</div>
+            <div class="pop-right-title font-18" v-text="detailObj.name"></div>
             <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
-            <div class="pop-right-point font-18"><span class="basicColor">5000</span><span class="font-9">积分</span></div>
+            <div class="pop-right-point font-18"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
           </div>
         </div>
         <div class="pop-size fff">
-          <div class="pop-size-title font-15">颜色</div>
+          <div v-for="(items,n) in chooses" key=n>
+            <div class="pop-size-title font-15" v-text="items.title"></div>
+            <div class="box">
+              <checker v-model="checkedList[n]" default-item-class="demo1-item" selected-item-class="demo1-item-selected" type="radio">
+                <checker-item :value="item" v-for="(item, index) in items.checks" :key="index" >{{item.value}}</checker-item>
+              </checker>
+            </div>
+          </div>
+          
+
+          <!-- <div class="pop-size-title font-15">颜色</div>
           <div class="box">
             <checker v-model="size1" default-item-class="demo1-item" selected-item-class="demo1-item-selected">
               <checker-item :value="item" v-for="(item, index) in items1" :key="index">{{item.value}}</checker-item>
@@ -66,7 +76,7 @@
               <div v-text="countNum" class="count"></div>
               <div class="right" @click="plus(1)">+</div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div style="padding: 15px;">
           <x-button @click.native="goCart" plain class="pop-Btn"> 确定 </x-button>
@@ -81,11 +91,7 @@
 
 <script>
 import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,ViewBox,TransferDom, Popup, Group, Cell, XButton,Checker, CheckerItem} from 'vux'
-const imgList = [
-  require('../assets/imgs/watch-big.png'),
-  require('../assets/imgs/watch-big.png'),
-  require('../assets/imgs/watch-big.png'),
-]
+
 export default {
   name: '',
   directives: {
@@ -94,7 +100,7 @@ export default {
   data () {
     return {
       isCart:false,
-    	demo05_list: imgList,
+
       show:true,
     	pageTitle:this.$route.query.title,
     	myPro:{
@@ -114,6 +120,7 @@ export default {
       size2:{key: '1', value: '标准'},
       countNum:1,
       path:"",
+      detailObj:'',
       items1: [{
         key: '1',
         value: '贵族金'
@@ -125,6 +132,8 @@ export default {
         key: '1',
         value: '标准'
       }],
+      chooses:[],
+      checkedList:[]
     }
   },
   components:{
@@ -179,17 +188,39 @@ export default {
       }else{
         this.$router.push({path:'/sureOrder'})
       }
+    },
+    init:function(){
+      let _this=this
+      this.$http.get(this.$Api('/home/getProdDetail'),{params: { 'prodId': this.$route.query.prod_id }}).then((response) => {
+         
+          this.detailObj=response.data.data
+          console.log(this.detailObj)
+          let chooses=JSON.parse(this.detailObj.user_parameter)
+          chooses.forEach(function(item,index){
+            let choseArr=item.value.split("/");
+            let arr=[]
+            choseArr.forEach(function(i){
+              arr.push({"key":i,"value":i})
+            })
+            _this.chooses.push({'title':item.key,'checks':arr})
+            _this.checkedList.push(arr[0])
+            // this.chooses.push({"key":})
+          });
+      }, (response) => {
+        // error callback
+      });
+      this.$vux.loading.hide()
+      this.show=false
+    },
+    changedValue:function(value){
+      console.log(value)
     }
   },          
   mounted:function(){
     this.$vux.loading.show({
      text: 'loading'
     })
-    setTimeout(() => {
-      this.$vux.loading.hide()
-      this.show=false
-    }, 1000)
-
+    this.init()
   },
 
 }

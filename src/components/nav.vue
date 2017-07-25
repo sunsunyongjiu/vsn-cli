@@ -16,8 +16,8 @@
           	<div>
 				<!-- Price：￥<span v-text="item.cash"></span> -->
 			</div>
-			<div class="english">
-				Points：<span v-text="item.point"> </span>
+			<div>
+				积分：<span v-text="item.point"> </span>
 			</div>
           </div>
           
@@ -39,9 +39,8 @@ import EnJson from "../configers/En"
 	  },
 	  methods:{
 	  	goWhere:function(title,item){
-        if(item.prod_id==844){
-          this.$router.push({path: 'detail', query: { 'title': title}})
-        }
+        this.$router.push({path: 'detail', query: { 'title': title,'prod_id':item.prod_id}})
+
 	  		// this.$router.push({path: 'detail', query: { 'title': title}})
 	  	}
 	  },
