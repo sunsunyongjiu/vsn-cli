@@ -245,6 +245,7 @@ export default {
           if(response.data.code===1){
             this.login=true
             let userDetail=JSON.parse(response.bodyText).data 
+            userDetail.token=this.$route.query.token
             this.$store.dispatch({type: 'setLogin',data: userDetail})
           }else{
             return

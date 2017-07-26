@@ -38,6 +38,7 @@
 <script>
 import back from '../components/backNav'
 import { Tab, TabItem } from 'vux'
+import md5 from 'js-md5';
 export default {
   name: '',
   data () {
@@ -91,10 +92,20 @@ export default {
     goSure:function(){
       console.log(1)
       this.$router.push({path:'/sureOrder'})
+    },
+    init:function(){
+      // 设置header
+      let header={headers:{"token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),"sign":md5("/order/insertBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime()))}}
+      this.$http.get(this.$Api('/order/getBasketList'),header).then((response) => {
+          console.log(response)
+          
+      }, (response) => {
+          // error callback
+      });
     }
   },          
   mounted:function(){
-    
+    this.init()
 
   },
   computed:{

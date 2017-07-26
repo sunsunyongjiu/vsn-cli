@@ -6,7 +6,8 @@ import router from './router'
 import VueResource from 'vue-resource'
 import store from './store';
 import  { AlertPlugin,LoadingPlugin,ToastPlugin   } from 'vux';
-import AppConfig from './configers/appconfig'
+import AppConfig from './configers/appconfig';
+
 
 Vue.use(new AppConfig())
 Vue.use(AlertPlugin)

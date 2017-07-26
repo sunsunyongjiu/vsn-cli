@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import md5 from 'js-md5';
 import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,ViewBox,TransferDom, Popup, Group, Cell, XButton,Checker, CheckerItem} from 'vux'
 
 export default {
@@ -120,22 +121,11 @@ export default {
       changeBtn:require('../assets/imgs/change.png'),
       page:require('../assets/imgs/page.png'),
       popShow:false,
-      size1:{key: '1', value: '贵族金'},
-      size2:{key: '1', value: '标准'},
+
       countNum:1,
       path:"",
       detailObj:'',
-      items1: [{
-        key: '1',
-        value: '贵族金'
-      }, {
-        key: '2',
-        value: '骑士银'
-      }],
-      items2: [{
-        key: '1',
-        value: '标准'
-      }],
+
       chooses:[],
       checkedList:[]
     }
@@ -187,13 +177,40 @@ export default {
        
     },
     goCart:function(){
+      // 设置header
+      let header={"token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),"sign":md5("/order/insertBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime()))}
+      // 设置传值
+      let cartData={
+        'prodId':this.detailObj.prod_id,
+        'basketCount':this.countNum,
+        'attribute':JSON.stringify(this.checkedList)
+      }
+      let options={
+        params:cartData
+      }
+ 
+
+      this.$http({
+          method:'POST',
+          url:this.$Api('/order/insertBasket'),
+          params:cartData,
+          headers: header,
+          emulateJSON: true
+      }).then(function(data){//es5写法
+           console.log(data)
+      },function(error){
+        //error
+      })
+
       if(this.isCart){
+        
         this.$router.push({path:'/cart'})
       }else{
         this.$router.push({path:'/sureOrder'})
       }
     },
     init:function(){
+      console.log(this.$store.state.loginUser.token)
       let _this=this
       this.$http.get(this.$Api('/home/getProdDetail'),{params: { 'prodId': this.$route.query.prod_id }}).then((response) => {
          
@@ -204,7 +221,7 @@ export default {
             let choseArr=item.value.split("/");
             let arr=[]
             choseArr.forEach(function(i){
-              arr.push({"key":i,"value":i})
+              arr.push({"key":item.key,"value":i})
             })
             _this.chooses.push({'title':item.key,'checks':arr})
             _this.checkedList.push(arr[0])
