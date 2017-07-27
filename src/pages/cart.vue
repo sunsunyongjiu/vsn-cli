@@ -6,25 +6,38 @@
         <div class="tab-bar">现金</div>
       </div>
       <div class="goods-list">
-        <div class="goods" v-for="(item,index) in goodsList" key=index>
-          <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)"></div>
-          <div class="goods-left">
-            <img :src="item.pic">
-          </div>
-          <div class="goods-right">
-            <div v-text="item.title" class="font-18 df goods-title"></div>
-            <!-- <div class="font-14 df">Merdeces Me</div> -->
-            <div v-text="item.size" class="font-10 color-92"></div>
-            <div class="point">
-              <span v-text="item.point" class="font-18 df"></span><span class="font-9 color-9b">积分</span>
+        <swipeout class="vux-1px-tb" v-for="(item,index) in goodsList" key=index>
+          <swipeout-item transition-mode="follow">
+            <div slot="right-menu">
+              <swipeout-button type="warn">{{'Right'}}</swipeout-button>
             </div>
-            <div class="plus">
-              <div class="jia" @click="goPlus(index,1)">+</div>
-              <div v-text="item.count"></div>
-              <div class="jian" @click="goPlus(index,-1)">-</div>
+            <div slot="content" style="padding:12px;" class="goods">
+              <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)"></div>
+                <div class="goods-left">
+                  <img :src="item.pic">
+                </div>
+                <div class="goods-right">
+                  <div v-text="item.title" class="font-18 df goods-title"></div>
+                  <!-- <div class="font-14 df">Merdeces Me</div> -->
+                  <div class="font-10 color-92" v-for="i in item.size">
+                    <span v-text="i.key"></span><span v-text="i.value"></span>
+                  </div>
+                  <div class="point">
+                    <span v-text="item.point" class="font-18 df"></span><span class="font-9 color-9b">积分</span>
+                  </div>
+                  <div class="plus">
+                    <div class="jia" @click="goPlus(index,1)">+</div>
+                    <div v-text="item.count"></div>
+                    <div class="jian" @click="goPlus(index,-1)">-</div>
+                  </div>
+                </div>
+
+
             </div>
-          </div>
-        </div>
+          </swipeout-item>
+        </swipeout>
+
+        <!--  -->
       </div>
       <div class="bottom">
         <div class="bottom-left">全选</div>
@@ -36,6 +49,7 @@
 </template>
 
 <script>
+import { Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
 import back from '../components/backNav'
 import { Tab, TabItem } from 'vux'
 import md5 from 'js-md5';
@@ -44,37 +58,17 @@ export default {
   data () {
     return {
       goodsList:[
-        {
-          pic:require('../assets/imgs/goods.png'),
-          title:'罗马系列腕表',
-          size:'颜色：贵族金 规格：标准',
-          point:'6000',
-          count:1,
-          selected:true
-        },
-        {
-          pic:require('../assets/imgs/glass.png'),
-          title:'女王太阳镜',
-          size:'颜色：贵族金 规格：标准',
-          point:'6000',
-          count:1,
-          selected:true
-        },
-        {
-          pic:require('../assets/imgs/box1.png'),
-          title:'专属香氛',
-          size:'颜色：贵族金 规格：标准',
-          point:'6000',
-          count:1,
-          selected:true
-        }
+       
       ]
     }
   },
   components:{
     back,
     Tab, 
-    TabItem
+    TabItem,
+    Swipeout, 
+    SwipeoutItem, 
+    SwipeoutButton
   },
   methods:{
     goPlus:function(nm,n){
@@ -97,16 +91,34 @@ export default {
       // 设置header
       let header={headers:{"token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),"sign":md5("/order/insertBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime()))}}
       this.$http.get(this.$Api('/order/getBasketList'),header).then((response) => {
-          console.log(response)
+         
+          let arr=[]
           
+          response.data.data.forEach(function(item){
+
+            let obj={
+              pic:item.pic,
+              title:item.prod_name,
+              size:JSON.parse(item.attribute),
+              point:item.point,
+              count:item.basket_count,
+              selected:true
+            }
+            arr.push(obj)
+          })
+          this.goodsList=arr
+          this.$vux.loading.hide()
       }, (response) => {
           // error callback
       });
+
     }
   },          
   mounted:function(){
     this.init()
-
+    this.$vux.loading.show({
+     text: 'loading'
+    })
   },
   computed:{
     totalPoint:function(){
@@ -175,7 +187,7 @@ export default {
     float: left;
     text-align: left;
     margin-left: 3.4vw;
-    width: 60.4vw;
+    width: 53.4vw;
     position: relative;
     height: 26.4vw;
     .plus{
