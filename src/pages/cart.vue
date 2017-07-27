@@ -9,7 +9,7 @@
         <swipeout class="vux-1px-tb" v-for="(item,index) in goodsList" key=index>
           <swipeout-item transition-mode="follow">
             <div slot="right-menu">
-              <swipeout-button type="warn">{{'Right'}}</swipeout-button>
+              <swipeout-button @click.native="onButtonClick(item)" type="warn" :width="70"><span class="font-46">×</span></swipeout-button>
             </div>
             <div slot="content" style="padding:12px;" class="goods">
               <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)"></div>
@@ -26,9 +26,9 @@
                     <span v-text="item.point" class="font-18 df"></span><span class="font-9 color-9b">积分</span>
                   </div>
                   <div class="plus">
-                    <div class="jia" @click="goPlus(index,1)">+</div>
+                    <div class="jia" @click="goPlus(item,1)">+</div>
                     <div v-text="item.count"></div>
-                    <div class="jian" @click="goPlus(index,-1)">-</div>
+                    <div class="jian" @click="goPlus(item,-1)">-</div>
                   </div>
                 </div>
 
@@ -71,14 +71,57 @@ export default {
     SwipeoutButton
   },
   methods:{
-    goPlus:function(nm,n){
+    onButtonClick (item) {
+      // 设置header
+      let header={"token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),"sign":md5("/order/deleteBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime()))}
+      // 设置传值
+      let cartData={
+        'basketId':item.basketId
+      }
+      console.log(item)
+      this.$http({
+          method:'POST',
+          url:this.$Api('/order/deleteBasket'),
+          params:cartData,
+          headers: header,
+          emulateJSON: true
+      }).then(function(data){
+        this.$vux.loading.show({
+         text: 'loading'
+        })
+        this.init()
+      },function(error){
+        //error
+      })
+    },
+    goPlus:function(item,n){
       if(n>0){
-        this.goodsList[nm].count++
-      }else if(this.goodsList[nm].count<=1){
+        item.count++
+      }else if(item.count<=1){
         return
       }else{
-        this.goodsList[nm].count--
+        item.count--
       }
+
+      let header={"token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),"sign":md5("/order/updateBasketCount"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime()))}
+      // 设置传值
+      let cartData={
+        'basketId':item.basketId,
+        'basketCount':item.count
+      }
+      alert(111)
+      this.$http({
+          method:'POST',
+          url:this.$Api('/order/updateBasketCount'),
+          params:cartData,
+          headers: header,
+          emulateJSON: true
+      }).then(function(data){
+        console.log(data)
+      },function(error){
+        //error
+      })
+
     },
     doSelect(item){
       item.selected=!item.selected
@@ -87,13 +130,16 @@ export default {
       console.log(1)
       this.$router.push({path:'/sureOrder'})
     },
+    delete:function(){
+
+    },
     init:function(){
       // 设置header
       let header={headers:{"token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),"sign":md5("/order/insertBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime()))}}
       this.$http.get(this.$Api('/order/getBasketList'),header).then((response) => {
          
           let arr=[]
-          
+          console.log(response.data.data)
           response.data.data.forEach(function(item){
 
             let obj={
@@ -102,7 +148,8 @@ export default {
               size:JSON.parse(item.attribute),
               point:item.point,
               count:item.basket_count,
-              selected:true
+              selected:true,
+              basketId:item.basket_id
             }
             arr.push(obj)
           })

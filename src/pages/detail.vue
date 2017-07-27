@@ -185,11 +185,7 @@ export default {
         'basketCount':this.countNum,
         'attribute':JSON.stringify(this.checkedList)
       }
-      let options={
-        params:cartData
-      }
  
-
       this.$http({
           method:'POST',
           url:this.$Api('/order/insertBasket'),
