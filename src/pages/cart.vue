@@ -73,7 +73,11 @@ export default {
   methods:{
     onButtonClick (item) {
       // 设置header
-      let header={"token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),"sign":md5("/order/deleteBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime()))}
+      let header={
+        "token":this.$store.state.loginUser.token,
+        "time":JSON.stringify(new Date().getTime()),
+        "sign":md5("/order/deleteBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime())).toUpperCase()
+      }
       // 设置传值
       let cartData={
         'basketId':item.basketId
@@ -103,13 +107,16 @@ export default {
         item.count--
       }
 
-      let header={"token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),"sign":md5("/order/updateBasketCount"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime()))}
+      let header={
+        "token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),
+        "sign":md5("/order/updateBasketCount"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime())).toUpperCase()
+      }
       // 设置传值
       let cartData={
         'basketId':item.basketId,
         'basketCount':item.count
       }
-      alert(111)
+      
       this.$http({
           method:'POST',
           url:this.$Api('/order/updateBasketCount'),
@@ -135,7 +142,13 @@ export default {
     },
     init:function(){
       // 设置header
-      let header={headers:{"token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),"sign":md5("/order/insertBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime()))}}
+      let header={
+        headers:{
+          "token":this.$store.state.loginUser.token,
+          "time":JSON.stringify(new Date().getTime()),
+          "sign":md5("/order/getBasketList"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime())).toUpperCase()
+        }
+      }
       this.$http.get(this.$Api('/order/getBasketList'),header).then((response) => {
          
           let arr=[]

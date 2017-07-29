@@ -4,11 +4,11 @@
     v-model="searchValue"
     position="absolute"
     :auto-fixed="autoFixed"
-    @on-cancel="submit"
-    placeholder="Search"
+    @on-focus="submit"
+    placeholder="搜索"
     auto-scroll-to-top
-    cancel-text="Search"
     ref="search"></search>
+
     <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
       <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
     </swiper>
@@ -212,7 +212,7 @@ export default {
       if(path==undefined){
         return
       }
-      console.log(p)
+     
       this.$router.push({path: p, query: { 'title': title,'id':id}})
     },
     goWWW:function(url){
@@ -239,7 +239,7 @@ export default {
       let userToken=this.$route.query.token
       let user=this.$route.query.user
       let pandunLogin=this.$store.state.loginUser.name==undefined
-      console.log(pandunLogin)
+     
       if(userToken&&user&&pandunLogin){
         this.$http.post(this.$Api('/login'),{token:userToken,'user':user},{emulateJSON: true}).then((response)=>{
           if(response.data.code===1){

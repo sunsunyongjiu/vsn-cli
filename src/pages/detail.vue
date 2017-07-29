@@ -177,33 +177,51 @@ export default {
        
     },
     goCart:function(){
-      // 设置header
-      let header={"token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),"sign":md5("/order/insertBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime()))}
-      // 设置传值
-      let cartData={
-        'prodId':this.detailObj.prod_id,
-        'basketCount':this.countNum,
-        'attribute':JSON.stringify(this.checkedList)
-      }
- 
-      this.$http({
-          method:'POST',
-          url:this.$Api('/order/insertBasket'),
-          params:cartData,
-          headers: header,
-          emulateJSON: true
-      }).then(function(data){//es5写法
-           console.log(data)
-      },function(error){
-        //error
-      })
+      if(this.$store.state.loginUser["ucid"] != undefined){
+        // 在登陆条件下跳转购物车
+          // 设置header
+        let header={
+          "token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),
+          "sign":md5("/order/insertBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime())).toUpperCase()
+        }
+        // 设置传值
+        let cartData={
+          'prodId':this.detailObj.prod_id,
+          'basketCount':this.countNum,
+          'attribute':JSON.stringify(this.checkedList)
+        }
+   
+        this.$http({
+            method:'POST',
+            url:this.$Api('/order/insertBasket'),
+            params:cartData,
+            headers: header,
+            emulateJSON: true
+        }).then(function(data){//es5写法
+             console.log(data)
+        },function(error){
+          //error
+        })
 
-      if(this.isCart){
-        
-        this.$router.push({path:'/cart'})
+        if(this.isCart){
+          
+          this.$router.push({path:'/cart'})
+        }else{
+          this.$router.push({path:'/sureOrder'})
+        }       
+
+
+
       }else{
-        this.$router.push({path:'/sureOrder'})
+        this.$vux.toast.show({
+          text: '请先登陆',
+          type: 'warn',
+          isShowMask:true,
+          position:'middle'
+        })
       }
+
+      
     },
     init:function(){
       console.log(this.$store.state.loginUser.token)
