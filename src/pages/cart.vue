@@ -20,7 +20,7 @@
                   <div v-text="item.title" class="font-18 df goods-title"></div>
                   <!-- <div class="font-14 df">Merdeces Me</div> -->
                   <div class="font-10 color-92" v-for="i in item.size">
-                    <span v-text="i.key"></span><span v-text="i.value"></span>
+                    <span v-text="i.key"></span>: <span v-text="i.value"></span>
                   </div>
                   <div class="point">
                     <span v-text="item.point" class="font-18 df"></span><span class="font-9 color-9b">积分</span>
@@ -40,8 +40,12 @@
         <!--  -->
       </div>
       <div class="bottom">
-        <div class="bottom-left">全选</div>
-       <span class="font-14 fff">合计:</span><span class="color-1dafed font-18" v-text="totalPoint">100000</span><span class="font-9 color-9b">积分</span>
+        <div @click="selecteAll()">
+          <div class="choose-btn" :class="{selectedAll:selectedAll}"></div>
+          <div class="bottom-left">全选</div>
+        </div>
+        
+       <span class="font-14 fff">合计:</span> <span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
         <div class="bottom-right" @click="goSure">兑换</div>
       </div>
   </div>
@@ -133,13 +137,16 @@ export default {
     doSelect(item){
       item.selected=!item.selected
     },
+    selecteAll:function(){
+      this.goodsList.forEach(function(item){
+        item.selected=!item.selected
+      })
+    },
     goSure:function(){
       console.log(1)
       this.$router.push({path:'/sureOrder'})
     },
-    delete:function(){
 
-    },
     init:function(){
       // 设置header
       let header={
@@ -190,6 +197,17 @@ export default {
         
       })
       return total
+    },
+    selectedAll:function(){
+      let arr=[]
+      this.goodsList.forEach(function(item){
+        arr.push(item.selected) 
+      })
+      if(arr.indexOf(false)>=0){
+        return false
+      }else{
+        return true
+      }
     }
   }
 }
@@ -322,7 +340,14 @@ export default {
   border-radius:100%;
   position: absolute; 
   top: 50%;
-  margin-top: -2vw;
+  margin-top: -3vw;
   left: 2vw;
+}
+.selectedAll{
+  background:#1dafed;
+  width:4vw;
+  height:4vw;
+  border-radius:100%;
+  color: #fff 
 }
 </style>
