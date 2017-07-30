@@ -12,27 +12,32 @@
       <div class="detail-title-cn" v-text="detailObj.name"></div>
       <!-- <div class="detail-title-en">Merdeces me</div> -->
     </div>
-    <div class="detail-btn">
+    <flexbox>
       <flexbox-item>
         <div class="detail-pointBtn flex-demo">
 
           <span v-text="detailObj.point"></span> <span class="detail-pointBtn-point">积分</span>
-
+          
         </div>
       </flexbox-item>
+    </flexbox>
+    <div class="detail-btn">
+      
       <flexbox-item>
         <div class="detail-cartBtn flex-demo" @click="doChange(1)">
           加入购物车
         </div>
       </flexbox-item>
-    </div>
-    <flexbox class="detail-changeBtn">
-      <flexbox-item>
-        <div class="flex-demo " @click="doChange">
-          立即兑换
-        </div>
+      <flexbox-item >
+        
+
+          <div class="flex-demo detail-changeBtn" @click="doChange" >
+            立即兑换
+          </div>
+          
+       
       </flexbox-item>
-    </flexbox>
+    </div>
     <div>
       <div v-html="detailObj.content"></div>
     </div>
@@ -59,20 +64,7 @@
               </checker>
             </div>
           </div>
-          
 
-          <!-- <div class="pop-size-title font-15">颜色</div>
-          <div class="box">
-            <checker v-model="size1" default-item-class="demo1-item" selected-item-class="demo1-item-selected">
-              <checker-item :value="item" v-for="(item, index) in items1" :key="index">{{item.value}}</checker-item>
-            </checker>
-          </div>
-          <div class="pop-size-title font-15">规格</div>
-          <div class="box">
-            <checker v-model="size2" default-item-class="demo1-item" selected-item-class="demo1-item-selected">
-              <checker-item :value="item" v-for="(item, index) in items2" :key="index">{{item.value}}</checker-item>
-            </checker>
-          </div> -->
           <div  class="pop-num">
             <div  class="pop-num-zi font-15">数量</div>
             <div  class="pop-num-shu">
@@ -284,6 +276,7 @@ export default {
   font-size: 20px;
 }
 .detail-pointBtn{
+  margin: 5vw auto 0;
   height: 14.6vw;
   line-height: 14.6vw;
   border: 1px solid #1dafed;
@@ -310,17 +303,16 @@ export default {
 }
 .detail-changeBtn{
   height: 14.6vw;
-  text-align: center;
+  width: 40.8vw;
   line-height: 14.6vw;
-  box-sizing:border-box;
-  padding: 5vw 6.4vw 5vw;
+  color: #fff;
+  font-size: 20px; 
+  text-align: center; 
+  box-sizing:border-box;  
   box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
   color: #fff;
-  font-size: 24px;
-  margin-bottom: 5vw;
-  div{
-    background:#1dafed;
-  }  
+  background:#1dafed;
+
 }
 .detailPop{
   background: #171717;

@@ -145,7 +145,7 @@ export default {
       myPics:[
         {
           src:require('../assets/imgs/benz.png'),
-          title:'品牌生活',
+          title:'奔驰精品',
           titleEn:'Mercedes me',
           class:'index-page-classification-img',
           id:'767',
@@ -153,7 +153,7 @@ export default {
         },
         {
           src:require('../assets/imgs/box.png'),
-          title:'超值礼品',
+          title:'品质生活',
           titleEn:'Mercedes me',
           class:'index-page-classification-img1',
           id:'776'
