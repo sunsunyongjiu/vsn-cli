@@ -9,7 +9,7 @@
         <swipeout class="vux-1px-tb" v-for="(item,index) in goodsList" key=index>
           <swipeout-item transition-mode="follow">
             <div slot="right-menu">
-              <swipeout-button @click.native="onButtonClick(item)" type="warn" :width="70"><span class="font-46">×</span></swipeout-button>
+              <swipeout-button @click.native="onButtonClick(item)" type="warn" :width="70"><span class="font-30">×</span></swipeout-button>
             </div>
             <div slot="content" style="padding:12px;" class="goods">
               <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)"></div>

@@ -5,7 +5,7 @@
       <span>商品详情</span>
       <div class="back" @click="goback"></div>
     </div>
-    <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper">
+    <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
       <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
     </swiper>
     <div class="detail-title">
@@ -99,6 +99,7 @@ export default {
       isCart:false,
 
       show:true,
+      dotShow:false,
     	pageTitle:this.$route.query.title,
     	myPro:{
     		img:require('../assets/imgs/detailPic1.png'),
@@ -221,7 +222,10 @@ export default {
       this.$http.get(this.$Api('/home/getProdDetail'),{params: { 'prodId': this.$route.query.prod_id }}).then((response) => {
          
           this.detailObj=response.data.data
-          console.log(this.detailObj)
+          console.log(this.detailObj.topImg)
+          if(this.detailObj.topImg.length>1){
+            this.dotShow=true
+          }
           let chooses=JSON.parse(this.detailObj.user_parameter)
           chooses.forEach(function(item,index){
             let choseArr=item.value.split("/");
