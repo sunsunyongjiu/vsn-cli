@@ -10,6 +10,8 @@ import order from '@/pages/order'
 import contact from '@/pages/contact'
 import lifeList from '@/pages/list/list-life'
 import sureOrder from '@/pages/order/sureOrder'
+import choseLocation from '@/pages/order/choseLocation'
+import addLocation from '@/pages/order/addLocation'
 import pay from '@/pages/pay/pay'
 import paySc from '@/pages/pay/paySuccess'
 
@@ -66,6 +68,16 @@ const router = new Router({
       path: '/sureOrder',
       name: '确认订单',
       component: sureOrder,
+    },
+    {
+      path: '/choseLocation',
+      name: '选择地址',
+      component: choseLocation,
+    },
+    {
+      path: '/addLocation',
+      name: '选择地址',
+      component: addLocation,
     },
     {
       path: '/pay',

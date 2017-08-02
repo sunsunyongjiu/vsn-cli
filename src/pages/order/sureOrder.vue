@@ -5,7 +5,7 @@
 			<div class="orderList">
 		
 				<div class="order-title font-15 pd-right2">收货人信息</div>
-				<div class="order-location font-15 pd-right2">
+				<div class="order-location font-15 pd-right2" @click="goLocation">
 					<div>
 						Lucy  13776641789<br>
 						上海市浦东新区金桥大厦湖南路54号万科小区3栋4单元1201
@@ -78,6 +78,9 @@ export default {
   methods:{
     goPay:function(){
     	this.$router.push({path:'/pay'})
+    },
+    goLocation:function(){
+    	this.$router.push({path:'/choseLocation'})
     }
   },          
   mounted:function(){
