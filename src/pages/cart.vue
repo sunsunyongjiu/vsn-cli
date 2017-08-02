@@ -243,7 +243,7 @@ export default {
 }
 .goods{
   position: relative;
-  height: 37.3vw;
+  height: 33vw;
   width: 100%;
   background:#181818;
   box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
@@ -357,5 +357,11 @@ export default {
   height:4vw;
   border-radius:100%;
   color: #fff 
+}
+.goods-list{
+  .vux-swipeout-button{
+    height: 26.6vw;
+    margin-top: 3.2vw;
+  }
 }
 </style>
