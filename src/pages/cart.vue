@@ -6,7 +6,7 @@
         <div class="tab-bar">现金</div>
       </div>
       <div class="goods-list">
-        <swipeout class="vux-1px-tb" v-for="(item,index) in goodsList" key=index>
+        <swipeout class="vux-1px-tb cart-swiper-out" v-for="(item,index) in goodsList" key=index>
           <swipeout-item transition-mode="follow">
             <div slot="right-menu">
               <swipeout-button @click.native="onButtonClick(item)" type="warn" :width="70"><span class="font-30">×</span></swipeout-button>
@@ -320,7 +320,7 @@ export default {
   width: 100%;
   height: 14.9vw;
   background:#292929;
-  box-shadow:0 12px 4px 0 rgba(154,154,154,0.50);
+  /*box-shadow:0 12px 4px 0 rgba(154,154,154,0.50);*/
   line-height: 14.9vw;
   text-align: center;
   .bottom-left{
@@ -363,5 +363,14 @@ export default {
     height: 26.6vw;
     margin-top: 3.2vw;
   }
+  .cart-swiper-out{
+    box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
+    margin-bottom: 4px;
+  }
+  .cart-swiper-out:last-child{
+    box-shadow:none;
+    margin-bottom: 0
+  }
 }
+
 </style>
