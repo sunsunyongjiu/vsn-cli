@@ -11,7 +11,7 @@
             <div slot="right-menu">
               <swipeout-button @click.native="onButtonClick(item)" type="warn" :width="70"><span class="font-30">×</span></swipeout-button>
             </div>
-            <div slot="content" style="padding:12px;" class="goods">
+            <div slot="content" style="padding:3.2vw;" class="goods">
               <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)"></div>
                 <div class="goods-left">
                   <img :src="item.pic">
@@ -138,9 +138,17 @@ export default {
       item.selected=!item.selected
     },
     selecteAll:function(){
-      this.goodsList.forEach(function(item){
-        item.selected=!item.selected
-      })
+      console.log(this.selectedAll)
+      if(this.selectedAll){
+        this.goodsList.forEach(function(item){
+          item.selected=!item.selected
+        })
+      }else{
+        this.goodsList.forEach(function(item){
+          item.selected=true
+        })
+      }
+      
     },
     goSure:function(){
       console.log(1)

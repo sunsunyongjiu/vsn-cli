@@ -191,20 +191,14 @@ export default {
             headers: header,
             emulateJSON: true
         }).then(function(data){//es5写法
-             console.log(data)
+          if(this.isCart){
+            this.$router.push({path:'/cart'})
+          }else{
+            this.$router.push({path:'/sureOrder'})
+          }    
         },function(error){
           //error
         })
-
-        if(this.isCart){
-          
-          this.$router.push({path:'/cart'})
-        }else{
-          this.$router.push({path:'/sureOrder'})
-        }       
-
-
-
       }else{
         this.$vux.toast.show({
           text: '请先登陆',
