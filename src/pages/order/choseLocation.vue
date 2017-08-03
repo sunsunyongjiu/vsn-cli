@@ -2,20 +2,30 @@
   <div>
   	<back title="选择地址"></back>
   	<div class="locationList">
-  		<div v-for="(item,index) in locationList">
-  			<div class="locations">
-  				<div class="locationsLeft">
-  					<span v-text="item.name" class="font-16"></span>
-  					<span v-text="item.tel" class="font-16"></span>
-					<div>
-	  					<span v-text="item.location" class="font-14"></span>
+  		<swipeout class="vux-1px-tb"  v-for="(item,index) in locationList" key=index>
+	      <swipeout-item transition-mode="follow">
+	        <div slot="right-menu">
+	          <swipeout-button type="warn" class="cha">×</swipeout-button>
+	        </div>
+	        <div slot="content" class="locations">
+	        	<div>
+	  				<div class="locationsLeft">
+	  					<span v-text="item.name" class="font-16"></span>
+	  					<span v-text="item.tel" class="font-16"></span>
+						<div>
+		  					<span v-text="item.location" class="font-14"></span>
+		  				</div>
 	  				</div>
-  				</div>
-  				
-  				<div class="locationsRight"  @click="addLocation(1)">
-	  				<img src="../../assets/imgs/edit.png">
+	  				
+	  				<div class="locationsRight"  @click="addLocation(1)">
+		  				<img src="../../assets/imgs/edit.png">
+		  			</div>
 	  			</div>
-  			</div>
+	        </div>
+	      </swipeout-item>
+	    </swipeout>
+  		<div>
+  			
   			
   		</div>
   	</div>
@@ -27,6 +37,7 @@
 
 <script>
 import back from '../../components/backNav'
+import { Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
 export default {
   name: '',
   data () {
@@ -46,7 +57,10 @@ export default {
     }
   },
   components:{
-    back
+    back,
+    Swipeout, 
+    SwipeoutItem, 
+    SwipeoutButton 
   },
   methods:{
     addLocation:function(edit){
@@ -106,5 +120,7 @@ export default {
 	bottom: 10vw;
 	left: 5vw;
 }
-
+.cha{
+	font-size: 26px
+}
 </style>

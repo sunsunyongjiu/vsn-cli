@@ -1,7 +1,7 @@
 <template>
   <div>
   	<back :title="addTitle"></back>
-  	<div>
+  	<div class='addLocationBox'>
   		<div class="settings">
   			<div class="settings-left">收货人</div>
   			<div v-text="location.name" class="settings-right"></div>
@@ -14,7 +14,7 @@
   		<div class="line"></div>
   		<div class="settings">
   			<div class="settings-left">所在地区</div>
-  			<div v-text="location.area" class="settings-right"></div>
+  			<popup-picker :data="list3" :columns="3" v-model="value4" show-name class="addlocation-area" @on-change="console()"></popup-picker>
   		</div>
   		<div class="line"></div>
   		<div class="settings">
@@ -30,12 +30,14 @@
   		<div class='addLocation'>
 	  		保存
 	  	</div>
+
   	</div>
   </div>
 </template>
 
 <script>
 import back from '../../components/backNav'
+import { PopupPicker, Group} from 'vux'
 export default {
   name: '',
   data () {
@@ -49,11 +51,71 @@ export default {
     		area:'大连',
     		location:'大连市甘井子区'
     	},
-      addTitle:'添加新地址'
+      	addTitle:'添加新地址',
+      	list3: [{
+			name: '中国',
+			value: 'china',
+			parent: 0
+		}, {
+			name: '美国',
+			value: 'USA',
+			parent: 0
+		}, {
+			name: '广东',
+			value: 'china001',
+			parent: 'china'
+		}, {
+			name: '广西',
+			value: 'china002',
+			parent: 'china'
+		}, {
+			name: '美国001',
+			value: 'usa001',
+			parent: 'USA'
+		}, {
+			name: '美国002',
+			value: 'usa002',
+			parent: 'USA'
+		}, {
+			name: '广州',
+			value: 'gz',
+			parent: 'china001'
+		}, {
+			name: '深圳',
+			value: 'sz',
+			parent: 'china001'
+		}, {
+			name: '广西001',
+			value: 'gx001',
+			parent: 'china002'
+		}, {
+			name: '广西002',
+			value: 'gx002',
+			parent: 'china002'
+		}, {
+			name: '美国001_001',
+			value: '0003',
+			parent: 'usa001'
+		}, {
+			name: '美国001_002',
+			value: '0004',
+			parent: 'usa001'
+		}, {
+			name: '美国002_001',
+			value: '0005',
+			parent: 'usa002'
+		}, {
+			name: '美国002_002',
+			value: '0006',
+			parent: 'usa002'
+		}],
+		value4: ['china','china002','gx002'],
     }
   },
   components:{
-    back
+    back,
+    PopupPicker, 
+    Group
   },
   methods:{
     init:function(){
@@ -61,12 +123,16 @@ export default {
         this.addTitle="编辑地址"
       }
       document.title=this.addTitle
-    }
+    },
+    console:function(a){
+	  	console.log(this.value4)
+	  }
   },          
   created:function(){
     this.init()
 
-  }
+  },
+
 }
 </script>
 
@@ -129,5 +195,21 @@ export default {
 	position: absolute;
 	bottom: 10vw;
 	left: 5vw;
+}
+.vux-cell-box:before{
+	border: none
+}
+.addlocation-area{
+	padding:0;
+	width: 69.7vw;
+	position: relative;
+	float: left;
+	text-align: left !important;
+	height: 13.3vw;
+	.weui-cell{
+		height: 13.3vw !important;
+
+	}
+
 }
 </style>
