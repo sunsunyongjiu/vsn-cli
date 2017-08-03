@@ -244,7 +244,7 @@ export default {
         this.$http.post(this.$Api('/login'),{token:userToken,'user':user},{emulateJSON: true}).then((response)=>{
           if(response.data.code===1){
             this.login=true
-            let userDetail=JSON.parse(response.bodyText).data 
+            let userDetail=response.data.data 
             userDetail.token=this.$route.query.token
             this.$store.dispatch({type: 'setLogin',data: userDetail})
           }else{
@@ -262,7 +262,7 @@ export default {
       }
       //初始化时候调取imgurl
       this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
-          let imgList=JSON.parse(response.bodyText).data
+          let imgList=response.data.data
           this.imgList=imgList
           
       }, (response) => {
@@ -271,7 +271,7 @@ export default {
 
       //获取精品推荐列表
       this.$http.get(this.$Api('/home/getCommendProdList')).then((response) => {
-          this.myBoutique=JSON.parse(response.bodyText).data
+          this.myBoutique=response.data.data
           
       }, (response) => {
           // error callback
