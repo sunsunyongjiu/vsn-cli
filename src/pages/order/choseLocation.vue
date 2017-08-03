@@ -12,14 +12,14 @@
 	  				</div>
   				</div>
   				
-  				<div class="locationsRight">
+  				<div class="locationsRight"  @click="addLocation(1)">
 	  				<img src="../../assets/imgs/edit.png">
 	  			</div>
   			</div>
   			
   		</div>
   	</div>
-  	<div class='addLocation' @click="addLocation">
+  	<div class='addLocation' @click="addLocation(0)">
   		添加新地址
   	</div>
   </div>
@@ -49,8 +49,8 @@ export default {
     back
   },
   methods:{
-    addLocation:function(){
-    	this.$router.push({path:'/addLocation'})
+    addLocation:function(edit){
+    	this.$router.push({path:'/addLocation',query: { 'edit': edit}})
     }
   },          
   mounted:function(){

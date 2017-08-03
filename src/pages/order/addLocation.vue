@@ -1,6 +1,6 @@
 <template>
   <div>
-  	<back title="添加新地址"></back>
+  	<back :title="addTitle"></back>
   	<div>
   		<div class="settings">
   			<div class="settings-left">收货人</div>
@@ -48,17 +48,23 @@ export default {
     		tel:'18624443537',
     		area:'大连',
     		location:'大连市甘井子区'
-    	}
+    	},
+      addTitle:'添加新地址'
     }
   },
   components:{
     back
   },
   methods:{
-    
+    init:function(){
+      if(this.$route.query.edit){
+        this.addTitle="编辑地址"
+      }
+      document.title=this.addTitle
+    }
   },          
-  mounted:function(){
-    
+  created:function(){
+    this.init()
 
   }
 }
