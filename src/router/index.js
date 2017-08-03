@@ -76,7 +76,7 @@ const router = new Router({
     },
     {
       path: '/addLocation',
-      name: '选择地址',
+      name: '添加新地址',
       component: addLocation,
     },
     {

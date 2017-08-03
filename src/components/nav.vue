@@ -50,7 +50,6 @@ import EnJson from "../configers/En"
 	  watch: {
   		items() {
   			this.myBoutique = this.items
-        console.log(this.items)
 	    }
     },
 	  props:['items','yes'],
