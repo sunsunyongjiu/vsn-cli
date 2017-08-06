@@ -1,14 +1,6 @@
 <template>
   <div class="index-page">
-    <search
-    v-model="searchValue"
-    position="absolute"
-    :auto-fixed="autoFixed"
-    @on-focus="submit"
-    placeholder="搜索"
-    auto-scroll-to-top
-    ref="search"></search>
-
+    <search v-model="searchValue" position="absolute" :auto-fixed="autoFixed" @on-focus="submit" placeholder="搜索" auto-scroll-to-top ref="search"></search>
     <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
       <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
     </swiper>
@@ -20,14 +12,14 @@
         <div class="flex-demo">
           <img :src="myCardSrc" class="myCard">
         </div>
-          <div class="my-club">
+        <div class="my-club">
           <span v-if="login">{{"Mercedes 车主俱乐部钻卡"|tr}}</span>
-      </div>
+        </div>
       </flexbox-item>
       <flexbox-item v-show="login">
-        <div class="flex-demo myPoints" >
+        <div class="flex-demo myPoints">
           <div>{{"您当前的个人积分是"|tr}}</div>
-          <div >
+          <div>
             <!-- <span v-text="loginUser.score"></span> -->
             <span>50000</span>
           </div>
@@ -37,16 +29,15 @@
         </div>
       </flexbox-item>
       <flexbox-item v-show="!login">
-        <div class="flex-demo myPoints" >
+        <div class="flex-demo myPoints">
           <div class="font-11">您好，欢迎来到</div>
-            <div >
-              <span class="font-13">积分商城</span>
-              
-            </div>
-            <div>
-              <button class="soonBtn english" @click="goWWW('https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=http://123.57.157.212:8080/pmall/index.html#/path')">{{"登录/注册"|tr}}</button>
-            </div>
+          <div>
+            <span class="font-13">积分商城</span>
           </div>
+          <div>
+            <button class="soonBtn english" @click="goWWW('https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=http://123.57.157.212:8080/pmall/index.html#/path')">{{"登录/注册"|tr}}</button>
+          </div>
+        </div>
       </flexbox-item>
     </flexbox>
     <flexbox class="index-page-mypoints2" :gutter="0">
@@ -58,13 +49,12 @@
           </div>
         </div>
       </flexbox-item>
-      
     </flexbox>
     <div class="index-middle-tittle english">
       {{"分类推荐"|tr}}
     </div>
-    <flexbox :gutter="0" wrap="wrap" class="index-page-classification" >
-      <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index" >
+    <flexbox :gutter="0" wrap="wrap" class="index-page-classification">
+      <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index">
         <div class="flex-demo fenleiBox" @click="goList(item.title,item.id,item.path)">
           <div>
             <img :src="item.src" :class="item.class">
@@ -74,12 +64,9 @@
               </div>
               <!-- <div v-text="item.titleEn"></div> -->
             </div>
-            
-            
           </div>
         </div>
       </flexbox-item>
-      
     </flexbox>
     <div class="index-middle-tittle english" v-if=false>
       {{"主编推荐"|tr}}
@@ -93,11 +80,10 @@
     <my-nav :items="myBoutique"></my-nav>
   </div>
 </template>
-
 <script>
 import myNav from '../components/nav'
-import {state} from 'vuex'
-import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,Search} from 'vux'
+import { state } from 'vuex'
+import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, Search } from 'vux'
 import { mapGetters } from 'vuex'
 import EnJson from "../configers/En"
 
@@ -109,199 +95,197 @@ const imgList = [
 
 export default {
   name: 'hello',
-  data () {
+  data() {
     return {
-      autoFixed:false,
-      login:false,
-      show:true,
+      autoFixed: false,
+      login: false,
+      show: true,
       msg: '这是起始页',
-      yes:false,
-      searchValue:'',
+      yes: false,
+      searchValue: '',
       demo05_list: imgList,
       myCardSrc: require('../assets/imgs/bccard.png'),
-      imgList:[],
-      indexBtns:[
-        {
-          title:'购物车',
-          path:'/cart',
-          class:'index-cart'
+      imgList: [],
+      indexBtns: [{
+          title: '购物车',
+          path: '/cart',
+          class: 'index-cart'
         },
         {
-          title:'个人订单',
-          path:'/order',
-          class:'index-order'
+          title: '个人订单',
+          path: '/order',
+          class: 'index-order'
         },
         {
-          title:'个人信息',
-          path:'/personal',
-          class:'index-personal'
+          title: '个人信息',
+          path: '/personal',
+          class: 'index-personal'
         },
         {
-          title:'联系客服',
-          path:'/contact',
-          class:'index-contact'
-        },
-      ],
-      myPics:[
-        {
-          src:require('../assets/imgs/benz.png'),
-          title:'奔驰精品',
-          titleEn:'Mercedes me',
-          class:'index-page-classification-img',
-          id:'767',
-          path:'/life'
-        },
-        {
-          src:require('../assets/imgs/box.png'),
-          title:'品质生活',
-          titleEn:'Mercedes me',
-          class:'index-page-classification-img1',
-          id:'776'
-        },
-        {
-          src:require('../assets/imgs/work.png'),
-          title:'精英课选',
-          titleEn:'Mercedes me',
-          class:'index-page-classification-img2',
-          id:'778'
-        },
-        {
-          src:require('../assets/imgs/fue.png'),
-          title:'尊享礼券',
-          titleEn:'Mercedes me',
-          class:'index-page-classification-img3',
-          id:'779'
-        },
-        {
-          src:require('../assets/imgs/car.png'),
-          title:'无忧出行',
-          titleEn:'Mercedes me',
-          class:'index-page-classification-img4',
-          id:'780'
-        },
-        {
-          src:require('../assets/imgs/bag.png'),
-          title:'缤纷旅途',
-          titleEn:'Mercedes me',
-          class:'index-page-classification-img5',
-          id:'781'
+          title: '联系客服',
+          path: '/contact',
+          class: 'index-contact'
         },
       ],
-      myBoutique:[
-        
+      myPics: [{
+          src: require('../assets/imgs/benz.png'),
+          title: '奔驰精品',
+          titleEn: 'Mercedes me',
+          class: 'index-page-classification-img',
+          id: '767',
+          path: '/life'
+        },
+        {
+          src: require('../assets/imgs/box.png'),
+          title: '品质生活',
+          titleEn: 'Mercedes me',
+          class: 'index-page-classification-img1',
+          id: '776'
+        },
+        {
+          src: require('../assets/imgs/work.png'),
+          title: '精英课选',
+          titleEn: 'Mercedes me',
+          class: 'index-page-classification-img2',
+          id: '778'
+        },
+        {
+          src: require('../assets/imgs/fue.png'),
+          title: '尊享礼券',
+          titleEn: 'Mercedes me',
+          class: 'index-page-classification-img3',
+          id: '779'
+        },
+        {
+          src: require('../assets/imgs/car.png'),
+          title: '无忧出行',
+          titleEn: 'Mercedes me',
+          class: 'index-page-classification-img4',
+          id: '780'
+        },
+        {
+          src: require('../assets/imgs/bag.png'),
+          title: '缤纷旅途',
+          titleEn: 'Mercedes me',
+          class: 'index-page-classification-img5',
+          id: '781'
+        },
+      ],
+      myBoutique: [
+
       ]
     }
   },
-  components:{
+  components: {
     myNav,
     Swiper,
     SwiperItem,
-    Grid, 
-    GridItem, 
+    Grid,
+    GridItem,
     GroupTitle,
-    Flexbox, 
-    FlexboxItem, 
+    Flexbox,
+    FlexboxItem,
     Divider,
     Search
-    
+
   },
-  methods:{
+  methods: {
     //跳转分类列表页
-    goList:function(title,id,path){
-      let p= path==undefined?'lists':path
-      if(path==undefined){
+    goList: function(title, id, path) {
+      let p = path == undefined ? 'lists' : path
+      if (path == undefined) {
         return
       }
-     
-      this.$router.push({path: p, query: { 'title': title,'id':id}})
+
+      this.$router.push({ path: p, query: { 'title': title, 'id': id } })
     },
-    goWWW:function(url){
-      window.location.href=url
+    goWWW: function(url) {
+      window.location.href = url
     },
-    goNext:function(pathUrl){
-      if(this.login||pathUrl=="/contact"){
-        this.$router.push({path:pathUrl})
-      }else{
+    goNext: function(pathUrl) {
+      if (this.login || pathUrl == "/contact") {
+        this.$router.push({ path: pathUrl })
+      } else {
         this.$vux.toast.show({
           text: '请先登陆',
           type: 'warn',
-          isShowMask:true,
-          position:'middle'
+          isShowMask: true,
+          position: 'middle'
         })
       }
     },
-    submit:function(){
-      this.$router.push({path:'/search',query: { 'search': this.searchValue}})
+    submit: function() {
+      this.$router.push({ path: '/search', query: { 'search': this.searchValue } })
     },
-    init:function(){
-      
+    init: function() {
+
       //判断当前用户是否登录
-      let userToken=this.$route.query.token
-      let user=this.$route.query.user
-      let pandunLogin=this.$store.state.loginUser.name==undefined
-     
-      if(userToken&&user&&pandunLogin){
-        this.$http.post(this.$Api('/login'),{token:userToken,'user':user},{emulateJSON: true}).then((response)=>{
-          if(response.data.code===1){
-            this.login=true
-            let userDetail=response.data.data 
-            userDetail.token=this.$route.query.token
-            this.$store.dispatch({type: 'setLogin',data: userDetail})
-          }else{
+      let userToken = this.$route.query.token
+      let user = this.$route.query.user
+      let pandunLogin = this.$store.state.loginUser.name == undefined
+
+      if (userToken && user && pandunLogin) {
+        this.$http.post(this.$Api('/login'), { token: userToken, 'user': user }, { emulateJSON: true }).then((response) => {
+          if (response.data.code === 1) {
+            this.login = true
+            let userDetail = response.data.data
+            userDetail.token = this.$route.query.token
+            this.$store.dispatch({ type: 'setLogin', data: userDetail })
+          } else {
             return
           }
-          
-        },(error)=>{
-                console.log(error);
-          }
-        );
-      }else if(!pandunLogin){
-        this.login=true
-      }else{
-        this.login=false
+
+        }, (error) => {
+          console.log(error);
+        });
+      } else if (!pandunLogin) {
+        this.login = true
+      } else {
+        this.login = false
       }
       //初始化时候调取imgurl
       this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
-          let imgList=response.data.data
-          this.imgList=imgList
-          
+        let imgList = response.data.data
+        this.imgList = imgList
+
       }, (response) => {
-          // error callback
+        // error callback
       });
 
       //获取精品推荐列表
       this.$http.get(this.$Api('/home/getCommendProdList')).then((response) => {
-          this.myBoutique=response.data.data
-          
+        this.myBoutique = response.data.data
+
       }, (response) => {
-          // error callback
+        // error callback
       });
     }
-  },          
-  mounted:function(){
-    
+  },
+  mounted: function() {
+
     this.init()
   },
   computed: {
-  // 使用对象展开运算符将 getters 混入 computed 对象中
+    // 使用对象展开运算符将 getters 混入 computed 对象中
     ...mapGetters({
-      loginUser:'getLogin'
-      
+      loginUser: 'getLogin'
+
     })
   },
   filters: {
-    tr:function(v){
+    tr: function(v) {
       // return EnJson[v]
       return v
     }
   }
 }
-</script>
 
+</script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
 @import '../assets/css/hello.less';
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 
@@ -314,18 +298,28 @@ ul {
 a {
   color: #42b983;
 }
-.none{
+
+.none {
   height: 100%;
   width: 0;
   vertical-align: middle;
 }
-.fade-enter-active, .fade-leave-active {
+
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity .5s
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active in <2.1.8 */
+
+{
   opacity: 0
 }
-.english{
+
+.english {
   font-family: english !important
 }
+
 </style>

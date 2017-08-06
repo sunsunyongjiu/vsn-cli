@@ -12,6 +12,7 @@ import lifeList from '@/pages/list/list-life'
 import sureOrder from '@/pages/order/sureOrder'
 import choseLocation from '@/pages/order/choseLocation'
 import addLocation from '@/pages/order/addLocation'
+import orderDetail from '@/pages/order/orderDetail'
 import pay from '@/pages/pay/pay'
 import paySc from '@/pages/pay/paySuccess'
 
@@ -78,6 +79,11 @@ const router = new Router({
       path: '/addLocation',
       name: '添加新地址',
       component: addLocation,
+    },
+    {
+      path: '/orderDetail',
+      name: '订单详情',
+      component: orderDetail,
     },
     {
       path: '/pay',
