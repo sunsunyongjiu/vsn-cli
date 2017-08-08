@@ -1,7 +1,8 @@
 <template>
 	<div class="index-Boutique">
       <div class="index-Boutique-div" v-for="(item, index) in myBoutique" @click="goWhere(item.title,item)">
-      	<div class="hot" v-if="item.is_hot==='Y'">HOT</div>
+      	
+        <img src="../assets/imgs/hot.png" class="red-hot" v-if="item.is_hot==='Y'">
         <div class="index-Boutique-div-left">
           <img :src="item.pic">
         </div>
@@ -167,5 +168,12 @@ import EnJson from "../configers/En"
   }
   .english{
     font-family: english !important
+  }
+  .red-hot{
+    position: absolute;
+    right: -2vw;
+    top: -2vw;
+    height: 20vw;
+    z-index: 10;
   }
 </style>

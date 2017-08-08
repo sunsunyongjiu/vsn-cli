@@ -311,6 +311,10 @@ export default {
     }
     .goods-title{
       line-height: 8vw;
+      width: 43.3vw;
+      white-space:nowrap; 
+      overflow:hidden; 
+      text-overflow:ellipsis
     }
   }
 }
