@@ -13,7 +13,7 @@
           <img :src="myCardSrc" class="myCard">
         </div>
         <div class="my-club">
-          <span v-if="login">{{"Mercedes 车主俱乐部钻卡"|tr}}</span>
+          <span v-if="login">{{"Mercedes me车主俱乐部"|tr}}</span>
         </div>
       </flexbox-item>
       <flexbox-item v-show="login">
@@ -24,7 +24,7 @@
             <span>50000</span>
           </div>
           <div>
-            <button class="soonBtn">{{"立即兑换"|tr}}</button>
+            <button class="soonBtn">{{"为您甄选"|tr}}</button>
           </div>
         </div>
       </flexbox-item>
@@ -129,7 +129,7 @@ export default {
       ],
       myPics: [{
           src: require('../assets/imgs/benz.png'),
-          title: '奔驰精品',
+          title: '品牌生活',
           titleEn: 'Mercedes me',
           class: 'index-page-classification-img',
           id: '767',
@@ -137,7 +137,7 @@ export default {
         },
         {
           src: require('../assets/imgs/box.png'),
-          title: '品质生活',
+          title: '超值礼品',
           titleEn: 'Mercedes me',
           class: 'index-page-classification-img1',
           id: '776'
@@ -321,5 +321,6 @@ a {
 .english {
   font-family: english !important
 }
+
 
 </style>

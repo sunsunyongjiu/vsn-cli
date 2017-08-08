@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="paddingBottom">
     <back title="订单详情"></back>
     <div class="order-state">
       <div style="margin-bottom:2vw;" v-text="order.state"></div>
@@ -313,5 +313,7 @@ export default {
     color: #ffffff;
   }
 }
-
+.paddingBottom{
+	padding-bottom: 14.9vw
+}
 </style>

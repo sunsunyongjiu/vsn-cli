@@ -202,7 +202,7 @@ export default {
 
 .order-btns {
   height: 5.8vw;
-  margin: 2.4vw 0 3.7vw;
+  padding: 2.4vw 0 3.7vw;
   line-height: 5.8vw;
   div {
     font-family: HYa3gj;
