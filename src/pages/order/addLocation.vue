@@ -34,10 +34,10 @@
         <popup v-model="show2" height="97.8vw">
           <div class="location-pop-title">所在地区</div>
           <div class="locationPop-areas">
-            <div v-for="(item,index) in area" v-text="item.text" :class="{areaActive:item.select}" @click="checkCitys(item,index)"></div>
+            <div v-for="(item,index) in area" v-text="item.text" :class="{areaActive:item.select}" @click="checkCitys(item,index)" v-if="item.show"></div>
           </div>
           <div class="area-textBox">
-          	<div v-for="(item ,index) in citys.citys" v-text="item.text" @click="changeCity(item)" :class="{citeActive:item.select}"></div>
+            <div v-for="(item ,index) in citys.citys" v-text="item.text" @click="changeCity(item,citys.citys)" :class="{citeActive:item.select}"></div>
           </div>
         </popup>
       </div>
@@ -66,72 +66,16 @@ export default {
       },
       addTitle: '添加新地址',
       show2: false,
-      list3: [{
-        name: '中国',
-        value: 'china',
-        parent: 0
-      }, {
-        name: '美国',
-        value: 'USA',
-        parent: 0
-      }, {
-        name: '广东',
-        value: 'china001',
-        parent: 'china'
-      }, {
-        name: '广西',
-        value: 'china002',
-        parent: 'china'
-      }, {
-        name: '美国001',
-        value: 'usa001',
-        parent: 'USA'
-      }, {
-        name: '美国002',
-        value: 'usa002',
-        parent: 'USA'
-      }, {
-        name: '广州',
-        value: 'gz',
-        parent: 'china001'
-      }, {
-        name: '深圳',
-        value: 'sz',
-        parent: 'china001'
-      }, {
-        name: '广西001',
-        value: 'gx001',
-        parent: 'china002'
-      }, {
-        name: '广西002',
-        value: 'gx002',
-        parent: 'china002'
-      }, {
-        name: '美国001_001',
-        value: '0003',
-        parent: 'usa001'
-      }, {
-        name: '美国001_002',
-        value: '0004',
-        parent: 'usa001'
-      }, {
-        name: '美国002_001',
-        value: '0005',
-        parent: 'usa002'
-      }, {
-        name: '美国002_002',
-        value: '0006',
-        parent: 'usa002'
-      }],
+
       value4: ['china', 'china002', 'gx002'],
       area: [
-        { 'text': '省', select: true, citys: [{text:'中国',select:false}, {text:'美国',select:false}] ,index:0},
-        { 'text': '市', select: false, citys: [{text:'中国1',select:false}, {text:'美国1',select:false}] ,index:1},
-        { 'text': '区', select: false, citys: [{text:'中国2',select:false}, {text:'美国2',select:false}] ,index:2 },
-        { 'text': '街道', select: false, citys: [{text:'中国3',select:false}, {text:'美国3',select:false}] ,index:3},
+        { 'text': '省', select: true, citys: [], index: 0, show: true },
+        { 'text': '市', select: false, citys: [], index: 1, show: true },
+        { 'text': '区', select: false, citys: [], index: 2, show: true },
+        { 'text': '街道', select: false, citys: [], index: 3, show: false },
       ],
-      citys:{citys:[]},
-      locationDetail:'请选择地址'
+      citys: { citys: [] },
+      locationDetail: '请选择地址'
     }
   },
   components: {
@@ -144,42 +88,120 @@ export default {
   },
   methods: {
     init: function() {
+      let _this = this
       if (this.$route.query.edit) {
         this.addTitle = "编辑地址"
       }
       document.title = this.addTitle
-      this.citys=this.area[0]
+
+      // 获取省
+      this.$http.get(this.$Api('/address/getAllProvinces')).then((response) => {
+
+        for (var i in response.data.data) {
+          let obj = { text: i, id: response.data.data[i], select: false }
+          _this.area[0].citys.push(obj)
+
+        }
+      }, (response) => {
+        // error callback
+      });
+      this.citys = this.area[0];
     },
     popShow: function() {
       this.show2 = true
+      this.citys = this.area[0];
+      this.area.forEach(function(n) {
+        n.select = false
+      })
+      this.area[0].select=true
     },
-    checkCitys:function(item,index){
-    	this.area.forEach(function(n){
-    		n.select=false
-    	})
-    	item.select=true
-    	this.citys=item
+    checkCitys: function(item, index) {
+      console.log(index)
+      this.area.forEach(function(n) {
+        n.select = false
+      })
+      item.select = true
+      this.citys = item
+      if (index < 3) {
+        this.area[index + 1].text = '请选择'
+        this.area[index + 1].citys = []
+      }
+
     },
-    changeCity:function(nm){
-    	let _this=this
-    	this.citys.text=nm.text
-    	nm.select=true
-    	console.log(this.citys.index)
-    	if(this.citys.index<3){
-    		this.citys=this.area[this.citys.index+1]
-    	}else{
-    		this.show2 = false
-    		_this.locationDetail=''
-    		this.area.forEach(function(n){
-	    		_this.locationDetail+=n.text
-	    	})
-    		
-    	}
-    	
-    	this.area.forEach(function(n){
-    		n.select=false
-    	})
-    	this.citys.select=true
+    changeCity: function(nm, parent) {
+      let _this = this
+      this.citys.text = nm.text
+      parent.forEach(function(item) {
+        item.select = false
+      })
+      nm.select = true
+      console.log(this.citys.index)
+      let num = this.citys.index
+      if (num < 3) {
+        console.log(num)
+        _this.area[3].citys.show = false
+        if (num == 0) {
+          _this.area[1].citys = []
+          this.$http.get(this.$Api('/address/getAllCitys'), { params: { 'id': nm.id } }).then((response) => {
+            console.log(response.data.data)
+            for (var i in response.data.data) {
+              let obj = { text: i, id: response.data.data[i], select: false }
+              _this.area[1].citys.push(obj)
+
+            }
+          }, (response) => {
+            // error callback
+          });
+        } else if (num == 1) {
+          _this.area[2].citys = []
+          this.$http.get(this.$Api('/address/getAllCountys'), { params: { 'id': nm.id } }).then((response) => {
+            console.log(response.data.data)
+            for (var i in response.data.data) {
+              let obj = { text: i, id: response.data.data[i], select: false }
+              _this.area[2].citys.push(obj)
+
+            }
+          }, (response) => {
+            // error callback
+          });
+        } else {
+          _this.area[3].citys = []
+          this.$http.get(this.$Api('/address/getAllTowns'), { params: { 'id': nm.id } }).then((response) => {
+            console.log(response.data.data)
+            if (response.data.data) {
+
+              _this.area[3].show = true
+              for (var i in response.data.data) {
+                let obj = { text: i, id: response.data.data[i], select: false }
+                _this.area[3].citys.push(obj)
+
+              }
+            } else {
+              this.show2 = false
+              _this.locationDetail = ''
+              this.area.forEach(function(n) {
+                _this.locationDetail += n.text
+              })
+            }
+
+          }, (response) => {
+            // error callback
+          });
+        }
+        this.citys = this.area[this.citys.index + 1]
+      } else {
+        this.show2 = false
+        _this.locationDetail = ''
+        this.area.forEach(function(n) {
+          _this.locationDetail += n.text
+        })
+
+      }
+
+      this.area.forEach(function(n) {
+        n.select = false
+      })
+      this.citys.select = true
     }
   },
   created: function() {
@@ -272,18 +294,17 @@ export default {
     padding-left: 5vw;
     border-bottom: 1px solid #4a4a4a;
     position: relative;
- 	div:first-child{
- 		margin-left: 0vw;
- 	}
- 	div{
- 		float: left;
- 		margin-left: 15vw;
- 	
-font-size:14px;
-color:#b4b4b4;
-position: relative;
+    div:first-child {
+      margin-left: 0vw;
+    }
+    div {
+      float: left;
+      margin-left: 5vw;
 
- 	}
+      font-size: 14px;
+      color: #b4b4b4;
+      position: relative;
+    }
   }
 }
 
@@ -305,16 +326,19 @@ position: relative;
   line-height: 35px;
   padding-left: 5vw;
 }
-.areaActive:after{
-	content: '';
-	display: block;
-	width: 100%;
-	position: absolute;
-	height: 1px;
-	background: #1dafed;
-	bottom: 0
+
+.areaActive:after {
+  content: '';
+  display: block;
+  width: 100%;
+  position: absolute;
+  height: 1px;
+  background: #1dafed;
+  bottom: 0
 }
-.citeActive{
-	color: #1dafed
+
+.citeActive {
+  color: #1dafed
 }
+
 </style>
