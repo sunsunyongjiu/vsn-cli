@@ -87,6 +87,7 @@ export default {
     TabItem
   },
   methods: {
+  	// 初始化调用数据
     init: function() {
       let _this = this
       if (this.$route.query.edit) {
@@ -105,26 +106,32 @@ export default {
       }, (response) => {
         // error callback
       });
+      // 下列数据初始化时使用省的
       this.citys = this.area[0];
     },
+    // 点击选择地区弹出
     popShow: function() {
       this.show2 = true
       this.citys = this.area[0];
+      // 是所有导航不被选中
       this.area.forEach(function(n) {
         n.select = false
       })
+      // 初始化省被选中
       this.area[0].select=true
+      // 如果最后一橡不是空的，展示区
       if(this.area[3].text!="街道"&&this.area[3].text!="请选择"){
       	this.area[3].show=true
       }
     },
     checkCitys: function(item, index) {
-      console.log(index)
+      // 点击tab时，修改选中状态
       this.area.forEach(function(n) {
         n.select = false
       })
       item.select = true
       this.citys = item
+      // 点选当前项时下一项清空数据
       if (index < 3) {
         this.area[index + 1].text = '请选择'
         this.area[index + 1].citys = []
@@ -132,6 +139,7 @@ export default {
 
     },
     changeCity: function(nm, parent) {
+    	// 不展示地区
     this.area[3].show=false
       let _this = this
       this.citys.text = nm.text
