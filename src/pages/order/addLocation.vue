@@ -70,8 +70,8 @@ export default {
       value4: ['china', 'china002', 'gx002'],
       area: [
         { 'text': '省', select: true, citys: [], index: 0, show: true },
-        { 'text': '市', select: false, citys: [], index: 1, show: true },
-        { 'text': '区', select: false, citys: [], index: 2, show: true },
+        { 'text': '市', select: false, citys: [], index: 1, show: false },
+        { 'text': '区', select: false, citys: [], index: 2, show: false },
         { 'text': '街道', select: false, citys: [], index: 3, show: false },
       ],
       citys: { citys: [] },
@@ -87,7 +87,7 @@ export default {
     TabItem
   },
   methods: {
-  	// 初始化调用数据
+    // 初始化调用数据
     init: function() {
       let _this = this
       if (this.$route.query.edit) {
@@ -118,10 +118,10 @@ export default {
         n.select = false
       })
       // 初始化省被选中
-      this.area[0].select=true
+      this.area[0].select = true
       // 如果最后一橡不是空的，展示区
-      if(this.area[3].text!="街道"&&this.area[3].text!="请选择"){
-      	this.area[3].show=true
+      if (this.area[3].text != "街道" && this.area[3].text != "请选择") {
+        this.area[3].show = true
       }
     },
     checkCitys: function(item, index) {
@@ -131,16 +131,12 @@ export default {
       })
       item.select = true
       this.citys = item
-      // 点选当前项时下一项清空数据
-      if (index < 3) {
-        this.area[index + 1].text = '请选择'
-        this.area[index + 1].citys = []
-      }
+      
 
     },
     changeCity: function(nm, parent) {
-    	// 不展示地区
-    this.area[3].show=false
+      // 不展示地区
+      this.area[3].show = false
       let _this = this
       this.citys.text = nm.text
       parent.forEach(function(item) {
@@ -150,7 +146,13 @@ export default {
       console.log(this.citys.index)
       let num = this.citys.index
       if (num < 3) {
+      	this.area.forEach(function(n) {
+            if(n.index>num+1){n.show = false}
+          })
+        _this.area[num + 1].show = true
+        _this.area[num + 1].text = '请选择'
         if (num == 0) {
+          
           _this.area[1].citys = []
           this.$http.get(this.$Api('/address/getAllCitys'), { params: { 'id': nm.id } }).then((response) => {
             console.log(response.data.data)
@@ -189,7 +191,7 @@ export default {
             } else {
               this.show2 = false
               _this.locationDetail = ''
-              _this.area[3].text=''
+              _this.area[3].text = ''
               this.area.forEach(function(n) {
                 _this.locationDetail += n.text
               })
