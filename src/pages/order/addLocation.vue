@@ -114,6 +114,9 @@ export default {
         n.select = false
       })
       this.area[0].select=true
+      if(this.area[3].text!="街道"&&this.area[3].text!="请选择"){
+      	this.area[3].show=true
+      }
     },
     checkCitys: function(item, index) {
       console.log(index)
@@ -129,6 +132,7 @@ export default {
 
     },
     changeCity: function(nm, parent) {
+    this.area[3].show=false
       let _this = this
       this.citys.text = nm.text
       parent.forEach(function(item) {
@@ -138,8 +142,6 @@ export default {
       console.log(this.citys.index)
       let num = this.citys.index
       if (num < 3) {
-        console.log(num)
-        _this.area[3].citys.show = false
         if (num == 0) {
           _this.area[1].citys = []
           this.$http.get(this.$Api('/address/getAllCitys'), { params: { 'id': nm.id } }).then((response) => {
@@ -179,6 +181,7 @@ export default {
             } else {
               this.show2 = false
               _this.locationDetail = ''
+              _this.area[3].text=''
               this.area.forEach(function(n) {
                 _this.locationDetail += n.text
               })
