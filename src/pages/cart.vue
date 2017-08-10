@@ -151,8 +151,15 @@ export default {
       
     },
     goSure:function(){
-      console.log(1)
-      this.$router.push({path:'/sureOrder'})
+      let str=''
+      this.goodsList.forEach(function(n){
+        if(n.selected){
+          str+=(','+n.basketId)
+        }
+      })
+      console.log(str.slice(1))
+      
+      this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
     },
 
     init:function(){

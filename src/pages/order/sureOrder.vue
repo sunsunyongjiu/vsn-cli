@@ -6,8 +6,11 @@
         <div class="order-title font-15 pd-right2">收货人信息</div>
         <div class="order-location font-15 pd-right2" @click="goLocation">
           <div>
-            Lucy 13776641789
-            <br> 上海市浦东新区金桥大厦湖南路54号万科小区3栋4单元1201
+            <span v-text="commonAdd.RECEIVER"></span><span v-text="commonAdd.moble"></span>
+            <br>
+            <span>
+				{{commonAdd.province}}{{commonAdd.CITY}}{{commonAdd.area}}{{commonAdd.town}}{{commonAdd.subAdds}}
+			</span>
           </div>
           <div class="right">&gt;</div>
         </div>
@@ -18,31 +21,19 @@
         </div>
         <div class="line"></div>
         <div class="order-title font-15 top-5 pd-right2">商品信息</div>
-        <div class="order-goods">
-          <div class="goods-left">
-            <img src="../../assets/imgs/goods.png">
-          </div>
-          <div class="goods-right">
-            <div class="font-16 df title">罗马系列腕表</div>
-            <div class="font-11 color-92">颜色：贵族金，规格：标准</div>
-            <div class="font-11 color-92">数量×2</div>
-            <div class=" bottom">
-              <span class="basicColor font-16">50000</span>
-              <span class="font-9 color-9b">积分</span>
+        <div class="order-goods-box">
+          <div class="order-goods" v-for="(item,key) in goods" key=index>
+            <div class="goods-left">
+              <img :src="item.pic">
             </div>
-          </div>
-        </div>
-        <div class="order-goods">
-          <div class="goods-left">
-            <img src="../../assets/imgs/box.png">
-          </div>
-          <div class="goods-right">
-            <div class="font-16 df title">专属香氛</div>
-            <div class="font-11 color-92">颜色：贵族金，规格：标准</div>
-            <div class="font-11 color-92">数量×2</div>
-            <div class=" bottom">
-              <span class="basicColor font-16">50000</span>
-              <span class="font-9 color-9b">积分</span>
+            <div class="goods-right">
+              <div class="font-16 df title" v-text="item.prod_name">专属香氛</div>
+              <!-- <div class="font-11 color-92" v-text="">颜色：贵族金，规格：标准</div> -->
+              <div class="font-11 color-92">数量×<span v-text="item.basket_count"></span></div>
+              <div class=" bottom">
+                <span class="basicColor font-16" v-text="item.point">50000</span>
+                <span class="font-9 color-9b">积分</span>
+              </div>
             </div>
           </div>
         </div>
@@ -52,7 +43,7 @@
     <div class="order-bottom">
       <div class="total font-15">
         合计：<span class="font-10  basicColor"></span>
-        <span class="font-18 basicColor">100000</span>
+        <span class="font-18 basicColor" v-text="total">100000</span>
         <span class="font-9 basicColor">积分</span>
         <div class="font-9 color-9b">
           积分商品限量兑换，不支持退换货
@@ -64,25 +55,95 @@
 </template>
 <script>
 import back from '../../components/backNav'
+import md5 from 'js-md5';
 export default {
   name: '',
   data() {
-    return {}
+    return {
+      goods: [
+
+      ],
+      commonAdd: {}
+    }
   },
   components: {
     back
   },
   methods: {
     goPay: function() {
-      this.$router.push({ path: '/pay' })
+
+      let header = {
+        "token": this.$store.state.loginUser.token,
+        "time": JSON.stringify(new Date().getTime()),
+        "sign": md5("/order/insertOrderNo" + this.$store.state.loginUser.token + JSON.stringify(new Date().getTime())).toUpperCase()
+      }
+      // 设置传值
+      let cartData = {
+        basketIds:this.$route.query.selectIds,
+        addrId:this.commonAdd.addrId,
+        total:this.total
+      }
+      
+      this.$http({
+        method: 'POST',
+        url: this.$Api('/order/insertOrderNo'),
+        params: cartData,
+        headers: header,
+        emulateJSON: true
+      }).then(function(data) {
+        console.log(data)
+        
+        this.$router.push({ path: '/pay' })
+      }, function(error) {
+        //error
+      })
+
+      
     },
     goLocation: function() {
       this.$router.push({ path: '/choseLocation' })
+    },
+    init: function() {
+      // 根据购物车id取数据
+      this.$http.get(this.$Api('/order/getBasketListSelected'), {
+        params: { 'basketIds': this.$route.query.selectIds },
+        headers: {
+          "token": this.$store.state.loginUser.token,
+          "time": JSON.stringify(new Date().getTime()),
+          "sign": md5("/order/getBasketListSelected" + this.$store.state.loginUser.token + JSON.stringify(new Date().getTime())).toUpperCase()
+        }
+      }).then((response) => {
+        this.goods = response.data.data
+        console.log(response.data.data)
+      }, (response) => {
+        // error callback
+      });
+
+      let header = {
+        headers: {
+          "token": this.$store.state.loginUser.token,
+        }
+      }
+      this.$http.get(this.$Api('/address/getDefaultAddress'), header).then((response) => {
+        this.commonAdd = response.data.data
+      }, (response) => {
+        // error callback
+      });
+
     }
   },
   mounted: function() {
+    this.init()
 
-
+  },
+  computed: {
+    total: function() {
+      let num = 0
+      this.goods.forEach(function(n) {
+        num += (n.basket_count * n.point)
+      })
+      return num
+    }
   }
 }
 
@@ -109,7 +170,7 @@ export default {
     color: #fff;
   }
   .total {
-	padding-top: 4vw;
+    padding-top: 4vw;
     float: left;
     width: 73vw;
     text-align: left;
@@ -190,6 +251,7 @@ export default {
   .goods-right {
     float: left;
     text-align: left;
+    width: 50vw;
     padding-left: 5vw;
     position: relative;
     height: 100%;
@@ -201,6 +263,10 @@ export default {
       line-height: 6vw
     }
   }
+}
+
+.order-goods-box {
+  padding-bottom: 14.9333vw;
 }
 
 </style>

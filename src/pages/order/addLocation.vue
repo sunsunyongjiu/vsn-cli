@@ -4,12 +4,12 @@
     <div class='addLocationBox'>
       <div class="settings">
         <div class="settings-left">收货人</div>
-        <div v-text="location.name" class="settings-right"></div>
+        <input type="text" v-model="postData.receiver" class="addLocationBox-input">
       </div>
       <div class="line"></div>
       <div class="settings">
         <div class="settings-left">联系电话</div>
-        <div v-text="location.tel" class="settings-right"></div>
+        <input type="text" v-model="postData.mobile" class="addLocationBox-input">
       </div>
       <div class="line"></div>
       <div class="settings">
@@ -19,15 +19,15 @@
       <div class="line"></div>
       <div class="settings">
         <div class="settings-left">详细地址</div>
-        <div v-text="location.location" class="settings-right"></div>
+        <input type="text" v-model="postData.subAdds" class="addLocationBox-input">
       </div>
       <div class="line"></div>
       <div class="settings setMoren">
-        <div class="setMorenCircle"></div>
+        <div class="morenCircle" @click="setCommon" :class="{setMorenCircle:common}"></div>
         设为默认地址
       </div>
       <div class="line"></div>
-      <div class='addLocation'>
+      <div class='addLocation' @click="saveAdd">
         保存
       </div>
       <div v-transfer-dom class="locationPop">
@@ -75,7 +75,20 @@ export default {
         { 'text': '街道', select: false, citys: [], index: 3, show: false },
       ],
       citys: { citys: [] },
-      locationDetail: '请选择地址'
+      locationDetail: '请选择地址',
+      postData: {
+        receiver: '',
+        mobile: '',
+        provinceId: '',
+        cityId: '',
+        areaId: '',
+        townId: '',
+        subAdds: '111111',
+        commonAddr: '0',
+        status: 1
+
+      },
+      common: false
     }
   },
   components: {
@@ -124,6 +137,24 @@ export default {
         this.area[3].show = true
       }
     },
+    saveAdd: function() {
+      let header = {
+        "token": this.$store.state.loginUser.token,
+      }
+
+      this.$http({
+        method: 'POST',
+        url: this.$Api('/address/insertUserAddress'),
+        params: this.dataLast,
+        headers: header,
+        emulateJSON: true
+      }).then(function(data) {
+        this.$router.go(-1)
+      }, function(error) {
+        //error
+      })
+
+    },
     checkCitys: function(item, index) {
       // 点击tab时，修改选中状态
       this.area.forEach(function(n) {
@@ -131,7 +162,7 @@ export default {
       })
       item.select = true
       this.citys = item
-      
+
 
     },
     changeCity: function(nm, parent) {
@@ -143,19 +174,21 @@ export default {
         item.select = false
       })
       nm.select = true
-      console.log(this.citys.index)
+
       let num = this.citys.index
+      _this.area[num].selectedId = nm.id
+
       if (num < 3) {
-      	this.area.forEach(function(n) {
-            if(n.index>num+1){n.show = false}
-          })
+        this.area.forEach(function(n) {
+          if (n.index > num + 1) { n.show = false }
+        })
         _this.area[num + 1].show = true
         _this.area[num + 1].text = '请选择'
         if (num == 0) {
-          
+
           _this.area[1].citys = []
           this.$http.get(this.$Api('/address/getAllCitys'), { params: { 'id': nm.id } }).then((response) => {
-            console.log(response.data.data)
+
             for (var i in response.data.data) {
               let obj = { text: i, id: response.data.data[i], select: false }
               _this.area[1].citys.push(obj)
@@ -179,7 +212,7 @@ export default {
         } else {
           _this.area[3].citys = []
           this.$http.get(this.$Api('/address/getAllTowns'), { params: { 'id': nm.id } }).then((response) => {
-            console.log(response.data.data)
+
             if (response.data.data) {
 
               _this.area[3].show = true
@@ -193,6 +226,7 @@ export default {
               _this.locationDetail = ''
               _this.area[3].text = ''
               this.area.forEach(function(n) {
+
                 _this.locationDetail += n.text
               })
             }
@@ -215,12 +249,30 @@ export default {
         n.select = false
       })
       this.citys.select = true
+      console.log(this.area)
+    },
+    setCommon: function() {
+      this.common = !this.common
+      console.log(this.common)
     }
   },
   created: function() {
     this.init()
 
   },
+  computed: {
+    dataLast: function() {
+      let data = this.postData
+      data.provinceId = this.area[0].selectedId
+      data.cityId = this.area[1].selectedId
+      data.areaId = this.area[2].selectedId
+      data.townId = this.area[3].selectedId
+      if (this.common) {
+        data.commonAddr = '1'
+      }
+      return data
+    }
+  }
 
 }
 
@@ -257,6 +309,12 @@ export default {
   font-size: 14px;
   color: #ffffff;
   letter-spacing: 0;
+
+  overflow: hidden;
+  /*超出部分隐藏*/
+  white-space: nowrap;
+  /*不换行*/
+  text-overflow: ellipsis;
 }
 
 .setMoren {
@@ -265,7 +323,19 @@ export default {
   letter-spacing: 0;
   text-align: left;
   .setMorenCircle {
-    background: #1dafed;
+    background: #1dafed !important;
+    width: 4.2vw;
+    height: 4.2vw;
+    border-radius: 100%;
+    float: left;
+    margin-top: 4.5vw;
+    margin-left: 5vw;
+    margin-right: 3vw;
+  }
+  .morenCircle {
+    background: none;
+    border: 1px solid #1dafed;
+    box-sizing: border-box;
     width: 4.2vw;
     height: 4.2vw;
     border-radius: 100%;
@@ -352,6 +422,17 @@ export default {
 
 .citeActive {
   color: #1dafed
+}
+
+.addLocationBox-input {
+  float: left;
+  background: none;
+  color: white;
+  border: none;
+  height: 13.3vw;
+  width: 70.2vw;
+  line-height: 13.3vw;
+  outline: none !important;
 }
 
 </style>
