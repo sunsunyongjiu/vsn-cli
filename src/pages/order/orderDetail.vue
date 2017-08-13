@@ -1,79 +1,102 @@
 <template>
-  <div class="paddingBottom">
+  <div>
     <back title="订单详情"></back>
-    <div class="order-state">
-      <div style="margin-bottom:2vw;" v-text="order.state"></div>
-      <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div>
-    </div>
-    <div class="order-person">
-      <div class="order-person-title">
-        收货人信息
-      </div>
-      <div class="order-personText">
-        <div class="font-16 color-91">
-          Lucy 13776641789
+    <div class="paddingBottom" v-for="(items , key) in orderDetail" key="key">
+      <div class="order-state">
+        <div style="margin-bottom:2vw;">
+          {{items.status|changeStatus}}
         </div>
-        <div class="font-14 color-91">
-          上海市浦东新区金桥大厦湖南路54号万科小区3栋4单元1201
+        <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div>
+      </div>
+      <div class="order-person">
+        <div class="order-person-title">
+          收货人信息
         </div>
-      </div>
-    </div>
-    <div class="order-goods">
-      <div class="order-person-title">
-        商品信息
-      </div>
-      <div class="order-goodsText">
-        <div class="orders" v-for="(item,index) in orders" key='index' @click="goDetail(item.text)">
-          <div class="orders-left">
-            <img :src="item.img">
+        <div class="order-personText">
+          <div class="font-16 color-91">
+            <span v-text="items.address.RECEIVER"></span>
+            <span v-text="items.address.moble"></span>
           </div>
-          <div class="orders-mid">
-            <div class="font-16 df orders-mid-title" v-text="item.title"></div>
-            <div v-text="item.size"></div>
-            <div>数量：x<span v-text="item.count">1</span></div>
-            <div class="orders-mid-bottom">
-              <span class="basicColor font-16" v-text="item.point"></span>
-              <span class="font-9">积分</span>
+          <div class="font-14 color-91">
+            <span>
+            	{{items.address.province}}
+            	{{items.address.CITY}}
+            	{{items.address.area}}
+            	{{items.address.town}}
+            	{{items.address.subAdds}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="order-goods">
+        <div class="order-person-title">
+          商品信息
+        </div>
+        <div class="order-goodsText">
+          <div class="orders" v-for="(item,index) in items.prod" key='index' @click="goDetail(item.text)">
+            <div class="orders-left">
+              <img :src="item.pic">
+            </div>
+            <div class="orders-mid">
+              <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
+              <div v-for="(attr , n) in item.attribute">
+                <span v-text="attr.key"></span>:
+                <span v-text="attr.value"></span>
+              </div>
+              <div>数量：x<span v-text="item.basket_count">1</span></div>
+              <div class="orders-mid-bottom">
+                <span v-if="items.sellType==2">￥</span>
+                <span class="basicColor font-16" v-text="item.product_total_amout" v-if="items.sellType==1"></span>
+                <span class="font-9" v-if="items.sellType==1">积分</span>
+                <span class="font-9" v-if="items.sellType==2">.00</span>
+              </div>
+            </div>
+            <div class="order-line"></div>
+          </div>
+          <div class="order-fee">
+            <div class="order-fee-first">
+              <div class="order-fee-first-left">运费</div>
+              <div class="order-fee-first-right">￥<span v-text="items.freight_amount"></span>.00</div>
+            </div>
+            <div class="order-fee-second">
+              <div class="order-fee-first-left">实付款（含运费）</div>
+              <div class="order-fee-first-right">
+                <span v-if="items.sellType==2">￥</span>
+                <span class="font-18 basicColor" v-text="items.actual_total" v-if="items.sellType==1"></span>
+                <span v-if="items.sellType==1">积分</span>
+                <span v-if="items.sellType==2">.00</span>
+              </div>
             </div>
           </div>
-          <div class="order-line"></div>
         </div>
-        <div class="order-fee">
-          <div class="order-fee-first">
-            <div class="order-fee-first-left">运费</div>
-            <div class="order-fee-first-right">￥5.00</div>
+      </div>
+      <div class="order-info">
+        <div class="order-person-title">
+          订单信息
+        </div>
+        <div class="order-infoText">
+          <div class="font-14 color-91">
+            订单编号：<span v-text="items.sub_number"></span>
           </div>
-          <div class="order-fee-second">
-            <div class="order-fee-first-left">实付款（含运费）</div>
-            <div class="order-fee-first-right"><span class="font-18 basicColor">6000</span>积分</div>
+          <div class="font-14 color-91">
+            下单时间：<span v-text="items.sub_date"></span>
           </div>
         </div>
       </div>
-    </div>
-    <div class="order-info">
-      <div class="order-person-title">
-        订单信息
-      </div>
-      <div class="order-infoText">
-        <div class="font-14 color-91">
-          订单编号：60367890567888
+      <div class="bottom-btn">
+        <div class="bottom-btn-right" v-if='blueShow' v-text="blueText">
+          立即支付
         </div>
-        <div class="font-14 color-91">
-          下单时间：2017-08-02 15:57:09
+        <div class="bottom-btn-left" v-text="btnCancle" v-if="greyShow">
         </div>
-      </div>
-    </div>
-    <div class="bottom-btn">
-      <div class="bottom-btn-right" v-if='blueShow' v-text="blueText">
-        立即支付
-      </div>
-      <div class="bottom-btn-left" v-text="btnCancle" v-if="greyShow">
       </div>
     </div>
   </div>
 </template>
 <script>
 import back from '../../components/backNav'
+import md5 from 'js-md5';
+const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
   data() {
@@ -86,14 +109,15 @@ export default {
         text: '等待兑换',
         count: 1,
       }],
+      orderDetail: {},
       timeShow: true,
       order: {
         state: "等待付款"
       },
       btnCancle: '取消订单',
-      blueText:'立即兑换',
-      blueShow:true,
-      greyShow:true
+      blueText: '立即兑换',
+      blueShow: true,
+      greyShow: true
     }
   },
   components: {
@@ -102,27 +126,67 @@ export default {
   methods: {
 
   },
-  mounted: function() {
-  	console.log(this.$route.query.title)
-    if (this.$route.query.title == 0) {
-
-    } else if (this.$route.query.title == "已兑换") {
-      this.blueShow = false
-      this.order.state = "已付款"
-      this.btnCancle = "申请退换货"
-    }else if (this.$route.query.title == "交易成功") {
-      this.blueShow=true
-      this.timeShow=false
-      this.greyShow=false
-      this.order.state = "交易成功"
-      this.blueText = "申请发票"
-    }else if (this.$route.query.title == "交易关闭") {
-      this.blueShow=false
-      this.timeShow=false
-      this.greyShow=true
-      this.order.state = "交易关闭"
-      this.btnCancle = "删除订单"
+  filters: {
+    changeStatus: function(n) {
+      if (n === 1) {
+        return '等待兑换'
+      } else if (n === 2) {
+        return '已兑换'
+      } else if (n === 3) {
+        return '已兑换'
+      } else if (n === 4) {
+        return '交易成功'
+      } else if (n === 5) {
+        return '交易关闭'
+      } else {
+        return '退换货'
+      }
     }
+  },
+  mounted: function() {
+    console.log(this.$route.query.sub_number)
+
+    this.$http.get(this.$Api('/order/getOrderDetail'), {
+      params: { 'subNumber': this.$route.query.sub_number },
+      headers: {
+        "token": this.$store.state.loginUser.token,
+        "time": timer,
+        "sign": md5("/order/getOrderDetail" + this.$store.state.loginUser.token + timer).toUpperCase()
+      }
+    }).then((response) => {
+      console.log(response.data.data)
+      this.orderDetail = response.data.data
+      this.orderDetail.forEach(function(n) {
+        n.totalCount = 0
+        n.prod.forEach(function(x) {
+          x.attribute = JSON.parse(x.attribute)
+          n.totalCount += x.basket_count
+        })
+      })
+      console.log(response.data.data[0].status)
+      if (response.data.data[0].status == 1) {
+
+      } else if (response.data.data[0].status == 2) {
+
+        this.blueShow = false
+
+        this.btnCancle = "申请退换货"
+      } else if (response.data.data[0].status == 4) {
+        this.blueShow = true
+        this.timeShow = false
+        this.greyShow = false
+        this.blueText = "申请发票"
+      } else if (response.data.data[0].status == 5) {
+        this.blueShow = false
+        this.timeShow = false
+        this.greyShow = true
+        this.btnCancle = "删除订单"
+      }
+    }, (response) => {
+      // error callback
+    });
+    console.log(this.orderDetail)
+
 
     console.log(this.$route.query.title)
 
@@ -299,7 +363,7 @@ export default {
     float: right;
     border: 1px solid #919191;
     border-radius: 0 1px 1px 1px;
-   
+
     margin-right: 5vw;
     font-size: 16px;
     color: #919191;
@@ -313,7 +377,9 @@ export default {
     color: #ffffff;
   }
 }
-.paddingBottom{
-	padding-bottom: 14.9vw
+
+.paddingBottom {
+  padding-bottom: 14.9vw
 }
+
 </style>

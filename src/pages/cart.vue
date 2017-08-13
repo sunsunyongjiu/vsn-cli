@@ -57,6 +57,7 @@ import { Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
 import back from '../components/backNav'
 import { Tab, TabItem } from 'vux'
 import md5 from 'js-md5';
+const timer=JSON.stringify(new Date().getTime())
 export default {
   name: '',
   data () {
@@ -79,8 +80,8 @@ export default {
       // 设置header
       let header={
         "token":this.$store.state.loginUser.token,
-        "time":JSON.stringify(new Date().getTime()),
-        "sign":md5("/order/deleteBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime())).toUpperCase()
+        "time":timer,
+        "sign":md5("/order/deleteBasket"+this.$store.state.loginUser.token+timer).toUpperCase()
       }
       // 设置传值
       let cartData={
@@ -103,6 +104,7 @@ export default {
       })
     },
     goPlus:function(item,n){
+      item.selected=true
       if(n>0){
         item.count++
       }else if(item.count<=1){
@@ -110,10 +112,11 @@ export default {
       }else{
         item.count--
       }
-
+      
       let header={
-        "token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),
-        "sign":md5("/order/updateBasketCount"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime())).toUpperCase()
+        "token":this.$store.state.loginUser.token,
+        "time":timer,
+        "sign":md5("/order/updateBasketCount"+this.$store.state.loginUser.token+timer).toUpperCase()
       }
       // 设置传值
       let cartData={
@@ -164,11 +167,12 @@ export default {
 
     init:function(){
       // 设置header
+      let timer=JSON.stringify(new Date().getTime())
       let header={
         headers:{
           "token":this.$store.state.loginUser.token,
-          "time":JSON.stringify(new Date().getTime()),
-          "sign":md5("/order/getBasketList"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime())).toUpperCase()
+          "time":timer,
+          "sign":md5("/order/getBasketList"+this.$store.state.loginUser.token+timer).toUpperCase()
         }
       }
       this.$http.get(this.$Api('/order/getBasketList'),header).then((response) => {

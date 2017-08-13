@@ -11,35 +11,48 @@
       </tab>
     </div>
     <div>
-      <div class="orderList">
-        <div class="orders" v-for="(item,index) in orders" key='index' @click="goDetail(item.text)">
+      <div class="orderList" v-for="(items,key ) in orderLists" key="key">
+        <div class="orders" v-for="(item,index) in items.prod" key='index' @click="goDetail(items)">
           <div class="orders-left">
-            <img :src="item.img">
+            <img :src="item.pic">
           </div>
           <div class="orders-mid">
-            <div class="font-16 df orders-mid-title" v-text="item.title"></div>
-            <div v-text="item.size"></div>
-            <div>数量：x<span v-text="item.count">1</span></div>
+            <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
+            <div v-for="(attr,x) in item.attribute">
+              <span v-text="attr.key"></span>:
+              <span v-text="attr.value"></span>
+            </div>
+            <div>数量：x<span v-text="item.basket_count"></span></div>
             <div class="orders-mid-bottom">
-              <span class="basicColor font-16" v-text="item.point"></span>
-              <span class="font-9">积分</span>
+              <span v-if="items.sellType==2">￥</span>
+              <span class="basicColor font-16" v-text="item.product_total_amout"></span>
+              <span class="font-9" v-if="items.sellType==1">积分</span>
+              <span class="font-9" v-if="items.sellType==2">.00</span>
             </div>
           </div>
-          <div class="orders-right" v-text="item.text">
+          <div class="orders-right">
+            {{items.status|changeStatus}}
           </div>
           <div class="order-line"></div>
         </div>
         <div>
           <div class="order-btns">
             <div class="left">
-              共2件商品 小计:
-              <span class="font-14 basicColor">12000</span>
-              <span class="font-9 color-9b">积分</span>
+              共<span v-text="items.totalCount"></span>件商品 小计:
+              <span v-if="items.sellType==2">￥</span>
+              <span class="font-14 basicColor" v-text="items.actual_total"></span>
+              <span class="font-9 color-9b" v-if="items.sellType==1">积分</span>
+              <span class="font-9" v-if="items.sellType==2">.00</span>
             </div>
             <div v-if="btnsShow">
-              <div class="order-btns-goChange" v-text="changeText">去兑换</div>
-              <div class="order-btns-goChange" v-text="returnText" v-if="returnShow">退换货</div>
-              <div class="order-btns-cancle" v-text="cancleText" v-else="returnShow">取消订单</div>
+              <div class="order-btns-goChange" v-if="items.status==1||items.status==2">
+
+                <span v-if="items.status==1||items.status==4">去兑换</span>
+                <span v-if="items.status==2">确认收货</span>
+              </div>
+              <div class="order-btns-cancle1" v-if="items.status==3">已自动确认收货</div>
+              <div class="order-btns-goChange" v-text="returnText" v-if="items.status==2||items.status==3">退换货</div>
+              <div class="order-btns-cancle" v-text="cancleText" v-if="items.status==1">取消订单</div>
             </div>
           </div>
         </div>
@@ -50,32 +63,19 @@
 <script>
 import back from '../components/backNav'
 import { Tab, TabItem } from 'vux'
+import md5 from 'js-md5';
+const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
   data() {
     return {
-      orders: [{
-          img: require('../assets/imgs/goods.png'),
-          title: '罗马手表111111111111111111111',
-          size: "颜色:贵族金",
-          point: 6000,
-          text: '等待兑换',
-          count: 1
-        },
-        {
-          img: require('../assets/imgs/goods.png'),
-          title: '罗马手表111111111111111111111',
-          size: "颜色:贵族金",
-          point: 6000,
-          text: '等待兑换',
-          count: 1
-        }
-      ],
+      orderLists: {},
       cancleText: '取消订单',
       changeText: '去兑换',
       returnText: '退换货',
       returnShow: false,
-      btnsShow: true
+      btnsShow: true,
+      status: 1
     }
   },
   components: {
@@ -87,35 +87,65 @@ export default {
     changeItem: function(index) {
       let _this = this
       _this.btnsShow = true
-      this.orders.forEach(function(n, m) {
-        if (index == 0) {
-          n.text = "等待兑换"
-          _this.returnShow = false
+      if (index < 2) {
+        this.status = index + 1
+      } else {
+        this.status = index + 2
+      }
 
-        } else if (index == 1) {
-          n.text = "已兑换"
-          _this.returnShow = true
-          _this.changeText = '确认收货'
-        } else if (index == 2) {
-          n.text = "交易成功"
-          _this.btnsShow = false
-        } else if (index == 3) {
-
-          n.text = "交易关闭"
-          _this.btnsShow = false
-        } else {
-          n.text = ""
-        }
-      })
+      console.log(this.status)
+      this.init()
     },
-    goDetail:function(n){
-        this.$router.push({ path: '/orderDetail', query: { 'title': n } })
+    goDetail: function(n) {
+        console.log(n)
+      this.$router.push({ path: '/orderDetail', query: { 'sub_number': n.sub_number } })
+    },
+    init: function() {
+      this.$http.get(this.$Api('/order/getOrderList'), {
+        params: { 'status': this.status },
+        headers: {
+          "token": this.$store.state.loginUser.token,
+          "time": timer,
+          "sign": md5("/order/getOrderList" + this.$store.state.loginUser.token + timer).toUpperCase()
+        }
+      }).then((response) => {
+        console.log(response)
+        this.orderLists = response.data.data
+        this.orderLists.forEach(function(n) {
+          n.totalCount = 0
+          n.prod.forEach(function(x) {
+            x.attribute = JSON.parse(x.attribute)
+            n.totalCount += x.basket_count
+          })
+        })
+
+      }, (response) => {
+        // error callback
+      });
     }
   },
   mounted: function() {
+    this.init()
 
-
+  },
+  filters: {
+    changeStatus: function(n) {
+      if (n === 1) {
+        return '等待兑换'
+      } else if (n === 2) {
+        return '已兑换'
+      } else if (n === 3) {
+        return '已兑换'
+      } else if (n === 4) {
+        return '交易成功'
+      } else if (n === 5) {
+        return '交易关闭'
+      } else {
+        return '退换货'
+      }
+    }
   }
+
 }
 
 </script>
@@ -186,7 +216,7 @@ export default {
   opacity: 0.3;
   width: 100%;
   height: 1px;
-  background:#4a4a4a;
+  background: #4a4a4a;
   /*background: green;*/
   clear: both;
   position: absolute;
@@ -231,6 +261,17 @@ export default {
   .order-btns-goChange {
     border: 1px solid #1dafed;
     color: #1dafed
+  }
+  .order-btns-cancle1 {
+    float: right;
+
+    width: 25vw;
+    margin-left: 2.6vw;
+    line-height: 5.8vw;
+    box-sizing: border-box;
+    text-align: center;
+    border: #737373 1px solid;
+    color: #737373;
   }
 }
 

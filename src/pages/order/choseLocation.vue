@@ -9,7 +9,7 @@
           </div>
           <div slot="content" class="locations">
             <div>
-              <div class="locationsLeft">
+              <div class="locationsLeft" @click="setAddr(item)">
                 <span v-text="item.RECEIVER" class="font-16"></span>
                 <span v-text="item.moble" class="font-16"></span>
                 <div>
@@ -18,7 +18,7 @@
                   </span>
                 </div>
               </div>
-              <div class="locationsRight" @click="addLocation(1)">
+              <div class="locationsRight" @click="addLocation(1,item)">
                 <img src="../../assets/imgs/edit.png">
               </div>
             </div>
@@ -36,12 +36,13 @@
 <script>
 import back from '../../components/backNav'
 import { Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
+import md5 from 'js-md5';
+const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
   data() {
     return {
-      locationList: [
-      ]
+      locationList: []
     }
   },
   components: {
@@ -51,21 +52,54 @@ export default {
     SwipeoutButton
   },
   methods: {
-    addLocation: function(edit) {
+    addLocation: function(edit,item) {
+    	if(edit){
+    		this.$store.dispatch({ type: 'setEditAddr', data: item })
+    	}
       this.$router.push({ path: '/addLocation', query: { 'edit': edit } })
     },
     deleteItem: function(item) {
       console.log(item)
+      let header = {
+        "token": this.$store.state.loginUser.token,
+        "time": timer,
+        "sign": md5("/address/deleteUserCommonAdd" + this.$store.state.loginUser.token + timer).toUpperCase()
+      }
+      // 设置传值
+      let cartData = {
+        'addrId': item.addrId,
+        
+      }
+
+      this.$http({
+        method: 'POST',
+        url: this.$Api('/address/deleteUserCommonAdd'),
+        params: cartData,
+        headers: header,
+        emulateJSON: true
+      }).then(function(data) { //es5写法
+       this.init()
+      }, function(error) {
+        //error
+      })
+    },
+    setAddr: function(item) {
+      console.log(item)
+      this.$store.dispatch({ type: 'setAddr', data: item })
+      this.$router.go(-1)
     },
     init: function() {
       let header = {
         headers: {
           "token": this.$store.state.loginUser.token,
+          "time": timer,
+          "sign": md5("/address/getUserAllAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }
       this.$http.get(this.$Api('/address/getUserAllAddress'), header).then((response) => {
-      		console.log(response.data.data)
-      		this.locationList=response.data.data
+        console.log(response)
+        console.log(response.data.data)
+        this.locationList = response.data.data
       }, (response) => {
         // error callback
       });
@@ -126,9 +160,11 @@ export default {
   bottom: 10vw;
   left: 5vw;
 }
-.locationList{
-	padding-bottom: 24vw;
+
+.locationList {
+  padding-bottom: 24vw;
 }
+
 .cha {
   font-size: 26px
 }

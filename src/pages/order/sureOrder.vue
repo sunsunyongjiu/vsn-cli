@@ -56,6 +56,8 @@
 <script>
 import back from '../../components/backNav'
 import md5 from 'js-md5';
+import { mapGetters } from 'vuex'
+const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
   data() {
@@ -63,7 +65,15 @@ export default {
       goods: [
 
       ],
-      commonAdd: {}
+      commonAdd: {
+        RECEIVER: '暂无地址，请添加收货地址',
+        moble: '',
+        province: '',
+        CITY: '',
+        area: '',
+        town: '',
+        subAdds: ''
+      }
     }
   },
   components: {
@@ -74,16 +84,16 @@ export default {
 
       let header = {
         "token": this.$store.state.loginUser.token,
-        "time": JSON.stringify(new Date().getTime()),
-        "sign": md5("/order/insertOrderNo" + this.$store.state.loginUser.token + JSON.stringify(new Date().getTime())).toUpperCase()
+        "time": timer,
+        "sign": md5("/order/insertOrderNo" + this.$store.state.loginUser.token + timer).toUpperCase()
       }
       // 设置传值
       let cartData = {
-        basketIds:this.$route.query.selectIds,
-        addrId:this.commonAdd.addrId,
-        total:this.total
+        basketIds: this.$route.query.selectIds,
+        addrId: this.commonAdd.addrId,
+        total: this.total
       }
-      
+
       this.$http({
         method: 'POST',
         url: this.$Api('/order/insertOrderNo'),
@@ -92,13 +102,13 @@ export default {
         emulateJSON: true
       }).then(function(data) {
         console.log(data)
-        
+
         this.$router.push({ path: '/pay' })
       }, function(error) {
         //error
       })
 
-      
+
     },
     goLocation: function() {
       this.$router.push({ path: '/choseLocation' })
@@ -109,12 +119,12 @@ export default {
         params: { 'basketIds': this.$route.query.selectIds },
         headers: {
           "token": this.$store.state.loginUser.token,
-          "time": JSON.stringify(new Date().getTime()),
-          "sign": md5("/order/getBasketListSelected" + this.$store.state.loginUser.token + JSON.stringify(new Date().getTime())).toUpperCase()
+          "time": timer,
+          "sign": md5("/order/getBasketListSelected" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }).then((response) => {
         this.goods = response.data.data
-        console.log(response.data.data)
+
       }, (response) => {
         // error callback
       });
@@ -122,13 +132,26 @@ export default {
       let header = {
         headers: {
           "token": this.$store.state.loginUser.token,
+          "time": timer,
+          "sign": md5("/address/getDefaultAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }
-      this.$http.get(this.$Api('/address/getDefaultAddress'), header).then((response) => {
-        this.commonAdd = response.data.data
-      }, (response) => {
-        // error callback
-      });
+      if (this.addr.CITY) {
+        this.commonAdd=this.addr
+      } else {
+        this.$http.get(this.$Api('/address/getDefaultAddress'), header).then((response) => {
+
+          if (response.data.data != null) {
+            this.commonAdd = response.data.data
+          } else {
+
+          }
+
+        }, (response) => {
+          // error callback
+        });
+      }
+
 
     }
   },
@@ -143,7 +166,12 @@ export default {
         num += (n.basket_count * n.point)
       })
       return num
-    }
+    },
+    // 使用对象展开运算符将 getters 混入 computed 对象中
+    ...mapGetters({
+      addr: 'getAddr'
+
+    })
   }
 }
 

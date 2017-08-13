@@ -85,6 +85,7 @@ import myNav from '../components/nav'
 import { state } from 'vuex'
 import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, Search } from 'vux'
 import { mapGetters } from 'vuex'
+import Apis from '../configers/Api'
 import EnJson from "../configers/En"
 
 const imgList = [
@@ -218,31 +219,28 @@ export default {
       this.$router.push({ path: '/search', query: { 'search': this.searchValue } })
     },
     init: function() {
-
       //判断当前用户是否登录
       let userToken = this.$route.query.token
       let user = this.$route.query.user
       let pandunLogin = this.$store.state.loginUser.name == undefined
 
       if (userToken && user && pandunLogin) {
-        this.$http.post(this.$Api('/login'), { token: userToken, 'user': user }, { emulateJSON: true }).then((response) => {
-          if (response.data.code === 1) {
+        Apis.login({ token: userToken, 'user': user }).then(data => {
+          console.log(data.code)
+          if (data.code === 1) {
             this.login = true
-            let userDetail = response.data.data
+            let userDetail = data.data
             userDetail.token = this.$route.query.token
             this.$store.dispatch({ type: 'setLogin', data: userDetail })
-          } else {
-            return
           }
-
-        }, (error) => {
-          console.log(error);
-        });
+        })
       } else if (!pandunLogin) {
         this.login = true
       } else {
         this.login = false
       }
+
+
       //初始化时候调取imgurl
       this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
         let imgList = response.data.data
@@ -321,6 +319,5 @@ a {
 .english {
   font-family: english !important
 }
-
 
 </style>

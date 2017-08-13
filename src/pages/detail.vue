@@ -88,7 +88,7 @@
 <script>
 import md5 from 'js-md5';
 import { Swiper, SwiperItem,Grid, GridItem, GroupTitle,Flexbox, FlexboxItem, Divider,ViewBox,TransferDom, Popup, Group, Cell, XButton,Checker, CheckerItem} from 'vux'
-
+const timer=JSON.stringify(new Date().getTime())
 export default {
   name: '',
   directives: {
@@ -173,9 +173,11 @@ export default {
       if(this.$store.state.loginUser["ucid"] != undefined){
         // 在登陆条件下跳转购物车
           // 设置header
+          
         let header={
           "token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),
-          "sign":md5("/order/insertBasket"+this.$store.state.loginUser.token+JSON.stringify(new Date().getTime())).toUpperCase()
+          "time":timer,
+          "sign":md5("/order/insertBasket"+this.$store.state.loginUser.token+timer).toUpperCase()
         }
         // 设置传值
         let cartData={
@@ -191,10 +193,11 @@ export default {
             headers: header,
             emulateJSON: true
         }).then(function(data){//es5写法
+          console.log(data.data)
           if(this.isCart){
             this.$router.push({path:'/cart'})
           }else{
-            this.$router.push({path:'/sureOrder'})
+            this.$router.push({path:'/sureOrder',query: { 'selectIds': data.data } })
           }    
         },function(error){
           //error
@@ -211,6 +214,8 @@ export default {
       
     },
     init:function(){
+      console.log(window.location.href)
+      console.log(window.location.hash)
       console.log(this.$store.state.loginUser.token)
       let _this=this
       this.$http.get(this.$Api('/home/getProdDetail'),{params: { 'prodId': this.$route.query.prod_id }}).then((response) => {

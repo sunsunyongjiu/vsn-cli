@@ -47,7 +47,9 @@
 <script>
 import back from '../../components/backNav'
 import { TransferDom, Popup, Scroller, Tab, TabItem } from 'vux'
-
+import { mapGetters } from 'vuex'
+import md5 from 'js-md5';
+const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
   directives: {
@@ -83,7 +85,7 @@ export default {
         cityId: '',
         areaId: '',
         townId: '',
-        subAdds: '111111',
+        subAdds: '',
         commonAddr: '0',
         status: 1
 
@@ -105,6 +107,23 @@ export default {
       let _this = this
       if (this.$route.query.edit) {
         this.addTitle = "编辑地址"
+        console.log(this.editAddr)
+        this.postData.receiver = this.editAddr.RECEIVER
+        this.postData.mobile = this.editAddr.moble
+        this.postData.subAdds = this.editAddr.SUB_ADDS
+        this.postData.addrId = this.editAddr.addrId
+        this.postData.provinceId = this.editAddr.provinceId
+        this.postData.cityId = this.editAddr.cityId
+        this.postData.areaId = this.editAddr.areaId
+        this.postData.townId = this.editAddr.townId
+        if (this.editAddr.town) {
+          this.locationDetail = this.editAddr.province + this.editAddr.CITY + this.editAddr.area + this.editAddr.town
+        } else {
+          this.locationDetail = this.editAddr.province + this.editAddr.CITY + this.editAddr.area
+        }
+
+
+
       }
       document.title = this.addTitle
 
@@ -140,19 +159,45 @@ export default {
     saveAdd: function() {
       let header = {
         "token": this.$store.state.loginUser.token,
+        "time": timer,
+        "sign": md5("/address/insertUserAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
       }
 
-      this.$http({
-        method: 'POST',
-        url: this.$Api('/address/insertUserAddress'),
-        params: this.dataLast,
-        headers: header,
-        emulateJSON: true
-      }).then(function(data) {
-        this.$router.go(-1)
-      }, function(error) {
-        //error
-      })
+      let header1 = {
+        "token": this.$store.state.loginUser.token,
+        "time": timer,
+        "sign": md5("/address/updateUserAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
+      }
+      // 当为编辑模式时
+      if (this.$route.query.edit) {
+      	this.$http({
+          method: 'POST',
+          url: this.$Api('/address/updateUserAddress'),
+          params: this.dataLast,
+          headers: header1,
+          emulateJSON: true
+        }).then(function(data) {
+          console.log(data)
+          this.$router.go(-1)
+        }, function(error) {
+          //error
+        })
+
+      } else {
+        this.$http({
+          method: 'POST',
+          url: this.$Api('/address/insertUserAddress'),
+          params: this.dataLast,
+          headers: header,
+          emulateJSON: true
+        }).then(function(data) {
+          console.log(data)
+          this.$router.go(-1)
+        }, function(error) {
+          //error
+        })
+
+      }
 
     },
     checkCitys: function(item, index) {
@@ -271,7 +316,12 @@ export default {
         data.commonAddr = '1'
       }
       return data
-    }
+    },
+    // 使用对象展开运算符将 getters 混入 computed 对象中
+    ...mapGetters({
+      editAddr: 'getEditAddr'
+
+    })
   }
 
 }
