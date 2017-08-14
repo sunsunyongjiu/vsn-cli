@@ -8,6 +8,19 @@
         </div>
         <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div>
       </div>
+      <div class="order-info" v-if="items.sellType==1">
+        <div class="order-person-title">
+          订单信息
+        </div>
+        <div class="order-infoText">
+          <div class="font-14 color-91">
+            订单编号：<span v-text="items.sub_number"></span>
+          </div>
+          <div class="font-14 color-91">
+            下单时间：<span v-text="items.sub_date"></span>
+          </div>
+        </div>
+      </div>
       <div class="order-person">
         <div class="order-person-title">
           收货人信息
@@ -70,7 +83,7 @@
           </div>
         </div>
       </div>
-      <div class="order-info">
+      <div class="order-info" v-if="items.sellType!=1">
         <div class="order-person-title">
           订单信息
         </div>
@@ -336,8 +349,11 @@ export default {
 }
 
 .order-info {
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+	margin-bottom: 5vw;
   .order-infoText {
     padding-top: 5vw;
+    padding-bottom: 5vw;
     text-align: left;
     padding-left: 5vw;
     line-height: 20px

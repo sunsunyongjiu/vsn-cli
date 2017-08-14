@@ -183,8 +183,8 @@ export default {
 	.left{
 		float: left;
 		img{
-			margin-top: 5vw;
-			width: 32.2vw
+			/*margin-top: 5vw;*/
+			max-width: 100%
 		}
 	}
 	.right{

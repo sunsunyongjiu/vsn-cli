@@ -52,7 +52,7 @@
               </div>
               <div class="order-btns-cancle1" v-if="items.status==3">已自动确认收货</div>
               <div class="order-btns-goChange" v-text="returnText" v-if="items.status==2||items.status==3">退换货</div>
-              <div class="order-btns-cancle" v-text="cancleText" v-if="items.status==1">取消订单</div>
+              <!-- <div class="order-btns-cancle" v-text="cancleText" v-if="items.status==1">取消订单</div> -->
             </div>
           </div>
         </div>

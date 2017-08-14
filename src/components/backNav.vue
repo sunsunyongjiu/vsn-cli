@@ -1,36 +1,34 @@
 <template>
-  	<div class="pageTitle">
-	  <span v-text="title"></span>
-	  <div class="back" @click="goback"></div>
-	</div>
+  <div class="pageTitle">
+    <span v-text="title"></span>
+    <div class="back" @click="goback"></div>
+  </div>
 </template>
-
 <script>
-
 export default {
   name: '',
-  data () {
+  data() {
     return {
-    	
+
     }
   },
-  components:{
-    
+  components: {
+
   },
-  methods:{
-    goback:function(){
+  methods: {
+    goback: function() {
       console.log(1)
       this.$router.go(-1)
     },
-  },          
-  mounted:function(){
-    
+  },
+  mounted: function() {
+
 
   },
-  props:['title']
+  props: ['title']
 }
-</script>
 
+</script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
 
