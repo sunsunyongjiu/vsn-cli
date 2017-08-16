@@ -8,7 +8,7 @@
       <span v-text="loginUser.name" class="font-16 fff"></span>
     </div>
     <div class="personal-title-point">
-      <!-- <img src="../assets/imgs/top.png"> -->
+      <img src="../assets/imgs/s_integral.png">
       <span v-text="loginUser.score">
         
       </span>
@@ -23,27 +23,35 @@
     </div>
     <div class="detailBox">
       <div class="details">
-        <div class="details-left">会员名称</div>
+        <div class="details-left">
+          <img src="../assets/imgs/member.png" class="personal-img"> 会员名称
+        </div>
         <div v-text="loginUser.name" class='details-right'></div>
       </div>
       <div class="line"></div>
       <div class="details">
-        <div class="details-left">会员等级</div>
+        <div class="details-left">
+          <img src="../assets/imgs/level.png" class="personal-img"> 会员等级
+        </div>
         <div v-text="loginUser.grade" class='details-right'></div>
       </div>
       <div class="line"></div>
       <div class="details">
-        <div class="details-left">联系方式</div>
+        <div class="details-left"><img src="../assets/imgs/phone.png" class="personal-img"> 联系方式
+        </div>
         <div v-text="loginUser.mobile" class='details-right'></div>
       </div>
       <div class="line"></div>
       <div class="details">
-        <div class="details-left">可用积分</div>
+        <div class="details-left"><img src="../assets/imgs/integral.png" class="personal-img"> 可用积分
+        </div>
         <div v-text="loginUser.score" class='details-right'></div>
       </div>
       <div class="line"></div>
       <div class="details">
-        <div class="details-left">收货地址</div>
+        <div class="details-left">
+          <img src="../assets/imgs/location.png" class="personal-img"> 收货地址
+        </div>
         <div class='details-right' @click="goLocation">管理我的收货地址 &gt;</div>
       </div>
     </div>
@@ -108,20 +116,20 @@ export default {
     background: #4a4a4a;
     width: 100%;
   }
-  .details{
+  .details {
     height: 19.7vw;
     line-height: 19.7vw;
-    .details-left{
+    .details-left {
       float: left;
-      font-size:14px;
-color:#ffffff;
-text-align:left;
+      font-size: 14px;
+      color: #ffffff;
+      text-align: left;
     }
-    .details-right{
+    .details-right {
       float: right;
-      font-size:13px;
-color:#878787;
-text-align:right;
+      font-size: 13px;
+      color: #878787;
+      text-align: right;
     }
   }
 }
@@ -138,28 +146,41 @@ text-align:right;
   color: #ffffff;
   letter-spacing: 0;
   text-align: center;
-
+  img {
+    height: 100%;
+    vertical-align: middle;
+  }
 }
-.personal-title-googs{
-  border:1px solid #1dafed;
-border-top-left-radius:100px;
-border-bottom-left-radius:100px;
-width:35vw;
-height:6vw;
-line-height: 6vw;
-font-size:11px;
-color:#1dafed;
-letter-spacing:0;
-text-align:center;
-position: absolute;
-right: 0;
-border-right: 0;
 
+.personal-title-googs {
+  border: 1px solid #1dafed;
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
+  width: 35vw;
+  height: 6vw;
+  line-height: 6vw;
+  font-size: 11px;
+  color: #1dafed;
+  letter-spacing: 0;
+  text-align: center;
+  position: absolute;
+  right: 0;
+  border-right: 0;
 }
-.personal-title-googsBox{
-  height: 10.6vw;
+
+.personal-title-googsBox {
+  height: 13.6vw;
   width: 100%;
   position: relative;
   overflow: hidden;
+  background: url('../assets/imgs/loading.png') no-repeat bottom;
+  background-size: 100%;
+
 }
+
+.personal-img {
+  height: 18px;
+  vertical-align: middle;
+}
+
 </style>

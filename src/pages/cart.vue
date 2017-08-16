@@ -3,11 +3,13 @@
     <div class="pageTitle">
       <span>购物车</span>
       <div class="back" @click="goback"></div>
-      <div class="pageTitle-deleteBtn" @click="deleteAll">删除</div>
+      <div class="pageTitle-deleteBtn" @click="deleteAll">
+        <img src="../assets/imgs/delete.png" class="personal-img">
+      </div>
     </div>
     <div class="tab">
-      <div class="tab-bar selected">积分</div>
-      <div class="tab-bar">现金</div>
+      <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分</div>
+      <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">现金</div>
     </div>
     <div class="goods-list">
       <swipeout class="vux-1px-tb cart-swiper-out" v-for="(item,index) in goodsList" key=index>
@@ -26,7 +28,10 @@
               <div class="font-10 color-92" v-for="i in item.size">
                 <span v-text="i.key"></span>: <span v-text="i.value"></span>
               </div>
-              <div class="point">
+              <div class="point" v-if="item.sellType==0">
+                <span class="df font-9">￥</span><span v-text="item.cash" class="font-18 df"></span><span class="font-9 color-9b">.00</span>
+              </div>
+              <div class="point" v-if="item.sellType==1">
                 <span v-text="item.point" class="font-18 df"></span><span class="font-9 color-9b">积分</span>
               </div>
               <div class="plus">
@@ -45,15 +50,24 @@
         <div class="choose-btn" :class="{selectedAll:selectedAll}"></div>
         <div class="bottom-left">全选</div>
       </div>
-      <span class="font-14 fff">合计:</span> <span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
+      <div v-if="selectePoint" class="bottom-mid">
+        <span class="font-14 fff">合计:</span> <span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
+      </div>
+      <div v-if="!selectePoint" class="bottom-mid">
+        <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">.00</span>
+      </div>
       <div class="bottom-right" @click="goSure">兑换</div>
     </div>
+    <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
+      <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品</p>
+      <p style="text-align:left;color:#737373">确认删除选中的商品吗？</p>
+    </confirm>
   </div>
 </template>
 <script>
-import { Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
+import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm } from 'vux'
 import back from '../components/backNav'
-import { Tab, TabItem } from 'vux'
+
 import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime())
 export default {
@@ -63,6 +77,8 @@ export default {
       goodsList: [
 
       ],
+      show: false,
+      selectePoint: true
     }
   },
   components: {
@@ -71,17 +87,26 @@ export default {
     TabItem,
     Swipeout,
     SwipeoutItem,
-    SwipeoutButton
+    SwipeoutButton,
+    Confirm
   },
   methods: {
-    deleteAll: function() {
-      let str=''
+    onCancel: function() {
+      console.log(2)
+    },
+    onConfirm: function() {
+      let str = ''
       this.goodsList.forEach(function(item) {
-        str+=','+item.basketId
+        str += ',' + item.basketId
 
       })
-   
       this.onButtonClick(str.substr(1))
+    },
+    deleteAll: function() {
+      this.show = true
+
+
+
     },
     onButtonClick(item) {
       // 设置header
@@ -165,19 +190,26 @@ export default {
 
     },
     goSure: function() {
-      let str = ''
-      this.goodsList.forEach(function(n) {
-        if (n.selected) {
-          str += (',' + n.basketId)
-        }
-      })
-      console.log(str.slice(1))
+      console.log(this.sameShop != false)
+      if (this.sameShop != false) {
+        let str = ''
+        this.goodsList.forEach(function(n) {
+          if (n.selected) {
+            str += (',' + n.basketId)
+          }
+        })
+        console.log(str.slice(1))
 
-      this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
+        this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
+      }else{
+        alert('请选择同一家店的产品！')
+      }
+
     },
 
     init: function() {
       // 设置header
+      let _this = this
       let timer = JSON.stringify(new Date().getTime())
       let header = {
         headers: {
@@ -191,17 +223,21 @@ export default {
         let arr = []
         console.log(response.data.data)
         response.data.data.forEach(function(item) {
-
-          let obj = {
-            pic: item.pic,
-            title: item.prod_name,
-            size: JSON.parse(item.attribute),
-            point: item.point,
-            count: item.basket_count,
-            selected: true,
-            basketId: item.basket_id
+          if (item.sellType == _this.checkType) {
+            let obj = {
+              pic: item.pic,
+              title: item.prod_name,
+              size: JSON.parse(item.attribute),
+              point: item.point,
+              count: item.basket_count,
+              selected: true,
+              basketId: item.basket_id,
+              sellType: item.sellType,
+              cash: item.cash
+            }
+            arr.push(obj)
           }
-          arr.push(obj)
+
         })
         this.goodsList = arr
         this.$vux.loading.hide()
@@ -209,6 +245,11 @@ export default {
         // error callback
       });
 
+    }
+  },
+  watch: {
+    selectePoint() {
+      this.init();
     }
   },
   mounted: function() {
@@ -220,12 +261,21 @@ export default {
   computed: {
     totalPoint: function() {
       let total = 0
-      this.goodsList.forEach(function(item) {
-        if (item.selected) {
-          total += (item.point * item.count)
-        }
+      if (this.checkType) {
+        this.goodsList.forEach(function(item) {
+          if (item.selected) {
+            total += (item.point * item.count)
+          }
 
-      })
+        })
+      } else {
+        this.goodsList.forEach(function(item) {
+          if (item.selected) {
+            total += (item.cash * item.count)
+          }
+
+        })
+      }
       return total
     },
     selectedAll: function() {
@@ -237,6 +287,26 @@ export default {
         return false
       } else {
         return true
+      }
+    },
+    sameShop: function() {
+      let arr = []
+      this.goodsList.forEach(function(item) {
+        if (item.selected) {
+          arr.push(item)
+        }
+        arr.forEach(function(ite) {
+          if (ite.shopId != arr[0].shopId) {
+            return false
+          }
+        })
+      })
+    },
+    checkType: function() {
+      if (this.selectePoint) {
+        return 1
+      } else {
+        return 0
       }
     }
   }
@@ -263,6 +333,12 @@ export default {
 
 .pageTitle-deleteBtn {
   float: right;
+  height: 100%;
+  img {
+    height: 60%;
+    margin-top: 20%;
+    margin-right: 2vw;
+  }
 }
 
 .selected {
@@ -403,6 +479,12 @@ export default {
     box-shadow: none;
     margin-bottom: 0
   }
+}
+
+.bottom-mid {
+  width: 45.2vw;
+  text-align: center;
+  float: left;
 }
 
 </style>

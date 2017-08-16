@@ -27,12 +27,17 @@
               <img :src="item.pic">
             </div>
             <div class="goods-right">
-              <div class="font-16 df title" v-text="item.prod_name">专属香氛</div>
+              <div class="font-16 df title" v-text="item.prod_name"></div>
               <!-- <div class="font-11 color-92" v-text="">颜色：贵族金，规格：标准</div> -->
               <div class="font-11 color-92">数量×<span v-text="item.basket_count"></span></div>
-              <div class=" bottom">
-                <span class="basicColor font-16" v-text="item.point">50000</span>
+              <div class=" bottom" v-if="item.sellType==1">
+                <span class="basicColor font-16" v-text="item.point"></span>
                 <span class="font-9 color-9b">积分</span>
+              </div>
+              <div class=" bottom" v-if="item.sellType==0">
+                <span class="font-9 color-9b">￥</span>
+                <span class="basicColor font-16" v-text="item.cash"></span>
+                <span class="font-9 color-9b">.00</span>
               </div>
             </div>
           </div>
@@ -42,9 +47,10 @@
     <!-- 底部按钮 -->
     <div class="order-bottom">
       <div class="total font-15">
-        合计：<span class="font-10  basicColor"></span>
-        <span class="font-18 basicColor" v-text="total">100000</span>
-        <span class="font-9 basicColor">积分</span>
+        合计：<span class="font-10  basicColor">￥</span>
+        <span class="font-18 basicColor" v-text="total" v-if="!isCash"></span>
+        <span class="font-18 basicColor" v-text="totalCash" v-if="isCash"></span>
+        <span class="font-9 basicColor"  v-if="isCash">积分</span>
         <div class="font-9 color-9b">
           积分商品限量兑换，不支持退换货
         </div>
@@ -65,6 +71,7 @@ export default {
       goods: [
 
       ],
+      isCash:false,
       commonAdd: {
         RECEIVER: '暂无地址，请添加收货地址',
         moble: '',
@@ -124,7 +131,10 @@ export default {
         }
       }).then((response) => {
         this.goods = response.data.data
-
+        console.log(this.goods[0].sellType)
+        if(this.goods[0].sellType==0){
+        	this.isCash=true
+        }
       }, (response) => {
         // error callback
       });
@@ -137,7 +147,7 @@ export default {
         }
       }
       if (this.addr.CITY) {
-        this.commonAdd=this.addr
+        this.commonAdd = this.addr
       } else {
         this.$http.get(this.$Api('/address/getDefaultAddress'), header).then((response) => {
 
@@ -171,7 +181,14 @@ export default {
     ...mapGetters({
       addr: 'getAddr'
 
-    })
+    }),
+    totalCash: function() {
+      let num = 0
+      this.goods.forEach(function(n) {
+        num += (n.basket_count * n.cash)
+      })
+      return num
+    }
   }
 }
 

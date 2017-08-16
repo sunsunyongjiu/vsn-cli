@@ -14,10 +14,10 @@
         </div>
         <div class="order-infoText">
           <div class="font-14 color-91">
-            订单编号：<span v-text="items.sub_number"></span>
+            下单时间：<span v-text="items.sub_date"></span>
           </div>
           <div class="font-14 color-91">
-            下单时间：<span v-text="items.sub_date"></span>
+            订单编号：<span v-text="items.sub_number"></span>
           </div>
         </div>
       </div>
@@ -89,10 +89,10 @@
         </div>
         <div class="order-infoText">
           <div class="font-14 color-91">
-            订单编号：<span v-text="items.sub_number"></span>
+            下单时间：<span v-text="items.sub_date"></span>
           </div>
           <div class="font-14 color-91">
-            下单时间：<span v-text="items.sub_date"></span>
+            订单编号：<span v-text="items.sub_number"></span>
           </div>
         </div>
       </div>
@@ -349,8 +349,8 @@ export default {
 }
 
 .order-info {
-	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-	margin-bottom: 5vw;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  margin-bottom: 5vw;
   .order-infoText {
     padding-top: 5vw;
     padding-bottom: 5vw;

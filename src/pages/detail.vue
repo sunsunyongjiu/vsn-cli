@@ -14,7 +14,12 @@
     </div>
     <flexbox>
       <flexbox-item>
-        <div class="detail-pointBtn flex-demo">
+        <div class="detail-pointBtn flex-demo" v-if="detailObj.sellType==0">
+
+          <span class="font-10">￥ </span><span v-text="detailObj.cash"></span> <span class="detail-pointBtn-point">.00</span>
+          
+        </div>
+        <div class="detail-pointBtn flex-demo" v-if="detailObj.sellType==1">
 
           <span v-text="detailObj.point"></span> <span class="detail-pointBtn-point">积分</span>
           
@@ -51,7 +56,8 @@
             <div class="pop-right-title font-18" v-text="detailObj.name"></div>
             <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
 
-            <div class="pop-right-point font-18"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
+            <div class="pop-right-point font-18"  v-if="detailObj.sellType==1"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
+            <div class="pop-right-point font-18"  v-if="detailObj.sellType==0"><span class="font-9">￥</span><span class="basicColor" v-text="detailObj.cash"></span><span class="font-9">.00</span></div>
 
           </div>
         </div>
