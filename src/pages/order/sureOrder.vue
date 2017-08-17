@@ -47,10 +47,10 @@
     <!-- 底部按钮 -->
     <div class="order-bottom">
       <div class="total font-15">
-        合计：<span class="font-10  basicColor">￥</span>
+        合计：<span class="font-10  basicColor"  v-if="isCash">￥</span>
         <span class="font-18 basicColor" v-text="total" v-if="!isCash"></span>
         <span class="font-18 basicColor" v-text="totalCash" v-if="isCash"></span>
-        <span class="font-9 basicColor"  v-if="isCash">积分</span>
+        <span class="font-9 basicColor"  v-if="!isCash">积分</span>
         <div class="font-9 color-9b">
           积分商品限量兑换，不支持退换货
         </div>
