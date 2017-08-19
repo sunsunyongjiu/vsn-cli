@@ -10,6 +10,7 @@ import order from '@/pages/order'
 import contact from '@/pages/contact'
 import lifeList from '@/pages/list/list-life'
 import sureOrder from '@/pages/order/sureOrder'
+import orderTicket from '@/pages/order/orderTicket'
 import choseLocation from '@/pages/order/choseLocation'
 import addLocation from '@/pages/order/addLocation'
 import orderDetail from '@/pages/order/orderDetail'
@@ -84,6 +85,11 @@ const router = new Router({
       path: '/orderDetail',
       name: '订单详情',
       component: orderDetail,
+    },
+    {
+      path: '/orderTicket',
+      name: '发票信息',
+      component: orderTicket,
     },
     {
       path: '/pay',

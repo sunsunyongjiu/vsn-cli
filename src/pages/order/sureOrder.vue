@@ -5,21 +5,28 @@
       <div class="orderList">
         <div class="order-title font-15 pd-right2">收货人信息</div>
         <div class="order-location font-15 pd-right2" @click="goLocation">
-          <div>
+          <div class="order-location-text">
             <span v-text="commonAdd.RECEIVER"></span><span v-text="commonAdd.moble"></span>
             <br>
             <span>
-				{{commonAdd.province}}{{commonAdd.CITY}}{{commonAdd.area}}{{commonAdd.town}}{{commonAdd.subAdds}}
-			</span>
+              {{commonAdd.province}}{{commonAdd.CITY}}{{commonAdd.area}}{{commonAdd.town}}{{commonAdd.subAdds}}
+            </span>
+          </div>
+          <div class="line"></div>
+          <div class="order-title font-15 pd-right2">
+            配送方式
+            <div class="right font-14 ">快递免邮&gt;</div>
           </div>
           <div class="right">&gt;</div>
         </div>
-        <div class="line"></div>
-        <div class="order-title font-15 pd-right2">
-          配送方式
-          <div class="right font-14 ">快递免邮&gt;</div>
+        <div class="order-ticket" @click="goTicket">
+          <div class="fff order-ticket-left">
+            发票信息
+          </div>
+          <div class="color-88 order-ticket-right">
+            上海八麦信息有限公司&gt;
+          </div>
         </div>
-        <div class="line"></div>
         <div class="order-title font-15 top-5 pd-right2">商品信息</div>
         <div class="order-goods-box">
           <div class="order-goods" v-for="(item,key) in goods" key=index>
@@ -47,10 +54,10 @@
     <!-- 底部按钮 -->
     <div class="order-bottom">
       <div class="total font-15">
-        合计：<span class="font-10  basicColor"  v-if="isCash">￥</span>
+        合计：<span class="font-10  basicColor" v-if="isCash">￥</span>
         <span class="font-18 basicColor" v-text="total" v-if="!isCash"></span>
         <span class="font-18 basicColor" v-text="totalCash" v-if="isCash"></span>
-        <span class="font-9 basicColor"  v-if="!isCash">积分</span>
+        <span class="font-9 basicColor" v-if="!isCash">积分</span>
         <div class="font-9 color-9b">
           积分商品限量兑换，不支持退换货
         </div>
@@ -71,7 +78,7 @@ export default {
       goods: [
 
       ],
-      isCash:false,
+      isCash: false,
       commonAdd: {
         RECEIVER: '暂无地址，请添加收货地址',
         moble: '',
@@ -120,6 +127,9 @@ export default {
     goLocation: function() {
       this.$router.push({ path: '/choseLocation' })
     },
+    goTicket:function(){
+      this.$router.push({ path: '/orderTicket' })
+    },
     init: function() {
       // 根据购物车id取数据
       this.$http.get(this.$Api('/order/getBasketListSelected'), {
@@ -132,8 +142,8 @@ export default {
       }).then((response) => {
         this.goods = response.data.data
         console.log(this.goods[0].sellType)
-        if(this.goods[0].sellType==0){
-        	this.isCash=true
+        if (this.goods[0].sellType == 0) {
+          this.isCash = true
         }
       }, (response) => {
         // error callback
@@ -240,7 +250,8 @@ export default {
   border-radius: 2px 2px 0 0;
   line-height: 8.5vw;
   color: #fff;
-  padding-left: 2vw
+  padding-left: 2vw;
+  position: relative;
   /*box-shadow:0 2px 4px 0 */
 }
 
@@ -255,6 +266,7 @@ export default {
   padding-left: 2vw;
   padding-bottom: 5vw;
   position: relative;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
   .right {
     position: absolute;
     height: 5vw;
@@ -312,6 +324,27 @@ export default {
 
 .order-goods-box {
   padding-bottom: 14.9333vw;
+}
+
+.order-location-text {
+  padding-bottom: 5vw;
+}
+
+.order-ticket {
+  background: #181818;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+  width: 375px;
+  height: 12vw;
+  line-height: 12vw;
+  font-size: 14px;
+  padding-left: 5vw;
+  box-sizing: border-box;
+  .order-ticket-left{
+    float: left;
+  }
+  .order-ticket-right{
+    float: right;
+  }
 }
 
 </style>
