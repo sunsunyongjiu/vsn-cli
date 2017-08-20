@@ -1,30 +1,30 @@
 <template>
   <div>
     <back title="确认订单"></back>
+    <div class="order-title font-15 pd-right2">收货人信息</div>
     <div class="container">
       <div class="orderList">
-        <div class="order-title font-15 pd-right2">收货人信息</div>
-        <div class="order-location font-15 pd-right2" @click="goLocation">
+        <div class="order-location font-15" @click="goLocation">
           <div class="order-location-text">
             <span v-text="commonAdd.RECEIVER"></span><span v-text="commonAdd.moble"></span>
             <br>
             <span>
               {{commonAdd.province}}{{commonAdd.CITY}}{{commonAdd.area}}{{commonAdd.town}}{{commonAdd.subAdds}}
             </span>
+            <div class="right">&gt;</div>
           </div>
           <div class="line"></div>
-          <div class="order-title font-15 pd-right2">
+          <div class="order-titles font-15">
             配送方式
             <div class="right font-14 ">快递免邮&gt;</div>
           </div>
-          <div class="right">&gt;</div>
         </div>
         <div class="order-ticket" @click="goTicket">
           <div class="fff order-ticket-left">
             发票信息
           </div>
           <div class="color-88 order-ticket-right">
-            上海八麦信息有限公司&gt;
+            不开发票&gt;
           </div>
         </div>
         <div class="order-title font-15 top-5 pd-right2">商品信息</div>
@@ -127,7 +127,7 @@ export default {
     goLocation: function() {
       this.$router.push({ path: '/choseLocation' })
     },
-    goTicket:function(){
+    goTicket: function() {
       this.$router.push({ path: '/orderTicket' })
     },
     init: function() {
@@ -251,31 +251,23 @@ export default {
   line-height: 8.5vw;
   color: #fff;
   padding-left: 2vw;
+  padding-left: 5.3vw;
   position: relative;
+  margin-top: 2.3vw;
   /*box-shadow:0 2px 4px 0 */
 }
 
 .order-location {
+  margin-top: 2vw;
   text-align: left;
   box-sizing: border-box;
   width: 100%;
-  padding-top: 5vw;
   opacity: 0.5;
   line-height: 6.5vw;
   color: #7a7a7a;
   padding-left: 2vw;
-  padding-bottom: 5vw;
   position: relative;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  .right {
-    position: absolute;
-    height: 5vw;
-    line-height: 5vw;
-    right: 2vw;
-    top: 50%;
-    margin-top: -2.5vw;
-    color: #888888
-  }
 }
 
 .line {
@@ -283,6 +275,7 @@ export default {
   background: #4a4a4a;
   width: 92.26vw;
   height: 1px;
+  margin-top: 2.3vw;
 }
 
 .right {
@@ -327,24 +320,51 @@ export default {
 }
 
 .order-location-text {
-  padding-bottom: 5vw;
+  position: relative;
+  padding: 5vw 0;
+  .right {
+    position: absolute;
+    height: 5vw;
+    line-height: 5vw;
+    right: 0vw;
+    top: 50%;
+    margin-top: -2.5vw;
+    color: #888888
+  }
 }
 
 .order-ticket {
   background: #181818;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  width: 375px;
+  width: 100%;
   height: 12vw;
   line-height: 12vw;
   font-size: 14px;
-  padding-left: 5vw;
+  padding-left: 2vw;
+  opacity: 0.5;
   box-sizing: border-box;
-  .order-ticket-left{
+
+  color: #fff;
+  position: relative;
+  margin-top: 2.3vw;
+
+  .order-ticket-left {
     float: left;
   }
-  .order-ticket-right{
+  .order-ticket-right {
     float: right;
   }
+}
+
+.order-titles {
+  text-align: left;
+  box-sizing: border-box;
+  width: 100%;
+  height: 8.5vw;
+  border-radius: 2px 2px 0 0;
+  line-height: 8.5vw;
+  color: #fff;
+  position: relative
 }
 
 </style>
