@@ -4,7 +4,7 @@
     <div class="order-title font-15 pd-right2">收货人信息</div>
     <div class="container">
       <div class="orderList">
-        <div class="order-location font-15" @click="goLocation">
+        <div class="order-location font-14" @click="goLocation">
           <div class="order-location-text">
             <span v-text="commonAdd.RECEIVER"></span><span v-text="commonAdd.moble"></span>
             <br>
@@ -14,12 +14,12 @@
             <div class="right">&gt;</div>
           </div>
           <div class="line"></div>
-          <div class="order-titles font-15">
+          <div class="order-titles font-14">
             配送方式
             <div class="right font-14 ">快递免邮&gt;</div>
           </div>
         </div>
-        <div class="order-ticket" @click="goTicket">
+        <div class="order-ticket font-14" @click="goTicket">
           <div class="fff order-ticket-left">
             发票信息
           </div>
@@ -27,7 +27,7 @@
             不开发票&gt;
           </div>
         </div>
-        <div class="order-title font-15 top-5 pd-right2">商品信息</div>
+        <div class="order-title font-15 top-5 pd-right2 pd-left-2">商品信息</div>
         <div class="order-goods-box">
           <div class="order-goods" v-for="(item,key) in goods" key=index>
             <div class="goods-left">
@@ -254,6 +254,7 @@ export default {
   padding-left: 5.3vw;
   position: relative;
   margin-top: 2.3vw;
+  font-size: 15px;
   /*box-shadow:0 2px 4px 0 */
 }
 
@@ -366,5 +367,7 @@ export default {
   color: #fff;
   position: relative
 }
-
+.pd-left-2{
+	padding-left: 2vw;
+}
 </style>

@@ -31,35 +31,44 @@
     <div class='addLocation' @click="addLocation(0)">
       添加新地址
     </div>
+    <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
+      <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品</p>
+      <p style="text-align:left;color:#737373">确认删除选中的商品吗？</p>
+    </confirm>
   </div>
 </template>
 <script>
 import back from '../../components/backNav'
-import { Swipeout, SwipeoutItem, SwipeoutButton } from 'vux'
+import { Swipeout, SwipeoutItem, SwipeoutButton, Confirm } from 'vux'
 import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
   data() {
     return {
-      locationList: []
+      locationList: [],
+      show: false,
+      deleteOne: {}
     }
   },
   components: {
     back,
     Swipeout,
     SwipeoutItem,
-    SwipeoutButton
+    SwipeoutButton,
+    Confirm
   },
   methods: {
-    addLocation: function(edit,item) {
-    	if(edit){
-    		this.$store.dispatch({ type: 'setEditAddr', data: item })
-    	}
+    addLocation: function(edit, item) {
+      if (edit) {
+        this.$store.dispatch({ type: 'setEditAddr', data: item })
+      }
       this.$router.push({ path: '/addLocation', query: { 'edit': edit } })
     },
-    deleteItem: function(item) {
-      console.log(item)
+    onCancel: function() {
+
+    },
+    onConfirm: function() {
       let header = {
         "token": this.$store.state.loginUser.token,
         "time": timer,
@@ -67,8 +76,8 @@ export default {
       }
       // 设置传值
       let cartData = {
-        'addrId': item.addrId,
-        
+        'addrId': this.deleteOne.addrId,
+
       }
 
       this.$http({
@@ -78,15 +87,27 @@ export default {
         headers: header,
         emulateJSON: true
       }).then(function(data) { //es5写法
-       this.init()
+        this.init()
       }, function(error) {
         //error
       })
     },
+    deleteItem: function(item) {
+      console.log(item)
+      this.deleteOne = item
+      this.show = true
+
+    },
     setAddr: function(item) {
       console.log(item)
-      this.$store.dispatch({ type: 'setAddr', data: item })
-      this.$router.go(-1)
+      if (this.$route.query.from) {
+        return
+      } else {
+        this.$store.dispatch({ type: 'setAddr', data: item }) 
+        this.$router.go(-1)
+
+      }
+
     },
     init: function() {
       let header = {

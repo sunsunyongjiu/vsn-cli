@@ -75,7 +75,7 @@ export default {
       console.log(this.loginUser)
     },
     goLocation: function() {
-      this.$router.push({ path: '/choseLocation' })
+      this.$router.push({ path: '/choseLocation' ,query: { 'from':'person' } })
     },
   },
   mounted: function() {

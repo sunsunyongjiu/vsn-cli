@@ -97,10 +97,10 @@
         </div>
       </div>
       <div class="bottom-btn">
-        <div class="bottom-btn-right" v-if='blueShow' v-text="blueText">
+        <div class="bottom-btn-right" v-if='blueShow' v-text="blueText" @click="goPay">
           立即支付
         </div>
-        <div class="bottom-btn-left" v-text="btnCancle" v-if="greyShow">
+        <div class="bottom-btn-left" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
         </div>
       </div>
     </div>
@@ -137,7 +137,89 @@ export default {
     back
   },
   methods: {
+    goPay: function() {
+      this.$router.push({ path: '/pay' })
+    },
+    cancleOrder: function(item) {
+      if (this.btnCancle == "取消订单") {
+      	
+        this.$vux.loading.show({
+          text: 'loading'
+        })
 
+        let header = {
+          "token": this.$store.state.loginUser.token,
+          "time": timer,
+          "sign": md5("/order/cancelOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
+        }
+        // 设置传值
+        let cartData = {
+          subNumber: item.sub_number,
+        }
+
+        this.$http({
+          method: 'POST',
+          url: this.$Api('/order/cancelOrder'),
+          params: cartData,
+          headers: header,
+          emulateJSON: true
+        }).then(function(data) {
+          console.log(data)
+          this.$vux.loading.hide()
+          this.$router.go(-1)
+        }, function(error) {
+          //error
+        })
+      }
+      console.log(item)
+    },
+    init: function() {
+      console.log(this.$route.query.sub_number)
+
+      this.$http.get(this.$Api('/order/getOrderDetail'), {
+        params: { 'subNumber': this.$route.query.sub_number },
+        headers: {
+          "token": this.$store.state.loginUser.token,
+          "time": timer,
+          "sign": md5("/order/getOrderDetail" + this.$store.state.loginUser.token + timer).toUpperCase()
+        }
+      }).then((response) => {
+        console.log(response.data.data)
+        this.orderDetail = response.data.data
+        this.orderDetail.forEach(function(n) {
+          n.totalCount = 0
+          n.prod.forEach(function(x) {
+            x.attribute = JSON.parse(x.attribute)
+            n.totalCount += x.basket_count
+          })
+        })
+        console.log(response.data.data[0].status)
+        if (response.data.data[0].status == 1) {
+
+        } else if (response.data.data[0].status == 2) {
+
+          this.blueShow = false
+
+          this.btnCancle = "申请退换货"
+        } else if (response.data.data[0].status == 4) {
+          this.blueShow = true
+          this.timeShow = false
+          this.greyShow = false
+          this.blueText = "申请发票"
+        } else if (response.data.data[0].status == 5) {
+          this.blueShow = false
+          this.timeShow = false
+          this.greyShow = true
+          this.btnCancle = "删除订单"
+        }
+      }, (response) => {
+        // error callback
+      });
+      console.log(this.orderDetail)
+
+
+      console.log(this.$route.query.title)
+    }
   },
   filters: {
     changeStatus: function(n) {
@@ -157,51 +239,8 @@ export default {
     }
   },
   mounted: function() {
-    console.log(this.$route.query.sub_number)
+    this.init()
 
-    this.$http.get(this.$Api('/order/getOrderDetail'), {
-      params: { 'subNumber': this.$route.query.sub_number },
-      headers: {
-        "token": this.$store.state.loginUser.token,
-        "time": timer,
-        "sign": md5("/order/getOrderDetail" + this.$store.state.loginUser.token + timer).toUpperCase()
-      }
-    }).then((response) => {
-      console.log(response.data.data)
-      this.orderDetail = response.data.data
-      this.orderDetail.forEach(function(n) {
-        n.totalCount = 0
-        n.prod.forEach(function(x) {
-          x.attribute = JSON.parse(x.attribute)
-          n.totalCount += x.basket_count
-        })
-      })
-      console.log(response.data.data[0].status)
-      if (response.data.data[0].status == 1) {
-
-      } else if (response.data.data[0].status == 2) {
-
-        this.blueShow = false
-
-        this.btnCancle = "申请退换货"
-      } else if (response.data.data[0].status == 4) {
-        this.blueShow = true
-        this.timeShow = false
-        this.greyShow = false
-        this.blueText = "申请发票"
-      } else if (response.data.data[0].status == 5) {
-        this.blueShow = false
-        this.timeShow = false
-        this.greyShow = true
-        this.btnCancle = "删除订单"
-      }
-    }, (response) => {
-      // error callback
-    });
-    console.log(this.orderDetail)
-
-
-    console.log(this.$route.query.title)
 
   }
 }

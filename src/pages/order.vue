@@ -47,12 +47,11 @@
             <div v-if="btnsShow">
               <div class="order-btns-goChange" v-if="items.status==1||items.status==2">
 
-                <span v-if="items.status==1||items.status==4">去兑换</span>
+                <span v-if="items.status==1||items.status==4" @click="goPay">去兑换</span>
                 <span v-if="items.status==2">确认收货</span>
               </div>
               <div class="order-btns-cancle1" v-if="items.status==3">已自动确认收货</div>
               <div class="order-btns-goChange" v-text="returnText" v-if="items.status==2||items.status==3">退换货</div>
-              <!-- <div class="order-btns-cancle" v-text="cancleText" v-if="items.status==1">取消订单</div> -->
             </div>
           </div>
         </div>
@@ -70,7 +69,6 @@ export default {
   data() {
     return {
       orderLists: {},
-      cancleText: '取消订单',
       changeText: '去兑换',
       returnText: '退换货',
       returnShow: false,
@@ -84,6 +82,9 @@ export default {
     TabItem
   },
   methods: {
+    goPay:function(){
+        this.$router.push({ path: '/pay' })
+    },
     changeItem: function(index) {
       let _this = this
       _this.btnsShow = true

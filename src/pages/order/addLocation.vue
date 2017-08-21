@@ -116,6 +116,10 @@ export default {
         this.postData.cityId = this.editAddr.cityId
         this.postData.areaId = this.editAddr.areaId
         this.postData.townId = this.editAddr.townId
+        console.log(this.editAddr.commonAddr==1)
+        if(this.editAddr.commonAddr==1){
+        	this.common=true
+        }
         if (this.editAddr.town) {
           this.locationDetail = this.editAddr.province + this.editAddr.CITY + this.editAddr.area + this.editAddr.town
         } else {
