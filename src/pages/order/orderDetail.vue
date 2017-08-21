@@ -96,6 +96,10 @@
           </div>
         </div>
       </div>
+      <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm(items)">
+        <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除订单</p>
+        <p style="text-align:left;color:#737373">确认删除选中的订单吗？</p>
+      </confirm>
       <div class="bottom-btn">
         <div class="bottom-btn-right" v-if='blueShow' v-text="blueText" @click="goPay">
           立即支付
@@ -109,7 +113,8 @@
 <script>
 import back from '../../components/backNav'
 import md5 from 'js-md5';
-const timer = JSON.stringify(new Date().getTime())
+const timer = JSON.stringify(new Date().getTime());
+import { Confirm } from 'vux'
 export default {
   name: '',
   data() {
@@ -121,6 +126,7 @@ export default {
         point: 6000,
         text: '等待兑换',
         count: 1,
+        
       }],
       orderDetail: {},
       timeShow: true,
@@ -130,46 +136,55 @@ export default {
       btnCancle: '取消订单',
       blueText: '立即兑换',
       blueShow: true,
-      greyShow: true
+      greyShow: true,
+      show: false
     }
   },
   components: {
-    back
+    back,
+    Confirm
   },
   methods: {
     goPay: function() {
       this.$router.push({ path: '/pay' })
     },
+    onCancel: function() {
+
+    },
+    onConfirm: function(items) {
+    	console.log(items)
+      this.$vux.loading.show({
+        text: 'loading'
+      })
+
+      let header = {
+        "token": this.$store.state.loginUser.token,
+        "time": timer,
+        "sign": md5("/order/cancelOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
+      }
+      // 设置传值
+      let cartData = {
+        subNumber: items.sub_number,
+      }
+
+      this.$http({
+        method: 'POST',
+        url: this.$Api('/order/cancelOrder'),
+        params: cartData,
+        headers: header,
+        emulateJSON: true
+      }).then(function(data) {
+        console.log(data)
+        this.$vux.loading.hide()
+        this.$router.go(-1)
+      }, function(error) {
+        //error
+      })
+    },
     cancleOrder: function(item) {
       if (this.btnCancle == "取消订单") {
-      	
-        this.$vux.loading.show({
-          text: 'loading'
-        })
+        this.show = true
 
-        let header = {
-          "token": this.$store.state.loginUser.token,
-          "time": timer,
-          "sign": md5("/order/cancelOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
-        }
-        // 设置传值
-        let cartData = {
-          subNumber: item.sub_number,
-        }
-
-        this.$http({
-          method: 'POST',
-          url: this.$Api('/order/cancelOrder'),
-          params: cartData,
-          headers: header,
-          emulateJSON: true
-        }).then(function(data) {
-          console.log(data)
-          this.$vux.loading.hide()
-          this.$router.go(-1)
-        }, function(error) {
-          //error
-        })
       }
       console.log(item)
     },
