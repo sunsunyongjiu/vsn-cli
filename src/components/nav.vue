@@ -14,14 +14,14 @@
           <div>
             <!-- Price：￥<span v-text="item.cash"></span> -->
           </div>
-          <div v-if="item.sellType==1">
-            积分：<span v-text="item.point"> </span>
+          <div v-if="item.sellType==1" class="font-10">
+            积分：<span v-text="item.point" class="font-10"> </span>
           </div>
-          <div v-if="item.sellType==0">
+          <div v-if="item.sellType==0" class="font-10">
             现金：
             <span class="font-10">￥</span>
             <span v-text="item.cash" class="font-10 points"></span>
-            <span class="font-9">.00</span>
+          
           </div>
         </div>
         <button>
@@ -113,11 +113,11 @@ export default {
       }
       .index-Boutique-div-right-points {
         position: absolute;
-        bottom: 0;
+        bottom: 2px;
         div {
-          font-size: 12px;
+          
           font-family: .AppleSystemUIFont;
-          font-size: 10px;
+          
           color: #9b9b9b;
           letter-spacing: 0;
         }
@@ -138,7 +138,7 @@ export default {
         height: 5vw;
         position: absolute;
         right: 0;
-        bottom: 0;
+        bottom: 2px;
         font-size: 2.6vw;
         background: rgba(255, 255, 255, 0);
         color: #1dafed;
@@ -162,7 +162,6 @@ export default {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
   width: 40vw;
   text-align: center;
-  font-size: 12px;
   height: 4vw;
   line-height: 4vw;
   z-index: 10;

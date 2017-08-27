@@ -24,23 +24,29 @@
         </div>
       </div>
       <div v-if="!common">
-        <x-input placeholder="请填写单位名字" class="type-hedder-item-input"></x-input>
-        <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input"></x-input>
+        <x-input placeholder="请填写单位名字" class="type-hedder-item-input" v-model="ticket.company"></x-input>
+        <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input" v-model="ticket.tax_number"></x-input>
       </div>
     </div>
-    <div class="sureBtn">
+    <div class="sureBtn" @click="sureTicket">
       确定
     </div>
   </div>
 </template>
 <script>
-import back from '../../components/backNav'
-import { XInput } from 'vux'
+import back from '../../components/backNav';
+import { XInput } from 'vux';
+import md5 from 'js-md5';
+const timer = JSON.stringify(new Date().getTime());
 export default {
   name: '',
   data() {
     return {
       common: false,
+      ticket: {
+        company: '',
+        tax_number: ''
+      }
     }
   },
   components: {
@@ -48,10 +54,64 @@ export default {
     XInput
   },
   methods: {
+    init: function() {
+      this.$http.get(this.$Api('/order/getOrderInvoice'), {
+        params: { 'subNumber': this.$route.query.subNumber },
+        headers: {
+          "token": this.$store.state.loginUser.token,
+          "time": timer,
+          "sign": md5("/order/getOrderInvoice" + this.$store.state.loginUser.token + timer).toUpperCase()
+        }
+      }).then((response) => {
+        console.log(response.data.data)
+        if (response.data.data) {
+          this.ticket = response.data.data;
+          if (response.data.data.title_id == 1) {
+            this.common = true
+          }
+        }
 
+
+      }, (response) => {
+        // error callback
+      });
+    },
+    sureTicket: function() {
+      this.$vux.loading.show({
+        text: 'loading'
+      })
+      let header = {
+        "token": this.$store.state.loginUser.token,
+        "time": timer,
+        "sign": md5("/order/updateOrderInvoice" + this.$store.state.loginUser.token + timer).toUpperCase()
+      }
+      // 设置传值
+      let cartData = {
+        'subNumber': this.$route.query.subNumber,
+        'typeId': 1,
+        'titleId': this.common ? 1 : 2,
+        'company': this.common ?'':this.ticket.company,
+        'taxNumber': this.common ?'':this.ticket.tax_number,
+      }
+
+      this.$http({
+        method: 'POST',
+        url: this.$Api('/order/updateOrderInvoice'),
+        params: cartData,
+        headers: header,
+        emulateJSON: true
+      }).then(function(data) { //es5写法
+        console.log(data)
+        this.$vux.loading.hide()
+        this.$router.go(-1)
+
+      }, function(error) {
+        //error
+      })
+    }
   },
   mounted: function() {
-
+    this.init()
 
   },
   props: []

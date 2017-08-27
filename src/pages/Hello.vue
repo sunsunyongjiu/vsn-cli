@@ -4,7 +4,7 @@
     <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
       <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
     </swiper>
-    <div class="index-middle-tittle english">
+    <div class="index-middle-tittle font-10">
       {{"会员信息"|tr}}
     </div>
     <flexbox class="index-page-mypoints flex1">
@@ -13,15 +13,15 @@
           <img :src="myCardSrc" class="myCard">
         </div>
         <div class="my-club">
-          <span v-if="login">{{"Mercedes me 车主俱乐部"|tr}}</span>
+          <span v-if="login" class="font-9">{{"Mercedes me 车主俱乐部"|tr}}</span>
         </div>
       </flexbox-item>
       <flexbox-item v-show="login">
         <div class="flex-demo myPoints">
-          <div>{{"您当前的个人积分是"|tr}}</div>
+          <div class="font-11">{{"您当前的个人积分是"|tr}}</div>
           <div>
             <!-- <span v-text="loginUser.score"></span> -->
-            <span>50000</span>
+            <span class="font-13">50000</span>
           </div>
           <div>
             <button class="soonBtn">{{"为您甄选"|tr}}</button>
@@ -50,7 +50,7 @@
         </div>
       </flexbox-item>
     </flexbox>
-    <div class="index-middle-tittle english">
+    <div class="index-middle-tittle font-10">
       {{"分类推荐"|tr}}
     </div>
     <flexbox :gutter="0" wrap="wrap" class="index-page-classification">
@@ -68,13 +68,13 @@
         </div>
       </flexbox-item>
     </flexbox>
-    <div class="index-middle-tittle english" v-if=false>
+    <div class="index-middle-tittle font-10" v-if=false>
       {{"主编推荐"|tr}}
     </div>
     <swiper :aspect-ratio="160/375" auto v-if=false>
       <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
     </swiper>
-    <div class="index-middle-tittle english">
+    <div class="index-middle-tittle font-10">
       {{"精品推荐"|tr}}
     </div>
     <my-nav :items="myBoutique"></my-nav>

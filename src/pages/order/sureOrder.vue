@@ -19,14 +19,6 @@
             <div class="right font-14 ">快递免邮&gt;</div>
           </div>
         </div>
-        <div class="order-ticket font-14" @click="goTicket">
-          <div class="fff order-ticket-left">
-            发票信息
-          </div>
-          <div class="color-88 order-ticket-right">
-            不开发票&gt;
-          </div>
-        </div>
         <div class="order-title font-15 top-5 pd-right2 pd-left-2">商品信息</div>
         <div class="order-goods-box">
           <div class="order-goods" v-for="(item,key) in goods" key=index>
@@ -44,7 +36,6 @@
               <div class=" bottom" v-if="item.sellType==0">
                 <span class="font-9 color-9b">￥</span>
                 <span class="basicColor font-16" v-text="item.cash"></span>
-                <span class="font-9 color-9b">.00</span>
               </div>
             </div>
           </div>
@@ -97,47 +88,53 @@ export default {
     goPay: function() {
 
       let header = {
-        "token": this.$store.state.loginUser.token,
+        "token": this.loginUser.token,
         "time": timer,
-        "sign": md5("/order/insertOrderNo" + this.$store.state.loginUser.token + timer).toUpperCase()
+        "sign": md5("/order/insertOrderNoNew" + this.loginUser.token + timer).toUpperCase()
       }
       // 设置传值
       let cartData = {
         basketIds: this.$route.query.selectIds,
         addrId: this.commonAdd.addrId,
-        total: this.total
+        token: this.loginUser.token
+      }
+      if (this.isCash || this.total <= parseInt(this.loginUser.score)) {
+        this.$http({
+          method: 'POST',
+          url: this.$Api('/order/insertOrderNoNew'),
+          params: cartData,
+          headers: header,
+          emulateJSON: true
+        }).then(function(data) {
+          console.log(data)
+
+          this.$router.push({ path: '/pay' })
+        }, function(error) {
+          //error
+        })
+      }else{
+        this.$vux.toast.show({
+          text: '您当前的积分不足',
+          type: 'warn',
+          isShowMask: true,
+          position: 'middle'
+        })
       }
 
-      this.$http({
-        method: 'POST',
-        url: this.$Api('/order/insertOrderNo'),
-        params: cartData,
-        headers: header,
-        emulateJSON: true
-      }).then(function(data) {
-        console.log(data)
-
-        this.$router.push({ path: '/pay' })
-      }, function(error) {
-        //error
-      })
 
 
     },
     goLocation: function() {
       this.$router.push({ path: '/choseLocation' })
     },
-    goTicket: function() {
-      this.$router.push({ path: '/orderTicket' })
-    },
     init: function() {
       // 根据购物车id取数据
       this.$http.get(this.$Api('/order/getBasketListSelected'), {
         params: { 'basketIds': this.$route.query.selectIds },
         headers: {
-          "token": this.$store.state.loginUser.token,
+          "token": this.loginUser.token,
           "time": timer,
-          "sign": md5("/order/getBasketListSelected" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": md5("/order/getBasketListSelected" + this.loginUser.token + timer).toUpperCase()
         }
       }).then((response) => {
         this.goods = response.data.data
@@ -151,9 +148,9 @@ export default {
 
       let header = {
         headers: {
-          "token": this.$store.state.loginUser.token,
+          "token": this.loginUser.token,
           "time": timer,
-          "sign": md5("/address/getDefaultAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": md5("/address/getDefaultAddress" + this.loginUser.token + timer).toUpperCase()
         }
       }
       if (this.addr.CITY) {
@@ -189,7 +186,8 @@ export default {
     },
     // 使用对象展开运算符将 getters 混入 computed 对象中
     ...mapGetters({
-      addr: 'getAddr'
+      addr: 'getAddr',
+      loginUser: 'getLogin'
 
     }),
     totalCash: function() {
@@ -367,7 +365,9 @@ export default {
   color: #fff;
   position: relative
 }
-.pd-left-2{
-	padding-left: 2vw;
+
+.pd-left-2 {
+  padding-left: 2vw;
 }
+
 </style>

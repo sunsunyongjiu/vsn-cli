@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="pageTitle">
-      <span>购物车</span>
+      <span class="font-12">购物车</span>
       <div class="back" @click="goback"></div>
       <div class="pageTitle-deleteBtn" @click="deleteAll">
         <img src="../assets/imgs/delete.png" class="personal-img">
@@ -29,7 +29,7 @@
                 <span v-text="i.key"></span>: <span v-text="i.value"></span>
               </div>
               <div class="point" v-if="item.sellType==0">
-                <span class="df font-9">￥</span><span v-text="item.cash" class="font-18 df"></span><span class="font-9 color-9b">.00</span>
+                <span class="df font-9">￥</span><span v-text="item.cash" class="font-18 df"></span>
               </div>
               <div class="point" v-if="item.sellType==1">
                 <span v-text="item.point" class="font-18 df"></span><span class="font-9 color-9b">积分</span>
@@ -54,7 +54,7 @@
         <span class="font-14 fff">合计:</span> <span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
       </div>
       <div v-if="!selectePoint" class="bottom-mid">
-        <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">.00</span>
+        <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-18" v-text="totalPoint"></span>
       </div>
       <div class="bottom-right" @click="goSure">兑换</div>
     </div>

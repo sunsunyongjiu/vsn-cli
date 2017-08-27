@@ -35,7 +35,7 @@
             <div v-if="item.sellType==0">
               <span class="font-10">￥</span>
               <span v-text="item.price" class="font-18 points"></span>
-              <span class="font-9">.00</span>
+             
             </div>
             <div v-if="item.sellType==1">
               <span v-text="item.point" class="font-16 points"></span>

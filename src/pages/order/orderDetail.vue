@@ -61,7 +61,7 @@
                 <span v-if="items.sellType==2">￥</span>
                 <span class="basicColor font-16" v-text="item.product_total_amout" v-if="items.sellType==1"></span>
                 <span class="font-9" v-if="items.sellType==1">积分</span>
-                <span class="font-9" v-if="items.sellType==2">.00</span>
+              
               </div>
             </div>
             <div class="order-line"></div>
@@ -69,7 +69,7 @@
           <div class="order-fee">
             <div class="order-fee-first">
               <div class="order-fee-first-left">运费</div>
-              <div class="order-fee-first-right">￥<span v-text="items.freight_amount"></span>.00</div>
+              <div class="order-fee-first-right">￥<span v-text="items.freight_amount"></span></div>
             </div>
             <div class="order-fee-second">
               <div class="order-fee-first-left">实付款（含运费）</div>
@@ -77,7 +77,7 @@
                 <span v-if="items.sellType==2">￥</span>
                 <span class="font-18 basicColor" v-text="items.actual_total" v-if="items.sellType==1"></span>
                 <span v-if="items.sellType==1">积分</span>
-                <span v-if="items.sellType==2">.00</span>
+                
               </div>
             </div>
           </div>
@@ -101,7 +101,7 @@
         <p style="text-align:left;color:#737373">确认删除选中的订单吗？</p>
       </confirm>
       <div class="bottom-btn">
-        <div class="bottom-btn-right" v-if='blueShow' v-text="blueText" @click="goPay">
+        <div class="bottom-btn-right" v-if='blueShow' v-text="blueText" @click="goPay(items)">
           立即支付
         </div>
         <div class="bottom-btn-left" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
@@ -145,8 +145,13 @@ export default {
     Confirm
   },
   methods: {
-    goPay: function() {
-      this.$router.push({ path: '/pay' })
+    goPay: function(item) {
+      if(this.blueText=="立即兑换"){
+        this.$router.push({ path: '/pay' })
+      }else if(this.blueText=="申请发票"){
+        this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number }  })
+      }
+      
     },
     onCancel: function() {
 
@@ -263,6 +268,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
+@import '../../assets/css/global.less';
 .order-state {
   width: 100%;
   height: 22.4vw;
@@ -296,6 +302,7 @@ export default {
   padding-left: 5vw;
   text-align: left;
   line-height: 20px;
+  .px2vw(line-height, 20)
 }
 
 .orders {

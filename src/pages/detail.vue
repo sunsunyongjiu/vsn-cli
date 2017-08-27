@@ -16,7 +16,7 @@
       <flexbox-item>
         <div class="detail-pointBtn flex-demo" v-if="detailObj.sellType==0">
 
-          <span class="font-10">￥ </span><span v-text="detailObj.cash"></span> <span class="detail-pointBtn-point">.00</span>
+          <span class="font-10">￥ </span><span v-text="detailObj.cash"></span>
           
         </div>
         <div class="detail-pointBtn flex-demo" v-if="detailObj.sellType==1">
@@ -57,7 +57,7 @@
             <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
 
             <div class="pop-right-point font-18"  v-if="detailObj.sellType==1"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
-            <div class="pop-right-point font-18"  v-if="detailObj.sellType==0"><span class="font-9">￥</span><span class="basicColor" v-text="detailObj.cash"></span><span class="font-9">.00</span></div>
+            <div class="pop-right-point font-18"  v-if="detailObj.sellType==0"><span class="font-9">￥</span><span class="basicColor" v-text="detailObj.cash"></span></div>
 
           </div>
         </div>
@@ -181,7 +181,7 @@ export default {
           // 设置header
           
         let header={
-          "token":this.$store.state.loginUser.token,"time":JSON.stringify(new Date().getTime()),
+          "token":this.$store.state.loginUser.token,
           "time":timer,
           "sign":md5("/order/insertBasket"+this.$store.state.loginUser.token+timer).toUpperCase()
         }

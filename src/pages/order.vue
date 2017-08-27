@@ -27,7 +27,7 @@
               <span v-if="items.sellType==2">￥</span>
               <span class="basicColor font-16" v-text="item.product_total_amout"></span>
               <span class="font-9" v-if="items.sellType==1">积分</span>
-              <span class="font-9" v-if="items.sellType==2">.00</span>
+             
             </div>
           </div>
           <div class="orders-right">
@@ -42,7 +42,7 @@
               <span v-if="items.sellType==2">￥</span>
               <span class="font-14 basicColor" v-text="items.actual_total"></span>
               <span class="font-9 color-9b" v-if="items.sellType==1">积分</span>
-              <span class="font-9" v-if="items.sellType==2">.00</span>
+            
             </div>
             <div v-if="btnsShow">
               <div class="order-btns-goChange" v-if="items.status==1||items.status==2">
@@ -174,6 +174,7 @@ export default {
     margin-left: 2.6vw;
     img {
       height: 100%;
+      max-width: 100%;
     }
   }
   .orders-mid {

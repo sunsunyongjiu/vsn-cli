@@ -29,7 +29,7 @@
 	  					<div v-if="item.sellType==0">
 	  						<span class="df">￥</span>
 	  						<span v-text="item.cash" class="list-point"></span>
-	  						<span>.00</span>
+	  						
 	  					</div>
 	  					<div class="changeBtn" @click="goWhere(item)">立即兑换</div>
 	  				</div>
