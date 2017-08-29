@@ -8,7 +8,8 @@
         </div>
         <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div>
       </div>
-      <div class="order-info" v-if="items.sellType==1">
+      <!--       <div class="order-info" v-if="items.sellType==1">
+        {{items.sellType}}
         <div class="order-person-title">
           订单信息
         </div>
@@ -20,7 +21,7 @@
             订单编号：<span v-text="items.sub_number"></span>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="order-person">
         <div class="order-person-title">
           收货人信息
@@ -32,11 +33,11 @@
           </div>
           <div class="font-14 color-91">
             <span>
-            	{{items.address.province}}
-            	{{items.address.CITY}}
-            	{{items.address.area}}
-            	{{items.address.town}}
-            	{{items.address.subAdds}}
+              {{items.address.province}}
+              {{items.address.CITY}}
+              {{items.address.area}}
+              {{items.address.town}}
+              {{items.address.subAdds}}
             </span>
           </div>
         </div>
@@ -61,7 +62,6 @@
                 <span v-if="items.sellType==2">￥</span>
                 <span class="basicColor font-16" v-text="item.product_total_amout" v-if="items.sellType==1"></span>
                 <span class="font-9" v-if="items.sellType==1">积分</span>
-              
               </div>
             </div>
             <div class="order-line"></div>
@@ -77,13 +77,12 @@
                 <span v-if="items.sellType==2">￥</span>
                 <span class="font-18 basicColor" v-text="items.actual_total" v-if="items.sellType==1"></span>
                 <span v-if="items.sellType==1">积分</span>
-                
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="order-info" v-if="items.sellType!=1">
+      <div class="order-info">
         <div class="order-person-title">
           订单信息
         </div>
@@ -96,11 +95,27 @@
           </div>
         </div>
       </div>
+      <div class="order-info" v-if="(items.status==3||items.status==2)&&(items.orderTrack!=null)">
+        <div class="order-person-title">
+          物流信息
+        </div>
+        <div class="order-infoText">
+          <div v-for="item in items.orderTrack" class="sendMsgBox">
+            <div class="sendMsgBoxItem">
+              <div v-text="item.content" class="font-13"></div>
+              <div v-text="item.msgTime" class="font-11"></div>
+            </div>
+          </div>
+        </div>
+      </div>
       <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm(items)">
-        <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除订单</p>
-        <p style="text-align:left;color:#737373">确认删除选中的订单吗？</p>
+        <p style="text-align:center;margin-bottom:10px;color:#737373" v-text="conifrmText"></p>
+        <p style="text-align:left;color:#737373" v-text="conifrmShowText"></p>
       </confirm>
       <div class="bottom-btn">
+        <div class="bottom-btn-right" v-if='buyBtShow' @click="buyAgain(items.prod[0].prod_id)">
+          再次购买
+        </div>
         <div class="bottom-btn-right" v-if='blueShow' v-text="blueText" @click="goPay(items)">
           立即支付
         </div>
@@ -126,8 +141,10 @@ export default {
         point: 6000,
         text: '等待兑换',
         count: 1,
-        
+
       }],
+      conifrmText: '确认删除订单',
+      conifrmShowText: '确认删除选中的订单吗？',
       orderDetail: {},
       timeShow: true,
       order: {
@@ -137,7 +154,8 @@ export default {
       blueText: '立即兑换',
       blueShow: true,
       greyShow: true,
-      show: false
+      show: false,
+      buyBtShow:false
     }
   },
   components: {
@@ -146,56 +164,120 @@ export default {
   },
   methods: {
     goPay: function(item) {
-      if(this.blueText=="立即兑换"){
+      if (this.blueText == "立即兑换") {
         this.$router.push({ path: '/pay' })
-      }else if(this.blueText=="申请发票"){
-        this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number }  })
+      } else if (this.blueText == "申请发票") {
+        this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number } })
+      } else if (this.blueText == "确认收货") {
+        this.conifrmText = "确认收货么？",
+          this.conifrmShowText = "是否确认收货"
+        this.show = true;
       }
-      
+
+    },
+    buyAgain: function(num) {
+      console.log(num)
+      this.$router.push({ path: 'detail', query: { prod_id: num } })
     },
     onCancel: function() {
 
     },
     onConfirm: function(items) {
-    	console.log(items)
-      this.$vux.loading.show({
-        text: 'loading'
-      })
+      if (this.blueText == "确认收货") {
+        this.$vux.loading.show({
+          text: 'loading'
+        })
+        let header = {
+          "token": this.$store.state.loginUser.token,
+          "time": timer,
+          "sign": md5("/order/finishOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
+        }
+        // 设置传值
+        let cartData = {
+          subNumber: items.sub_number,
+        }
 
-      let header = {
-        "token": this.$store.state.loginUser.token,
-        "time": timer,
-        "sign": md5("/order/cancelOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
-      }
-      // 设置传值
-      let cartData = {
-        subNumber: items.sub_number,
+        this.$http({
+          method: 'POST',
+          url: this.$Api('/order/finishOrder'),
+          params: cartData,
+          headers: header,
+          emulateJSON: true
+        }).then(function(data) {
+          this.$vux.loading.hide()
+          this.$router.go(-1)
+        }, function(error) {
+          //error
+        })
+      } else if (this.btnCancle == "申请退换货") {
+        this.$vux.loading.show({
+          text: 'loading'
+        })
+        let header = {
+          "token": this.$store.state.loginUser.token,
+          "time": timer,
+          "sign": md5("/order/exchangeOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
+        }
+        // 设置传值
+        let cartData = {
+          subNumber: items.sub_number,
+        }
+
+        this.$http({
+          method: 'POST',
+          url: this.$Api('/order/exchangeOrder'),
+          params: cartData,
+          headers: header,
+          emulateJSON: true
+        }).then(function(data) {
+          this.$vux.loading.hide()
+          this.$router.go(-1)
+        }, function(error) {
+          //error
+        })
+      } else {
+        this.$vux.loading.show({
+          text: 'loading'
+        })
+
+        let header = {
+          "token": this.$store.state.loginUser.token,
+          "time": timer,
+          "sign": md5("/order/cancelOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
+        }
+        // 设置传值
+        let cartData = {
+          subNumber: items.sub_number,
+        }
+
+        this.$http({
+          method: 'POST',
+          url: this.$Api('/order/cancelOrder'),
+          params: cartData,
+          headers: header,
+          emulateJSON: true
+        }).then(function(data) {
+          this.$vux.loading.hide()
+          this.$router.go(-1)
+        }, function(error) {
+          //error
+        })
       }
 
-      this.$http({
-        method: 'POST',
-        url: this.$Api('/order/cancelOrder'),
-        params: cartData,
-        headers: header,
-        emulateJSON: true
-      }).then(function(data) {
-        console.log(data)
-        this.$vux.loading.hide()
-        this.$router.go(-1)
-      }, function(error) {
-        //error
-      })
+
     },
     cancleOrder: function(item) {
       if (this.btnCancle == "取消订单") {
         this.show = true
+      } else if (this.btnCancle == "申请退换货") {
+        this.conifrmText = "确认退换么？",
+          this.conifrmShowText = "是否确认退换"
+        this.show = true;
 
       }
-      console.log(item)
+
     },
     init: function() {
-      console.log(this.$route.query.sub_number)
-
       this.$http.get(this.$Api('/order/getOrderDetail'), {
         params: { 'subNumber': this.$route.query.sub_number },
         headers: {
@@ -204,7 +286,8 @@ export default {
           "sign": md5("/order/getOrderDetail" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }).then((response) => {
-        console.log(response.data.data)
+        console.log(response.data.data[0])
+        console.log(response.data.data[0].orderTrack)
         this.orderDetail = response.data.data
         this.orderDetail.forEach(function(n) {
           n.totalCount = 0
@@ -213,32 +296,39 @@ export default {
             n.totalCount += x.basket_count
           })
         })
-        console.log(response.data.data[0].status)
+
         if (response.data.data[0].status == 1) {
 
-        } else if (response.data.data[0].status == 2) {
+        } else if (response.data.data[0].status == 2 || response.data.data[0].status == 3) {
 
-          this.blueShow = false
-
-          this.btnCancle = "申请退换货"
+          this.blueShow = true;
+          this.blueText = "确认收货"
+          this.greyShow = false
         } else if (response.data.data[0].status == 4) {
+          if (this.orderDetail[0].invoice_sub_id) {
+            this.greyShow = false
+          } else {
+            this.greyShow = true
+          }
           this.blueShow = true
           this.timeShow = false
-          this.greyShow = false
+          this.buyBtShow = true
+          this.btnCancle = '申请退换货'
           this.blueText = "申请发票"
         } else if (response.data.data[0].status == 5) {
           this.blueShow = false
           this.timeShow = false
-          this.greyShow = true
-          this.btnCancle = "删除订单"
+          this.greyShow = false
+        } else {
+          this.blueShow = true;
+          this.greyShow = false;
+          this.blueText = "申请发票"
         }
       }, (response) => {
         // error callback
       });
-      console.log(this.orderDetail)
 
 
-      console.log(this.$route.query.title)
     }
   },
   filters: {
@@ -323,6 +413,7 @@ export default {
     margin-left: 2.6vw;
     img {
       height: 100%;
+      max-width: 100%;
     }
   }
   .orders-mid {
@@ -455,8 +546,44 @@ export default {
   }
 }
 
-.paddingBottom {
-  padding-bottom: 14.9vw
+.sendMsgBox {
+  .px2vw(padding-left, 18);
+  .px2vw(padding-right, 18);
+  border-left: 2px solid #292929;
+  .sendMsgBoxItem {
+    box-sizing: border-box;
+    .px2vw(padding-top, 12);
+    .px2vw(padding-bottom, 12);
+    position: relative;
+    border-top: 1px solid #4a4a4a;
+    border-bottom: 1px solid #4a4a4a;
+    color: #919191;
+  }
+  .sendMsgBoxItem:before{
+    display: block;
+    content: '';
+    width:1.5vw;
+    height: 1.5vw;
+    border-radius: 100%;
+    background: #919191;
+    position: absolute;
+    .px2vw(left, -21);
+  }
+}
+
+.sendMsgBox:nth-child(1) {
+  .sendMsgBoxItem {
+    border-top: 0px;
+    color: #1dafed;
+    &:before{
+      width:2vw;
+      height: 2vw;
+      border: 2px solid #1dafed;
+      .px2vw(left, -25);
+      background:#181818;
+
+    }
+  }
 }
 
 </style>

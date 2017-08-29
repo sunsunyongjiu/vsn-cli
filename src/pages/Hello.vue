@@ -44,7 +44,7 @@
       <flexbox-item v-for="(item,index) in indexBtns" :key="index">
         <div class="flex-demo english" @click="goNext(item.path)">
           <div :class="item.class" class="index-icon"></div>
-          <div v-text="">
+          <div v-text="" class="font-12">
             {{item.title|tr}}
           </div>
         </div>

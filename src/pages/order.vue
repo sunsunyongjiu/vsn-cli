@@ -27,7 +27,6 @@
               <span v-if="items.sellType==2">￥</span>
               <span class="basicColor font-16" v-text="item.product_total_amout"></span>
               <span class="font-9" v-if="items.sellType==1">积分</span>
-             
             </div>
           </div>
           <div class="orders-right">
@@ -42,16 +41,18 @@
               <span v-if="items.sellType==2">￥</span>
               <span class="font-14 basicColor" v-text="items.actual_total"></span>
               <span class="font-9 color-9b" v-if="items.sellType==1">积分</span>
-            
             </div>
             <div v-if="btnsShow">
-              <div class="order-btns-goChange" v-if="items.status==1||items.status==2">
-
+              <div class="order-btns-goChange" v-if="items.status==1||items.status==3||items.status==2">
                 <span v-if="items.status==1||items.status==4" @click="goPay">去兑换</span>
-                <span v-if="items.status==2">确认收货</span>
+                <span v-if="items.status==3||items.status==2" @click="goGet(items.sub_number)">确认收货</span>
+                <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()">
+                  <p style="text-align:center;margin-bottom:10px;color:#737373">确认收货么？</p>
+                  <p style="text-align:left;color:#737373">是否确认收货</p>
+                </confirm>
               </div>
-              <div class="order-btns-cancle1" v-if="items.status==3">已自动确认收货</div>
-              <div class="order-btns-goChange" v-text="returnText" v-if="items.status==2||items.status==3">退换货</div>
+              <!-- <div class="order-btns-cancle1" v-if="items.status==3">已自动确认收货</div> -->
+              <!-- <div class="order-btns-goChange" v-text="returnText" v-if="items.status==2||items.status==3">退换货</div> -->
             </div>
           </div>
         </div>
@@ -61,7 +62,7 @@
 </template>
 <script>
 import back from '../components/backNav'
-import { Tab, TabItem } from 'vux'
+import { Tab, TabItem, Confirm } from 'vux'
 import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime())
 export default {
@@ -73,17 +74,56 @@ export default {
       returnText: '退换货',
       returnShow: false,
       btnsShow: true,
-      status: 1
+      status: 1,
+      confirmShow: false,
+      deleteNm:''
     }
   },
   components: {
     back,
     Tab,
-    TabItem
+    TabItem,
+    Confirm
   },
   methods: {
-    goPay:function(){
-        this.$router.push({ path: '/pay' })
+    goPay: function() {
+      this.$router.push({ path: '/pay' })
+    },
+    goGet: function(num) {
+      this.deleteNm=num
+      this.confirmShow = true
+    },
+    onConfirm: function() {
+      
+      this.$vux.loading.show({
+        text: 'loading'
+      })
+      let header = {
+        "token": this.$store.state.loginUser.token,
+        "time": timer,
+        "sign": md5("/order/finishOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
+      }
+      // 设置传值
+      let cartData = {
+        subNumber: this.deleteNm,
+      }
+
+      this.$http({
+        method: 'POST',
+        url: this.$Api('/order/finishOrder'),
+        params: cartData,
+        headers: header,
+        emulateJSON: true
+      }).then(function(data) {
+        console.log(data)
+        this.init()
+        this.$vux.loading.hide()
+      }, function(error) {
+        //error
+      })
+    },
+    onCancel: function() {
+
     },
     changeItem: function(index) {
       let _this = this
@@ -98,7 +138,7 @@ export default {
       this.init()
     },
     goDetail: function(n) {
-        console.log(n)
+      console.log(n)
       this.$router.push({ path: '/orderDetail', query: { 'sub_number': n.sub_number } })
     },
     init: function() {

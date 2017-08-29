@@ -9,11 +9,11 @@
     </div>
     <div class="search-box-ways">
       <div class="font-14 search-titles">兑换方式</div>
-      <div class="selecters" :class="{'selecter-selected':selects.isPoint}" @click="changeWay('point')">
+      <div class="selecters font-13" :class="{'selecter-selected':selects.isPoint}" @click="changeWay('point')">
         积分
         <img src="../assets/imgs/triangle.png" class="selecters-triangle">
       </div>
-      <div class="selecters" :class="{'selecter-selected':selects.isCash}" @click="changeWay('cash')">
+      <div class="selecters font-13" :class="{'selecter-selected':selects.isCash}" @click="changeWay('cash')">
         现金
         <img src="../assets/imgs/triangle.png" class="selecters-triangle">
       </div>
@@ -21,7 +21,7 @@
     <div class="search-box-ways" v-if="searchHistoryShow">
       <div class="font-14 search-titles">历史搜索</div>
       <div>
-        <div v-for="(item,index) in searchHistory" key="index" class="historyBox" v-text="item.search_str" @click="doSearchHistory(item.search_str)"></div>
+        <div v-for="(item,index) in searchHistory" key="index" class="historyBox font-14" v-text="item.search_str" @click="doSearchHistory(item.search_str)"></div>
       </div>
     </div>
     <div class="goodsList">
@@ -174,6 +174,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
+@import '../assets/css/global.less';
 input:focus {
   outline: none;
 }
@@ -222,8 +223,8 @@ input:focus {
 }
 
 .search-titles {
-  line-height: 20px;
-  width: 100px;
+  .px2vw(width, 100);
+  .px2vw(line-height, 20);
   text-align: left;
   font-size: 14px;
   color: #1dafed;
@@ -244,7 +245,6 @@ input:focus {
     line-height: 5.3vw;
     border: 1px solid #787878;
     color: #787878;
-    font-size: 13px;
     margin-top: 3vw;
     margin-right: 3vw;
     position: relative;
@@ -317,7 +317,6 @@ input:focus {
 .historyBox {
   height: 5.8vw;
   background: #292929;
-  font-size: 14px;
   line-height: 5.8vw;
   color: #787878;
   padding: 0 4vw;
