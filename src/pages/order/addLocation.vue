@@ -3,40 +3,40 @@
     <back :title="addTitle"></back>
     <div class='addLocationBox'>
       <div class="settings">
-        <div class="settings-left">收货人</div>
-        <input type="text" v-model="postData.receiver" class="addLocationBox-input">
+        <div class="settings-left font-14">收货人</div>
+        <input type="text" v-model="postData.receiver" class="addLocationBox-input font-14">
       </div>
       <div class="line"></div>
       <div class="settings">
-        <div class="settings-left">联系电话</div>
-        <input type="text" v-model="postData.mobile" class="addLocationBox-input">
+        <div class="settings-left font-14">联系电话</div>
+        <input type="text" v-model="postData.mobile" class="addLocationBox-input font-14">
       </div>
       <div class="line"></div>
       <div class="settings">
-        <div class="settings-left">所在地区</div>
-        <div @click="popShow" class="settings-right" v-text="locationDetail"></div>
+        <div class="settings-left font-14">所在地区</div>
+        <div @click="popShow" class="settings-right font-14" v-text="locationDetail"></div>
       </div>
       <div class="line"></div>
       <div class="settings">
-        <div class="settings-left">详细地址</div>
-        <input type="text" v-model="postData.subAdds" class="addLocationBox-input">
+        <div class="settings-left font-14">详细地址</div>
+        <input type="text" v-model="postData.subAdds" class="addLocationBox-input font-14">
       </div>
       <div class="line"></div>
-      <div class="settings setMoren">
-        <div class="morenCircle" @click="setCommon" :class="{setMorenCircle:common}"></div>
+      <div class="settings setMoren  font-14">
+        <div class="morenCircle font-14" @click="setCommon" :class="{setMorenCircle:common}"></div>
         设为默认地址
       </div>
       <div class="line"></div>
-      <div class='addLocation' @click="saveAdd">
+      <div class='addLocation  font-24' @click="saveAdd">
         保存
       </div>
       <div v-transfer-dom class="locationPop">
         <popup v-model="show2" height="97.8vw">
-          <div class="location-pop-title">所在地区</div>
+          <div class="location-pop-title font-15">所在地区</div>
           <div class="locationPop-areas">
-            <div v-for="(item,index) in area" v-text="item.text" :class="{areaActive:item.select}" @click="checkCitys(item,index)" v-if="item.show"></div>
+            <div v-for="(item,index) in area" v-text="item.text" :class="{areaActive:item.select}" @click="checkCitys(item,index)" v-if="item.show" class=" font-14"></div>
           </div>
-          <div class="area-textBox">
+          <div class="area-textBox  font-14">
             <div v-for="(item ,index) in citys.citys" v-text="item.text" @click="changeCity(item,citys.citys)" :class="{citeActive:item.select}"></div>
           </div>
         </popup>
@@ -335,7 +335,7 @@ export default {
 <style scoped lang='less' scoped>
 .line {
   opacity: 0.3;
-  width: 374px;
+  width: 100%;
   border: 1px solid #4a4a4a;
 }
 

@@ -7,7 +7,7 @@
     <div>
       <span v-text="loginUser.name" class="font-16 fff"></span>
     </div>
-    <div class="personal-title-point">
+    <div class="personal-title-point font-10">
       <img src="../assets/imgs/s_integral.png">
       <span v-text="loginUser.score">
         
@@ -17,7 +17,7 @@
       </span>
     </div>
     <div class="personal-title-googsBox">
-      <div class="personal-title-googs">
+      <div class="personal-title-googs font-11">
         查看可以兑换的商品
       </div>
     </div>
@@ -75,7 +75,7 @@ export default {
       console.log(this.loginUser)
     },
     goLocation: function() {
-      this.$router.push({ path: '/choseLocation' ,query: { 'from':'person' } })
+      this.$router.push({ path: '/choseLocation', query: { 'from': 'person' } })
     },
   },
   mounted: function() {
@@ -95,6 +95,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
+@import '../assets/css/global.less';
 .personal-title-logo {
   height: 21.3vw;
   width: 21.3vw;
@@ -121,13 +122,15 @@ export default {
     line-height: 19.7vw;
     .details-left {
       float: left;
+      .px2vw(font-size, 14);
       font-size: 14px;
       color: #ffffff;
       text-align: left;
     }
     .details-right {
       float: right;
-      font-size: 13px;
+
+      .px2vw(font-size, 13);
       color: #878787;
       text-align: right;
     }
@@ -138,8 +141,8 @@ export default {
   background: #292929;
   border-radius: 100px;
   width: 20.7vw;
-  height: 18px;
-  line-height: 18px;
+  .px2vw(height, 18);
+  .px2vw(line-height, 18);
   margin: 4vw auto 0;
 
   font-size: 10px;
@@ -159,7 +162,6 @@ export default {
   width: 35vw;
   height: 6vw;
   line-height: 6vw;
-  font-size: 11px;
   color: #1dafed;
   letter-spacing: 0;
   text-align: center;
@@ -175,11 +177,11 @@ export default {
   overflow: hidden;
   background: url('../assets/imgs/loading.png') no-repeat bottom;
   background-size: 100%;
-
 }
 
 .personal-img {
-  height: 18px;
+  .px2vw(height,
+  18);
   vertical-align: middle;
 }
 

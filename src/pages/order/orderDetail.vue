@@ -23,7 +23,7 @@
         </div>
       </div> -->
       <div class="order-person">
-        <div class="order-person-title">
+        <div class="order-person-title font-15">
           收货人信息
         </div>
         <div class="order-personText">
@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="order-goods">
-        <div class="order-person-title">
+        <div class="order-person-title font-15">
           商品信息
         </div>
         <div class="order-goodsText">
@@ -57,9 +57,9 @@
                 <span v-text="attr.key"></span>:
                 <span v-text="attr.value"></span>
               </div>
-              <div>数量：x<span v-text="item.basket_count">1</span></div>
+              <div class=" font-11">数量：x<span v-text="item.basket_count">1</span></div>
               <div class="orders-mid-bottom">
-                <span v-if="items.sellType==2">￥</span>
+                <span v-if="items.sellType==0">￥</span>
                 <span class="basicColor font-16" v-text="item.product_total_amout" v-if="items.sellType==1"></span>
                 <span class="font-9" v-if="items.sellType==1">积分</span>
               </div>
@@ -67,15 +67,15 @@
             <div class="order-line"></div>
           </div>
           <div class="order-fee">
-            <div class="order-fee-first">
+            <div class="order-fee-first font-11">
               <div class="order-fee-first-left">运费</div>
               <div class="order-fee-first-right">￥<span v-text="items.freight_amount"></span></div>
             </div>
-            <div class="order-fee-second">
+            <div class="order-fee-second font-11">
               <div class="order-fee-first-left">实付款（含运费）</div>
               <div class="order-fee-first-right">
-                <span v-if="items.sellType==2">￥</span>
-                <span class="font-18 basicColor" v-text="items.actual_total" v-if="items.sellType==1"></span>
+                <span v-if="items.sellType==0">￥</span>
+                <span class="font-18 basicColor" v-text="items.actual_total"></span>
                 <span v-if="items.sellType==1">积分</span>
               </div>
             </div>
@@ -83,7 +83,7 @@
         </div>
       </div>
       <div class="order-info">
-        <div class="order-person-title">
+        <div class="order-person-title font-15">
           订单信息
         </div>
         <div class="order-infoText">
@@ -113,13 +113,13 @@
         <p style="text-align:left;color:#737373" v-text="conifrmShowText"></p>
       </confirm>
       <div class="bottom-btn">
-        <div class="bottom-btn-right" v-if='buyBtShow' @click="buyAgain(items.prod[0].prod_id)">
+        <div class="bottom-btn-right font-16" v-if='buyBtShow' @click="buyAgain(items.prod[0].prod_id)">
           再次购买
         </div>
-        <div class="bottom-btn-right" v-if='blueShow' v-text="blueText" @click="goPay(items)">
+        <div class="bottom-btn-right font-16" v-if='blueShow' v-text="blueText" @click="goPay(items)">
           立即支付
         </div>
-        <div class="bottom-btn-left" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
+        <div class="bottom-btn-left font-16" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
         </div>
       </div>
     </div>
@@ -391,7 +391,6 @@ export default {
   height: 24vw;
   padding-left: 5vw;
   text-align: left;
-  line-height: 20px;
   .px2vw(line-height, 20)
 }
 
@@ -445,7 +444,6 @@ export default {
   .orders-right {
     width: 20.8vw;
     float: left;
-    font-family: HYa3gj;
     font-size: 12px;
     color: #ffffff;
     letter-spacing: 0;
@@ -508,7 +506,7 @@ export default {
     padding-bottom: 5vw;
     text-align: left;
     padding-left: 5vw;
-    line-height: 20px
+    .px2vw(line-height, 20);
   }
 }
 

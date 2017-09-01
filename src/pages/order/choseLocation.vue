@@ -28,7 +28,7 @@
       <div>
       </div>
     </div>
-    <div class='addLocation' @click="addLocation(0)">
+    <div class='addLocation font-24' @click="addLocation(0)">
       添加新地址
     </div>
     <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
@@ -135,9 +135,9 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
+@import '../../assets/css/global.less';
 .locations {
   background: #181818;
-  ;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
   width: 100%;
   height: 26.6vw;
@@ -152,6 +152,7 @@ export default {
     padding-left: 5vw;
     text-align: left;
     line-height: 20px;
+    .px2vw(line-height, 20);
     box-sizing: border-box;
   }
   .locationsRight {

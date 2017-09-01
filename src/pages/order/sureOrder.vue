@@ -53,7 +53,7 @@
           积分商品限量兑换，不支持退换货
         </div>
       </div>
-      <div class="commit-btn" @click="goPay">提交订单</div>
+      <div class="commit-btn font-18" @click="goPay">提交订单</div>
     </div>
   </div>
 </template>
@@ -112,7 +112,7 @@ export default {
         }, function(error) {
           //error
         })
-      }else{
+      } else {
         this.$vux.toast.show({
           text: '您当前的积分不足',
           type: 'warn',
@@ -368,6 +368,13 @@ export default {
 
 .pd-left-2 {
   padding-left: 2vw;
+}
+
+.title {
+  width: 60vw;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 </style>

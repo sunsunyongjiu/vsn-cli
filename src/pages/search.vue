@@ -3,7 +3,8 @@
     <div class="searchBar">
       <div class="back" @click="goback"></div>
       <div class="seachBtn" @click="goSearch">
-        <img src="../assets/imgs/search.png">
+        <!-- <img src="../assets/imgs/search.png"> -->
+        <i class="weui-icon-search font-14" style="line-height:2"></i>
       </div>
       <input type="text" ref="serachBox" v-model="searchValue" :placeholder="searchValue">
     </div>
@@ -30,7 +31,7 @@
           <img :src="item.pic">
         </div>
         <div class="goods-right">
-          <div v-text="item.name" class="title"></div>
+          <div v-text="item.name" class="title font-16"></div>
           <div class="right-point-box">
             <div v-if="item.sellType==0">
               <span class="font-10">￥</span>
@@ -180,8 +181,7 @@ input:focus {
 }
 
 .searchBar {
-  height: 9.3vw;
-  height: 100%;
+  height: 11.4vw;
   background: none;
   box-sizing: border-box;
   padding: 10px 0;
@@ -194,19 +194,21 @@ input:focus {
     width: 85%;
     float: right;
     border-radius: 2px 0 0 2px;
-    height: 6.4vw;
+    height: 100%;
     font-size: 16px;
     padding-left: 2vw;
     box-sizing: border-box;
   }
   .seachBtn {
     float: right;
-    line-height: 6.4vw;
-    height: 6.4vw;
+    height: 100%;
     background: #4a4a4a;
     border-radius: 0 2px 2px 0;
     color: white;
     padding-right: 5px;
+    img{
+      height: 60%;
+    }
   }
 }
 
@@ -296,10 +298,9 @@ input:focus {
       position: relative;
       height: 100%;
       .title {
-        font-size: 16px;
         color: #dfdfdf;
         letter-spacing: 0;
-        line-height: 20px;
+          .px2vw(line-height, 20)
       }
       .right-point-box {
         position: absolute;

@@ -18,20 +18,20 @@
 	  				</div>
 	  				<div class="right">
 	  					<div class="list-name">
-	  						<div v-text="item.name" class="list-title"></div>
+	  						<div v-text="item.name" class="list-title  font-20"></div>
 	  						<!-- <div class="list-title-en">Merdeces me</div> -->
 	  					</div>
 	  					<div v-text="item.brief" class="list-brief"></div>
 	  					<div v-if="item.sellType==1">
-	  						<span v-text="item.point" class="list-point"></span>
-	  						<span>积分</span>
+	  						<span v-text="item.point" class="list-point  font-18"></span>
+	  						<span class=" font-12">积分</span>
 	  					</div>
 	  					<div v-if="item.sellType==0">
-	  						<span class="df">￥</span>
-	  						<span v-text="item.cash" class="list-point"></span>
+	  						<span class="df  font-12">￥</span>
+	  						<span v-text="item.cash" class="list-point  font-18"></span>
 	  						
 	  					</div>
-	  					<div class="changeBtn" @click="goWhere(item)">立即兑换</div>
+	  					<div class="changeBtn  font-14" @click="goWhere(item)">立即兑换</div>
 	  				</div>
 	  			</div>
 	  		</div>

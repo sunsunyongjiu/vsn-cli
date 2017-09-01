@@ -25,10 +25,10 @@
             <div class="goods-right">
               <div v-text="item.title" class="font-18 df goods-title"></div>
               <!-- <div class="font-14 df">Merdeces Me</div> -->
-              <div class="font-10 color-92" v-for="i in item.size">
+              <div class="font-10 color-92 goods-size-box" v-for="i in item.size">
                 <span v-text="i.key"></span>: <span v-text="i.value"></span>
               </div>
-              <div class="point" v-if="item.sellType==0">
+              <div class="point " v-if="item.sellType==0">
                 <span class="df font-9">￥</span><span v-text="item.cash" class="font-18 df"></span>
               </div>
               <div class="point" v-if="item.sellType==1">
@@ -487,4 +487,10 @@ export default {
   float: left;
 }
 
+.goods-size-box{
+  width: 43.3vw;
+  overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+}
 </style>

@@ -1,10 +1,10 @@
 <template>
   <div>
   	<back title="支付订单"></back>
-  	<div class="payBtn" @click="goPay">确认支付</div>
+  	<div class="payBtn font-24" @click="goPay">确认支付</div>
   	<div class="orderList">
   		<div class="order-title font-15">订单信息</div>
-  		<div  class="orderInfo">
+  		<div  class="orderInfo font-14">
   			<div>订单名称： 范思哲（VERSACE）男士香水 50ml…</div>
 			<div>
 				<span>订单金额：</span>
@@ -16,7 +16,7 @@
 			<div class="payMent-left">
 				<img src="../../assets/imgs/point.png">
 			</div>
-			<div class="middle">积分支付</div>
+			<div class="middle font-14">积分支付</div>
 			<div class="choose-btn selected payMent-right" ></div>
 		</div>
   	</div>
@@ -107,6 +107,9 @@ export default {
 		width: 6.4vw;
 		height: 6.4vw;
 		float: left;
+		img{
+			height: 100%
+		}
 	}
 	.payMent-right{
 		float: right;

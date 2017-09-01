@@ -2,12 +2,12 @@
   <div>
     <back title="我的订单"></back>
     <div>
-      <tab :line-width="1" custom-bar-width="60px" defaultColor="#787878" active-color="white" style="background:#181818">
-        <tab-item selected @on-item-click="changeItem">未支付</tab-item>
-        <tab-item @on-item-click="changeItem">已支付</tab-item>
-        <tab-item @on-item-click="changeItem">已完成</tab-item>
-        <tab-item @on-item-click="changeItem">已取消</tab-item>
-        <tab-item @on-item-click="changeItem">退换货</tab-item>
+      <tab :line-width="1" custom-bar-width="16vw" defaultColor="#787878" active-color="white" style="background:#181818">
+        <tab-item selected @on-item-click="changeItem" class=" font-14">未支付</tab-item>
+        <tab-item @on-item-click="changeItem" class=" font-14">已支付</tab-item>
+        <tab-item @on-item-click="changeItem" class=" font-14">已完成</tab-item>
+        <tab-item @on-item-click="changeItem" class=" font-14">已取消</tab-item>
+        <tab-item @on-item-click="changeItem" class=" font-14">退换货</tab-item>
       </tab>
     </div>
     <div>
@@ -22,33 +22,33 @@
               <span v-text="attr.key"></span>:
               <span v-text="attr.value"></span>
             </div>
-            <div>数量：x<span v-text="item.basket_count"></span></div>
+            <div class="font-11">数量：x<span v-text="item.basket_count"></span></div>
             <div class="orders-mid-bottom">
-              <span v-if="items.sellType==2">￥</span>
+              <span v-if="items.sellType==0" class="font-11">￥</span>
               <span class="basicColor font-16" v-text="item.product_total_amout"></span>
               <span class="font-9" v-if="items.sellType==1">积分</span>
             </div>
           </div>
-          <div class="orders-right">
+          <div class="orders-right font-12">
             {{items.status|changeStatus}}
           </div>
           <div class="order-line"></div>
         </div>
         <div>
           <div class="order-btns">
-            <div class="left">
+            <div class="left font-12">
               共<span v-text="items.totalCount"></span>件商品 小计:
-              <span v-if="items.sellType==2">￥</span>
+              <span v-if="items.sellType==0" class="font-11">￥</span>
               <span class="font-14 basicColor" v-text="items.actual_total"></span>
               <span class="font-9 color-9b" v-if="items.sellType==1">积分</span>
             </div>
             <div v-if="btnsShow">
               <div class="order-btns-goChange" v-if="items.status==1||items.status==3||items.status==2">
-                <span v-if="items.status==1||items.status==4" @click="goPay">去兑换</span>
-                <span v-if="items.status==3||items.status==2" @click="goGet(items.sub_number)">确认收货</span>
+                <span v-if="items.status==1||items.status==4" @click="goPay" class="font-12">去兑换</span>
+                <span v-if="items.status==3||items.status==2" @click="goGet(items.sub_number)" class="font-12">确认收货</span>
                 <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()">
-                  <p style="text-align:center;margin-bottom:10px;color:#737373">确认收货么？</p>
-                  <p style="text-align:left;color:#737373">是否确认收货</p>
+                  <p style="text-align:center;margin-bottom:10px;color:#737373"  class="font-12">确认收货么？</p>
+                  <p style="text-align:left;color:#737373"  class="font-12">是否确认收货</p>
                 </confirm>
               </div>
               <!-- <div class="order-btns-cancle1" v-if="items.status==3">已自动确认收货</div> -->
@@ -246,7 +246,6 @@ export default {
   .orders-right {
     width: 20.8vw;
     float: left;
-    font-family: HYa3gj;
     font-size: 12px;
     color: #ffffff;
     letter-spacing: 0;
@@ -277,7 +276,7 @@ export default {
   padding: 2.4vw 0 3.7vw;
   line-height: 5.8vw;
   div {
-    font-family: HYa3gj;
+
     font-size: 12px;
     color: #dfdfdf;
     letter-spacing: 0;

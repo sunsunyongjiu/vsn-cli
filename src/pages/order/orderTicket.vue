@@ -1,31 +1,31 @@
 <template>
   <div>
     <back title="发票信息"></back>
-    <div class="ticket-type">
+    <div class="ticket-type font-15">
       发票类型
     </div>
     <div class="type-box">
-      <div class="type-item">
+      <div class="type-item  font-13">
         纸质发票
       </div>
     </div>
-    <div class="ticket-type">
+    <div class="ticket-type font-15">
       发票抬头
     </div>
     <div class="type-box">
       <div class="type-hedder-item-box">
-        <div class="type-hedder-item">
+        <div class="type-hedder-item font-12">
           <div class="morenCircle" :class="{setMorenCircle:common}" @click="common=!common"></div>
           <span class="type-box-left">个人</span>
         </div>
-        <div class="type-hedder-item">
+        <div class="type-hedder-item font-12">
           <div class="morenCircle" :class="{setMorenCircle:!common}" @click="common=!common"></div>
           <span class="type-box-left">单位</span>
         </div>
       </div>
-      <div v-if="!common">
-        <x-input placeholder="请填写单位名字" class="type-hedder-item-input" v-model="ticket.company"></x-input>
-        <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input" v-model="ticket.tax_number"></x-input>
+      <div v-if="!common" >
+        <x-input placeholder="请填写单位名字" class="type-hedder-item-input font-14" v-model="ticket.company"></x-input>
+        <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.tax_number"></x-input>
       </div>
     </div>
     <div class="sureBtn" @click="sureTicket">

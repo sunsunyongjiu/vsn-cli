@@ -35,7 +35,7 @@
             <span class="font-13">积分商城</span>
           </div>
           <div>
-            <button class="soonBtn english" @click="goWWW('https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=http://123.57.157.212:8080/pmall/index.html#/path')">{{"登录/注册"|tr}}</button>
+            <button class="soonBtn english" @click="goLogin()">{{"登录/注册"|tr}}</button>
           </div>
         </div>
       </flexbox-item>
@@ -203,6 +203,9 @@ export default {
     goWWW: function(url) {
       window.location.href = url
     },
+    goLogin:function(){
+      window.location.href='https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url='+this.$baseEncode('http://123.57.157.212:8080/pmall/index.html#/path')
+    },
     goNext: function(pathUrl) {
       if (this.login || pathUrl == "/contact") {
         this.$router.push({ path: pathUrl })
@@ -219,6 +222,8 @@ export default {
       this.$router.push({ path: '/search', query: { 'search': this.searchValue } })
     },
     init: function() {
+      console.log(this.$baseEncode('http://123.57.157.212:8080/pmall/index.html#/path'))
+      console.log(this.$baseDecode('aHR0cDovLzEyMy41Ny4xNTcuMjEyOjgwODAvcG1hbGwvaW5kZXguaHRtbCMvcGF0aA=='))
       //判断当前用户是否登录
       let userToken = this.$route.query.token
       let user = this.$route.query.user
@@ -274,7 +279,7 @@ export default {
     tr: function(v) {
       // return EnJson[v]
       return v
-    }
+    },
   }
 }
 
