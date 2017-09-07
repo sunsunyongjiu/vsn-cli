@@ -38,7 +38,7 @@
       <div v-html="detailObj.content"></div>
     </div>
     <div v-transfer-dom>
-      <popup v-model="popShow" position="bottom" height="70%" class="detailPop">
+      <popup v-model="popShow" position="bottom" height="120vw" class="detailPop">
         <div class="pop-title">
           <div class="pop-left">
             <img :src="detailObj.pic">
@@ -425,7 +425,7 @@ export default {
   letter-spacing: 0;
   text-align: center;
   position: absolute;
-  bottom: 9vw;
+  bottom: 7vw;
   left: 6vw
 }
 

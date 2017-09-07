@@ -141,7 +141,8 @@ export default {
           title: '超值礼品',
           titleEn: 'Mercedes me',
           class: 'index-page-classification-img1',
-          id: '776'
+          id: '776',
+          path: '/present'
         },
         {
           src: require('../assets/imgs/work.png'),

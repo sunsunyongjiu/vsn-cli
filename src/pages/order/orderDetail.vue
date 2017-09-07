@@ -60,7 +60,7 @@
               <div class=" font-11">数量：x<span v-text="item.basket_count">1</span></div>
               <div class="orders-mid-bottom">
                 <span v-if="items.sellType==0">￥</span>
-                <span class="basicColor font-16" v-text="item.product_total_amout" v-if="items.sellType==1"></span>
+                <span class="basicColor font-16" v-text="item.product_total_amout"></span>
                 <span class="font-9" v-if="items.sellType==1">积分</span>
               </div>
             </div>

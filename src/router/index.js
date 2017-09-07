@@ -9,6 +9,7 @@ import personal from '@/pages/personal'
 import order from '@/pages/order'
 import contact from '@/pages/contact'
 import lifeList from '@/pages/list/list-life'
+import lifePresent from '@/pages/list/list-present'
 import sureOrder from '@/pages/order/sureOrder'
 import orderTicket from '@/pages/order/orderTicket'
 import choseLocation from '@/pages/order/choseLocation'
@@ -20,8 +21,7 @@ import paySc from '@/pages/pay/paySuccess'
 Vue.use(Router)
 // name为页面跳转后的页面标题
 const router = new Router({
-  routes: [
-    {
+  routes: [{
       path: '/search',
       name: '搜索列表',
       component: search,
@@ -50,6 +50,11 @@ const router = new Router({
       path: '/life',
       name: '品牌生活',
       component: lifeList,
+    },
+    {
+      path: '/present',
+      name: '品牌生活',
+      component: lifePresent,
     },
     {
       path: '/path',
