@@ -9,7 +9,7 @@ export default {
       return res.data
     })
   },
-
+  // 登陆
   login(params = {}) {
     console.log(params)
     return Vue.http.post(basePath + '/login', params, { emulateJSON: true }).then(res => {
@@ -17,23 +17,33 @@ export default {
       return res.data
     })
   },
-
+  // 删除订单
   deleteOrder(token, params = {}) {
     // some handling
     return Vue.http({
       method: 'POST',
       url: basePath + '/order/deleteOrder',
       params: params,
-      headers: header('/order/deleteOrder',token),
+      headers: header('/order/deleteOrder', token),
       emulateJSON: true
     }).then(res => {
       console.log('-------------')
       return res.data
     })
-}
+  },
+  // 获取订单详情
+  getOrderDetail(token,params = {}) {
+    return Vue.http.get(basePath + '/order/getOrderDetail', {
+      params: params,
+      headers:header('/order/getOrderDetail', token)
+    }).then(res => {
+      console.log('-------------')
+      return res.data
+    })
+  }
 
 
-// ...
+  // ...
 }
 
 function header(url, token) {

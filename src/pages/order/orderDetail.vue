@@ -47,7 +47,7 @@
           商品信息
         </div>
         <div class="order-goodsText">
-          <div class="orders" v-for="(item,index) in items.prod" key='index' @click="goDetail(item.text)">
+          <div class="orders" v-for="(item,index) in items.prod" key='index'>
             <div class="orders-left">
               <img :src="item.pic">
             </div>
@@ -63,6 +63,9 @@
                 <span class="basicColor font-16" v-text="item.product_total_amout"></span>
                 <span class="font-9" v-if="items.sellType==1">积分</span>
               </div>
+            </div>
+            <div class="tuihuan font-14" v-if="(items.status==2||items.status==3||items.status==4)&&items.sellType==0" @click="goReturn(items)">
+              申请退换货
             </div>
             <div class="order-line"></div>
           </div>
@@ -168,9 +171,12 @@ export default {
     Confirm
   },
   methods: {
+    goReturn:function(item){
+      this.$router.push({ path: '/returnOrder', query: { 'subNumber': item.sub_number } })
+    },
     goPay: function(item) {
       if (this.blueText == "立即兑换") {
-        this.$router.push({ path: '/pay' })
+        this.$router.push({ path: '/pay', query: { 'subNumber': item.sub_number } })
       } else if (this.blueText == "申请发票" || this.blueText == "已开具") {
         this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number } })
       } else if (this.blueText == "确认收货") {
@@ -607,5 +613,12 @@ export default {
     }
   }
 }
-
+.tuihuan{
+  position: absolute;
+  bottom: 5.06vw;
+  right: 0;
+  border: 1px solid #1dafed;
+  color: #1dafed;
+  padding: 1vw
+}
 </style>

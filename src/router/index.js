@@ -15,6 +15,7 @@ import orderTicket from '@/pages/order/orderTicket'
 import choseLocation from '@/pages/order/choseLocation'
 import addLocation from '@/pages/order/addLocation'
 import orderDetail from '@/pages/order/orderDetail'
+import returnOrder from '@/pages/order/return'
 import pay from '@/pages/pay/pay'
 import paySc from '@/pages/pay/paySuccess'
 
@@ -90,6 +91,11 @@ const router = new Router({
       path: '/orderDetail',
       name: '订单详情',
       component: orderDetail,
+    },
+    {
+      path: '/returnOrder',
+      name: '退换货申请',
+      component: returnOrder,
     },
     {
       path: '/orderTicket',

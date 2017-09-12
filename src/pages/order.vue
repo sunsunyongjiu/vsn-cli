@@ -44,7 +44,7 @@
             </div>
             <div v-if="btnsShow">
               <div class="order-btns-goChange" v-if="items.status==1||items.status==3||items.status==2">
-                <span v-if="items.status==1||items.status==4" @click="goPay" class="font-12">去兑换</span>
+                <span v-if="items.status==1||items.status==4" @click="goPay(items)" class="font-12">去兑换</span>
                 <span v-if="items.status==3||items.status==2" @click="goGet(items.sub_number)" class="font-12">确认收货</span>
                 <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()">
                   <p style="text-align:center;margin-bottom:10px;color:#737373" class="font-12">确认收货吗？</p>
@@ -87,8 +87,8 @@ export default {
     Confirm
   },
   methods: {
-    goPay: function() {
-      this.$router.push({ path: '/pay' })
+    goPay: function(item) {
+      this.$router.push({ path: '/pay', query: { 'subNumber': item.sub_number } })
     },
     goGet: function(num) {
       this.deleteNm = num

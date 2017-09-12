@@ -129,7 +129,7 @@ export default {
         },
       ],
       myPics: [{
-          src: require('../assets/imgs/benz.png'),
+          src: require('../assets/imgs/brand.png'),
           title: '品牌生活',
           titleEn: 'Mercedes me',
           class: 'index-page-classification-img',
@@ -137,7 +137,7 @@ export default {
           path: '/life'
         },
         {
-          src: require('../assets/imgs/box.png'),
+          src: require('../assets/imgs/gift.png'),
           title: '超值礼品',
           titleEn: 'Mercedes me',
           class: 'index-page-classification-img1',
@@ -145,14 +145,14 @@ export default {
           path: '/present'
         },
         {
-          src: require('../assets/imgs/work.png'),
+          src: require('../assets/imgs/class.png'),
           title: '精英课选',
           titleEn: 'Mercedes me',
           class: 'index-page-classification-img2',
           id: '778'
         },
         {
-          src: require('../assets/imgs/fue.png'),
+          src: require('../assets/imgs/voucher.png'),
           title: '尊享礼券',
           titleEn: 'Mercedes me',
           class: 'index-page-classification-img3',
@@ -166,7 +166,7 @@ export default {
           id: '780'
         },
         {
-          src: require('../assets/imgs/bag.png'),
+          src: require('../assets/imgs/travel.png'),
           title: '缤纷旅途',
           titleEn: 'Mercedes me',
           class: 'index-page-classification-img5',
@@ -204,8 +204,8 @@ export default {
     goWWW: function(url) {
       window.location.href = url
     },
-    goLogin:function(){
-      window.location.href='https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url='+this.$baseEncode('http://123.57.157.212:8080/pmall/index.html#/path')
+    goLogin: function() {
+      window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode('http://123.57.157.212:8080/pmall/index.html#/path')
     },
     goNext: function(pathUrl) {
       if (this.login || pathUrl == "/contact") {
@@ -223,8 +223,6 @@ export default {
       this.$router.push({ path: '/search', query: { 'search': this.searchValue } })
     },
     init: function() {
-      console.log(this.$baseEncode('http://123.57.157.212:8080/pmall/index.html#/path'))
-      console.log(this.$baseDecode('aHR0cDovLzEyMy41Ny4xNTcuMjEyOjgwODAvcG1hbGwvaW5kZXguaHRtbCMvcGF0aA=='))
       //判断当前用户是否登录
       let userToken = this.$route.query.token
       let user = this.$route.query.user
