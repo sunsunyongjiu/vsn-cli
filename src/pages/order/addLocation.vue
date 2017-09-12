@@ -410,9 +410,8 @@ export default {
   color: #ffffff;
   letter-spacing: 0;
   text-align: center;
-  position: absolute;
-  bottom: 10vw;
-  left: 5vw;
+  margin-top: 30vh;
+  margin-left: 5vw;
 }
 
 .vux-cell-box:before {

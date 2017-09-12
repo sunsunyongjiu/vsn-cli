@@ -1,6 +1,6 @@
 <template>
   <div class="pageTitle">
-    <span v-text="title" class="font-12"></span>
+    <span v-text="title" class="font-18"></span>
     <div class="back" @click="goback"></div>
   </div>
 </template>

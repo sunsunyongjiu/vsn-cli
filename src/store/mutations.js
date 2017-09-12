@@ -9,3 +9,7 @@ export function setAddr (state, { data }) {
 export function setEditAddr (state, { data }) {
   state.editAddr = data
 }
+
+export function setlistIndex (state, { data }) {
+  state.listIndex = data
+}

@@ -2,7 +2,7 @@
   <div>
     <div class="mubu" v-if="show"></div>
     <div class="pageTitle">
-      <span class="font-12">商品详情</span>
+      <span class="font-18">商品详情</span>
       <div class="back" @click="goback"></div>
     </div>
     <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
@@ -35,7 +35,7 @@
       </flexbox-item>
     </div>
     <div>
-      <div v-html="detailObj.content"></div>
+      <div v-html="detailObj.content"  class="innerDetail"></div>
     </div>
     <div v-transfer-dom>
       <popup v-model="popShow" position="bottom" height="120vw" class="detailPop">
@@ -141,8 +141,8 @@ export default {
     },
     doChange: function(n) {
       // 如果没登录
-      if(this.$store.state.loginUser.name == undefined){
-        window.location.href='https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url='+this.$baseEncode(window.location.href);
+      if (this.$store.state.loginUser.name == undefined) {
+        window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href);
         return
       }
       this.popShow = true
@@ -253,6 +253,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
 @import '../assets/css/detail.less';
+@import '../assets/css/global.less';
 .detail-title {
   color: #fff;
   .detail-title-cn {
@@ -262,7 +263,6 @@ export default {
     font-size: 18px;
   }
 }
-
 .detail-cartBtn {
   height: 14.6vw;
   width: 40.8vw;
@@ -434,6 +434,15 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.innerDetail {
+  div{
+    width: 100%;
+    img{
+      width: 100%
+    }
+  }
 }
 
 </style>

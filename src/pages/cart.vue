@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="pageTitle">
-      <span class="font-12">购物车</span>
+      <span class="font-18">购物车</span>
       <div class="back" @click="goback"></div>
       <div class="pageTitle-deleteBtn" @click="deleteAll">
         <img src="../assets/imgs/delete.png" class="personal-img">

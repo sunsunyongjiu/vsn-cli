@@ -6,7 +6,7 @@
         <div style="margin-bottom:2vw;">
           {{items.status|changeStatus}}
         </div>
-        <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div>
+        <!-- <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div> -->
       </div>
       <!--       <div class="order-info" v-if="items.sellType==1">
         {{items.sellType}}
@@ -121,6 +121,9 @@
         </div>
         <div class="bottom-btn-left font-16" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
         </div>
+        <div class="bottom-btn-left font-16" v-show="cancleShow" @click="delOrder(items)" v-if="items.delete_status!=1">
+          删除订单
+        </div>
       </div>
     </div>
   </div>
@@ -128,6 +131,7 @@
 <script>
 import back from '../../components/backNav'
 import md5 from 'js-md5';
+import Apis from '../../configers/Api'
 const timer = JSON.stringify(new Date().getTime());
 import { Confirm } from 'vux'
 export default {
@@ -155,7 +159,8 @@ export default {
       blueShow: true,
       greyShow: true,
       show: false,
-      buyBtShow:false
+      buyBtShow: false,
+      cancleShow: false
     }
   },
   components: {
@@ -166,10 +171,10 @@ export default {
     goPay: function(item) {
       if (this.blueText == "立即兑换") {
         this.$router.push({ path: '/pay' })
-      } else if (this.blueText == "申请发票") {
+      } else if (this.blueText == "申请发票" || this.blueText == "已开具") {
         this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number } })
       } else if (this.blueText == "确认收货") {
-        this.conifrmText = "确认收货么？",
+        this.conifrmText = "确认收货吗？",
           this.conifrmShowText = "是否确认收货"
         this.show = true;
       }
@@ -183,7 +188,7 @@ export default {
 
     },
     onConfirm: function(items) {
-      if (this.blueText == "确认收货") {
+      if (this.conifrmText == "确认收货吗？") {
         this.$vux.loading.show({
           text: 'loading'
         })
@@ -208,6 +213,11 @@ export default {
           this.$router.go(-1)
         }, function(error) {
           //error
+        })
+      } else if (this.conifrmText == "确认删除么？") {
+        Apis.deleteOrder(this.$store.state.loginUser.token, { 'subNumber': items.sub_number }).then(data => {
+          this.$vux.loading.hide()
+          this.$router.go(-1)
         })
       } else if (this.btnCancle == "申请退换货") {
         this.$vux.loading.show({
@@ -277,6 +287,13 @@ export default {
       }
 
     },
+    delOrder: function(item) {
+      console.log(item)
+      this.conifrmText = "确认删除么？",
+        this.conifrmShowText = "是否确认删除"
+      this.show = true;
+
+    },
     init: function() {
       this.$http.get(this.$Api('/order/getOrderDetail'), {
         params: { 'subNumber': this.$route.query.sub_number },
@@ -313,12 +330,20 @@ export default {
           this.blueShow = true
           this.timeShow = false
           this.buyBtShow = true
+          this.cancleShow = true
+          if (response.data.data[0].invoice_sub_id) {
+            this.blueText = "已开具"
+          } else {
+            this.blueText = "申请发票"
+          }
           this.btnCancle = '申请退换货'
-          this.blueText = "申请发票"
+
         } else if (response.data.data[0].status == 5) {
           this.blueShow = false
           this.timeShow = false
           this.greyShow = false
+          this.cancleShow = true
+          this.buyBtShow = true
         } else {
           this.blueShow = true;
           this.greyShow = false;
@@ -557,10 +582,10 @@ export default {
     border-bottom: 1px solid #4a4a4a;
     color: #919191;
   }
-  .sendMsgBoxItem:before{
+  .sendMsgBoxItem:before {
     display: block;
     content: '';
-    width:1.5vw;
+    width: 1.5vw;
     height: 1.5vw;
     border-radius: 100%;
     background: #919191;
@@ -573,13 +598,12 @@ export default {
   .sendMsgBoxItem {
     border-top: 0px;
     color: #1dafed;
-    &:before{
-      width:2vw;
+    &:before {
+      width: 2vw;
       height: 2vw;
       border: 2px solid #1dafed;
       .px2vw(left, -25);
-      background:#181818;
-
+      background: #181818;
     }
   }
 }

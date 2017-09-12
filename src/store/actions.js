@@ -9,3 +9,7 @@ export const setAddr = ({ commit }, data) => {
 export const setEditAddr = ({ commit }, data) => {
   commit('setEditAddr', data)
 }
+
+export const setlistIndex = ({ commit }, data) => {
+  commit('setlistIndex', data)
+}

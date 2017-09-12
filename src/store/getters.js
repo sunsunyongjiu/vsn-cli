@@ -9,3 +9,7 @@ export const getAddr = (state) => {
 export const getEditAddr = (state) => {
    return state.editAddr
 }
+
+export const getlistIndex = (state) => {
+   return state.listIndex
+}

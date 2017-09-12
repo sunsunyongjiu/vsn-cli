@@ -15,17 +15,24 @@
     <div class="type-box">
       <div class="type-hedder-item-box">
         <div class="type-hedder-item font-12">
-          <div class="morenCircle" :class="{setMorenCircle:common}" @click="common=!common"></div>
+          <div class="morenCircle" :class="{setMorenCircle:person}" @click="check(1)"></div>
           <span class="type-box-left">个人</span>
         </div>
         <div class="type-hedder-item font-12">
-          <div class="morenCircle" :class="{setMorenCircle:!common}" @click="common=!common"></div>
+          <div class="morenCircle" :class="{setMorenCircle:company}" @click="check(2)"></div>
           <span class="type-box-left">单位</span>
         </div>
+        <div class="type-hedder-item font-12">
+          <div class="morenCircle" :class="{setMorenCircle:main}" @click="check(3)"></div>
+          <span class="type-box-left">发票开具主体</span>
+        </div>
       </div>
-      <div v-if="!common" >
-        <x-input placeholder="请填写单位名字" class="type-hedder-item-input font-14" v-model="ticket.company"></x-input>
-        <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.tax_number"></x-input>
+      <div v-if="company||main">
+        <x-input placeholder="请填写单位名字" class="type-hedder-item-input font-14" v-model="ticket.company" v-if="company"></x-input>
+        
+        <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.tax_number" v-if="company"></x-input>
+        <x-input class="type-hedder-item-input font-14" disabled v-model="ticket.main" v-if="main"></x-input>
+        <!-- <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.main_tax_number" disabled></x-input> -->
       </div>
     </div>
     <div class="sureBtn" @click="sureTicket">
@@ -43,9 +50,13 @@ export default {
   data() {
     return {
       common: false,
+      person: false,
+      company: false,
+      main: false,
       ticket: {
         company: '',
-        tax_number: ''
+        tax_number: '',
+        main:'杭州驭缘网络科技有限公司'
       }
     }
   },
@@ -54,6 +65,12 @@ export default {
     XInput
   },
   methods: {
+    check: function(num) {
+      this.person = num == 1 ? true : false;
+      this.company = num == 2 ? true : false;
+      this.main = num == 3 ? true : false;
+
+    },
     init: function() {
       this.$http.get(this.$Api('/order/getOrderInvoice'), {
         params: { 'subNumber': this.$route.query.subNumber },
@@ -66,9 +83,11 @@ export default {
         console.log(response.data.data)
         if (response.data.data) {
           this.ticket = response.data.data;
-          if (response.data.data.title_id == 1) {
-            this.common = true
-          }
+          this.ticket.main=this.ticket.company;
+          this.person = response.data.data.title_id == 1 ? true : false;
+          this.company = response.data.data.title_id == 2 ? true : false;
+          this.main = response.data.data.title_id == 3 ? true : false;
+          this.ticket.company= response.data.data.title_id == 3? '':this.ticket.company
         }
 
 
@@ -89,11 +108,14 @@ export default {
       let cartData = {
         'subNumber': this.$route.query.subNumber,
         'typeId': 1,
-        'titleId': this.common ? 1 : 2,
-        'company': this.common ?'':this.ticket.company,
-        'taxNumber': this.common ?'':this.ticket.tax_number,
+        'titleId': this.person ? 1 : 2,
+        'company': this.person ? '' : this.ticket.company,
+        'taxNumber': this.person ? '' : this.ticket.tax_number,
       }
-
+      if(this.main){
+        cartData.titleId=3;
+        cartData.company='杭州驭缘网络科技有限公司';
+      }
       this.$http({
         method: 'POST',
         url: this.$Api('/order/updateOrderInvoice'),
@@ -184,8 +206,6 @@ export default {
 }
 
 .sureBtn {
-  position: absolute;
-  bottom: 20vw;
   background: #1dafed;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
   width: 86.4vw;
@@ -193,7 +213,8 @@ export default {
   line-height: 14.6vw;
   font-size: 24px;
   color: #fff;
-  left: 6.8vw;
+  margin-left: 6.8vw;
+  margin-top: 20vh;
 }
 
 .type-hedder-item-box {

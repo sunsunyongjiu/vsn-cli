@@ -3,11 +3,11 @@
     <back title="我的订单"></back>
     <div>
       <tab :line-width="1" custom-bar-width="16vw" defaultColor="#787878" active-color="white" style="background:#181818">
-        <tab-item selected @on-item-click="changeItem" class=" font-14">未支付</tab-item>
-        <tab-item @on-item-click="changeItem" class=" font-14">已支付</tab-item>
-        <tab-item @on-item-click="changeItem" class=" font-14">已完成</tab-item>
-        <tab-item @on-item-click="changeItem" class=" font-14">已取消</tab-item>
-        <tab-item @on-item-click="changeItem" class=" font-14">退换货</tab-item>
+        <tab-item :selected="listIndex==0" @on-item-click="changeItem" class=" font-14">未支付</tab-item>
+        <tab-item :selected="listIndex==1" @on-item-click="changeItem" class=" font-14">已支付</tab-item>
+        <tab-item :selected="listIndex==2" @on-item-click="changeItem" class=" font-14">已完成</tab-item>
+        <tab-item :selected="listIndex==3" @on-item-click="changeItem" class=" font-14">已取消</tab-item>
+        <tab-item :selected="listIndex==4" @on-item-click="changeItem" class=" font-14">退换货</tab-item>
       </tab>
     </div>
     <div>
@@ -47,8 +47,8 @@
                 <span v-if="items.status==1||items.status==4" @click="goPay" class="font-12">去兑换</span>
                 <span v-if="items.status==3||items.status==2" @click="goGet(items.sub_number)" class="font-12">确认收货</span>
                 <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()">
-                  <p style="text-align:center;margin-bottom:10px;color:#737373"  class="font-12">确认收货么？</p>
-                  <p style="text-align:left;color:#737373"  class="font-12">是否确认收货</p>
+                  <p style="text-align:center;margin-bottom:10px;color:#737373" class="font-12">确认收货吗？</p>
+                  <p style="text-align:left;color:#737373" class="font-12">是否确认收货</p>
                 </confirm>
               </div>
               <!-- <div class="order-btns-cancle1" v-if="items.status==3">已自动确认收货</div> -->
@@ -64,6 +64,7 @@
 import back from '../components/backNav'
 import { Tab, TabItem, Confirm } from 'vux'
 import md5 from 'js-md5';
+import { mapGetters } from 'vuex'
 const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
@@ -76,7 +77,7 @@ export default {
       btnsShow: true,
       status: 1,
       confirmShow: false,
-      deleteNm:''
+      deleteNm: ''
     }
   },
   components: {
@@ -90,11 +91,11 @@ export default {
       this.$router.push({ path: '/pay' })
     },
     goGet: function(num) {
-      this.deleteNm=num
+      this.deleteNm = num
       this.confirmShow = true
     },
     onConfirm: function() {
-      
+
       this.$vux.loading.show({
         text: 'loading'
       })
@@ -126,6 +127,7 @@ export default {
 
     },
     changeItem: function(index) {
+      this.$store.dispatch({ type: 'setlistIndex', data: index })
       let _this = this
       _this.btnsShow = true
       if (index < 2) {
@@ -142,6 +144,16 @@ export default {
       this.$router.push({ path: '/orderDetail', query: { 'sub_number': n.sub_number } })
     },
     init: function() {
+      let _this = this
+      if (_this.listIndex) {
+        
+        _this.btnsShow = true
+        if (_this.listIndex < 2) {
+          this.status = _this.listIndex + 1
+        } else {
+          this.status = _this.listIndex + 2
+        }
+      }
       this.$http.get(this.$Api('/order/getOrderList'), {
         params: { 'status': this.status },
         headers: {
@@ -168,6 +180,13 @@ export default {
   mounted: function() {
     this.init()
 
+  },
+  computed: {
+    // 使用对象展开运算符将 getters 混入 computed 对象中
+    ...mapGetters({
+      listIndex: 'getlistIndex'
+
+    })
   },
   filters: {
     changeStatus: function(n) {

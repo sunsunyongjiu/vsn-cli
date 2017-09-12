@@ -9,6 +9,7 @@ import  { AlertPlugin,LoadingPlugin,ToastPlugin   } from 'vux';
 import AppConfig from './configers/appconfig';
 
 
+
 Vue.use(new AppConfig())
 Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)
