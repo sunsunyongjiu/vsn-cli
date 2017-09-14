@@ -64,7 +64,7 @@
                 <span class="font-9" v-if="items.sellType==1">积分</span>
               </div>
             </div>
-            <div class="tuihuan font-14" v-if="(items.status==2||items.status==3||items.status==4)&&items.sellType==0" @click="goReturn(items)">
+            <div class="tuihuan font-14" v-if="(items.status==2||items.status==3||items.status==4)&&items.sellType==0" @click="goReturn(items,item.sub_item_id)">
               申请退换货
             </div>
             <div class="order-line"></div>
@@ -171,8 +171,8 @@ export default {
     Confirm
   },
   methods: {
-    goReturn:function(item){
-      this.$router.push({ path: '/returnOrder', query: { 'subNumber': item.sub_number } })
+    goReturn:function(item,itemIid){
+      this.$router.push({ path: '/returnOrder', query: { 'subNumber': item.sub_number,'itemIid':itemIid } })
     },
     goPay: function(item) {
       if (this.blueText == "立即兑换") {

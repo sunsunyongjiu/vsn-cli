@@ -131,6 +131,7 @@ export default {
     		addrId:this.$route.query.addrId,
     		returnReason:this.resonText,
     		returnDescription:this.textareaText,
+    		subItemID:this.$route.query.itemIid,
     		photoFile1:"",
     		photoFile2:"",
     		photoFile3:"",

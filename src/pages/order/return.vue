@@ -107,7 +107,7 @@ export default {
       this.$router.push({ path: '/choseLocation' })
     },
     goChange:function(){
-    	this.$router.push({ path: '/changeOrder', query: { 'subNumber': this.$route.query.subNumber,'returnType':this.returnOrder?1:2,'postType':1,'addrId':this.order.address.addrId } })
+    	this.$router.push({ path: '/changeOrder', query: { 'subNumber': this.$route.query.subNumber,'returnType':this.returnOrder?1:2,'postType':1,'addrId':this.order.address.addrId,'itemIid':this.$route.query.itemIid } })
     }
   },
   mounted: function() {
