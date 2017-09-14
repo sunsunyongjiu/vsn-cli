@@ -16,6 +16,7 @@ import choseLocation from '@/pages/order/choseLocation'
 import addLocation from '@/pages/order/addLocation'
 import orderDetail from '@/pages/order/orderDetail'
 import returnOrder from '@/pages/order/return'
+import changeOrder from '@/pages/order/changeOrder'
 import pay from '@/pages/pay/pay'
 import paySc from '@/pages/pay/paySuccess'
 
@@ -54,7 +55,7 @@ const router = new Router({
     },
     {
       path: '/present',
-      name: '品牌生活',
+      name: '超值礼品',
       component: lifePresent,
     },
     {
@@ -96,6 +97,11 @@ const router = new Router({
       path: '/returnOrder',
       name: '退换货申请',
       component: returnOrder,
+    },
+    {
+      path: '/changeOrder',
+      name: '申请退款',
+      component: changeOrder,
     },
     {
       path: '/orderTicket',

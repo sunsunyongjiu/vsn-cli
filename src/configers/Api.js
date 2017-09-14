@@ -40,7 +40,28 @@ export default {
       console.log('-------------')
       return res.data
     })
-  }
+  },
+  // 获取退换货原因列表
+  getProdReturnReasonList() {
+    return Vue.http.get(basePath + '/order/getProdReturnReasonList',).then(res => {
+      // some handling
+      return res.data
+    })
+  },
+  // 订单退换货
+  exchangeOrder(token, params = {}) {
+    // some handling
+    return Vue.http({
+      method: 'POST',
+      url: basePath + '/order/exchangeOrder',
+      params: params,
+      headers: header('/order/exchangeOrder', token),
+      emulateJSON: true
+    }).then(res => {
+      console.log('-------------')
+      return res.data
+    })
+  },
 
 
   // ...

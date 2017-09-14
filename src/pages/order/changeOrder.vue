@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back title="退换货申请"></back>
+    <back title="申请退款"></back>
     <div class="order-goods">
       <div class="order-person-title font-15">
         商品信息
@@ -27,88 +27,121 @@
         </div>
       </div>
     </div>
-    <div class="order-goods">
-      <div class="order-person-title font-15">
-        服务类型
+    <div class="change-reason" @click="showPop=true">
+      <span class="font-14" style="float:left">退/换货原因</span>
+      <span style="float:right" v-text="resonText"></span>
+    </div>
+    <div class="change-reason" v-for="(item,index) in order.prod" key='index'>
+      <span class="font-14">退款金额：</span>
+      <span v-if="order.sellType==0" class="font-10 basicColor">￥</span>
+      <span class="font-18 basicColor" v-text="item.product_total_amout"></span>
+      <span class="font-9 basicColor" v-if="order.sellType==1">积分</span>
+    </div>
+    <div class='change-reason-input'>
+      <div>
+        <span class="fff font-14">换货理由：</span><span class="color-9b font-14">（选填，100字以内）</span>
       </div>
-      <div class="order-selectBox">
-        <div class="order-selectBox-item font-13" :class="{'selecter-selected':returnOrder}" @click="returnOrder=true">我要退货<img src="../../assets/imgs/triangle.png" class="selecters-triangle"></div>
-        <div class="order-selectBox-item font-13" :class="{'selecter-selected':!returnOrder}" @click="returnOrder=false">我要换货<img src="../../assets/imgs/triangle.png" class="selecters-triangle"></div>
+      <div class="inputBox">
+        <textarea maxlength="200" v-model="textareaText"></textarea>
       </div>
     </div>
-    <div class="order-goods">
-      <div class="order-person-title font-15">
-        商品退回方式
-      </div>
-      <div class="order-selectBox">
-        <div class="order-selectBox-item way-select font-13">上门自提</div>
-        <div class="order-location">
-          <div class="order-location-title">
-            我的收件地址
-          </div>
-          <div class="order-location-text ">
-            <div class="order-location-text-left">
-              <div class="font-16 color-91 locationDetail">
-                <span v-text="order.address.RECEIVER"></span>
-                <span v-text="order.address.moble"></span>
-              </div>
-              <div class="font-14 color-91 locationDetail">
-                <span>
-	              {{order.address.province}}
-	              {{order.address.CITY}}
-	              {{order.address.area}}
-	              {{order.address.town}}
-	              {{order.address.subAdds}}
-	            </span>
-              </div>
-            </div>
-            <div class="order-location-text-right" @click="goLocation">
-              <img src="../../assets/imgs/edit.png">
-            </div>
+    <div class="change-picBox">
+      <imgUploader v-model="target"></imgUploader>
+    </div>
+    <div v-transfer-dom>
+      <popup v-model="showPop" position="bottom" max-height="70%">
+        <div class="reason-title font-15">
+          退款原因
+        </div>
+        <div v-for="(item,index) in reasons" class="reasons">
+          <div class="font-14">
+            {{item.return_reason}}
+            <input type="radio" name="reson" @click="choose(item)">
           </div>
         </div>
-      </div>
+      </popup>
     </div>
-    <div class="submitBtn font-24 fff" @click="goChange()">
-      下一步
+    <div class="submitBtn font-24 fff" @click="exchangeOrder">
+      提交
     </div>
   </div>
 </template>
 <script>
 import back from '../../components/backNav';
+import imgUploader from '../../components/imgUploader';
 import Apis from '../../configers/Api'
+import { TransferDom, Popup, XButton } from 'vux'
 export default {
   name: '',
+  directives: {
+    TransferDom
+  },
   data() {
     return {
       order: {
         address: {
           RECEIVER: '',
           moble: ''
-        }
+        },
+        prod: []
       },
-      returnOrder: false
+      returnOrder: false,
+      target: '',
+      reasons: [],
+      showPop: false,
+      resonText: '',
+      textareaText:''
     }
   },
   components: {
-    back
+    back,
+    imgUploader,
+    Popup,
+    XButton
   },
   methods: {
     init: function() {
+      let _this = this
       Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
-        console.log(data.data[0])
-        this.order = data.data[0];
-        this.order.prod.forEach(function(x) {
+        _this.order = data.data[0];
+        _this.order.prod.forEach(function(x) {
           x.attribute = JSON.parse(x.attribute)
         })
-      })
+      });
+      // 获取退换货原因列表
+      Apis.getProdReturnReasonList().then(data => {
+        console.log(data.data)
+        this.reasons = data.data
+      });
+    },
+    choose: function(item) {
+      this.resonText = item.return_reason
     },
     goLocation: function() {
       this.$router.push({ path: '/choseLocation' })
     },
-    goChange:function(){
-    	this.$router.push({ path: '/changeOrder', query: { 'subNumber': this.$route.query.subNumber,'returnType':this.returnOrder?1:2,'postType':1,'addrId':this.order.address.addrId } })
-    }
+    exchangeOrder:function(){
+    	this.$vux.loading.show({
+          text: 'loading'
+        })
+    	let data={
+    		subNumber:this.$route.query.subNumber,
+    		returnType:this.$route.query.returnType,
+    		postType:this.$route.query.postType,
+    		addrId:this.$route.query.addrId,
+    		returnReason:this.resonText,
+    		returnDescription:this.textareaText,
+    		photoFile1:"",
+    		photoFile2:"",
+    		photoFile3:"",
+
+    	}
+      Apis.exchangeOrder(this.$store.state.loginUser.token,data).then(data => {
+        console.log(data)
+        this.$vux.loading.hide()
+        this.$router.push({ path: '/order' })
+      });
+    },
   },
   mounted: function() {
     this.init()
@@ -144,7 +177,7 @@ export default {
   overflow: hidden;
   .px2vw(padding-bottom, 21);
   .order-selectBox-item {
-  	position: relative;
+    position: relative;
     .px2vw(width, 78);
     .px2vw(height, 20);
     .px2vw(line-height, 20);
@@ -153,9 +186,9 @@ export default {
     border: 1px solid #787878;
     color: #787878;
     float: left;
-    .selecters-triangle{
-    	height: 70%;
-    	display: none;
+    .selecters-triangle {
+      height: 70%;
+      display: none;
     }
   }
   .way-select {
@@ -285,6 +318,76 @@ export default {
     right: -1px;
     top: -1px;
   }
+}
+
+.change-reason {
+  background: #181818;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+  .px2vw(width, 375);
+  .px2vw(height, 42);
+  box-sizing: border-box;
+  .px2vw(line-height, 42);
+  .px2vw(margin-top, 9);
+  .px2vw(padding-left, 20);
+  .px2vw(padding-right, 20);
+  color: #fff;
+  text-align: left;
+}
+
+.change-reason-input {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+  .px2vw(width, 375);
+  .px2vw(height, 82);
+  box-sizing: border-box;
+  text-align: left;
+  .px2vw(padding-left, 20);
+  .px2vw(padding-right, 20);
+  .px2vw(padding-top, 9);
+  .px2vw(margin-top, 9);
+  textarea {
+    background: none;
+    border: 0;
+    width: 100%;
+    .px2vw(height, 40);
+    color: #fff;
+    .px2vw(line-height, 20);
+  }
+}
+
+.change-picBox {
+  background: #181818;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+  .px2vw(width, 375);
+  .px2vw(margin-top, 9);
+  .px2vw(height, 150);
+}
+
+.reasons {
+  .px2vw(height, 40);
+  .px2vw(line-height, 40);
+  box-sizing: border-box;
+  background: #4e4e4e;
+  color: #b4b4b4;
+  .px2vw(padding-left, 19);
+  .px2vw(padding-right, 19);
+  input[type=radio] {
+    float: right;
+    .px2vw(margin-top, 13);
+  }
+}
+
+.reasons:not(:last-child) {
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.reason-title {
+  border-bottom: 1px solid #4a4a4a;
+  .px2vw(height, 40);
+  .px2vw(line-height, 40);
+
+  text-align: center;
+  background: #4e4e4e;
+  color: #fff
 }
 
 </style>
