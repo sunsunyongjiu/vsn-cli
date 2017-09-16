@@ -41,6 +41,20 @@ export default {
       return res.data
     })
   },
+  // 积分支付
+  scorePay(token, params = {}) {
+    // some handling
+    return Vue.http({
+      method: 'POST',
+      url: basePath + '/order/scorePay',
+      params: params,
+      headers: header('/order/scorePay', token),
+      emulateJSON: true
+    }).then(res => {
+      console.log('-------------')
+      return res.data
+    })
+  },
   // 获取退换货原因列表
   getProdReturnReasonList() {
     return Vue.http.get(basePath + '/order/getProdReturnReasonList',).then(res => {
@@ -57,6 +71,23 @@ export default {
       params: params,
       headers: header('/order/exchangeOrder', token),
       emulateJSON: true
+    }).then(res => {
+      console.log('-------------')
+      return res.data
+    })
+  },
+  // 获取微信支付订单信息
+  unifiedorder(params = {}) {
+    return Vue.http.get(basePath + '/unifiedorder', { params }).then(res => {
+      // some handling
+      return res.data
+    })
+  },
+  // 获取积分记录
+  getPointList(token,params = {}) {
+    return Vue.http.get(basePath + '/order/getPointList', {
+      params: params,
+      headers:header('/order/getPointList', token)
     }).then(res => {
       console.log('-------------')
       return res.data

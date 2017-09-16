@@ -107,8 +107,16 @@ export default {
           emulateJSON: true
         }).then(function(data) {
           console.log(data)
-
-          this.$router.push({ path: '/pay' })
+          if (data.data.code == 1) {
+            this.$router.push({ path: '/pay' })
+          } else {
+            this.$vux.toast.show({
+              text: '清单提交失败，请稍后重试！',
+              type: 'warn',
+              isShowMask: true,
+              position: 'middle'
+            })
+          }
         }, function(error) {
           //error
         })

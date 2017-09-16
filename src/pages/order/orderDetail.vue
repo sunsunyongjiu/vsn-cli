@@ -64,7 +64,7 @@
                 <span class="font-9" v-if="items.sellType==1">积分</span>
               </div>
             </div>
-            <div class="tuihuan font-14" v-if="(items.status==2||items.status==3||items.status==4)&&items.sellType==0" @click="goReturn(items,item.sub_item_id)">
+            <div class="tuihuan font-14" v-if="(((items.status==2||items.status==3)&&items.orderTrackReceived==1)||items.status==4)&&items.sellType==0" @click="goReturn(items,item.sub_item_id)">
               申请退换货
             </div>
             <div class="order-line"></div>
@@ -309,7 +309,7 @@ export default {
           "sign": md5("/order/getOrderDetail" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }).then((response) => {
-        console.log(response.data.data[0])
+        console.log(response.data.data)
         console.log(response.data.data[0].orderTrack)
         this.orderDetail = response.data.data
         this.orderDetail.forEach(function(n) {
@@ -321,7 +321,9 @@ export default {
         })
 
         if (response.data.data[0].status == 1) {
-
+          if(response.data.data[0].sellType==0){
+            this.blueText = "立即购买"
+          }
         } else if (response.data.data[0].status == 2 || response.data.data[0].status == 3) {
 
           this.blueShow = true;
@@ -358,7 +360,6 @@ export default {
       }, (response) => {
         // error callback
       });
-
 
     }
   },

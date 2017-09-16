@@ -205,7 +205,8 @@ export default {
       window.location.href = url
     },
     goLogin: function() {
-      window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode('http://123.57.157.212:8080/pmall/index.html#/path')
+
+      window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href)
     },
     goNext: function(pathUrl) {
       if (this.login || pathUrl == "/contact") {
@@ -235,6 +236,7 @@ export default {
             this.login = true
             let userDetail = data.data
             userDetail.token = this.$route.query.token
+            userDetail.user = this.$route.query.user
             this.$store.dispatch({ type: 'setLogin', data: userDetail })
           }
         })

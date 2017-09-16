@@ -36,11 +36,11 @@ export default {
   name: '',
   data() {
     return {
-    	order:{
-    		prod_name:'',
-    		total:'',
-    		sellType:''
-    	}
+      order: {
+        prod_name: '',
+        total: '',
+        sellType: ''
+      }
     }
   },
   components: {
@@ -48,17 +48,60 @@ export default {
   },
   methods: {
     goPay: function() {
-      this.$router.push({ path: '/success' })
+      if (this.order.sellType == 0) {
+        Apis.unifiedorder({ 'subNumber': this.$route.query.subNumber }).then(data => {
+          this.callpay(data.data.jsApiParams)
+        })
+        
+      
+      } else {
+        Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber,'score':this.order.total,token:this.$store.state.loginUser.token }).then(data => {
+          if(data){
+            this.$router.push({ path: '/success' })
+          }
+        })
+        
+      }
     },
     init: function() {
       Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
-      	console.log(data.data[0])
-      	this.order=data.data[0]
+        console.log(data.data[0])
+        this.order = data.data[0]
       })
+    },
+    jsApiCall: function(data) {
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest',
+        data,
+        function(res) {
+          WeixinJSBridge.log(res.errMsg);
+          //WeixinJSBridge.log(res.err_msg);
+          if (res.err_msg == "get_brand_wcpay_request:ok") {
+            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html#/path?token='+this.$store.state.loginUser.token+'&user'+this.$store.state.loginUser.user+'=OTU5Mw%3D%3D&success=1';
+          } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html#/path?token='+this.$store.state.loginUser.token+'&user'+this.$store.state.loginUser.user+'=OTU5Mw%3D%3D&success=0';
+            return false;
+          }
+        }
+      );
+    },
+
+    callpay: function(data) {
+
+      if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+          document.addEventListener('WeixinJSBridgeReady', this.jsApiCall(data), false);
+        } else if (document.attachEvent) {
+          document.attachEvent('WeixinJSBridgeReady', this.jsApiCall(data));
+          document.attachEvent('onWeixinJSBridgeReady', this.jsApiCall(data));
+        }
+      } else {
+        this.jsApiCall(data);
+      }
     }
   },
   mounted: function() {
-  	this.init()
+    this.init()
 
   }
 }

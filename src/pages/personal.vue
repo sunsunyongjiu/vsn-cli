@@ -42,10 +42,14 @@
         <div v-text="loginUser.mobile" class='details-right'></div>
       </div>
       <div class="line"></div>
-      <div class="details">
+      <div class="details" @click="goPointHistory">
         <div class="details-left"><img src="../assets/imgs/integral.png" class="personal-img"> 可用积分
         </div>
-        <div v-text="loginUser.score" class='details-right'></div>
+        <div style="float:right"></div>
+        <div  class='details-right'>
+          <span v-text="loginUser.score"></span> &gt;
+        </div>
+
       </div>
       <div class="line"></div>
       <div class="details">
@@ -77,6 +81,9 @@ export default {
     goLocation: function() {
       this.$router.push({ path: '/choseLocation', query: { 'from': 'person' } })
     },
+    goPointHistory:function(){
+      this.$router.push({ path: '/pointHistory' })
+    }
   },
   mounted: function() {
     this.init()

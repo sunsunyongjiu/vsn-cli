@@ -9,6 +9,7 @@ import personal from '@/pages/personal'
 import order from '@/pages/order'
 import contact from '@/pages/contact'
 import lifeList from '@/pages/list/list-life'
+import pointHistory from '@/pages/person/pointHistory'
 import lifePresent from '@/pages/list/list-present'
 import sureOrder from '@/pages/order/sureOrder'
 import orderTicket from '@/pages/order/orderTicket'
@@ -19,6 +20,7 @@ import returnOrder from '@/pages/order/return'
 import changeOrder from '@/pages/order/changeOrder'
 import pay from '@/pages/pay/pay'
 import paySc from '@/pages/pay/paySuccess'
+
 
 Vue.use(Router)
 // name为页面跳转后的页面标题
@@ -117,6 +119,11 @@ const router = new Router({
       path: '/success',
       name: '支付成功',
       component: paySc,
+    },
+    {
+      path: '/pointHistory',
+      name: '积分兑换记录',
+      component: pointHistory,
     },
     {
       path: '*',

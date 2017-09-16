@@ -78,7 +78,8 @@ export default {
 
       ],
       show: false,
-      selectePoint: true
+      selectePoint: true,
+      selectedSub: ''
     }
   },
   components: {
@@ -97,7 +98,10 @@ export default {
     onConfirm: function() {
       let str = ''
       this.goodsList.forEach(function(item) {
-        str += ',' + item.basketId
+        if (item.selected) {
+          str += ',' + item.basketId
+        }
+
 
       })
       this.onButtonClick(str.substr(1))
@@ -174,7 +178,14 @@ export default {
 
     },
     doSelect(item) {
-      item.selected = !item.selected
+      item.selected = !item.selected;
+      let _this=this
+      this.goodsList.forEach(function(n) {
+        if (n.selected) {
+          _this.selectedSub = n.basketId
+        }
+      })
+
     },
     selecteAll: function() {
       console.log(this.selectedAll)
@@ -191,19 +202,38 @@ export default {
     },
     goSure: function() {
       console.log(this.sameShop != false)
-      if (this.sameShop != false) {
-        let str = ''
-        this.goodsList.forEach(function(n) {
-          if (n.selected) {
-            str += (',' + n.basketId)
-          }
+      console.log(this.goodsList.length)
+      let i = 0
+      this.goodsList.forEach(function(n) {
+        if (n.selected) {
+          i++
+        }
+      })
+      console.log(this.selectedSub)
+      if (i == 1) {
+        this.$router.push({ path: '/sureOrder', query: { 'selectIds': this.selectedSub } })
+      } else {
+        this.$vux.toast.show({
+          text: '只能提交一份商品！',
+          type: 'warn',
+          isShowMask: true,
+          position: 'middle'
         })
-        console.log(str.slice(1))
-
-        this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
-      }else{
-        alert('请选择同一家店的产品！')
       }
+      return
+      // if (this.sameShop != false) {
+      //   let str = ''
+      //   this.goodsList.forEach(function(n) {
+      //     if (n.selected) {
+      //       str += (',' + n.basketId)
+      //     }
+      //   })
+      //   console.log(str.slice(1))
+
+      //   this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
+      // } else {
+      //   alert('请选择同一家店的产品！')
+      // }
 
     },
 
@@ -230,7 +260,7 @@ export default {
               size: JSON.parse(item.attribute),
               point: item.point,
               count: item.basket_count,
-              selected: true,
+              selected: false,
               basketId: item.basket_id,
               sellType: item.sellType,
               cash: item.cash
@@ -487,10 +517,11 @@ export default {
   float: left;
 }
 
-.goods-size-box{
+.goods-size-box {
   width: 43.3vw;
   overflow: hidden;
-white-space: nowrap;
-text-overflow: ellipsis;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
+
 </style>

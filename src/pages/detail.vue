@@ -30,7 +30,7 @@
       </flexbox-item>
       <flexbox-item>
         <div class="flex-demo detail-changeBtn font-20" @click="doChange">
-          立即兑换
+          {{detailObj.sellType==0?'立即购买':'立即兑换'}}
         </div>
       </flexbox-item>
     </div>
@@ -327,6 +327,7 @@ export default {
   left: 5vw;
   img {
     height: 100%;
+    max-width: 100%;
     display: block;
     margin: 0 auto
   }
@@ -437,6 +438,8 @@ export default {
 }
 
 .innerDetail {
+  color: #fff;
+  text-align: left;
   div{
     width: 100%;
     img{
