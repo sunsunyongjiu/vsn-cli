@@ -1,8 +1,8 @@
 <template>
   <div class="change-picBox-uploadBox">
-    <input id="id" type="file" @change="handleFileChange" ref="inputer" />
-    <label for="id"></label>
-    <img :src="dataUrl" />
+    <input :id="myid" type="file" @change="handleFileChange" ref="inputer" />
+    <label :for="myid"></label>
+    <img :src="dataUrl" border="0"/>
   </div>
 </template>
 <script>
@@ -16,12 +16,7 @@ export default {
   components: {
 
   },
-  props: {
-    value: {
-      // 绑定默认的value prop
-      default: undefined
-    },
-  },
+  props: ['myid'],
   methods: {
     imgPreview(file) {
       let self = this;
@@ -33,9 +28,15 @@ export default {
         let reader = new FileReader();
         // 将图片将转成 base64 格式
         reader.readAsDataURL(file);
+
         // 读取成功后的回调
         reader.onloadend = function() {
           self.dataUrl = this.result;
+          // self.$emit('imgUrl', [this.result,this.myid]);
+          self.$emit('imgUrl', {
+            url:this.result,
+            id:self.myid
+          });
         }
       }
     },
@@ -67,7 +68,6 @@ export default {
   },
   mounted: function() {
 
-
   }
 }
 
@@ -84,8 +84,9 @@ export default {
     position: absolute;
     left: -9999px;
   }
-  img{
-  	width: 100%;height: 100%;
+  img {
+    width: 100%;
+    height: 100%;
   }
   label {
     position: absolute;

@@ -46,7 +46,12 @@
       </div>
     </div>
     <div class="change-picBox">
-      <imgUploader v-model="target"></imgUploader>
+      <div class="change-picBox-title font-14 fff">上传凭证</div>
+      <div class="change-picBox-imgs">
+        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img1" class="items"></imgUploader>
+        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img2"></imgUploader>
+        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img3"></imgUploader>
+      </div>
     </div>
     <div v-transfer-dom>
       <popup v-model="showPop" position="bottom" max-height="70%">
@@ -90,7 +95,12 @@ export default {
       reasons: [],
       showPop: false,
       resonText: '',
-      textareaText:''
+      textareaText: '',
+      photoFile: {
+        photoFile1: '',
+        photoFile2: '',
+        photoFile3: '',
+      }
     }
   },
   components: {
@@ -117,27 +127,43 @@ export default {
     choose: function(item) {
       this.resonText = item.return_reason
     },
+    getUrl: function(imageBase64) {
+
+      Apis.uploadImage(imageBase64.url, 'returnOrderPhoto').then(data => {
+        console.log(data)
+        if (data.code == 1) {
+          if (imageBase64.id == 'img1') {
+            this.photoFile.photoFile1 = data.data.fileName
+          } else if (imageBase64.id == 'img2') {
+            this.photoFile.photoFile2 = data.data.fileName
+          } else {
+            this.photoFile.photoFile3 = data.data.fileName
+          }
+
+        }
+      });
+    },
     goLocation: function() {
       this.$router.push({ path: '/choseLocation' })
     },
-    exchangeOrder:function(){
-    	this.$vux.loading.show({
-          text: 'loading'
-        })
-    	let data={
-    		subNumber:this.$route.query.subNumber,
-    		returnType:this.$route.query.returnType,
-    		postType:this.$route.query.postType,
-    		addrId:this.$route.query.addrId,
-    		returnReason:this.resonText,
-    		returnDescription:this.textareaText,
-    		subItemID:this.$route.query.itemIid,
-    		photoFile1:"",
-    		photoFile2:"",
-    		photoFile3:"",
+    exchangeOrder: function() {
+      this.$vux.loading.show({
+        text: 'loading'
+      })
+      let data = {
+        subNumber: this.$route.query.subNumber,
+        returnType: this.$route.query.returnType,
+        postType: this.$route.query.postType,
+        addrId: this.$route.query.addrId,
+        returnReason: this.resonText,
+        returnDescription: this.textareaText,
+        subItemID: this.$route.query.itemIid,
+        photoFile1: this.photoFile.photoFile1,
+        photoFile2: this.photoFile.photoFile2,
+        photoFile3: this.photoFile.photoFile3,
 
-    	}
-      Apis.exchangeOrder(this.$store.state.loginUser.token,data).then(data => {
+      }
+      Apis.exchangeOrder(this.$store.state.loginUser.token, data).then(data => {
         console.log(data)
         this.$vux.loading.hide()
         this.$router.push({ path: '/order' })
@@ -360,6 +386,7 @@ export default {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
   .px2vw(width, 375);
   .px2vw(margin-top, 9);
+  .px2vw(padding-left, 20);
   .px2vw(height, 150);
 }
 
@@ -389,6 +416,21 @@ export default {
   text-align: center;
   background: #4e4e4e;
   color: #fff
+}
+.change-picBox-title{
+	text-align: left;
+	.px2vw(margin-top, 9);
+	.px2vw(margin-bottom, 17);
+}
+.change-picBox-imgs{
+	overflow: hidden;
+	img{
+		border: 0 !important
+	}
+	.change-picBox-uploadBox{
+		float: left;
+		.px2vw(margin-right, 21);
+	} 
 }
 
 </style>

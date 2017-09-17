@@ -17,6 +17,17 @@ export default {
       return res.data
     })
   },
+  // 上传图片
+  uploadImage(imageBase64,imageType) {
+    var params={
+      imageBase64:imageBase64,
+      imageType:imageType
+    }
+    return Vue.http.post(basePath + '/order/uploadImage', params, { emulateJSON: true }).then(res => {
+      // some handling
+      return res.data
+    })
+  },
   // 删除订单
   deleteOrder(token, params = {}) {
     // some handling

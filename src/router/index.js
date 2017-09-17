@@ -25,6 +25,7 @@ import paySc from '@/pages/pay/paySuccess'
 Vue.use(Router)
 // name为页面跳转后的页面标题
 const router = new Router({
+	 mode: 'history',
   routes: [{
       path: '/search',
       name: '搜索列表',

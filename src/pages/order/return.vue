@@ -101,13 +101,17 @@ export default {
         this.order.prod.forEach(function(x) {
           x.attribute = JSON.parse(x.attribute)
         })
+        if (this.$store.state.sessionAddr.CITY) {
+          this.order.address = this.$store.state.sessionAddr;
+          this.$store.dispatch({ type: 'setSessionAddr', data: {} });
+        }
       })
     },
     goLocation: function() {
-      this.$router.push({ path: '/choseLocation' })
+      this.$router.push({ path: '/choseLocation', query: { 'from': 'return' } })
     },
-    goChange:function(){
-    	this.$router.push({ path: '/changeOrder', query: { 'subNumber': this.$route.query.subNumber,'returnType':this.returnOrder?1:2,'postType':1,'addrId':this.order.address.addrId,'itemIid':this.$route.query.itemIid } })
+    goChange: function() {
+      this.$router.push({ path: '/changeOrder', query: { 'subNumber': this.$route.query.subNumber, 'returnType': this.returnOrder ? 1 : 2, 'postType': 1, 'addrId': this.order.address.addrId, 'itemIid': this.$route.query.itemIid } })
     }
   },
   mounted: function() {
@@ -144,7 +148,7 @@ export default {
   overflow: hidden;
   .px2vw(padding-bottom, 21);
   .order-selectBox-item {
-  	position: relative;
+    position: relative;
     .px2vw(width, 78);
     .px2vw(height, 20);
     .px2vw(line-height, 20);
@@ -153,9 +157,9 @@ export default {
     border: 1px solid #787878;
     color: #787878;
     float: left;
-    .selecters-triangle{
-    	height: 70%;
-    	display: none;
+    .selecters-triangle {
+      height: 70%;
+      display: none;
     }
   }
   .way-select {

@@ -56,7 +56,7 @@
       <div v-if="!selectePoint" class="bottom-mid">
         <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-18" v-text="totalPoint"></span>
       </div>
-      <div class="bottom-right" @click="goSure">兑换</div>
+      <div class="bottom-right" @click="goSure">{{selectePoint?'兑换':'购买'}}</div>
     </div>
     <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
       <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品</p>
@@ -214,7 +214,7 @@ export default {
         this.$router.push({ path: '/sureOrder', query: { 'selectIds': this.selectedSub } })
       } else {
         this.$vux.toast.show({
-          text: '只能提交一份商品！',
+          text: '一次只能选择一个商品提交！',
           type: 'warn',
           isShowMask: true,
           position: 'middle'

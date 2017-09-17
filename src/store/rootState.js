@@ -3,6 +3,7 @@ const state = {
     isEnglish: true,
     addr:{},
     editAddr:{},
-    listIndex:''
+    listIndex:'',
+    sessionAddr:{}
 }
 export default state;

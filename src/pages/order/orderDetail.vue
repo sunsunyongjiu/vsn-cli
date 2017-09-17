@@ -120,7 +120,7 @@
           再次购买
         </div>
         <div class="bottom-btn-right font-16" v-if='blueShow' v-text="blueText" @click="goPay(items)">
-          立即支付
+          去支付
         </div>
         <div class="bottom-btn-left font-16" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
         </div>
@@ -158,7 +158,7 @@ export default {
         state: "等待付款"
       },
       btnCancle: '取消订单',
-      blueText: '立即兑换',
+      blueText: '去兑换',
       blueShow: true,
       greyShow: true,
       show: false,
@@ -175,7 +175,7 @@ export default {
       this.$router.push({ path: '/returnOrder', query: { 'subNumber': item.sub_number,'itemIid':itemIid } })
     },
     goPay: function(item) {
-      if (this.blueText == "立即兑换") {
+      if (this.blueText == "去兑换" || this.blueText == "去支付") {
         this.$router.push({ path: '/pay', query: { 'subNumber': item.sub_number } })
       } else if (this.blueText == "申请发票" || this.blueText == "已开具") {
         this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number } })
@@ -322,7 +322,7 @@ export default {
 
         if (response.data.data[0].status == 1) {
           if(response.data.data[0].sellType==0){
-            this.blueText = "立即购买"
+            this.blueText = "去支付"
           }
         } else if (response.data.data[0].status == 2 || response.data.data[0].status == 3) {
 
@@ -330,11 +330,8 @@ export default {
           this.blueText = "确认收货"
           this.greyShow = false
         } else if (response.data.data[0].status == 4) {
-          if (this.orderDetail[0].invoice_sub_id) {
-            this.greyShow = false
-          } else {
-            this.greyShow = true
-          }
+
+          this.greyShow = false
           this.blueShow = true
           this.timeShow = false
           this.buyBtShow = true

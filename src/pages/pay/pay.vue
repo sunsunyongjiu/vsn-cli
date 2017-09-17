@@ -53,6 +53,8 @@ export default {
           this.callpay(data.data.jsApiParams)
         })
         
+        //window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com?subNumber='+ this.$route.query.subNumber;
+        //return false;
       
       } else {
         Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber,'score':this.order.total,token:this.$store.state.loginUser.token }).then(data => {
@@ -77,9 +79,9 @@ export default {
           WeixinJSBridge.log(res.errMsg);
           //WeixinJSBridge.log(res.err_msg);
           if (res.err_msg == "get_brand_wcpay_request:ok") {
-            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html#/path?token='+this.$store.state.loginUser.token+'&user'+this.$store.state.loginUser.user+'=OTU5Mw%3D%3D&success=1';
+            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token='+this.$store.state.loginUser.token+'&user'+this.$store.state.loginUser.user+'=OTU5Mw%3D%3D&success=1';
           } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html#/path?token='+this.$store.state.loginUser.token+'&user'+this.$store.state.loginUser.user+'=OTU5Mw%3D%3D&success=0';
+            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token='+this.$store.state.loginUser.token+'&user'+this.$store.state.loginUser.user+'=OTU5Mw%3D%3D&success=0';
             return false;
           }
         }

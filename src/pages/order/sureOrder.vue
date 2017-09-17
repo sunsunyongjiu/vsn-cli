@@ -108,10 +108,10 @@ export default {
         }).then(function(data) {
           console.log(data)
           if (data.data.code == 1) {
-            this.$router.push({ path: '/pay' })
+            this.$router.push({ path: '/pay' , query: { 'subNumber': data.data.data }})
           } else {
             this.$vux.toast.show({
-              text: '清单提交失败，请稍后重试！',
+              text: '提交订单失败，请稍后重试！',
               type: 'warn',
               isShowMask: true,
               position: 'middle'

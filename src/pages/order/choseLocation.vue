@@ -100,8 +100,11 @@ export default {
     },
     setAddr: function(item) {
       console.log(item)
-      if (this.$route.query.from) {
+      if (this.$route.query.from=='person') {
         return
+      }else if(this.$route.query.from=='return'){
+        this.$store.dispatch({ type: 'setSessionAddr', data: item }) ;
+        this.$router.go(-1)
       } else {
         this.$store.dispatch({ type: 'setAddr', data: item }) 
         this.$router.go(-1)

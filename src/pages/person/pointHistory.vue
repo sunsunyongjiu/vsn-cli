@@ -117,6 +117,11 @@ export default {
 
 .historyListTitle {
   text-align: left;
+  width: 40%;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+
   .px2vw(height,
   18);
   .px2vw(padding-top,

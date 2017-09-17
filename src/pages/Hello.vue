@@ -206,7 +206,9 @@ export default {
     },
     goLogin: function() {
 
-      window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href)
+      //window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href)
+      
+      window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode("http://mall-test.mercedesmeclub.yuyuanhz.com/index.html")
     },
     goNext: function(pathUrl) {
       if (this.login || pathUrl == "/contact") {
