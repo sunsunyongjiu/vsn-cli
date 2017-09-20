@@ -17,3 +17,8 @@ export const setSessionAddr = ({ commit }, data) => {
 export const setlistIndex = ({ commit }, data) => {
   commit('setlistIndex', data)
 }
+
+export const setUserScore = ({ commit }, data) => {
+  commit('setUserScore', data)
+}
+

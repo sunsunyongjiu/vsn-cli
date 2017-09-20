@@ -18,6 +18,7 @@ import addLocation from '@/pages/order/addLocation'
 import orderDetail from '@/pages/order/orderDetail'
 import returnOrder from '@/pages/order/return'
 import changeOrder from '@/pages/order/changeOrder'
+import listTime from '@/pages/list/list-time'
 import pay from '@/pages/pay/pay'
 import paySc from '@/pages/pay/paySuccess'
 
@@ -70,6 +71,11 @@ const router = new Router({
       path: '/lists',
       name: '分类推荐',
       component: lists,
+    },
+    {
+      path: '/hot',
+      name: '秒杀商品',
+      component: listTime,
     },
     {
       path: '/detail',

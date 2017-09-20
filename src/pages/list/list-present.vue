@@ -12,13 +12,13 @@
             <img :src="item.pic">
           </div>
           <div class="list-box-item-price">
-            <div v-text="item.name" class="font-16 list-box-item-price-title">
+            <div v-text="item.name" class="font-16 list-box-item-price-title color-33">
             </div>
-            <div v-if="item.sellType==1" class="list-box-item-price-price">
+            <div v-if="item.sellType==1" class="list-box-item-price-price basicColor">
               <span v-text="item.point" class="list-point  font-18"></span>
               <span class=" font-12">积分</span>
             </div>
-            <div v-if="item.sellType==0" class="list-box-item-price-price">
+            <div v-if="item.sellType==0" class="list-box-item-price-price basicColor">
               <span class="df  font-12">￥</span>
               <span v-text="item.cash" class="list-point  font-18"></span>
             </div>
@@ -99,7 +99,7 @@ export default {
 
 .life {
   width: 100vw;
-  overflow: hidden;
+  position: relative;
   .vux-tab {
     background: @bgcolor !important;
     margin-bottom: 1px
@@ -113,41 +113,56 @@ export default {
 }
 
 .list-box {
-
+  width: 100%;
+  overflow: hidden;
+  .px2vw(padding-left,
+  20);
+  .px2vw(padding-right,
+  20);
+  position: absolute;
+  .px2vw(top,
+  153);
+  box-sizing: border-box;
   .list-box-item {
-    margin-top: 17px;
+    width: 100%;
+    border-radius: 2px;
     .px2vw(height,
-    236);
-    width: 50%;
-    float: left;
+    138);
+    .px2vw(margin-bottom,
+    13);
+    background: #fff;
     .list-box-item-img {
+      float: left;
       .px2vw(width,
-      157);
-      .px2vw(height,
-      157);
-      .px2vw(margin-bottom,
-      20);
-      background: #292929;
+      150);
+      height: 100%;
       margin: 0 auto;
       img {
-        max-width: 100%;
-        height: 100%
+        max-width: 50%;
+        height: 50%;
+        margin-top: 20%;
       }
     }
     .list-box-item-price {
+      float: right;
       .px2vw(width,
-      157);
+      175);
+      float: left;
+      height: 100%;
+      box-sizing: border-box;
+      color: #333333;
       margin: 0 auto;
 
       .list-box-item-price-title {
         overflow: hidden;
+        margin-top: 20%;
+        margin-bottom: 8%;
         text-overflow: -o-ellipsis-lastline;
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         text-align: left;
-        color: #dfdfdf;
       }
       .list-box-item-price-price {
         text-align: left;

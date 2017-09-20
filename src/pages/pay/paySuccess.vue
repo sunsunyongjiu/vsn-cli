@@ -7,40 +7,50 @@
         <img src="../../assets/imgs/success.png">
       </div>
       <div class="font-18 fff pay-suc">
-        支付成功
+        {{success?'支付成功':'支付失败'}}
       </div>
-      <div class="font-14 color-7f">我们将尽快为您发货</div>
+      <div class="font-14 color-7f">{{success?'我们将尽快为您发货':'很遗憾，您的支付未能成功，请尝试重新支付'}}</div>
     </div>
-    <div class="orderInfo">
+    <div class="orderInfo" v-if="success">
       <div class="order font-15 color-7f">
         <div class="order-left">订单号：</div>
-        <div class="order-right">389898945223784344442</div>
+        <div class="order-right" v-text="order.sub_number">1</div>
       </div>
       <div class="order font-15 color-7f">
         <div class="order-left">支付方式：</div>
-        <div class="order-right">积分支付</div>
+        <div class="order-right">{{order.sellType==0?'微信支付':'积分支付'}}</div>
       </div>
-      <div class="order font-15 color-7f">
+      <!--       <div class="order font-15 color-7f">
         <div class="order-left">支付账号：</div>
         <div class="order-right">sweetie_love</div>
-      </div>
-      <div class="order font-15 color-7f">
+      </div> -->
+      <!--       <div class="order font-15 color-7f">
         <div class="order-left">收件人：</div>
         <div class="order-right">Lucy</div>
-      </div>
+      </div> -->
       <div class="order font-15 color-7f">
         <div class="order-left">订单总额：</div>
-        <div class="order-right">900积分</div>
+        <div class="order-right">
+          <span v-if="order.sellType==0">￥</span>
+          <span class="" v-text="order.total"></span>
+          <span v-if="order.sellType==1">积分</span></div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import back from '../../components/backNav'
+import Apis from '../../configers/Api'
+import { mapGetters } from 'vuex'
 export default {
   name: '',
   data() {
-    return {}
+    return {
+      order: {
+
+      },
+      success:this.$route.query.success
+    }
   },
   components: {
     back
@@ -49,10 +59,34 @@ export default {
     goBack: function() {
       this.$router.replace({ path: '/index' })
     },
+    init: function() {
+      let _this=this
+      Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
+        console.log(data.data[0])
+        this.order = data.data[0]
+
+      })
+      if (this.$route.query.success) {
+        Apis.login({ token: _this.loginUser.token, 'user': _this.loginUser.user,isLogin:'N' }).then(data => {
+          console.log(data.code)
+          if (data.code === 1) {
+            this.$store.dispatch({ type: 'setUserScore', data: data.data.score })
+          }
+        })
+      }
+    }
   },
   mounted: function() {
+    this.init()
 
+  },
+  computed: {
 
+    // 使用对象展开运算符将 getters 混入 computed 对象中
+    ...mapGetters({
+      loginUser: 'getLogin'
+
+    })
   }
 }
 

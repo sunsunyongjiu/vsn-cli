@@ -18,14 +18,14 @@
       </flexbox-item>
       <flexbox-item v-show="login">
         <div class="flex-demo myPoints">
-          <div class="font-11">{{"您当前的个人积分是"|tr}}</div>
+          <div class="font-11 pointTitle">{{"您当前的个人积分是"|tr}}</div>
           <div>
             <!-- <span v-text="loginUser.score"></span> -->
-            <span class="font-13">50000</span>
+            <span class="font-13">{{loginUser.score}}</span>
           </div>
-          <div>
+          <!-- <div>
             <button class="soonBtn">{{"为您甄选"|tr}}</button>
-          </div>
+          </div> -->
         </div>
       </flexbox-item>
       <flexbox-item v-show="!login">
@@ -196,19 +196,35 @@ export default {
     goList: function(title, id, path) {
       let p = path == undefined ? 'lists' : path
       if (path == undefined) {
+        if(title=='无忧出行'){
+          window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/rights'
+        }else if(title=='精英课选'){
+          window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/activity'
+        }else{
+          alert('敬请期待！')
+        }
         return
       }
 
       this.$router.push({ path: p, query: { 'title': title, 'id': id } })
     },
     goWWW: function(url) {
-      window.location.href = url
+      if(url.indexOf('hot')>0){
+        this.$router.push({ path: '/hot'})
+      }else{
+        window.location.href = url
+      }
+      
+      // if(url.indexOf('/hot')>0){
+      //   this.$router.push({ path: '/hot'})
+      // }else{
+      //   window.location.href = url
+      // }
+      
     },
     goLogin: function() {
-
-      //window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href)
-      
       window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode("http://mall-test.mercedesmeclub.yuyuanhz.com/index.html")
+      
     },
     goNext: function(pathUrl) {
       if (this.login || pathUrl == "/contact") {
@@ -294,7 +310,9 @@ h1,
 h2 {
   font-weight: normal;
 }
-
+.pointTitle{
+  line-height: 10vw
+}
 ul {
   list-style-type: none;
   padding: 0;

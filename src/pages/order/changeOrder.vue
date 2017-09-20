@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back title="申请退款"></back>
+    <back :title="title"></back>
     <div class="order-goods">
       <div class="order-person-title font-15">
         商品信息
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="change-reason" @click="showPop=true">
-      <span class="font-14" style="float:left">退/换货原因</span>
+      <span class="font-14" style="float:left">{{$route.query.returnType=='2'?'换货原因':'退货原因'}}</span>
       <span style="float:right" v-text="resonText"></span>
     </div>
     <div class="change-reason" v-for="(item,index) in order.prod" key='index'>
@@ -37,9 +37,9 @@
       <span class="font-18 basicColor" v-text="item.product_total_amout"></span>
       <span class="font-9 basicColor" v-if="order.sellType==1">积分</span>
     </div>
-    <div class='change-reason-input'>
+    <div class='change-reason-input' v-if="resonText=='其他'">
       <div>
-        <span class="fff font-14">换货理由：</span><span class="color-9b font-14">（选填，100字以内）</span>
+        <span class="fff font-14">{{$route.query.returnType=='2'?'换货理由：':'退货理由：'}}</span><span class="color-9b font-14">（选填，100字以内）</span>
       </div>
       <div class="inputBox">
         <textarea maxlength="200" v-model="textareaText"></textarea>
@@ -51,6 +51,7 @@
         <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img1" class="items"></imgUploader>
         <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img2"></imgUploader>
         <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img3"></imgUploader>
+        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img4"></imgUploader>
       </div>
     </div>
     <div v-transfer-dom>
@@ -94,13 +95,15 @@ export default {
       target: '',
       reasons: [],
       showPop: false,
-      resonText: '',
+      resonText: '>',
       textareaText: '',
       photoFile: {
         photoFile1: '',
         photoFile2: '',
         photoFile3: '',
-      }
+        phptoFile4:''
+      },
+      title:this.$route.query.returnType=='2'?'申请换货':'申请退货'
     }
   },
   components: {
@@ -136,8 +139,10 @@ export default {
             this.photoFile.photoFile1 = data.data.fileName
           } else if (imageBase64.id == 'img2') {
             this.photoFile.photoFile2 = data.data.fileName
-          } else {
+          } else if (imageBase64.id == 'img3') {
             this.photoFile.photoFile3 = data.data.fileName
+          } else {
+            this.photoFile.photoFile4 = data.data.fileName
           }
 
         }
@@ -161,6 +166,7 @@ export default {
         photoFile1: this.photoFile.photoFile1,
         photoFile2: this.photoFile.photoFile2,
         photoFile3: this.photoFile.photoFile3,
+        photoFile4: this.photoFile.photoFile4,
 
       }
       Apis.exchangeOrder(this.$store.state.loginUser.token, data).then(data => {

@@ -104,7 +104,20 @@ export default {
       return res.data
     })
   },
-
+  // 获取秒杀活动
+  getSecKillTimeList() {
+    return Vue.http.get(basePath + '/home/getSecKillTimeList').then(res => {
+      // some handling
+      return res.data
+    })
+  },
+  // 获取秒杀商品
+  getSecKillProdList(params = {}) {
+    return Vue.http.get(basePath + '/home/getSecKillProdList',{ params }).then(res => {
+      // some handling
+      return res.data
+    })
+  },
 
   // ...
 }

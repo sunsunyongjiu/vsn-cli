@@ -64,7 +64,7 @@
                 <span class="font-9" v-if="items.sellType==1">积分</span>
               </div>
             </div>
-            <div class="tuihuan font-14" v-if="(((items.status==2||items.status==3)&&items.orderTrackReceived==1)||items.status==4)&&items.sellType==0" @click="goReturn(items,item.sub_item_id)">
+            <div class="tuihuan font-14" v-if="(((items.status==2||items.status==3)&&items.orderTrackReceived==1)||items.status==4)&&items.sellType==0&&(!items.invoice_sub_id)" @click="goReturn(items,item.sub_item_id)">
               申请退换货
             </div>
             <div class="order-line"></div>
@@ -111,9 +111,10 @@
           </div>
         </div>
       </div>
-      <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm(items)">
-        <p style="text-align:center;margin-bottom:10px;color:#737373" v-text="conifrmText"></p>
-        <p style="text-align:left;color:#737373" v-text="conifrmShowText"></p>
+      <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm(items)" confirm-text="是" cancel-text="否">
+        <div v-text="conifrmText" style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
+          
+        </div>
       </confirm>
       <div class="bottom-btn">
         <div class="bottom-btn-right font-16" v-if='buyBtShow' @click="buyAgain(items.prod[0].prod_id)">
@@ -150,7 +151,7 @@ export default {
         count: 1,
 
       }],
-      conifrmText: '确认删除订单',
+      conifrmText: '确认删除该订单吗?',
       conifrmShowText: '确认删除选中的订单吗？',
       orderDetail: {},
       timeShow: true,
@@ -220,7 +221,7 @@ export default {
         }, function(error) {
           //error
         })
-      } else if (this.conifrmText == "确认删除么？") {
+      } else if (this.conifrmText == "确认删除该订单么？") {
         Apis.deleteOrder(this.$store.state.loginUser.token, { 'subNumber': items.sub_number }).then(data => {
           this.$vux.loading.hide()
           this.$router.go(-1)
@@ -285,9 +286,9 @@ export default {
     cancleOrder: function(item) {
       if (this.btnCancle == "取消订单") {
         this.show = true
+        this.conifrmText = "确认取消该订单么？"
       } else if (this.btnCancle == "申请退换货") {
-        this.conifrmText = "确认退换么？",
-          this.conifrmShowText = "是否确认退换"
+        this.conifrmText = "确认退换该订单么？";
         this.show = true;
 
       }
@@ -295,7 +296,7 @@ export default {
     },
     delOrder: function(item) {
       console.log(item)
-      this.conifrmText = "确认删除么？",
+      this.conifrmText = "确认删除该订单么？",
         this.conifrmShowText = "是否确认删除"
       this.show = true;
 
@@ -388,6 +389,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
 @import '../../assets/css/global.less';
+
 .order-state {
   width: 100%;
   height: 22.4vw;

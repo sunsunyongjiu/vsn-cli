@@ -10,6 +10,14 @@
       </div>
     </div>
     <div class="ticket-type font-15">
+      发票开具主体
+    </div>
+    <div class="type-box">
+      <div class="type-item-2  font-13">
+        {{ticket.main}}
+      </div>
+    </div>
+    <div class="ticket-type font-15">
       发票抬头
     </div>
     <div class="type-box">
@@ -22,14 +30,13 @@
           <div class="morenCircle" :class="{setMorenCircle:company}" @click="check(2)"></div>
           <span class="type-box-left">单位</span>
         </div>
-        <div class="type-hedder-item font-12">
+        <!-- <div class="type-hedder-item font-12">
           <div class="morenCircle" :class="{setMorenCircle:main}" @click="check(3)"></div>
           <span class="type-box-left">发票开具主体</span>
-        </div>
+        </div> -->
       </div>
       <div v-if="company||main">
         <x-input placeholder="请填写单位名字" class="type-hedder-item-input font-14" v-model="ticket.company" v-if="company"></x-input>
-        
         <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.tax_number" v-if="company"></x-input>
         <x-input class="type-hedder-item-input font-14" disabled v-model="ticket.main" v-if="main"></x-input>
         <!-- <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.main_tax_number" disabled></x-input> -->
@@ -56,7 +63,7 @@ export default {
       ticket: {
         company: '',
         tax_number: '',
-        main:'杭州驭缘网络科技有限公司'
+        main: '杭州驭缘网络科技有限公司'
       }
     }
   },
@@ -83,11 +90,11 @@ export default {
         console.log(response.data.data)
         if (response.data.data) {
           this.ticket = response.data.data;
-          this.ticket.main=this.ticket.company;
+          this.ticket.main = this.ticket.company;
           this.person = response.data.data.title_id == 1 ? true : false;
           this.company = response.data.data.title_id == 2 ? true : false;
           this.main = response.data.data.title_id == 3 ? true : false;
-          this.ticket.company= response.data.data.title_id == 3? '':this.ticket.company
+          this.ticket.company = response.data.data.title_id == 3 ? '' : this.ticket.company
         }
 
 
@@ -112,9 +119,9 @@ export default {
         'company': this.person ? '' : this.ticket.company,
         'taxNumber': this.person ? '' : this.ticket.tax_number,
       }
-      if(this.main){
-        cartData.titleId=3;
-        cartData.company='杭州驭缘网络科技有限公司';
+      if (this.main) {
+        cartData.titleId = 3;
+        cartData.company = '杭州驭缘网络科技有限公司';
       }
       this.$http({
         method: 'POST',
@@ -167,7 +174,15 @@ export default {
   padding: 5vw 0vw 5vw 5vw;
   .type-item {
     border: 1px solid #1dafed;
-    width: 20.8vw;
+    max-width: 20.8vw;
+    height: 6.4vw;
+    line-height: 6.4vw;
+    font-size: 13px;
+    color: #1dafed;
+  }
+  .type-item-2 {
+    border: 1px solid #1dafed;
+    max-width: 46.8vw;
     height: 6.4vw;
     line-height: 6.4vw;
     font-size: 13px;
@@ -214,7 +229,8 @@ export default {
   font-size: 24px;
   color: #fff;
   margin-left: 6.8vw;
-  margin-top: 20vh;
+  position: absolute;
+  bottom: 20vw;
 }
 
 .type-hedder-item-box {

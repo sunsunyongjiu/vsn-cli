@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  style="padding-bottom:22vw">
     <back title="退换货申请"></back>
     <div class="order-goods">
       <div class="order-person-title font-15">

@@ -46,10 +46,12 @@
               <div class="order-btns-goChange" v-if="items.status==1||items.status==3||items.status==2">
                 <span v-if="items.status==1||items.status==4" @click="goPay(items)" class="font-12">{{items.sellType==0?'去支付':'去兑换'}}</span>
                 <span v-if="items.status==3||items.status==2" @click="goGet(items.sub_number)" class="font-12">确认收货</span>
-                <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()">
-                  <p style="text-align:center;margin-bottom:10px;color:#737373" class="font-12">确认收货吗？</p>
-                  <p style="text-align:left;color:#737373" class="font-12">是否确认收货</p>
+                <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
+                  <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
+                    确认收货么？
+                  </div>
                 </confirm>
+                
               </div>
               <!-- <div class="order-btns-cancle1" v-if="items.status==3">已自动确认收货</div> -->
               <!-- <div class="order-btns-goChange" v-text="returnText" v-if="items.status==2||items.status==3">退换货</div> -->
@@ -146,7 +148,7 @@ export default {
     init: function() {
       let _this = this
       if (_this.listIndex) {
-        
+
         _this.btnsShow = true
         if (_this.listIndex < 2) {
           this.status = _this.listIndex + 1
