@@ -27,16 +27,17 @@
         </div>
       </div>
     </div>
-    <div class="change-reason" @click="showPop=true">
-      <span class="font-14" style="float:left">{{$route.query.returnType=='2'?'换货原因':'退货原因'}}</span>
-      <span style="float:right" v-text="resonText"></span>
-    </div>
     <div class="change-reason" v-for="(item,index) in order.prod" key='index'>
       <span class="font-14">退款金额：</span>
       <span v-if="order.sellType==0" class="font-10 basicColor">￥</span>
       <span class="font-18 basicColor" v-text="item.product_total_amout"></span>
       <span class="font-9 basicColor" v-if="order.sellType==1">积分</span>
     </div>
+    <div class="change-reason" @click="showPop=true">
+      <span class="font-14" style="float:left">{{$route.query.returnType=='2'?'换货原因':'退货原因'}}</span>
+      <span style="float:right" v-text="resonText" class="font-14"></span>
+    </div>
+    
     <div class='change-reason-input' v-if="resonText=='其他'">
       <div>
         <span class="fff font-14">{{$route.query.returnType=='2'?'换货理由：':'退货理由：'}}</span><span class="color-9b font-14">（选填，100字以内）</span>
@@ -128,6 +129,7 @@ export default {
       });
     },
     choose: function(item) {
+      this.showPop=false
       this.resonText = item.return_reason
     },
     getUrl: function(imageBase64) {
@@ -390,9 +392,11 @@ export default {
 .change-picBox {
   background: #181818;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+  box-sizing: border-box;
   .px2vw(width, 375);
   .px2vw(margin-top, 9);
   .px2vw(padding-left, 20);
+  .px2vw(margin-bottom, 100);
   .px2vw(height, 150);
 }
 
@@ -435,7 +439,7 @@ export default {
 	}
 	.change-picBox-uploadBox{
 		float: left;
-		.px2vw(margin-right, 21);
+		.px2vw(margin-right, 20);
 	} 
 }
 

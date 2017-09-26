@@ -4,49 +4,66 @@
       <span class="font-18">购物车</span>
       <div class="back" @click="goback"></div>
     </div>
-    <div class="hotBox">
-      <div class='hotBox-title font-14 fff'>秒杀时间</div>
+    <scroller lock-x scrollbar-y use-pullup height="-10.66vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: 'Loading...',content: '松开刷新'}">
       <div>
-        <div class="hotBox-item">
-          <div v-text="hotObj.startTimeMonth" class="font-10 TimeMonth fff"></div>
-          <div v-text="hotObj.startTimeDay" class="font-18 TimeDay fff"></div>
+        <div class="hotBox">
+          <div class='hotBox-title font-14 fff'>秒杀时间</div>
+          <div>
+            <div class="hotBox-item">
+              <div v-text="hotObj.startTimeMonth" class="font-10 TimeMonth fff"></div>
+              <div v-text="hotObj.startTimeDay" class="font-18 TimeDay fff"></div>
+            </div>
+            <div style="width:10.2vw;float:left;height:10.5vw;line-height:10.5vw" class="fff">
+              -
+            </div>
+            <div class="hotBox-item" style="margin-left:0">
+              <div v-text="hotObj.endTimeMonth" class="font-10 TimeMonth fff"></div>
+              <div v-text="hotObj.endTimeDay" class="font-18 TimeDay fff"></div>
+            </div>
+          </div>
         </div>
-        <div style="width:10.2vw;float:left;height:10.5vw;line-height:10.5vw" class="fff">
-          -
+        <div class="tab">
+          <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分精品</div>
+          <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">京东商品</div>
         </div>
-        <div class="hotBox-item" style="margin-left:0">
-          <div v-text="hotObj.endTimeMonth" class="font-10 TimeMonth fff"></div>
-          <div v-text="hotObj.endTimeDay" class="font-18 TimeDay fff"></div>
+        <div class="list-box" :class="{'list-box-point':!selectePoint}">
+          <div v-for="(item,index) in goodsList" key=index class="list-box-item" @click="goWhere(item)" :class="{'point-list-box-item':selectePoint}">
+            <div class="list-box-item-img" :class="{'list-box-item-img-cash':!selectePoint}">
+              <img :src="item.pic">
+            </div>
+            <div class="list-box-item-price" :class="{'list-box-item-price-cash':!selectePoint,'list-box-item-price-point':selectePoint}">
+              <div v-text="item.name" class="font-16 list-box-item-price-title " :class="{'color-33':!selectePoint,'fff':selectePoint}">
+              </div>
+              <div class="list-box-item-priceBox">
+                <div v-if="item.sellType==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through">
+                  <span class=" font-11 color-7f">{{item.orig_price}}积分</span>
+                </div>
+                <div v-if="item.sellType==0" class="list-box-item-price-price color-7f" style="text-decoration:line-through;">
+                  <span class="color-7f  font-11">￥{{item.orig_price}}</span>
+                </div>
+                <div v-if="item.sellType==1" class="list-box-item-price-price basicColor">
+                  <span v-text="item.kill_price" class="list-point  font-18"></span>
+                  <span class=" font-12 ">积分</span>
+                </div>
+                <div v-if="item.sellType==0" class="list-box-item-price-price basicColor">
+                  <span class="df  font-12">￥</span>
+                  <span v-text="item.kill_price" class="list-point  font-18"></span>
+                </div>
+              </div>
+              <div class="buyBtnBox">
+                <div class="font-11 color-7f" style="text-align:right">剩<span class="basicColor">{{item.kill_num}}</span>件</div>
+                <div class="buyBtn font-15 fff" @click="goDetail(item)">立即秒杀</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="tab">
-      <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分精品</div>
-      <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">京东商品</div>
-    </div>
-    <div class="list-box">
-      <div v-for="(item,index) in goodsList" key=index class="list-box-item" @click="goWhere(item)">
-        <div class="list-box-item-img">
-          <img :src="item.pic">
-        </div>
-        <div class="list-box-item-price">
-          <div v-text="item.name" class="font-16 list-box-item-price-title color-33">
-          </div>
-          <div v-if="item.sellType==1" class="list-box-item-price-price basicColor">
-            <span v-text="item.point" class="list-point  font-18"></span>
-            <span class=" font-12">积分</span>
-          </div>
-          <div v-if="item.sellType==0" class="list-box-item-price-price basicColor">
-            <span class="df  font-12">￥</span>
-            <span v-text="item.cash" class="list-point  font-18"></span>
-          </div>
-        </div>
-      </div>
-    </div>
+    </scroller>
+   
   </div>
 </template>
 <script>
-import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm } from 'vux'
+import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm, Scroller } from 'vux'
 import back from '../../components/backNav'
 import Apis from '../../configers/Api'
 import md5 from 'js-md5';
@@ -61,7 +78,9 @@ export default {
       show: false,
       selectePoint: true,
       selectedSub: '',
-      hotObj: {}
+      hotObj: {},
+      pageNumber: 1,
+      pageSize: 10
     }
   },
   components: {
@@ -71,32 +90,77 @@ export default {
     Swipeout,
     SwipeoutItem,
     SwipeoutButton,
-    Confirm
+    Confirm,
+    Scroller,
+    killId: ''
   },
   methods: {
     init: function() {
       Apis.getSecKillTimeList().then(data => {
         console.log(data.data[0])
         this.hotObj = data.data[0];
-        this.getGoods(data.data[0].id)
+        this.killId = data.data[0].id
+        this.getGoods()
       })
 
 
     },
-    getGoods: function(id) {
-      Apis.getSecKillProdList({ killTimeId: id, sellType: this.selectePoint ? 1 : 0 }).then(data => {
-        console.log(data.data)
+    getGoods: function() {
+      this.pageNumber = 1;
+      Apis.getSecKillProdList({ killTimeId: this.killId, sellType: this.selectePoint ? 1 : 0, pageNumber: this.pageNumber, pageSize: this.pageSize }).then(data => {
         this.goodsList = data.data
+        if (!data.isLast) {
+          this.pageNumber++
+            this.$refs.demo1.enablePullup()
+        } else {
+          this.$refs.demo1.disablePullup()
+        }
+        this.$nextTick(() => {
+          this.$refs.demo1.reset({
+            top: 0
+          })
+        })
       })
     },
     goback: function() {
       console.log(1)
       this.$router.go(-1)
     },
+    goWhere: function(item) {
+
+      this.$router.push({ path: 'detail', query: { prod_id: item.prod_id } })
+
+      // this.$router.push({path: 'detail'})
+    },
+    goDetail: function(item) {
+      this.$router.push({ path: 'detail', query: { prod_id: item.prod_id } })
+    },
+    load1: function() {
+      setTimeout(() => {
+        // 查询
+        Apis.getSecKillProdList({ killTimeId: this.killId, sellType: this.selectePoint ? 1 : 0, pageNumber: this.pageNumber, pageSize: this.pageSize }).then(data => {
+          this.goodsList = this.goodsList.concat(data.data)
+          this.$nextTick(() => {
+            this.$refs.demo1.reset()
+          })
+          if (!data.isLast) {
+            this.pageNumber++
+          } else {
+            this.$refs.demo1.disablePullup()
+          }
+
+          this.searchHistoryShow = false
+        })
+        setTimeout(() => {
+
+          this.$refs.demo1.donePullup()
+        }, 100)
+      }, 1000)
+    }
   },
   watch: {
     selectePoint(curVal, oldVal) {
-    	this.init()
+      this.init()
     },
   },
   mounted: function() {
@@ -166,10 +230,7 @@ export default {
 .list-box {
   width: 100%;
   overflow: hidden;
-  .px2vw(padding-left,
-  20);
-  .px2vw(padding-right,
-  20);
+
   .px2vw(top,
   153);
   .px2vw(margin-top,
@@ -186,29 +247,47 @@ export default {
     .list-box-item-img {
       float: left;
       .px2vw(width,
-      150);
-      height: 100%;
+      100);
+      .px2vw(height,
+      100);
+      .px2vw(margin-top,
+      20);
+      .px2vw(margin-right,
+      20);
+      background: #292929;
+      border-radius: 2px;
       margin: 0 auto;
       img {
-        max-width: 50%;
-        height: 50%;
-        margin-top: 20%;
+        max-width: 100%;
+        height: 100%;
       }
     }
-    .list-box-item-price {
-      float: right;
+    .list-box-item-img-cash {
+      .px2vw(margin-left,
+      20);
+    }
+    .list-box-item-price-cash {
       .px2vw(width,
-      175);
+      180);
+    }
+    .list-box-item-price-point {
+      .px2vw(width,
+      200);
+    }
+    .list-box-item-price {
       float: left;
       height: 100%;
       box-sizing: border-box;
       color: #333333;
       margin: 0 auto;
+      position: relative;
 
       .list-box-item-price-title {
         overflow: hidden;
-        margin-top: 20%;
-        margin-bottom: 8%;
+        .px2vw(margin-top,
+        21);
+        .px2vw(margin-bottom,
+        30);
         text-overflow: -o-ellipsis-lastline;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -228,6 +307,52 @@ export default {
   }
 
   .list-box-inner {}
+}
+
+.buyBtnBox {
+  position: absolute;
+  right: 0;
+  .px2vw(bottom,
+  18);
+  .buyBtn {
+    background: #1dafed;
+    border-radius: 0 1px 1px 1px;
+    .px2vw(width,
+    72);
+    .px2vw(height,
+    30);
+    .px2vw(line-height,
+    30);
+    .px2vw(margin-top,
+    6);
+  }
+}
+
+.point-list-box-item {
+  background: #181818!important;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50), 0 3px 10px 0 rgba(0, 0, 0, 0.50);
+  .px2vw(padding-left,
+  20);
+  .px2vw(padding-right,
+  20);
+  .px2vw(margin-bottom,
+  4);
+  .px2vw(margin-top,
+  2);
+}
+
+.list-box-item-priceBox {
+  position: absolute;
+  left: 0;
+  .px2vw(bottom,
+  18);
+}
+
+.list-box-point {
+  .px2vw(padding-left,
+  20);
+  .px2vw(padding-right,
+  20);
 }
 
 </style>

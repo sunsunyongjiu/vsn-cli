@@ -25,7 +25,29 @@
         <div v-for="(item,index) in searchHistory" key="index" class="historyBox font-14" v-text="item.search_str" @click="doSearchHistory(item.search_str)"></div>
       </div>
     </div>
-    <div class="goodsList">
+    <scroller lock-x scrollbar-y use-pullup height="80vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: 'Loading...',content: '松开刷新'}" v-show="!searchHistoryShow">
+      <div class="goodsList">
+        <div v-for="(item,index) in  goodsList" class="goods" key="index" @click="goWhere(item.name,item)">
+          <div class="goods-left">
+            <img :src="item.pic">
+          </div>
+          <div class="goods-right">
+            <div v-text="item.name" class="title font-16 text-overflow-3"></div>
+            <div class="right-point-box">
+              <div v-if="item.sellType==0">
+                <span class="font-10">￥</span>
+                <span v-text="item.price" class="font-18 points"></span>
+              </div>
+              <div v-if="item.sellType==1">
+                <span v-text="item.point" class="font-16 points"></span>
+                <span class="font-9 color-9b">积分</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </scroller>
+    <!-- <div class="goodsList">
       <div v-for="(item,index) in  goodsList" class="goods" key="index" @click="goWhere(item.name,item)">
         <div class="goods-left">
           <img :src="item.pic">
@@ -36,7 +58,6 @@
             <div v-if="item.sellType==0">
               <span class="font-10">￥</span>
               <span v-text="item.price" class="font-18 points"></span>
-             
             </div>
             <div v-if="item.sellType==1">
               <span v-text="item.point" class="font-16 points"></span>
@@ -45,13 +66,14 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import myNav from '../components/nav'
-import { Search } from 'vux'
+import { Search, Scroller } from 'vux'
 import md5 from 'js-md5';
+import Apis from '../configers/Api'
 const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
@@ -69,11 +91,16 @@ export default {
         isCash: false
       },
       searchHistoryShow: true,
+      n1: 0,
+      pageNumber: 1,
+      pageSize: 10
+
     }
   },
   components: {
     myNav,
-    Search
+    Search,
+    Scroller
   },
   methods: {
     // 点击历史搜索触发搜索
@@ -82,6 +109,30 @@ export default {
       this.searchValue = str
       // 触发搜索事件
       this.goSearch()
+    },
+    load1: function() {
+      setTimeout(() => {
+        let isPoint = this.selects.isPoint ? 1 : 0
+        let isCash = this.selects.isCash ? 1 : 0
+        // 查询
+        Apis.searchProdList({ 'searchStr': this.searchValue, 'isPoint': isPoint, 'isCash': isCash, pageNumber: this.pageNumber, pageSize: this.pageSize }).then(data => {
+          this.goodsList = this.goodsList.concat(data.data)
+          this.$nextTick(() => {
+            this.$refs.demo1.reset()
+          })
+          if (!data.isLast) {
+            this.pageNumber++
+          } else {
+            this.$refs.demo1.disablePullup()
+          }
+
+          this.searchHistoryShow = false
+        })
+        setTimeout(() => {
+
+          this.$refs.demo1.donePullup()
+        }, 100)
+      }, 1000)
     },
     init: function() {
       // 判断是否登录
@@ -128,39 +179,28 @@ export default {
     // 前往查询
     goSearch: function() {
       if (this.isLogin) {
+        Apis.insertProdSearch(this.$store.state.loginUser.token, { 'searchStr': this.searchValue }).then(data => {
 
-        let header = {
-          "token": this.$store.state.loginUser.token,
-          "time": timer,
-          "sign": md5("/home/insertProdSearch" + this.$store.state.loginUser.token + timer).toUpperCase()
-        }
-        // 设置传值
-        let cartData = {
-          'searchStr': this.searchValue
-        }
-        // 将搜索结果加入搜索历史
-        this.$http({
-          method: 'POST',
-          url: this.$Api('/home/insertProdSearch'),
-          params: cartData,
-          headers: header,
-          emulateJSON: true
-        }).then(function(data) {
-
-        }, function(error) {
-          //error
         })
       }
       let isPoint = this.selects.isPoint ? 1 : 0
       let isCash = this.selects.isCash ? 1 : 0
       // 查询
-      this.$http.get(this.$Api('/home/searchProdList'), { params: { 'searchStr': this.searchValue, 'isPoint': isPoint, 'isCash': isCash } }).then((response) => {
-
-        this.goodsList = response.data.data
+      this.pageNumber = 1
+      Apis.searchProdList({ 'searchStr': this.searchValue, 'isPoint': isPoint, 'isCash': isCash, pageNumber: this.pageNumber, pageSize: this.pageSize }).then(data => {
+        this.goodsList = data.data
+        if (!data.isLast) {
+          this.pageNumber++
+          this.$refs.demo1.enablePullup()
+        }
+        this.$nextTick(() => {
+          this.$refs.demo1.reset({
+            top: 0
+          })
+        })
         this.searchHistoryShow = false
-      }, (response) => {
-        // error callback
-      });
+      })
+
     },
   },
   mounted: function() {
@@ -206,7 +246,7 @@ input:focus {
     border-radius: 0 2px 2px 0;
     color: white;
     padding-right: 5px;
-    img{
+    img {
       height: 60%;
     }
   }
@@ -300,7 +340,7 @@ input:focus {
       .title {
         color: #dfdfdf;
         letter-spacing: 0;
-          .px2vw(line-height, 20)
+        .px2vw(line-height, 20)
       }
       .right-point-box {
         position: absolute;

@@ -28,6 +28,20 @@ export default {
       return res.data
     })
   },
+  // 查询记录
+  insertProdSearch(token, params = {}) {
+    // some handling
+    return Vue.http({
+      method: 'POST',
+      url: basePath + '/home/insertProdSearch',
+      params: params,
+      headers: header('/home/insertProdSearch', token),
+      emulateJSON: true
+    }).then(res => {
+      console.log('-------------')
+      return res.data
+    })
+  },
   // 删除订单
   deleteOrder(token, params = {}) {
     // some handling
@@ -49,6 +63,20 @@ export default {
       headers:header('/order/getOrderDetail', token)
     }).then(res => {
       console.log('-------------')
+      return res.data
+    })
+  },
+  // 获取查询结果
+  searchProdList(params = {}) {
+    return Vue.http.get(basePath + '/home/searchProdList', { params }).then(res => {
+      // some handling
+      return res.data
+    })
+  },
+  // 获取超值礼品
+  getProdListByCategory(params = {}) {
+    return Vue.http.get(basePath + '/home/getProdListByCategory', { params }).then(res => {
+      // some handling
       return res.data
     })
   },
@@ -89,7 +117,7 @@ export default {
   },
   // 获取微信支付订单信息
   unifiedorder(params = {}) {
-    return Vue.http.get(basePath + '/unifiedorder', { params }).then(res => {
+    return Vue.http.get(basePath + '/wxpay/unifiedorder', { params }).then(res => {
       // some handling
       return res.data
     })

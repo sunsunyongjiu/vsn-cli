@@ -64,7 +64,7 @@
                 <span class="font-9" v-if="items.sellType==1">积分</span>
               </div>
             </div>
-            <div class="tuihuan font-14" v-if="(((items.status==2||items.status==3)&&items.orderTrackReceived==1)||items.status==4)&&items.sellType==0&&(!items.invoice_sub_id)" @click="goReturn(items,item.sub_item_id)">
+            <div class="tuihuan font-14" v-if="(((items.status==2||items.status==3)&&items.orderTrackReceived==1)||items.status==4)&&items.sellType==0" @click="goReturn(items,item.sub_item_id,items.invoice_sub_id)" :class="{'greyBtn':items.invoice_sub_id>0}">
               申请退换货
             </div>
             <div class="order-line"></div>
@@ -118,7 +118,7 @@
       </confirm>
       <div class="bottom-btn">
         <div class="bottom-btn-right font-16" v-if='buyBtShow' @click="buyAgain(items.prod[0].prod_id)">
-          再次购买
+          {{items.sellType==0?'再次购买':'再次兑换'}}
         </div>
         <div class="bottom-btn-right font-16" v-if='blueShow' v-text="blueText" @click="goPay(items)">
           去支付
@@ -172,8 +172,13 @@ export default {
     Confirm
   },
   methods: {
-    goReturn:function(item,itemIid){
-      this.$router.push({ path: '/returnOrder', query: { 'subNumber': item.sub_number,'itemIid':itemIid } })
+    goReturn:function(item,itemIid,n){
+      if(n>0){
+        return
+      }else{
+        this.$router.push({ path: '/returnOrder', query: { 'subNumber': item.sub_number,'itemIid':itemIid } })
+      }
+      
     },
     goPay: function(item) {
       if (this.blueText == "去兑换" || this.blueText == "去支付") {
@@ -331,12 +336,15 @@ export default {
           this.blueText = "确认收货"
           this.greyShow = false
         } else if (response.data.data[0].status == 4) {
-
+          this.blueShow=false
           this.greyShow = false
-          this.blueShow = true
+          if(response.data.data[0].sellType==0){
+            this.blueShow = true
+          }
+          
           this.timeShow = false
           this.buyBtShow = true
-          this.cancleShow = true
+          // this.cancleShow = true
           if (response.data.data[0].invoice_sub_id) {
             this.blueText = "已开具"
           } else {
@@ -620,5 +628,9 @@ export default {
   border: 1px solid #1dafed;
   color: #1dafed;
   padding: 1vw
+}
+.greyBtn{
+  border: 1px solid grey;
+  color: grey
 }
 </style>

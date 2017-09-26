@@ -287,7 +287,7 @@ export default {
 
 .orderList {
   width: 92.6vw;
-  margin: 0 auto;
+  margin: 0 auto 4px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
   border-radius: 4px 4px 0 0 0;
 }

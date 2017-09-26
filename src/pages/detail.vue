@@ -35,7 +35,7 @@
       </flexbox-item>
     </div>
     <div>
-      <div v-html="detailObj.content"  class="innerDetail"></div>
+      <div v-html="detailObj.content" class="innerDetail"></div>
     </div>
     <div v-transfer-dom>
       <popup v-model="popShow" position="bottom" height="120vw" class="detailPop">
@@ -153,13 +153,11 @@ export default {
       }
     },
     plus: function(n) {
-      console.log(n)
       if (n == 1) {
         this.countNum++
       } else if (this.countNum <= 1) {
         return
       } else {
-        console.log(2)
         this.countNum--
       }
 
@@ -189,7 +187,6 @@ export default {
           headers: header,
           emulateJSON: true
         }).then(function(data) { //es5写法
-          console.log(data.data)
           if (this.isCart) {
             this.$router.push({ path: '/cart' })
           } else {
@@ -210,12 +207,10 @@ export default {
 
     },
     init: function() {
-      console.log(this.$store.state.loginUser.name == undefined)
       let _this = this
       this.$http.get(this.$Api('/home/getProdDetail'), { params: { 'prodId': this.$route.query.prod_id } }).then((response) => {
 
         this.detailObj = response.data.data
-        console.log(this.detailObj.topImg)
         if (this.detailObj.topImg.length > 1) {
           this.dotShow = true
         }
@@ -237,14 +232,22 @@ export default {
       this.show = false
     },
     changedValue: function(value) {
-      console.log(value)
     }
   },
-  mounted: function() {
+  created: function() {
     this.$vux.loading.show({
       text: 'loading'
     })
     this.init()
+  },
+  updated: function() {
+    var ssd = document.getElementsByClassName('ssd-module');
+    console.log(ssd)
+    for (var i = 0; i < ssd.length; i++) {
+      var h = ssd[i].clientHeight
+      ssd[i].style.height = h / 2 + "px"
+    }
+
   },
 
 }
@@ -263,6 +266,7 @@ export default {
     font-size: 18px;
   }
 }
+
 .detail-cartBtn {
   height: 14.6vw;
   width: 40.8vw;
@@ -440,9 +444,9 @@ export default {
 .innerDetail {
   color: #fff;
   text-align: left;
-  div{
+  div {
     width: 100%;
-    img{
+    img {
       width: 100%
     }
   }

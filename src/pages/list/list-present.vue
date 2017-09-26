@@ -6,39 +6,43 @@
       <div class="life-img">
         <img :src="lifeTopImg">
       </div>
-      <div class="list-box">
-        <div v-for="(item,index) in myBoutique" key=index class="list-box-item" @click="goWhere(item)">
-          <div class="list-box-item-img">
-            <img :src="item.pic">
-          </div>
-          <div class="list-box-item-price">
-            <div v-text="item.name" class="font-16 list-box-item-price-title color-33">
+      <scroller lock-x scrollbar-y use-pullup height="80vh" @on-pullup-loading="load" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: 'Loading...',content: '松开刷新'}" class="scroller">
+        <div class="list-box">
+          <div v-for="(item,index) in myBoutique" key=index class="list-box-item" @click="goWhere(item)">
+            <div class="list-box-item-img">
+              <img :src="item.pic">
             </div>
-            <div v-if="item.sellType==1" class="list-box-item-price-price basicColor">
-              <span v-text="item.point" class="list-point  font-18"></span>
-              <span class=" font-12">积分</span>
-            </div>
-            <div v-if="item.sellType==0" class="list-box-item-price-price basicColor">
-              <span class="df  font-12">￥</span>
-              <span v-text="item.cash" class="list-point  font-18"></span>
+            <div class="list-box-item-price">
+              <div v-text="item.name" class="font-16 list-box-item-price-title color-33">
+              </div>
+              <div v-if="item.sellType==1" class="list-box-item-price-price basicColor">
+                <span v-text="item.point" class="list-point  font-18"></span>
+                <span class=" font-12">积分</span>
+              </div>
+              <div v-if="item.sellType==0" class="list-box-item-price-price basicColor">
+                <span class="df  font-12">￥</span>
+                <span v-text="item.cash" class="list-point  font-18"></span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </scroller>
     </div>
   </div>
 </template>
 <script>
 import myNav from '../../components/nav'
 import back from '../../components/backNav'
-import { Tab, TabItem } from 'vux'
+import { Tab, TabItem, Scroller } from 'vux'
+import Apis from '../../configers/Api'
 export default {
 
   components: {
     myNav,
     back,
     Tab,
-    TabItem
+    TabItem,
+    Scroller
   },
   data() {
     return {
@@ -47,7 +51,9 @@ export default {
       myBoutique: [],
       show: true,
       lifeTopImg: require('../../assets/imgs/presentBanner.png'),
-      manShow: true
+      manShow: true,
+      pageNumber: 1,
+      pageSize: 10
     }
   },
   methods: {
@@ -56,14 +62,44 @@ export default {
         text: 'loading'
       })
       //获取精品推荐列表
-      this.$http.get(this.$Api('/home/getProdListByCategory'), { params: { 'id': this.id } }).then((response) => {
-        this.myBoutique = JSON.parse(response.bodyText).data
-        console.log(this.myBoutique)
+      Apis.getProdListByCategory({ 'id': this.id, pageNumber: this.pageNumber, pageSize: this.pageSize }).then(data => {
+        this.myBoutique = data.data;
         this.$vux.loading.hide()
         this.show = false
-      }, (response) => {
-        // error callback
-      });
+        this.$nextTick(() => {
+          this.$refs.demo1.reset()
+        })
+        if (!data.isLast) {
+          this.pageNumber++
+        } else {
+          this.$refs.demo1.disablePullup()
+        }
+        this.$vux.loading.hide()
+        this.show = false
+      })
+
+    },
+    load: function() {
+      setTimeout(() => {
+        // 查询
+        Apis.getProdListByCategory({ 'id': this.id, pageNumber: this.pageNumber, pageSize: this.pageSize }).then(data => {
+          this.myBoutique = this.myBoutique.concat(data.data)
+          this.$nextTick(() => {
+            this.$refs.demo1.reset()
+          })
+          if (!data.isLast) {
+            this.pageNumber++
+          } else {
+            this.$refs.demo1.disablePullup()
+          }
+
+
+        })
+        setTimeout(() => {
+
+          this.$refs.demo1.donePullup()
+        }, 100)
+      }, 1000)
     },
     showMe: function(n) {
       if (n == 1) {
@@ -119,9 +155,7 @@ export default {
   20);
   .px2vw(padding-right,
   20);
-  position: absolute;
-  .px2vw(top,
-  153);
+
   box-sizing: border-box;
   .list-box-item {
     width: 100%;
@@ -176,6 +210,12 @@ export default {
   }
 
   .list-box-inner {}
+}
+
+.scroller {
+  position: absolute;
+  .px2vw(top,
+  153);
 }
 
 </style>

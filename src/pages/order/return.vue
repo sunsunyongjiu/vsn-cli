@@ -200,7 +200,6 @@ export default {
         box-sizing: border-box;
         .px2vw(margin-top, 34.5);
         .px2vw(padding-left, 17);
-        border-left: 1px solid #4a4a4a;
         height: 100%;
         img {
           .px2vw(width, 17);

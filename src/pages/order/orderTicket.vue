@@ -14,7 +14,7 @@
     </div>
     <div class="type-box">
       <div class="type-item-2  font-13">
-        {{ticket.main}}
+        杭州驭缘网络科技有限公司
       </div>
     </div>
     <div class="ticket-type font-15">
@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       common: false,
-      person: false,
+      person: true,
       company: false,
       main: false,
       ticket: {
@@ -90,7 +90,6 @@ export default {
         console.log(response.data.data)
         if (response.data.data) {
           this.ticket = response.data.data;
-          this.ticket.main = this.ticket.company;
           this.person = response.data.data.title_id == 1 ? true : false;
           this.company = response.data.data.title_id == 2 ? true : false;
           this.main = response.data.data.title_id == 3 ? true : false;
@@ -101,6 +100,7 @@ export default {
       }, (response) => {
         // error callback
       });
+      console.log(this.ticket)
     },
     sureTicket: function() {
       this.$vux.loading.show({
