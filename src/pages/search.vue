@@ -192,6 +192,8 @@ export default {
         if (!data.isLast) {
           this.pageNumber++
           this.$refs.demo1.enablePullup()
+        }else{
+          this.$refs.demo1.disablePullup()
         }
         this.$nextTick(() => {
           this.$refs.demo1.reset({

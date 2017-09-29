@@ -86,7 +86,9 @@ export default {
   },
   methods: {
     goPay: function() {
-
+      this.$vux.loading.show({
+          text: 'loading'
+        })
       let header = {
         "token": this.loginUser.token,
         "time": timer,
@@ -108,10 +110,12 @@ export default {
         }).then(function(data) {
           console.log(data)
           if (data.data.code == 1) {
+            this.$vux.loading.hide()
             this.$router.push({ path: '/pay' , query: { 'subNumber': data.data.data }})
           } else {
+            this.$vux.loading.hide()
             this.$vux.toast.show({
-              text: '提交订单失败，请稍后重试！',
+              text: data.data.msg,
               type: 'warn',
               isShowMask: true,
               position: 'middle'
@@ -121,6 +125,7 @@ export default {
           //error
         })
       } else {
+        this.$vux.loading.hide()
         this.$vux.toast.show({
           text: '您当前的积分不足',
           type: 'warn',
@@ -269,7 +274,6 @@ export default {
   text-align: left;
   box-sizing: border-box;
   width: 100%;
-  opacity: 0.5;
   line-height: 6.5vw;
   color: #7a7a7a;
   padding-left: 2vw;
@@ -371,6 +375,7 @@ export default {
   border-radius: 2px 2px 0 0;
   line-height: 8.5vw;
   color: #fff;
+  opacity: 0.5;
   position: relative
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <back title="支付成功"></back>
-    <div class="payBtn" @click="goBack">返回</div>
+    <div class="payBtn font-24" @click="goBack">返回</div>
     <div class="success">
       <div class="success-logo">
         <img src="../../assets/imgs/success.png">

@@ -229,8 +229,7 @@ export default {
   font-size: 24px;
   color: #fff;
   margin-left: 6.8vw;
-  position: absolute;
-  bottom: 20vw;
+  margin-top: 10vw;
 }
 
 .type-hedder-item-box {

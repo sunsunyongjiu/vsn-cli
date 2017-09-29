@@ -138,7 +138,6 @@
 
 body {
   background: @bgcolor;
-  font-family: chinese;
 }
 
 .pageTitle {
@@ -305,7 +304,20 @@ body {
   }
   div {
     .px2vw(max-width,
-    375); // .px2vw(max-height, 500);
+    365); // .px2vw(max-height, 500);
+  }
+  table {
+    .px2vw(max-width,
+    365);
+  }
+  table,
+  table tr th,
+  table tr td {
+    border: 1px solid #333;
+  }
+  table {
+    text-align: left !important;
+    border-collapse: collapse;
   }
 }
 

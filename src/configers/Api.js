@@ -101,6 +101,13 @@ export default {
       return res.data
     })
   },
+   // 获取精品推荐列表
+  getCommendProdList(params = {}) {
+    return Vue.http.get(basePath + '/home/getCommendProdList',{ params }).then(res => {
+      // some handling
+      return res.data
+    })
+  },
   // 订单退换货
   exchangeOrder(token, params = {}) {
     // some handling

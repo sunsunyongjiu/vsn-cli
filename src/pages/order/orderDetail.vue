@@ -446,7 +446,6 @@ export default {
     width: 22.6vw;
     height: 22.6vw;
     float: left;
-    background: #292929;
     border-radius: 2px;
     margin-left: 2.6vw;
     img {

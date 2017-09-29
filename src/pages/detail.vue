@@ -35,7 +35,7 @@
       </flexbox-item>
     </div>
     <div>
-      <div v-html="detailObj.content" class="innerDetail"></div>
+      <div v-html="detailObj.content" class="innerDetail font-12"></div>
     </div>
     <div v-transfer-dom>
       <popup v-model="popShow" position="bottom" height="120vw" class="detailPop">
@@ -177,7 +177,8 @@ export default {
         let cartData = {
           'prodId': this.detailObj.prod_id,
           'basketCount': this.countNum,
-          'attribute': JSON.stringify(this.checkedList)
+          'attribute': JSON.stringify(this.checkedList),
+          'isCart': this.isCart
         }
 
         this.$http({
@@ -231,8 +232,7 @@ export default {
       this.$vux.loading.hide()
       this.show = false
     },
-    changedValue: function(value) {
-    }
+    changedValue: function(value) {}
   },
   created: function() {
     this.$vux.loading.show({
@@ -257,6 +257,10 @@ export default {
 <style scoped lang='less' scoped>
 @import '../assets/css/detail.less';
 @import '../assets/css/global.less';
+.innerDetail {
+  padding: 0 5px;
+}
+
 .detail-title {
   color: #fff;
   .detail-title-cn {
@@ -360,9 +364,8 @@ export default {
 
 .demo1-item {
   border: 1px solid #7f7f7f;
+  padding: 2px 5vw;
   border-radius: 1px;
-  width: 16vw;
-  height: 5vw;
   text-align: center;
   font-size: 14px;
   line-height: 5vw;
@@ -443,7 +446,6 @@ export default {
 
 .innerDetail {
   color: #fff;
-  text-align: left;
   div {
     width: 100%;
     img {

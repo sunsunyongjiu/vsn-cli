@@ -10,7 +10,7 @@
         </div>
         <div v-text="item.brief" class="text">
         </div>
-        <div class="index-Boutique-div-right-points english">
+        <div class="index-Boutique-div-right-points">
           <div>
             <!-- Price：￥<span v-text="item.cash"></span> -->
           </div>
@@ -66,6 +66,7 @@ export default {
 
 </script>
 <style lang='less' scoped>
+@import '../assets/css/global.less';
 .index-Boutique {
   .index-Boutique-div {
     margin-bottom: 6px;
@@ -167,9 +168,6 @@ export default {
   z-index: 10;
 }
 
-.english {
-  font-family: english !important
-}
 
 .red-hot {
   position: absolute;

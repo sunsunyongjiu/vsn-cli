@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="pageTitle">
-      <span class="font-18">购物车</span>
+      <span class="font-18">秒杀商品</span>
       <div class="back" @click="goback"></div>
     </div>
-    <scroller lock-x scrollbar-y use-pullup height="-10.66vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: 'Loading...',content: '松开刷新'}">
+    <scroller lock-x scrollbar-y use-pullup height="100vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: '加载中...',content: '松开刷新'}">
       <div>
         <div class="hotBox">
           <div class='hotBox-title font-14 fff'>秒杀时间</div>

@@ -17,15 +17,20 @@ export default {
   },
   methods: {
     goback: function() {
+      if(this.go){
+        this.$router.push({ path: this.go })
+      }else{
+        this.$router.go(-1)
+      }
       console.log(1)
-      this.$router.go(-1)
+      
     },
   },
   mounted: function() {
 
 
   },
-  props: ['title']
+  props: ['title','go']
 }
 
 </script>

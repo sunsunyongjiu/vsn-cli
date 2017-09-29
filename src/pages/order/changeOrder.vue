@@ -50,9 +50,9 @@
       <div class="change-picBox-title font-14 fff">上传凭证</div>
       <div class="change-picBox-imgs">
         <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img1" class="items"></imgUploader>
-        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img2"></imgUploader>
-        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img3"></imgUploader>
-        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img4"></imgUploader>
+        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img2" v-if="photoFile.photoFile1"></imgUploader>
+        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img3" v-if="photoFile.photoFile2"></imgUploader>
+        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img4" v-if="photoFile.photoFile3"></imgUploader>
       </div>
     </div>
     <div v-transfer-dom>

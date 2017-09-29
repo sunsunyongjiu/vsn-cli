@@ -98,10 +98,12 @@ export default {
     onConfirm: function() {
       let str = ''
       this.goodsList.forEach(function(item) {
+        str += ',' + item.basketId
+        /*
         if (item.selected) {
           str += ',' + item.basketId
         }
-
+				*/
 
       })
       this.onButtonClick(str.substr(1))
@@ -202,6 +204,7 @@ export default {
     },
     goSure: function() {
       console.log(this.sameShop != false)
+      /*
       console.log(this.goodsList.length)
       let i = 0
       this.goodsList.forEach(function(n) {
@@ -209,6 +212,7 @@ export default {
           i++
         }
       })
+      
       console.log(this.selectedSub)
       if (i == 1) {
         this.$router.push({ path: '/sureOrder', query: { 'selectIds': this.selectedSub } })
@@ -220,20 +224,20 @@ export default {
           position: 'middle'
         })
       }
-      return
-      // if (this.sameShop != false) {
-      //   let str = ''
-      //   this.goodsList.forEach(function(n) {
-      //     if (n.selected) {
-      //       str += (',' + n.basketId)
-      //     }
-      //   })
-      //   console.log(str.slice(1))
+      return*/
+       if (this.sameShop != false) {
+         let str = ''
+         this.goodsList.forEach(function(n) {
+           if (n.selected) {
+             str += (',' + n.basketId)
+           }
+         })
+         console.log(str.slice(1))
 
-      //   this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
-      // } else {
-      //   alert('请选择同一家店的产品！')
-      // }
+         this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
+       } else {
+         alert('请选择同一家店的产品！')
+       }
 
     },
 
@@ -260,7 +264,7 @@ export default {
               size: JSON.parse(item.attribute),
               point: item.point,
               count: item.basket_count,
-              selected: false,
+              selected: true,
               basketId: item.basket_id,
               sellType: item.sellType,
               cash: item.cash

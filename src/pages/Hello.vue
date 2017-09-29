@@ -1,89 +1,110 @@
 <template>
-  <div class="index-page">
-    <search v-model="searchValue" position="absolute" :auto-fixed="autoFixed" @on-focus="submit" placeholder="搜索" auto-scroll-to-top ref="search"></search>
-    <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
-      <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
-    </swiper>
-    <div class="index-middle-tittle font-10">
-      {{"会员信息"|tr}}
-    </div>
-    <flexbox class="index-page-mypoints flex1">
-      <flexbox-item>
-        <div class="flex-demo">
-          <img :src="myCardSrc" class="myCard">
-        </div>
-        <div class="my-club">
-          <span v-if="login" class="font-9">{{"Mercedes me 车主俱乐部"|tr}}</span>
-        </div>
-      </flexbox-item>
-      <flexbox-item v-show="login">
-        <div class="flex-demo myPoints">
-          <div class="font-11 pointTitle">{{"您当前的个人积分是"|tr}}</div>
-          <div>
-            <!-- <span v-text="loginUser.score"></span> -->
-            <span class="font-13">{{loginUser.score}}</span>
+  <scroller lock-x scrollbar-y use-pullup height="-10.66vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: '加载中...',content: '松开刷新'}">
+    <div class="index-page">
+      <search v-model="searchValue" position="absolute" :auto-fixed="autoFixed" @on-focus="submit" placeholder="搜索" auto-scroll-to-top ref="search"></search>
+      <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
+        <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
+      </swiper>
+      <div class="index-middle-tittle font-10">
+        {{"会员信息"|tr}}
+      </div>
+      <flexbox class="index-page-mypoints flex1">
+        <flexbox-item>
+          <div class="flex-demo">
+            <img :src="myCardSrc" class="myCard">
           </div>
-          <!-- <div>
+          <div class="my-club">
+            <span v-if="login" class="font-9">{{"Mercedes me 车主俱乐部"|tr}}</span>
+          </div>
+        </flexbox-item>
+        <flexbox-item v-show="login">
+          <div class="flex-demo myPoints">
+            <div class="font-11 pointTitle">{{"当前积分"|tr}}</div>
+            <div>
+              <!-- <span v-text="loginUser.score"></span> -->
+              <span class="font-18">{{loginUser.score}}</span>
+            </div>
+            <!-- <div>
             <button class="soonBtn">{{"为您甄选"|tr}}</button>
           </div> -->
-        </div>
-      </flexbox-item>
-      <flexbox-item v-show="!login">
-        <div class="flex-demo myPoints">
-          <div class="font-11">您好，欢迎来到</div>
-          <div>
-            <span class="font-13">积分商城</span>
           </div>
-          <div>
-            <button class="soonBtn english" @click="goLogin()">{{"登录/注册"|tr}}</button>
-          </div>
-        </div>
-      </flexbox-item>
-    </flexbox>
-    <flexbox class="index-page-mypoints2" :gutter="0">
-      <flexbox-item v-for="(item,index) in indexBtns" :key="index">
-        <div class="flex-demo english" @click="goNext(item.path)">
-          <div :class="item.class" class="index-icon"></div>
-          <div v-text="" class="font-12">
-            {{item.title|tr}}
-          </div>
-        </div>
-      </flexbox-item>
-    </flexbox>
-    <div class="index-middle-tittle font-10">
-      {{"分类推荐"|tr}}
-    </div>
-    <flexbox :gutter="0" wrap="wrap" class="index-page-classification">
-      <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index">
-        <div class="flex-demo fenleiBox" @click="goList(item.title,item.id,item.path)">
-          <div>
-            <img :src="item.src" :class="item.class">
-            <div class="index-bottom english">
-              <div>
-                {{item.title|tr}}
-              </div>
-              <!-- <div v-text="item.titleEn"></div> -->
+        </flexbox-item>
+        <flexbox-item v-show="!login">
+          <div class="flex-demo myPoints">
+            <div class="font-11">您好，欢迎来到</div>
+            <div>
+              <span class="font-13">积分商城</span>
+            </div>
+            <div>
+              <button class="soonBtn" @click="goLogin()">{{"登录/注册"|tr}}</button>
             </div>
           </div>
+        </flexbox-item>
+      </flexbox>
+      <flexbox class="index-page-mypoints2" :gutter="0">
+        <flexbox-item v-for="(item,index) in indexBtns" :key="index">
+          <div class="flex-demo" @click="goNext(item.path)">
+            <div :class="item.class" class="index-icon"></div>
+            <div v-text="" class="font-12">
+              {{item.title|tr}}
+            </div>
+          </div>
+          <!--         <a href="tel:4008-332-711" v-if="item.title=='联系客服'">
+          <div class="flex-demo english" @click="goNext(item.path)">
+            <div :class="item.class" class="index-icon"></div>
+            <div v-text="" class="font-12">
+              {{item.title|tr}}
+            </div>
+          </div>
+        </a> -->
+        </flexbox-item>
+      </flexbox>
+      <div class="index-middle-tittle font-10">
+        {{"分类推荐"|tr}}
+      </div>
+      <flexbox :gutter="0" wrap="wrap" class="index-page-classification">
+        <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index">
+          <div class="flex-demo fenleiBox" @click="goList(item.title,item.id,item.path)">
+            <div>
+              <img :src="item.src" :class="item.class">
+              <div class="index-bottom">
+                <div>
+                  {{item.title|tr}}
+                </div>
+                <!-- <div v-text="item.titleEn"></div> -->
+              </div>
+            </div>
+          </div>
+        </flexbox-item>
+      </flexbox>
+      <div class="index-middle-tittle font-10" v-if=false>
+        {{"主编推荐"|tr}}
+      </div>
+      <swiper :aspect-ratio="160/375" auto v-if=false>
+        <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
+      </swiper>
+      <div class="index-middle-tittle font-10">
+        {{"精品推荐"|tr}}
+      </div>
+      <my-nav :items="myBoutique"></my-nav>
+      <div class="contactBox" v-if="showContact">
+        <div class="phoneBox">
+          <img src="../assets/imgs/cha.png" class="cha" @click="showContact=false">
+          <div class="font-12 color-91 phone-title">客服热线</div>
+          <div class="font-14 fff phone">4008-332-711</div>
+          <a href="tel:4008-332-711">
+            <div class="phoneImg">
+            </div>
+          </a>
         </div>
-      </flexbox-item>
-    </flexbox>
-    <div class="index-middle-tittle font-10" v-if=false>
-      {{"主编推荐"|tr}}
+      </div>
     </div>
-    <swiper :aspect-ratio="160/375" auto v-if=false>
-      <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
-    </swiper>
-    <div class="index-middle-tittle font-10">
-      {{"精品推荐"|tr}}
-    </div>
-    <my-nav :items="myBoutique"></my-nav>
-  </div>
+  </scroller>
 </template>
 <script>
 import myNav from '../components/nav'
 import { state } from 'vuex'
-import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, Search } from 'vux'
+import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, Search, Scroller } from 'vux'
 import { mapGetters } from 'vuex'
 import Apis from '../configers/Api'
 import EnJson from "../configers/En"
@@ -107,6 +128,7 @@ export default {
       demo05_list: imgList,
       myCardSrc: require('../assets/imgs/bccard.png'),
       imgList: [],
+      showContact: false,
       indexBtns: [{
           title: '购物车',
           path: '/cart',
@@ -175,7 +197,9 @@ export default {
       ],
       myBoutique: [
 
-      ]
+      ],
+      pageNumber: 1,
+      pageSize: 10
     }
   },
   components: {
@@ -188,7 +212,8 @@ export default {
     Flexbox,
     FlexboxItem,
     Divider,
-    Search
+    Search,
+    Scroller
 
   },
   methods: {
@@ -196,11 +221,11 @@ export default {
     goList: function(title, id, path) {
       let p = path == undefined ? 'lists' : path
       if (path == undefined) {
-        if(title=='无忧出行'){
+        if (title == '无忧出行') {
           window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/rights'
-        }else if(title=='精英课选'){
+        } else if (title == '精英课选') {
           window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/activity'
-        }else{
+        } else {
           alert('敬请期待！')
         }
         return
@@ -209,26 +234,31 @@ export default {
       this.$router.push({ path: p, query: { 'title': title, 'id': id } })
     },
     goWWW: function(url) {
-      if(url.indexOf('hot')>0){
-        this.$router.push({ path: '/hot'})
-      }else{
+      if (url.indexOf('hot') > 0) {
+        this.$router.push({ path: '/hot' })
+      } else {
         window.location.href = url
       }
-      
+
       // if(url.indexOf('/hot')>0){
       //   this.$router.push({ path: '/hot'})
       // }else{
       //   window.location.href = url
       // }
-      
+
     },
     goLogin: function() {
       window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode("http://mall-test.mercedesmeclub.yuyuanhz.com/index.html")
-      
+
     },
     goNext: function(pathUrl) {
       if (this.login || pathUrl == "/contact") {
-        this.$router.push({ path: pathUrl })
+        if (pathUrl == "/contact") {
+          this.showContact = true
+        } else {
+          this.$router.push({ path: pathUrl })
+        }
+
       } else {
         this.$vux.toast.show({
           text: '请先登陆',
@@ -275,12 +305,37 @@ export default {
       });
 
       //获取精品推荐列表
-      this.$http.get(this.$Api('/home/getCommendProdList')).then((response) => {
-        this.myBoutique = response.data.data
+      Apis.getCommendProdList({ pageNumber: this.pageNumber, pageSize: this.pageSize }).then(data => {
+        this.myBoutique = data.data;
+        this.$nextTick(() => {
+          this.$refs.demo1.reset()
+        })
+        if (!data.isLast) {
+          this.pageNumber++
+        } else {
+          this.$refs.demo1.disablePullup()
+        }
+      })
+    },
+    load1: function() {
+      setTimeout(() => {
+        // 查询
+        Apis.getCommendProdList({ pageNumber: this.pageNumber, pageSize: this.pageSize }).then(data => {
+          this.myBoutique = this.myBoutique.concat(data.data);
+          this.$nextTick(() => {
+            this.$refs.demo1.reset()
+          })
+          if (!data.isLast) {
+            this.pageNumber++
+          } else {
+            this.$refs.demo1.disablePullup()
+          }
+        })
+        setTimeout(() => {
 
-      }, (response) => {
-        // error callback
-      });
+          this.$refs.demo1.donePullup()
+        }, 100)
+      }, 1000)
     }
   },
   mounted: function() {
@@ -306,13 +361,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
 @import '../assets/css/hello.less';
+@import '../assets/css/global.less';
 h1,
 h2 {
   font-weight: normal;
 }
-.pointTitle{
+
+.pointTitle {
   line-height: 10vw
 }
+
 ul {
   list-style-type: none;
   padding: 0;
@@ -342,8 +400,51 @@ a {
   opacity: 0
 }
 
-.english {
-  font-family: english !important
+a {
+  text-decoration: none;
+}
+
+.contactBox {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10;
+  .phoneBox {
+    position: absolute;
+    background: #292929;
+    border-radius: 4px;
+    .px2vw(width, 250);
+    .px2vw(height, 192);
+    top: 50vh;
+    left: 50%;
+    .px2vw(margin-left, -125);
+    .px2vw(margin-top, -96);
+  }
+  .phone-title {
+    .px2vw(margin-top, 34);
+    .px2vw(margin-bottom, 14);
+  }
+  .cha {
+    position: absolute;
+    .px2vw(height, 13);
+    .px2vw(width, 13);
+    .px2vw(right, 13);
+    .px2vw(top, 13);
+  }
+  .phoneImg {
+    opacity: 0.81;
+    background-color: #1dafed !important;
+    .px2vw(width, 50);
+    .px2vw(height, 50);
+    border-radius: 100%;
+    .px2vw(margin-top, 28);
+    .px2vw(margin-left, 100);
+    background: url(../assets/imgs/contactPhone.png) center center no-repeat;
+    background-size: 50%;
+  }
 }
 
 </style>

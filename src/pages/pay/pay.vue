@@ -1,6 +1,9 @@
 <template>
   <div>
-    <back title="支付订单"></back>
+    <div class="pageTitle">
+      <span class="font-18">支付订单</span>
+      <div class="back" @click="showConfirm"></div>
+    </div>
     <div class="payBtn font-24" @click="goPay">确认支付</div>
     <div class="orderList">
       <div class="order-title font-15">订单信息</div>
@@ -27,11 +30,17 @@
         <div class="choose-btn selected payMent-right"></div>
       </div>
     </div>
+    <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
+      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
+        确认取消该订单?
+      </div>
+    </confirm>
   </div>
 </template>
 <script>
 import back from '../../components/backNav'
 import Apis from '../../configers/Api'
+import { Confirm } from 'vux'
 export default {
   name: '',
   data() {
@@ -40,31 +49,34 @@ export default {
         prod_name: '',
         total: '',
         sellType: ''
-      }
+      },
+      confirmShow: false
     }
   },
   components: {
-    back
+    back,
+    Confirm
   },
   methods: {
+
     goPay: function() {
       if (this.order.sellType == 0) {
         Apis.unifiedorder({ 'subNumber': this.$route.query.subNumber }).then(data => {
           this.callpay(data.data.jsApiParams)
         })
-        
+
         //window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com?subNumber='+ this.$route.query.subNumber;
         //return false;
-      
+
       } else {
-        Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber,'score':this.order.total,token:this.$store.state.loginUser.token }).then(data => {
-          if(data){
-            this.$router.push({ path: '/success',query: { 'subNumber': this.$route.query.subNumber,success:1 } })
-          }else{
-            this.$router.push({ path: '/success',query: { 'subNumber': this.$route.query.subNumber,success:0} })
+        Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'score': this.order.total, token: this.$store.state.loginUser.token }).then(data => {
+          if (data) {
+            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
+          } else {
+            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 0 } })
           }
         })
-        
+
       }
     },
     init: function() {
@@ -72,6 +84,15 @@ export default {
         console.log(data.data[0])
         this.order = data.data[0]
       })
+    },
+    showConfirm: function() {
+      this.confirmShow = true
+    },
+    onConfirm:function(){
+      this.$router.push({ path: '/order'})
+    },
+    onCancel:function(){
+      
     },
     jsApiCall: function(data) {
       WeixinJSBridge.invoke(
@@ -82,9 +103,9 @@ export default {
           //WeixinJSBridge.log(res.err_msg);
           if (res.err_msg == "get_brand_wcpay_request:ok") {
             // window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token='+this.$store.state.loginUser.token+'&user'+this.$store.state.loginUser.user+'=OTU5Mw%3D%3D&success=1';
-            this.$router.push({ path: '/success',query: { 'subNumber': this.$route.query.subNumber } })
+            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber } })
           } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token='+this.$store.state.loginUser.token+'&user'+this.$store.state.loginUser.user+'=OTU5Mw%3D%3D&success=0';
+            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + this.$store.state.loginUser.token + '&user' + this.$store.state.loginUser.user + '=OTU5Mw%3D%3D&success=0';
             return false;
           }
         }

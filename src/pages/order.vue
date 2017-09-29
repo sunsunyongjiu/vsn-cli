@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back title="我的订单"></back>
+    <back title="我的订单" go="/path"></back>
     <div>
       <tab :line-width="1" custom-bar-width="16vw" defaultColor="#787878" active-color="white" style="background:#181818">
         <tab-item :selected="listIndex==0" @on-item-click="changeItem" class=" font-14">未支付</tab-item>
@@ -230,7 +230,6 @@ export default {
     width: 22.6vw;
     height: 22.6vw;
     float: left;
-    background: #292929;
     border-radius: 2px;
     margin-left: 2.6vw;
     img {
