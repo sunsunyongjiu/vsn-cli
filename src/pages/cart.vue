@@ -1,71 +1,79 @@
 <template>
-  <div class="container">
-    <div class="pageTitle">
-      <span class="font-18">购物车</span>
-      <div class="back" @click="goback"></div>
-      <div class="pageTitle-deleteBtn" @click="deleteAll">
-        <img src="../assets/imgs/delete.png" class="personal-img">
-      </div>
-    </div>
-    <div class="tab">
-      <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分</div>
-      <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">现金</div>
-    </div>
-    <div class="goods-list">
-      <swipeout class="vux-1px-tb cart-swiper-out" v-for="(item,index) in goodsList" key=index>
-        <swipeout-item transition-mode="follow">
-          <div slot="right-menu">
-            <swipeout-button @click.native="onButtonClick(item.basketId)" type="warn" :width="70"><span class="font-30">×</span></swipeout-button>
+  <div style="height:100vh;overflow:hidden">
+    <view-box ref="viewBox" body-padding-top="19.16vw" body-padding-bottom="14.9vw">
+      <div slot="header" style="width:100%;position:absolute;left:0;top:0;z-index:100;height:19.16vw">
+        <div class="pageTitle">
+          <span class="font-18">购物车</span>
+          <div class="back" @click="goback"></div>
+          <div class="pageTitle-deleteBtn" @click="deleteAll">
+            <img src="../assets/imgs/delete.png" class="personal-img">
           </div>
-          <div slot="content" style="padding:3.2vw;" class="goods">
-            <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)"></div>
-            <div class="goods-left">
-              <img :src="item.pic">
+        </div>
+        <div class="tab">
+          <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分</div>
+          <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">现金</div>
+        </div>
+      </div>
+      <div class="goods-list">
+        <swipeout class="vux-1px-tb cart-swiper-out" v-for="(item,index) in goodsList" key=index>
+          <swipeout-item transition-mode="follow">
+            <div slot="right-menu">
+              <swipeout-button @click.native="onButtonClick(item.basketId)" type="warn" :width="70"><span class="font-30">×</span></swipeout-button>
             </div>
-            <div class="goods-right">
-              <div v-text="item.title" class="font-18 df goods-title"></div>
-              <!-- <div class="font-14 df">Merdeces Me</div> -->
-              <div class="font-10 color-92 goods-size-box" v-for="i in item.size">
-                <span v-text="i.key"></span>: <span v-text="i.value"></span>
+            <div slot="content" style="padding:3.2vw;" class="goods">
+              <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)"></div>
+              <div class="goods-left">
+                <img :src="item.pic">
               </div>
-              <div class="point " v-if="item.sellType==0">
-                <span class="df font-9">￥</span><span v-text="item.cash" class="font-18 df"></span>
-              </div>
-              <div class="point" v-if="item.sellType==1">
-                <span v-text="item.point" class="font-18 df"></span><span class="font-9 color-9b">积分</span>
-              </div>
-              <div class="plus">
-                <div class="jia" @click="goPlus(item,1)">+</div>
-                <div v-text="item.count"></div>
-                <div class="jian" @click="goPlus(item,-1)">-</div>
+              <div class="goods-right">
+                <div v-text="item.title" class="font-18 df goods-title"></div>
+                <!-- <div class="font-14 df">Merdeces Me</div> -->
+                <div class="font-10 color-92 goods-size-box" v-for="i in item.size">
+                  <span v-text="i.key"></span>: <span v-text="i.value"></span>
+                </div>
+                <div class="point " v-if="item.sellType==0">
+                  <span class="df font-9">￥</span><span v-text="item.cash" class="font-18 df"></span>
+                </div>
+                <div class="point" v-if="item.sellType==1">
+                  <span v-text="item.point" class="font-18 df"></span><span class="font-9 color-9b">积分</span>
+                </div>
+                <div class="plus">
+                  <div class="jia" @click="goPlus(item,1)">+</div>
+                  <div v-text="item.count"></div>
+                  <div class="jian" @click="goPlus(item,-1)">-</div>
+                </div>
               </div>
             </div>
+          </swipeout-item>
+        </swipeout>
+        <!--  -->
+      </div>
+      <div slot="bottom" class="bottom">
+        <!-- <div class="bottom"> -->
+          <div @click="selecteAll()">
+            <div class="choose-btn" :class="{selectedAll:selectedAll}"></div>
+            <div class="bottom-left">全选</div>
           </div>
-        </swipeout-item>
-      </swipeout>
-      <!--  -->
-    </div>
-    <div class="bottom">
-      <div @click="selecteAll()">
-        <div class="choose-btn" :class="{selectedAll:selectedAll}"></div>
-        <div class="bottom-left">全选</div>
+          <div v-if="selectePoint" class="bottom-mid">
+            <span class="font-14 fff">合计:</span> <span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
+          </div>
+          <div v-if="!selectePoint" class="bottom-mid">
+            <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-18" v-text="totalPoint"></span>
+          </div>
+          <div class="bottom-right" @click="goSure">{{selectePoint?'兑换':'购买'}}</div>
+        <!-- </div> -->
+        <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
+          <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品</p>
+          <p style="text-align:left;color:#737373">确认删除选中的商品吗？</p>
+        </confirm>
       </div>
-      <div v-if="selectePoint" class="bottom-mid">
-        <span class="font-14 fff">合计:</span> <span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
-      </div>
-      <div v-if="!selectePoint" class="bottom-mid">
-        <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-18" v-text="totalPoint"></span>
-      </div>
-      <div class="bottom-right" @click="goSure">{{selectePoint?'兑换':'购买'}}</div>
-    </div>
-    <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
-      <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品</p>
-      <p style="text-align:left;color:#737373">确认删除选中的商品吗？</p>
-    </confirm>
+    </view-box>
   </div>
+  <!-- <div class="container">
+  </div> -->
 </template>
 <script>
-import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm } from 'vux'
+import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm,ViewBox } from 'vux'
 import back from '../components/backNav'
 
 import md5 from 'js-md5';
@@ -89,7 +97,8 @@ export default {
     Swipeout,
     SwipeoutItem,
     SwipeoutButton,
-    Confirm
+    Confirm,
+    ViewBox
   },
   methods: {
     onCancel: function() {
@@ -103,7 +112,7 @@ export default {
         if (item.selected) {
           str += ',' + item.basketId
         }
-				*/
+        */
 
       })
       this.onButtonClick(str.substr(1))
@@ -181,7 +190,7 @@ export default {
     },
     doSelect(item) {
       item.selected = !item.selected;
-      let _this=this
+      let _this = this
       this.goodsList.forEach(function(n) {
         if (n.selected) {
           _this.selectedSub = n.basketId
@@ -225,19 +234,19 @@ export default {
         })
       }
       return*/
-       if (this.sameShop != false) {
-         let str = ''
-         this.goodsList.forEach(function(n) {
-           if (n.selected) {
-             str += (',' + n.basketId)
-           }
-         })
-         console.log(str.slice(1))
+      if (this.sameShop != false) {
+        let str = ''
+        this.goodsList.forEach(function(n) {
+          if (n.selected) {
+            str += (',' + n.basketId)
+          }
+        })
+        console.log(str.slice(1))
 
-         this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
-       } else {
-         alert('请选择同一家店的产品！')
-       }
+        this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
+      } else {
+        alert('请选择同一家店的产品！')
+      }
 
     },
 

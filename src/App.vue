@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <view-box ref="viewBox">
+    <!-- <view-box ref="viewBox"> -->
       <transition name="fade" mode="out-in" appear>
         <router-view transition="back" keep-alive>
         </router-view>
       </transition>
-    </view-box>
+    <!-- </view-box> -->
     
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
 }
 
 // css重铸
-body,html{height: 100%;overflow: hidden;}
+// body,html{height: 100%;overflow: hidden;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}
 table{border-collapse:collapse;border-spacing:0}
 fieldset,img{border:0}

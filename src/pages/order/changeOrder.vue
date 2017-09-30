@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <div class="change-reason" v-for="(item,index) in order.prod" key='index'>
+    <div class="change-reason" v-for="(item,index) in order.prod" key='index' v-if="$route.query.returnType=='1'">
       <span class="font-14">退款金额：</span>
       <span v-if="order.sellType==0" class="font-10 basicColor">￥</span>
       <span class="font-18 basicColor" v-text="item.product_total_amout"></span>

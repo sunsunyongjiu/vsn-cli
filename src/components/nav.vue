@@ -25,7 +25,7 @@
           </div>
         </div>
         <button>
-          {{"立即兑换"|tr}}
+        	{{item.sellType==0?'立即购买':'立即兑换'|tr}}
         </button>
       </div>
     </div>

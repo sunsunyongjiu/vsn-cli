@@ -30,7 +30,7 @@
             </div>
           </div>
           <div class="orders-right font-12">
-            {{items.status|changeStatus}}
+            {{items.status,items.sellType|changeStatus}}
           </div>
           <div class="order-line"></div>
         </div>
@@ -191,12 +191,16 @@ export default {
     })
   },
   filters: {
-    changeStatus: function(n) {
+    changeStatus: function(n,sellType) {
       if (n === 1) {
         return '等待兑换'
-      } else if (n === 2) {
+      } else if (n === 2 && sellType == 0) {
+        return '已支付'
+      } else if (n === 2 && sellType == 1) {
         return '已兑换'
-      } else if (n === 3) {
+      } else if (n === 3 && sellType == 0) {
+        return '已支付'
+      } else if (n === 3 && sellType == 1) {
         return '已兑换'
       } else if (n === 4) {
         return '交易成功'

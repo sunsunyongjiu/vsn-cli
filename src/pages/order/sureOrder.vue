@@ -15,7 +15,7 @@
           </div>
           <div class="line"></div>
           <div class="order-titles font-14">
-            配送方式
+           	 配送方式
             <div class="right font-14 ">快递免邮&gt;</div>
           </div>
         </div>

@@ -1,14 +1,17 @@
 <template>
-  <div>
-    <back title="订单详情"></back>
-    <div class="paddingBottom" v-for="(items , key) in orderDetail" key="key">
-      <div class="order-state">
-        <div style="margin-bottom:2vw;">
-          {{items.status|changeStatus}}
-        </div>
-        <!-- <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div> -->
+  <div style="height:100vh;overflow:hidden">
+    <view-box ref="viewBox" body-padding-top="10.66vw" body-padding-bottom="14.9vw">
+      <div slot="header" style="width:100%;position:absolute;left:0;top:0;z-index:100;height:10.66vw">
+        <back title="订单详情"></back>
       </div>
-      <!--       <div class="order-info" v-if="items.sellType==1">
+      <div class="paddingBottom" v-for="(items , key) in orderDetail" key="key">
+        <div class="order-state">
+          <div style="margin-bottom:2vw;">
+            {{items.status|changeStatus}}
+          </div>
+          <!-- <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div> -->
+        </div>
+        <!--       <div class="order-info" v-if="items.sellType==1">
         {{items.sellType}}
         <div class="order-person-title">
           订单信息
@@ -22,114 +25,114 @@
           </div>
         </div>
       </div> -->
-      <div class="order-person">
-        <div class="order-person-title font-15">
-          收货人信息
-        </div>
-        <div class="order-personText">
-          <div class="font-16 color-91">
-            <span v-text="items.address.RECEIVER"></span>
-            <span v-text="items.address.moble"></span>
+        <div class="order-person" v-if="items.address">
+          <div class="order-person-title font-15">
+            收货人信息
           </div>
-          <div class="font-14 color-91">
-            <span>
+          <div class="order-personText">
+            <div class="font-16 color-91">
+              <span v-text="items.address.RECEIVER"></span>
+              <span v-text="items.address.moble"></span>
+            </div>
+            <div class="font-14 color-91">
+              <span>
               {{items.address.province}}
               {{items.address.CITY}}
               {{items.address.area}}
               {{items.address.town}}
               {{items.address.subAdds}}
             </span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="order-goods">
-        <div class="order-person-title font-15">
-          商品信息
-        </div>
-        <div class="order-goodsText">
-          <div class="orders" v-for="(item,index) in items.prod" key='index'>
-            <div class="orders-left">
-              <img :src="item.pic">
-            </div>
-            <div class="orders-mid">
-              <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
-              <div v-for="(attr , n) in item.attribute">
-                <span v-text="attr.key"></span>:
-                <span v-text="attr.value"></span>
+        <div class="order-goods">
+          <div class="order-person-title font-15">
+            商品信息
+          </div>
+          <div class="order-goodsText">
+            <div class="orders" v-for="(item,index) in items.prod" key='index'>
+              <div class="orders-left">
+                <img :src="item.pic">
               </div>
-              <div class=" font-11">数量：x<span v-text="item.basket_count">1</span></div>
-              <div class="orders-mid-bottom">
-                <span v-if="items.sellType==0">￥</span>
-                <span class="basicColor font-16" v-text="item.product_total_amout"></span>
-                <span class="font-9" v-if="items.sellType==1">积分</span>
+              <div class="orders-mid">
+                <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
+                <div v-for="(attr , n) in item.attribute">
+                  <span v-text="attr.key"></span>:
+                  <span v-text="attr.value"></span>
+                </div>
+                <div class=" font-11">数量：x<span v-text="item.basket_count">1</span></div>
+                <div class="orders-mid-bottom">
+                  <span v-if="items.sellType==0">￥</span>
+                  <span class="basicColor font-16" v-text="item.product_total_amout"></span>
+                  <span class="font-9" v-if="items.sellType==1">积分</span>
+                </div>
+              </div>
+              <div class="tuihuan font-14" v-if="(((items.status==2||items.status==3)&&items.orderTrackReceived==1)||items.status==4)&&items.sellType==0" @click="goReturn(items,item.sub_item_id,items.invoice_sub_id)" :class="{'greyBtn':items.invoice_sub_id>0}">
+                申请退换货
+              </div>
+              <div class="order-line"></div>
+            </div>
+            <div class="order-fee">
+              <div class="order-fee-first font-11">
+                <div class="order-fee-first-left">运费</div>
+                <div class="order-fee-first-right">￥<span v-text="items.freight_amount"></span></div>
+              </div>
+              <div class="order-fee-second font-11">
+                <div class="order-fee-first-left">实付款（含运费）</div>
+                <div class="order-fee-first-right">
+                  <span v-if="items.sellType==0">￥</span>
+                  <span class="font-18 basicColor" v-text="items.actual_total"></span>
+                  <span v-if="items.sellType==1">积分</span>
+                </div>
               </div>
             </div>
-            <div class="tuihuan font-14" v-if="(((items.status==2||items.status==3)&&items.orderTrackReceived==1)||items.status==4)&&items.sellType==0" @click="goReturn(items,item.sub_item_id,items.invoice_sub_id)" :class="{'greyBtn':items.invoice_sub_id>0}">
-              申请退换货
-            </div>
-            <div class="order-line"></div>
           </div>
-          <div class="order-fee">
-            <div class="order-fee-first font-11">
-              <div class="order-fee-first-left">运费</div>
-              <div class="order-fee-first-right">￥<span v-text="items.freight_amount"></span></div>
+        </div>
+        <div class="order-info">
+          <div class="order-person-title font-15">
+            订单信息
+          </div>
+          <div class="order-infoText">
+            <div class="font-14 color-91">
+              下单时间：<span v-text="items.sub_date"></span>
             </div>
-            <div class="order-fee-second font-11">
-              <div class="order-fee-first-left">实付款（含运费）</div>
-              <div class="order-fee-first-right">
-                <span v-if="items.sellType==0">￥</span>
-                <span class="font-18 basicColor" v-text="items.actual_total"></span>
-                <span v-if="items.sellType==1">积分</span>
+            <div class="font-14 color-91">
+              订单编号：<span v-text="items.sub_number"></span>
+            </div>
+          </div>
+        </div>
+        <div class="order-info" v-if="(items.status==3||items.status==2)&&(items.orderTrack!=null)">
+          <div class="order-person-title">
+            物流信息
+          </div>
+          <div class="order-infoText">
+            <div v-for="item in items.orderTrack" class="sendMsgBox">
+              <div class="sendMsgBoxItem">
+                <div v-text="item.content" class="font-13"></div>
+                <div v-text="item.msgTime" class="font-11"></div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="order-info">
-        <div class="order-person-title font-15">
-          订单信息
-        </div>
-        <div class="order-infoText">
-          <div class="font-14 color-91">
-            下单时间：<span v-text="items.sub_date"></span>
+        <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm(items)" confirm-text="是" cancel-text="否">
+          <div v-text="conifrmText" style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
           </div>
-          <div class="font-14 color-91">
-            订单编号：<span v-text="items.sub_number"></span>
+        </confirm>
+        <div class="bottom-btn" slot="bottom">
+          <div class="bottom-btn-right font-16" v-if='buyBtShow' @click="buyAgain(items.prod[0].prod_id)">
+            {{items.sellType==0?'再次购买':'再次兑换'}}
           </div>
-        </div>
-      </div>
-      <div class="order-info" v-if="(items.status==3||items.status==2)&&(items.orderTrack!=null)">
-        <div class="order-person-title">
-          物流信息
-        </div>
-        <div class="order-infoText">
-          <div v-for="item in items.orderTrack" class="sendMsgBox">
-            <div class="sendMsgBoxItem">
-              <div v-text="item.content" class="font-13"></div>
-              <div v-text="item.msgTime" class="font-11"></div>
-            </div>
+          <div class="bottom-btn-right font-16" v-if='blueShow' v-text="blueText" @click="goPay(items)">
+            去支付
+          </div>
+          <div class="bottom-btn-left font-16" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
+          </div>
+          <div class="bottom-btn-left font-16" v-show="cancleShow" @click="delOrder(items)" v-if="items.delete_status!=1">
+            删除订单
           </div>
         </div>
       </div>
-      <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm(items)" confirm-text="是" cancel-text="否">
-        <div v-text="conifrmText" style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
-          
-        </div>
-      </confirm>
-      <div class="bottom-btn">
-        <div class="bottom-btn-right font-16" v-if='buyBtShow' @click="buyAgain(items.prod[0].prod_id)">
-          {{items.sellType==0?'再次购买':'再次兑换'}}
-        </div>
-        <div class="bottom-btn-right font-16" v-if='blueShow' v-text="blueText" @click="goPay(items)">
-          去支付
-        </div>
-        <div class="bottom-btn-left font-16" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
-        </div>
-        <div class="bottom-btn-left font-16" v-show="cancleShow" @click="delOrder(items)" v-if="items.delete_status!=1">
-          删除订单
-        </div>
-      </div>
-    </div>
+    </view-box>
   </div>
 </template>
 <script>
@@ -137,7 +140,7 @@ import back from '../../components/backNav'
 import md5 from 'js-md5';
 import Apis from '../../configers/Api'
 const timer = JSON.stringify(new Date().getTime());
-import { Confirm } from 'vux'
+import { Confirm,ViewBox } from 'vux'
 export default {
   name: '',
   data() {
@@ -169,21 +172,22 @@ export default {
   },
   components: {
     back,
-    Confirm
+    Confirm,
+    ViewBox
   },
   methods: {
-    goReturn:function(item,itemIid,n){
-      if(n>0){
+    goReturn: function(item, itemIid, n) {
+      if (n > 0) {
         return
-      }else{
-        this.$router.push({ path: '/returnOrder', query: { 'subNumber': item.sub_number,'itemIid':itemIid } })
+      } else {
+        this.$router.push({ path: '/returnOrder', query: { 'subNumber': item.sub_number, 'itemIid': itemIid } })
       }
-      
+
     },
     goPay: function(item) {
       if (this.blueText == "去兑换" || this.blueText == "去支付") {
         this.$router.push({ path: '/pay', query: { 'subNumber': item.sub_number } })
-      } else if (this.blueText == "申请发票" || this.blueText == "已开具") {
+      } else if (this.blueText == "申请发票" || this.blueText == "已开具发票") {
         this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number } })
       } else if (this.blueText == "确认收货") {
         this.conifrmText = "确认收货吗？",
@@ -226,7 +230,7 @@ export default {
         }, function(error) {
           //error
         })
-      } else if (this.conifrmText == "确认删除该订单么？") {
+      } else if (this.conifrmText == "确认删除该订单吗？") {
         Apis.deleteOrder(this.$store.state.loginUser.token, { 'subNumber': items.sub_number }).then(data => {
           this.$vux.loading.hide()
           this.$router.go(-1)
@@ -291,9 +295,9 @@ export default {
     cancleOrder: function(item) {
       if (this.btnCancle == "取消订单") {
         this.show = true
-        this.conifrmText = "确认取消该订单么？"
+        this.conifrmText = "确认取消该订单吗？"
       } else if (this.btnCancle == "申请退换货") {
-        this.conifrmText = "确认退换该订单么？";
+        this.conifrmText = "确认退换该订单吗？";
         this.show = true;
 
       }
@@ -301,7 +305,7 @@ export default {
     },
     delOrder: function(item) {
       console.log(item)
-      this.conifrmText = "确认删除该订单么？",
+      this.conifrmText = "确认删除该订单吗？",
         this.conifrmShowText = "是否确认删除"
       this.show = true;
 
@@ -327,7 +331,7 @@ export default {
         })
 
         if (response.data.data[0].status == 1) {
-          if(response.data.data[0].sellType==0){
+          if (response.data.data[0].sellType == 0) {
             this.blueText = "去支付"
           }
         } else if (response.data.data[0].status == 2 || response.data.data[0].status == 3) {
@@ -336,17 +340,17 @@ export default {
           this.blueText = "确认收货"
           this.greyShow = false
         } else if (response.data.data[0].status == 4) {
-          this.blueShow=false
+          this.blueShow = false
           this.greyShow = false
-          if(response.data.data[0].sellType==0){
+          if (response.data.data[0].sellType == 0) {
             this.blueShow = true
           }
-          
+
           this.timeShow = false
           this.buyBtShow = true
           // this.cancleShow = true
           if (response.data.data[0].invoice_sub_id) {
-            this.blueText = "已开具"
+            this.blueText = "已开具发票"
           } else {
             this.blueText = "申请发票"
           }
@@ -620,7 +624,8 @@ export default {
     }
   }
 }
-.tuihuan{
+
+.tuihuan {
   position: absolute;
   bottom: 5.06vw;
   right: 0;
@@ -628,8 +633,10 @@ export default {
   color: #1dafed;
   padding: 1vw
 }
-.greyBtn{
+
+.greyBtn {
   border: 1px solid grey;
   color: grey
 }
+
 </style>

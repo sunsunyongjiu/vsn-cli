@@ -62,8 +62,8 @@ export default {
       show: true,
       lifeTopImg: require('../../assets/imgs/life-top.png'),
       manShow: true,
-      pageSize: 2,
-      pageNumber: 10
+      pageNumber: 1,
+      pageSize: 10
     }
   },
   methods: {

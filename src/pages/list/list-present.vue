@@ -1,14 +1,14 @@
 <template>
-  <div class="life">
-    <div class="mubu" v-if="show"></div>
-    <back :title="pageTitle"></back>
-    <div v-if="manShow">
-      <div class="life-img">
-        <img :src="lifeTopImg">
-      </div>
-      <scroller lock-x scrollbar-y use-pullup height="80vh" @on-pullup-loading="load" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: 'Loading...',content: '松开刷新'}" class="scroller">
+  <scroller lock-x scrollbar-y use-pullup height="100vh" @on-pullup-loading="load" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: 'Loading...',content: '松开刷新'}" class="scroller">
+    <div class="life">
+      <div class="mubu" v-if="show"></div>
+      <back :title="pageTitle"></back>
+      <div v-if="manShow">
+        <div class="life-img">
+          <img :src="lifeTopImg">
+        </div>
         <div class="list-box">
-          <div v-for="(item,index) in myBoutique" key=index class="list-box-item" @click="goWhere(item)">
+          <!-- <div v-for="(item,index) in myBoutique" key=index class="list-box-item" @click="goWhere(item)">
             <div class="list-box-item-img">
               <img :src="item.pic">
             </div>
@@ -24,11 +24,12 @@
                 <span v-text="item.cash" class="list-point  font-18"></span>
               </div>
             </div>
-          </div>
+          </div> -->
+          <my-nav :items="myBoutique"></my-nav>
         </div>
-      </scroller>
+      </div>
     </div>
-  </div>
+  </scroller>
 </template>
 <script>
 import myNav from '../../components/nav'
@@ -151,11 +152,6 @@ export default {
 .list-box {
   width: 100%;
   overflow: hidden;
-  .px2vw(padding-left,
-  20);
-  .px2vw(padding-right,
-  20);
-
   box-sizing: border-box;
   .list-box-item {
     width: 100%;
@@ -210,12 +206,6 @@ export default {
   }
 
   .list-box-inner {}
-}
-
-.scroller {
-  position: absolute;
-  .px2vw(top,
-  153);
 }
 
 </style>

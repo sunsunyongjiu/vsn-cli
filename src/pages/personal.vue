@@ -16,11 +16,13 @@
         积分
       </span>
     </div>
+    <!--
     <div class="personal-title-googsBox">
       <div class="personal-title-googs font-11">
         查看可以兑换的商品
       </div>
     </div>
+ 		-->
     <div class="detailBox">
       <div class="details">
         <div class="details-left">

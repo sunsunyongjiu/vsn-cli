@@ -22,7 +22,7 @@
             <div class="font-11 pointTitle">{{"当前积分"|tr}}</div>
             <div>
               <!-- <span v-text="loginUser.score"></span> -->
-              <span class="font-18">{{loginUser.score}}</span>
+              <span class="font-20">{{loginUser.score}}</span>
             </div>
             <!-- <div>
             <button class="soonBtn">{{"为您甄选"|tr}}</button>
