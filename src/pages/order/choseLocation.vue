@@ -1,34 +1,36 @@
 <template>
-  <div>
+  <div class="vsn-wrap">
     <back title="选择地址"></back>
-    <div class="locationList">
-      <swipeout class="vux-1px-tb" v-for="(item,index) in locationList" key=index>
-        <swipeout-item transition-mode="follow">
-          <div slot="right-menu">
-            <swipeout-button type="warn" class="cha" @click.native="deleteItem(item)">×</swipeout-button>
-          </div>
-          <div slot="content" class="locations">
-            <div>
-              <div class="locationsLeft" @click="setAddr(item)">
-                <span v-text="item.RECEIVER" class="font-16"></span>
-                <span v-text="item.moble" class="font-16"></span>
-                <div>
-                  <span class="font-14">
-                  	{{item.province}}{{item.CITY}}{{item.area}}{{item.town}}{{item.subAdds}}
+    <div class='vsn-main'>
+      <div class="locationList">
+        <swipeout class="vux-1px-tb" v-for="(item,index) in locationList" key=index>
+          <swipeout-item transition-mode="follow">
+            <div slot="right-menu">
+              <swipeout-button type="warn" class="cha" @click.native="deleteItem(item)">×</swipeout-button>
+            </div>
+            <div slot="content" class="locations">
+              <div>
+                <div class="locationsLeft" @click="setAddr(item)">
+                  <span v-text="item.RECEIVER" class="font-16"></span>
+                  <span v-text="item.moble" class="font-16"></span>
+                  <div>
+                    <span class="font-14">
+                    {{item.province}}{{item.CITY}}{{item.area}}{{item.town}}{{item.subAdds}}
                   </span>
+                  </div>
+                </div>
+                <div class="locationsRight" @click="addLocation(1,item)">
+                  <img src="../../assets/imgs/edit.png">
                 </div>
               </div>
-              <div class="locationsRight" @click="addLocation(1,item)">
-                <img src="../../assets/imgs/edit.png">
-              </div>
             </div>
-          </div>
-        </swipeout-item>
-      </swipeout>
-      <div>
+          </swipeout-item>
+        </swipeout>
+        <div>
+        </div>
       </div>
     </div>
-    <div class='addLocation font-24' @click="addLocation(0)">
+    <div class='addLocation font-18' @click="addLocation(0)">
       添加新地址
     </div>
     <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
@@ -100,13 +102,13 @@ export default {
     },
     setAddr: function(item) {
       console.log(item)
-      if (this.$route.query.from=='person') {
+      if (this.$route.query.from == 'person') {
         return
-      }else if(this.$route.query.from=='return'){
-        this.$store.dispatch({ type: 'setSessionAddr', data: item }) ;
+      } else if (this.$route.query.from == 'return') {
+        this.$store.dispatch({ type: 'setSessionAddr', data: item });
         this.$router.go(-1)
       } else {
-        this.$store.dispatch({ type: 'setAddr', data: item }) 
+        this.$store.dispatch({ type: 'setAddr', data: item })
         this.$router.go(-1)
 
       }
@@ -174,16 +176,12 @@ export default {
 .addLocation {
   background: #1dafed;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  width: 90vw;
+  width: 100%;
   height: 14.6vw;
   line-height: 14.6vw;
-  font-size: 24px;
   color: #ffffff;
   letter-spacing: 0;
   text-align: center;
-  position: absolute;
-  bottom: 10vw;
-  left: 5vw;
 }
 
 .locationList {

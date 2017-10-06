@@ -1,5 +1,9 @@
 <template>
-  <scroller lock-x scrollbar-y use-pullup height="100vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: '加载中...',content: '松开刷新'}">
+  <scroller lock-x scrollbar-y use-pullup height="100vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
+  downContent: '',
+  upContent: '',
+  loadingContent: '加载中...',
+  }">
     <div class="life">
       <div class="mubu" v-if="show"></div>
       <back :title="pageTitle"></back>

@@ -1,34 +1,33 @@
 <template>
-  <div>
+  <div class="vsn-wrap">
     <back :title="addTitle"></back>
-    <div class='addLocationBox'>
-      <div class="settings">
-        <div class="settings-left font-14">收货人</div>
-        <input type="text" v-model="postData.receiver" class="addLocationBox-input font-14">
-      </div>
-      <div class="line"></div>
-      <div class="settings">
-        <div class="settings-left font-14">联系电话</div>
-        <input type="text" v-model="postData.mobile" class="addLocationBox-input font-14">
-      </div>
-      <div class="line"></div>
-      <div class="settings">
-        <div class="settings-left font-14">所在地区</div>
-        <div @click="popShow" class="settings-right font-14" v-text="locationDetail"></div>
-      </div>
-      <div class="line"></div>
-      <div class="settings">
-        <div class="settings-left font-14">详细地址</div>
-        <input type="text" v-model="postData.subAdds" class="addLocationBox-input font-14">
-      </div>
-      <div class="line"></div>
-      <div class="settings setMoren  font-14">
-        <div class="morenCircle font-14" @click="setCommon" :class="{setMorenCircle:common}"></div>
-        设为默认地址
-      </div>
-      <div class="line"></div>
-      <div class='addLocation  font-24' @click="saveAdd">
-        保存
+    <div class="vsn-main">
+      <div class='addLocationBox'>
+        <div class="settings">
+          <div class="settings-left font-14">收货人</div>
+          <input type="text" v-model="postData.receiver" class="addLocationBox-input font-14">
+        </div>
+        <div class="line"></div>
+        <div class="settings">
+          <div class="settings-left font-14">联系电话</div>
+          <input type="text" v-model="postData.mobile" class="addLocationBox-input font-14">
+        </div>
+        <div class="line"></div>
+        <div class="settings">
+          <div class="settings-left font-14">所在地区</div>
+          <div @click="popShow" class="settings-right font-14" v-text="locationDetail"></div>
+        </div>
+        <div class="line"></div>
+        <div class="settings">
+          <div class="settings-left font-14">详细地址</div>
+          <input type="text" v-model="postData.subAdds" class="addLocationBox-input font-14">
+        </div>
+        <div class="line"></div>
+        <div class="settings setMoren  font-14">
+          <div class="morenCircle font-14" @click="setCommon" :class="{setMorenCircle:common}"></div>
+          设为默认地址
+        </div>
+        <div class="line"></div>
       </div>
       <div v-transfer-dom class="locationPop">
         <popup v-model="show2" height="97.8vw">
@@ -41,6 +40,9 @@
           </div>
         </popup>
       </div>
+    </div>
+    <div class='addLocation  font-18' @click="saveAdd">
+      保存
     </div>
   </div>
 </template>
@@ -116,9 +118,9 @@ export default {
         this.postData.cityId = this.editAddr.cityId
         this.postData.areaId = this.editAddr.areaId
         this.postData.townId = this.editAddr.townId
-        console.log(this.editAddr.commonAddr==1)
-        if(this.editAddr.commonAddr==1){
-        	this.common=true
+        console.log(this.editAddr.commonAddr == 1)
+        if (this.editAddr.commonAddr == 1) {
+          this.common = true
         }
         if (this.editAddr.town) {
           this.locationDetail = this.editAddr.province + this.editAddr.CITY + this.editAddr.area + this.editAddr.town
@@ -174,7 +176,7 @@ export default {
       }
       // 当为编辑模式时
       if (this.$route.query.edit) {
-      	this.$http({
+        this.$http({
           method: 'POST',
           url: this.$Api('/address/updateUserAddress'),
           params: this.dataLast,
@@ -403,15 +405,13 @@ export default {
 .addLocation {
   background: #1dafed;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  width: 90vw;
+  width: 100%;
   height: 14.6vw;
   line-height: 14.6vw;
   font-size: 24px;
   color: #ffffff;
   letter-spacing: 0;
   text-align: center;
-  margin-top: 30vh;
-  margin-left: 5vw;
 }
 
 .vux-cell-box:before {

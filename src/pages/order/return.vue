@@ -1,76 +1,78 @@
 <template>
-  <div  style="padding-bottom:22vw">
+  <div class="vsn-wrap">
     <back title="退换货申请"></back>
-    <div class="order-goods">
-      <div class="order-person-title font-15">
-        商品信息
-      </div>
-      <div class="order-goodsText">
-        <div class="orders" v-for="(item,index) in order.prod" key='index'>
-          <div class="orders-left">
-            <img :src="item.pic">
-          </div>
-          <div class="orders-mid">
-            <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
-            <div v-for="(attr , n) in item.attribute">
-              <span v-text="attr.key"></span>:
-              <span v-text="attr.value"></span>
-            </div>
-            <div class=" font-11">数量：x<span v-text="item.basket_count">1</span></div>
-            <div class="orders-mid-bottom">
-              <span v-if="order.sellType==0">￥</span>
-              <span class="basicColor font-16" v-text="item.product_total_amout"></span>
-              <span class="font-9" v-if="order.sellType==1">积分</span>
-            </div>
-          </div>
-          <div class="order-line"></div>
+    <div class="vsn-main">
+      <div class="order-goods">
+        <div class="order-person-title font-15">
+          商品信息
         </div>
-      </div>
-    </div>
-    <div class="order-goods">
-      <div class="order-person-title font-15">
-        服务类型
-      </div>
-      <div class="order-selectBox">
-        <div class="order-selectBox-item font-13" :class="{'selecter-selected':returnOrder}" @click="returnOrder=true">我要退货<img src="../../assets/imgs/triangle.png" class="selecters-triangle"></div>
-        <div class="order-selectBox-item font-13" :class="{'selecter-selected':!returnOrder}" @click="returnOrder=false">我要换货<img src="../../assets/imgs/triangle.png" class="selecters-triangle"></div>
-      </div>
-    </div>
-    <div class="order-goods">
-      <div class="order-person-title font-15">
-        商品退回方式
-      </div>
-      <div class="order-selectBox">
-        <div class="order-selectBox-item way-select font-13">上门自提</div>
-        <div class="order-location">
-          <div class="order-location-title">
-            我的收件地址
-          </div>
-          <div class="order-location-text ">
-            <div class="order-location-text-left">
-              <div class="font-16 color-91 locationDetail">
-                <span v-text="order.address.RECEIVER"></span>
-                <span v-text="order.address.moble"></span>
+        <div class="order-goodsText">
+          <div class="orders" v-for="(item,index) in order.prod" key='index'>
+            <div class="orders-left">
+              <img :src="item.pic">
+            </div>
+            <div class="orders-mid">
+              <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
+              <div v-for="(attr , n) in item.attribute">
+                <span v-text="attr.key"></span>:
+                <span v-text="attr.value"></span>
               </div>
-              <div class="font-14 color-91 locationDetail">
-                <span>
-	              {{order.address.province}}
-	              {{order.address.CITY}}
-	              {{order.address.area}}
-	              {{order.address.town}}
-	              {{order.address.subAdds}}
-	            </span>
+              <div class=" font-11">数量：x<span v-text="item.basket_count">1</span></div>
+              <div class="orders-mid-bottom">
+                <span v-if="order.sellType==0">￥</span>
+                <span class="basicColor font-16" v-text="item.product_total_amout"></span>
+                <span class="font-9" v-if="order.sellType==1">积分</span>
               </div>
             </div>
-            <div class="order-location-text-right" @click="goLocation">
-              <img src="../../assets/imgs/edit.png">
-            </div>
+            <div class="order-line"></div>
           </div>
         </div>
       </div>
+      <div class="order-goods">
+        <div class="order-person-title font-15">
+          服务类型
+        </div>
+        <div class="order-selectBox">
+          <div class="order-selectBox-item font-13" :class="{'selecter-selected':returnOrder}" @click="returnOrder=true">我要退货<img src="../../assets/imgs/triangle.png" class="selecters-triangle"></div>
+          <div class="order-selectBox-item font-13" :class="{'selecter-selected':!returnOrder}" @click="returnOrder=false">我要换货<img src="../../assets/imgs/triangle.png" class="selecters-triangle"></div>
+        </div>
+      </div>
+      <div class="order-goods">
+        <div class="order-person-title font-15">
+          商品退回方式
+        </div>
+        <div class="order-selectBox">
+          <div class="order-selectBox-item way-select font-13">上门自提</div>
+          <div class="order-location">
+            <div class="order-location-title">
+              我的收件地址
+            </div>
+            <div class="order-location-text ">
+              <div class="order-location-text-left" v-if="order.address">
+                <div class="font-16 color-91 locationDetail">
+                  <span v-text="order.address.RECEIVER"></span>
+                  <span v-text="order.address.moble"></span>
+                </div>
+                <div class="font-14 color-91 locationDetail">
+                  <span>
+                {{order.address.province}}
+                {{order.address.CITY}}
+                {{order.address.area}}
+                {{order.address.town}}
+                {{order.address.subAdds}}
+              </span>
+                </div>
+              </div>
+              <div class="order-location-text-right" @click="goLocation">
+                <img src="../../assets/imgs/edit.png">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="submitBtn font-24 fff" @click="goChange()">
-      下一步
+    <div class="submitBtn font-18 fff" @click="goChange()">
+      保存
     </div>
   </div>
 </template>
@@ -271,12 +273,9 @@ export default {
 .submitBtn {
   background: #1dafed;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  .px2vw(width, 330);
+  width: 100%;
   .px2vw(height, 55);
   .px2vw(line-height, 55);
-  position: absolute;
-  .px2vw(left, 22.5);
-  .px2vw(bottom, 26);
 }
 
 .selecter-selected {

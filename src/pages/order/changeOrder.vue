@@ -1,74 +1,75 @@
 <template>
-  <div>
+  <div class="vsn-wrap">
     <back :title="title"></back>
-    <div class="order-goods">
-      <div class="order-person-title font-15">
-        商品信息
-      </div>
-      <div class="order-goodsText">
-        <div class="orders" v-for="(item,index) in order.prod" key='index'>
-          <div class="orders-left">
-            <img :src="item.pic">
-          </div>
-          <div class="orders-mid">
-            <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
-            <div v-for="(attr , n) in item.attribute">
-              <span v-text="attr.key"></span>:
-              <span v-text="attr.value"></span>
+    <div class="vsn-main">
+      <div class="order-goods">
+        <div class="order-person-title font-15">
+          商品信息
+        </div>
+        <div class="order-goodsText">
+          <div class="orders" v-for="(item,index) in order.prod" key='index'>
+            <div class="orders-left">
+              <img :src="item.pic">
             </div>
-            <div class=" font-11">数量：x<span v-text="item.basket_count">1</span></div>
-            <div class="orders-mid-bottom">
-              <span v-if="order.sellType==0">￥</span>
-              <span class="basicColor font-16" v-text="item.product_total_amout"></span>
-              <span class="font-9" v-if="order.sellType==1">积分</span>
+            <div class="orders-mid">
+              <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
+              <div v-for="(attr , n) in item.attribute">
+                <span v-text="attr.key"></span>:
+                <span v-text="attr.value"></span>
+              </div>
+              <div class=" font-11">数量：x<span v-text="item.basket_count">1</span></div>
+              <div class="orders-mid-bottom">
+                <span v-if="order.sellType==0">￥</span>
+                <span class="basicColor font-16" v-text="item.product_total_amout"></span>
+                <span class="font-9" v-if="order.sellType==1">积分</span>
+              </div>
+            </div>
+            <div class="order-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="change-reason" v-for="(item,index) in order.prod" key='index' v-if="$route.query.returnType=='1'">
+        <span class="font-14">退款金额：</span>
+        <span v-if="order.sellType==0" class="font-10 basicColor">￥</span>
+        <span class="font-18 basicColor" v-text="item.product_total_amout"></span>
+        <span class="font-9 basicColor" v-if="order.sellType==1">积分</span>
+      </div>
+      <div class="change-reason" @click="showPop=true">
+        <span class="font-14" style="float:left">{{$route.query.returnType=='2'?'换货原因':'退货原因'}}</span>
+        <span style="float:right" v-text="resonText" class="font-14"></span>
+      </div>
+      <div class='change-reason-input' v-if="resonText=='其他'">
+        <div>
+          <span class="fff font-14">{{$route.query.returnType=='2'?'换货理由：':'退货理由：'}}</span><span class="color-9b font-14">（选填，100字以内）</span>
+        </div>
+        <div class="inputBox">
+          <textarea maxlength="200" v-model="textareaText"></textarea>
+        </div>
+      </div>
+      <div class="change-picBox">
+        <div class="change-picBox-title font-14 fff">上传凭证</div>
+        <div class="change-picBox-imgs">
+          <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img1" class="items"></imgUploader>
+          <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img2" v-if="photoFile.photoFile1"></imgUploader>
+          <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img3" v-if="photoFile.photoFile2"></imgUploader>
+          <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img4" v-if="photoFile.photoFile3"></imgUploader>
+        </div>
+      </div>
+      <div v-transfer-dom>
+        <popup v-model="showPop" position="bottom" max-height="70%">
+          <div class="reason-title font-15">
+            退款原因
+          </div>
+          <div v-for="(item,index) in reasons" class="reasons">
+            <div class="font-14">
+              {{item.return_reason}}
+              <input type="radio" name="reson" @click="choose(item)">
             </div>
           </div>
-          <div class="order-line"></div>
-        </div>
+        </popup>
       </div>
     </div>
-    <div class="change-reason" v-for="(item,index) in order.prod" key='index' v-if="$route.query.returnType=='1'">
-      <span class="font-14">退款金额：</span>
-      <span v-if="order.sellType==0" class="font-10 basicColor">￥</span>
-      <span class="font-18 basicColor" v-text="item.product_total_amout"></span>
-      <span class="font-9 basicColor" v-if="order.sellType==1">积分</span>
-    </div>
-    <div class="change-reason" @click="showPop=true">
-      <span class="font-14" style="float:left">{{$route.query.returnType=='2'?'换货原因':'退货原因'}}</span>
-      <span style="float:right" v-text="resonText" class="font-14"></span>
-    </div>
-    
-    <div class='change-reason-input' v-if="resonText=='其他'">
-      <div>
-        <span class="fff font-14">{{$route.query.returnType=='2'?'换货理由：':'退货理由：'}}</span><span class="color-9b font-14">（选填，100字以内）</span>
-      </div>
-      <div class="inputBox">
-        <textarea maxlength="200" v-model="textareaText"></textarea>
-      </div>
-    </div>
-    <div class="change-picBox">
-      <div class="change-picBox-title font-14 fff">上传凭证</div>
-      <div class="change-picBox-imgs">
-        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img1" class="items"></imgUploader>
-        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img2" v-if="photoFile.photoFile1"></imgUploader>
-        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img3" v-if="photoFile.photoFile2"></imgUploader>
-        <imgUploader v-model="target" v-on:imgUrl="getUrl" myid="img4" v-if="photoFile.photoFile3"></imgUploader>
-      </div>
-    </div>
-    <div v-transfer-dom>
-      <popup v-model="showPop" position="bottom" max-height="70%">
-        <div class="reason-title font-15">
-          退款原因
-        </div>
-        <div v-for="(item,index) in reasons" class="reasons">
-          <div class="font-14">
-            {{item.return_reason}}
-            <input type="radio" name="reson" @click="choose(item)">
-          </div>
-        </div>
-      </popup>
-    </div>
-    <div class="submitBtn font-24 fff" @click="exchangeOrder">
+    <div class="submitBtn font-18 fff" @click="exchangeOrder">
       提交
     </div>
   </div>
@@ -102,9 +103,9 @@ export default {
         photoFile1: '',
         photoFile2: '',
         photoFile3: '',
-        phptoFile4:''
+        phptoFile4: ''
       },
-      title:this.$route.query.returnType=='2'?'申请换货':'申请退货'
+      title: this.$route.query.returnType == '2' ? '申请换货' : '申请退货'
     }
   },
   components: {
@@ -129,7 +130,7 @@ export default {
       });
     },
     choose: function(item) {
-      this.showPop=false
+      this.showPop = false
       this.resonText = item.return_reason
     },
     getUrl: function(imageBase64) {
@@ -336,12 +337,9 @@ export default {
 .submitBtn {
   background: #1dafed;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  .px2vw(width, 330);
+  width: 100%;
   .px2vw(height, 55);
   .px2vw(line-height, 55);
-  position: absolute;
-  .px2vw(left, 22.5);
-  .px2vw(bottom, 26);
 }
 
 .selecter-selected {
@@ -427,20 +425,22 @@ export default {
   background: #4e4e4e;
   color: #fff
 }
-.change-picBox-title{
-	text-align: left;
-	.px2vw(margin-top, 9);
-	.px2vw(margin-bottom, 17);
+
+.change-picBox-title {
+  text-align: left;
+  .px2vw(margin-top, 9);
+  .px2vw(margin-bottom, 17);
 }
-.change-picBox-imgs{
-	overflow: hidden;
-	img{
-		border: 0 !important
-	}
-	.change-picBox-uploadBox{
-		float: left;
-		.px2vw(margin-right, 20);
-	} 
+
+.change-picBox-imgs {
+  overflow: hidden;
+  img {
+    border: 0 !important
+  }
+  .change-picBox-uploadBox {
+    float: left;
+    .px2vw(margin-right, 20);
+  }
 }
 
 </style>

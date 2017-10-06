@@ -1,19 +1,19 @@
 <template>
-  <div style="height:100vh;overflow:hidden">
-    <view-box ref="viewBox" body-padding-top="19.16vw" body-padding-bottom="14.9vw">
-      <div slot="header" style="width:100%;position:absolute;left:0;top:0;z-index:100;height:19.16vw">
-        <div class="pageTitle">
-          <span class="font-18">购物车</span>
-          <div class="back" @click="goback"></div>
-          <div class="pageTitle-deleteBtn" @click="deleteAll">
-            <img src="../assets/imgs/delete.png" class="personal-img">
-          </div>
-        </div>
-        <div class="tab">
-          <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分</div>
-          <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">现金</div>
+  <div class="vsn-wrap">
+    <div style="height:19.16vw">
+      <div class="pageTitle">
+        <span class="font-18">购物车</span>
+        <div class="back" @click="goback"></div>
+        <div class="pageTitle-deleteBtn" @click="deleteAll">
+          <img src="../assets/imgs/delete.png" class="personal-img">
         </div>
       </div>
+      <div class="tab">
+        <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分</div>
+        <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">现金</div>
+      </div>
+    </div>
+    <div class="vsn-main">
       <div class="goods-list">
         <swipeout class="vux-1px-tb cart-swiper-out" v-for="(item,index) in goodsList" key=index>
           <swipeout-item transition-mode="follow">
@@ -48,32 +48,32 @@
         </swipeout>
         <!--  -->
       </div>
-      <div slot="bottom" class="bottom">
-        <!-- <div class="bottom"> -->
-          <div @click="selecteAll()">
-            <div class="choose-btn" :class="{selectedAll:selectedAll}"></div>
-            <div class="bottom-left">全选</div>
-          </div>
-          <div v-if="selectePoint" class="bottom-mid">
-            <span class="font-14 fff">合计:</span> <span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
-          </div>
-          <div v-if="!selectePoint" class="bottom-mid">
-            <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-18" v-text="totalPoint"></span>
-          </div>
-          <div class="bottom-right" @click="goSure">{{selectePoint?'兑换':'购买'}}</div>
-        <!-- </div> -->
-        <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
-          <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品</p>
-          <p style="text-align:left;color:#737373">确认删除选中的商品吗？</p>
-        </confirm>
+    </div>
+    <div class="bottom">
+      <!-- <div class="bottom"> -->
+      <div @click="selecteAll()">
+        <div class="choose-btn" :class="{selectedAll:selectedAll}"></div>
+        <div class="bottom-left">全选</div>
       </div>
-    </view-box>
+      <div v-if="selectePoint" class="bottom-mid">
+        <span class="font-14 fff">合计:</span> <span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
+      </div>
+      <div v-if="!selectePoint" class="bottom-mid">
+        <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-18" v-text="totalPoint"></span>
+      </div>
+      <div class="bottom-right" @click="goSure">{{selectePoint?'兑换':'购买'}}</div>
+      <!-- </div> -->
+      <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
+        <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品</p>
+        <p style="text-align:left;color:#737373">确认删除选中的商品吗？</p>
+      </confirm>
+    </div>
   </div>
   <!-- <div class="container">
   </div> -->
 </template>
 <script>
-import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm,ViewBox } from 'vux'
+import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm, ViewBox } from 'vux'
 import back from '../components/backNav'
 
 import md5 from 'js-md5';
@@ -241,9 +241,12 @@ export default {
             str += (',' + n.basketId)
           }
         })
-        console.log(str.slice(1))
+        if (str.slice(1).length > 0) {
+          this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
+        } else {
+          this.$vux.toast.text('您还没有选择商品', 'middle')
+        }
 
-        this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
       } else {
         alert('请选择同一家店的产品！')
       }
@@ -296,6 +299,7 @@ export default {
     }
   },
   mounted: function() {
+    this.selectePoint = this.$route.query.isCash == 0 ? false : true
     this.init()
     this.$vux.loading.show({
       text: 'loading'
@@ -358,6 +362,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
+@import '../assets/css/global.less';
 .tab {
   overflow: hidden;
 }
@@ -397,7 +402,8 @@ export default {
   padding-top: 5.3vw;
   box-sizing: border-box;
   .selected {
-    background: #1dafed;
+    background: url(../assets/imgs/choose.png) center center;
+    background-size: 150% 150%;
     width: 4vw;
     height: 4vw;
     border-radius: 100%;
@@ -464,11 +470,10 @@ export default {
 }
 
 .bottom {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   height: 14.9vw;
   background: #292929;
+  position: relative;
   /*box-shadow:0 12px 4px 0 rgba(154,154,154,0.50);*/
   line-height: 14.9vw;
   text-align: center;
@@ -502,7 +507,8 @@ export default {
 }
 
 .selectedAll {
-  background: #1dafed;
+  background: url(../assets/imgs/choose.png) center center;
+  background-size: 150% 150%;
   width: 4vw;
   height: 4vw;
   border-radius: 100%;

@@ -1,9 +1,9 @@
 <template>
-  <div style="height:100vh;overflow:hidden">
-    <view-box ref="viewBox" body-padding-top="10.66vw" body-padding-bottom="14.9vw">
-      <div slot="header" style="width:100%;position:absolute;left:0;top:0;z-index:100;height:10.66vw">
-        <back title="订单详情"></back>
-      </div>
+  <div class='vsn-wrap'>
+    <div class="vsn-header">
+      <back title="订单详情"></back>
+    </div>
+    <div class="vsn-main">
       <div class="paddingBottom" v-for="(items , key) in orderDetail" key="key">
         <div class="order-state">
           <div style="margin-bottom:2vw;">
@@ -105,7 +105,7 @@
           <div class="order-person-title">
             物流信息
           </div>
-          <div class="order-infoText">
+          <div class="order-infoText padding-bottom-15">
             <div v-for="item in items.orderTrack" class="sendMsgBox">
               <div class="sendMsgBoxItem">
                 <div v-text="item.content" class="font-13"></div>
@@ -118,21 +118,23 @@
           <div v-text="conifrmText" style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
           </div>
         </confirm>
-        <div class="bottom-btn" slot="bottom">
-          <div class="bottom-btn-right font-16" v-if='buyBtShow' @click="buyAgain(items.prod[0].prod_id)">
-            {{items.sellType==0?'再次购买':'再次兑换'}}
-          </div>
-          <div class="bottom-btn-right font-16" v-if='blueShow' v-text="blueText" @click="goPay(items)">
-            去支付
-          </div>
-          <div class="bottom-btn-left font-16" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
-          </div>
-          <div class="bottom-btn-left font-16" v-show="cancleShow" @click="delOrder(items)" v-if="items.delete_status!=1">
-            删除订单
-          </div>
+      </div>
+    </div>
+    <div class="vsn-footer" v-for="(items , key) in orderDetail" key="key">
+      <div class="bottom-btn">
+        <div class="bottom-btn-right font-16" v-if='buyBtShow' @click="buyAgain(items.prod[0].prod_id)">
+          {{items.sellType==0?'再次购买':'再次兑换'}}
+        </div>
+        <div class="bottom-btn-right font-16" v-if='blueShow' v-text="blueText" @click="goPay(items)">
+          去支付
+        </div>
+        <div class="bottom-btn-left font-16" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
+        </div>
+        <div class="bottom-btn-left font-16" v-show="cancleShow" @click="delOrder(items)" v-if="items.delete_status!=1">
+          删除订单
         </div>
       </div>
-    </view-box>
+    </div>
   </div>
 </template>
 <script>
@@ -140,7 +142,7 @@ import back from '../../components/backNav'
 import md5 from 'js-md5';
 import Apis from '../../configers/Api'
 const timer = JSON.stringify(new Date().getTime());
-import { Confirm,ViewBox } from 'vux'
+import { Confirm, ViewBox } from 'vux'
 export default {
   name: '',
   data() {
@@ -552,9 +554,10 @@ export default {
   }
 }
 
+.vsn-footer{
+  height: 14.9vw;
+}
 .bottom-btn {
-  position: absolute;
-  bottom: 0;
   background: #292929;
   box-shadow: 7px 12px 8px 11px rgba(0, 0, 0, 0.58);
   width: 100%;
@@ -636,7 +639,16 @@ export default {
 
 .greyBtn {
   border: 1px solid grey;
-  color: grey
+  color: grey!important;
+  background: none !important
+}
+
+.weui-tab__panel {
+  padding-bottom: 0! important
+}
+
+.padding-bottom-15 {
+  padding-bottom: 14.5vw!important
 }
 
 </style>

@@ -1,49 +1,53 @@
 <template>
-  <div>
-    <back title="发票信息"></back>
-    <div class="ticket-type font-15">
-      发票类型
-    </div>
-    <div class="type-box">
-      <div class="type-item  font-13">
-        纸质发票
+  <div class="vsn-wrap">
+    <back title="发票信息" class="vsn-header"></back>
+    <div class="vsn-main">
+      <div class="ticket-type font-15">
+        发票类型
       </div>
-    </div>
-    <div class="ticket-type font-15">
-      发票开具主体
-    </div>
-    <div class="type-box">
-      <div class="type-item-2  font-13">
-        杭州驭缘网络科技有限公司
+      <div class="type-box">
+        <div class="type-item  font-13">
+          纸质发票
+        </div>
       </div>
-    </div>
-    <div class="ticket-type font-15">
-      发票抬头
-    </div>
-    <div class="type-box">
-      <div class="type-hedder-item-box">
-        <div class="type-hedder-item font-12">
-          <div class="morenCircle" :class="{setMorenCircle:person}" @click="check(1)"></div>
-          <span class="type-box-left">个人</span>
+      <div class="ticket-type font-15">
+        发票开具主体
+      </div>
+      <div class="type-box">
+        <div class="type-item-2  font-13">
+          杭州驭缘网络科技有限公司
         </div>
-        <div class="type-hedder-item font-12">
-          <div class="morenCircle" :class="{setMorenCircle:company}" @click="check(2)"></div>
-          <span class="type-box-left">单位</span>
-        </div>
-        <!-- <div class="type-hedder-item font-12">
+      </div>
+      <div class="ticket-type font-15">
+        发票抬头
+      </div>
+      <div class="type-box">
+        <div class="type-hedder-item-box">
+          <div class="type-hedder-item font-12">
+            <div class="morenCircle" :class="{setMorenCircle:person}" @click="check(1)"></div>
+            <span class="type-box-left">个人</span>
+          </div>
+          <div class="type-hedder-item font-12">
+            <div class="morenCircle" :class="{setMorenCircle:company}" @click="check(2)"></div>
+            <span class="type-box-left">单位</span>
+          </div>
+          <!-- <div class="type-hedder-item font-12">
           <div class="morenCircle" :class="{setMorenCircle:main}" @click="check(3)"></div>
           <span class="type-box-left">发票开具主体</span>
         </div> -->
-      </div>
-      <div v-if="company||main">
-        <x-input placeholder="请填写单位名字" class="type-hedder-item-input font-14" v-model="ticket.company" v-if="company"></x-input>
-        <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.tax_number" v-if="company"></x-input>
-        <x-input class="type-hedder-item-input font-14" disabled v-model="ticket.main" v-if="main"></x-input>
-        <!-- <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.main_tax_number" disabled></x-input> -->
+        </div>
+        <div v-if="company||main">
+          <x-input placeholder="请填写单位名字" class="type-hedder-item-input font-14" v-model="ticket.company" v-if="company"></x-input>
+          <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.tax_number" v-if="company"></x-input>
+          <x-input class="type-hedder-item-input font-14" disabled v-model="ticket.main" v-if="main"></x-input>
+          <!-- <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.main_tax_number" disabled></x-input> -->
+        </div>
       </div>
     </div>
-    <div class="sureBtn" @click="sureTicket">
-      确定
+    <div class="vsn-footer">
+      <div class="sureBtn font-18" @click="sureTicket" v-if="showSure">
+        确定
+      </div>
     </div>
   </div>
 </template>
@@ -60,6 +64,7 @@ export default {
       person: true,
       company: false,
       main: false,
+      showSure: true,
       ticket: {
         company: '',
         tax_number: '',
@@ -89,6 +94,7 @@ export default {
       }).then((response) => {
         console.log(response.data.data)
         if (response.data.data) {
+          this.showSure = false;
           this.ticket = response.data.data;
           this.person = response.data.data.title_id == 1 ? true : false;
           this.company = response.data.data.title_id == 2 ? true : false;
@@ -223,13 +229,14 @@ export default {
 .sureBtn {
   background: #1dafed;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  width: 86.4vw;
+  width: 100%;
   height: 14.6vw;
   line-height: 14.6vw;
-  font-size: 24px;
   color: #fff;
-  margin-left: 6.8vw;
-  margin-top: 10vw;
+}
+
+.vsn-footer {
+  height: 14.6vw;
 }
 
 .type-hedder-item-box {

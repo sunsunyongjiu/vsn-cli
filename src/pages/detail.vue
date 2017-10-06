@@ -1,77 +1,82 @@
 <template>
-  <div>
-    <div class="mubu" v-if="show"></div>
+  <div class="vsn-wrap">
     <div class="pageTitle">
       <span class="font-18">商品详情</span>
       <div class="back" @click="goback"></div>
     </div>
-    <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
-      <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
-    </swiper>
-    <div class="detail-title">
-      <div class="detail-title-cn font-20" v-text="detailObj.name"></div>
-      <!-- <div class="detail-title-en">Merdeces me</div> -->
-    </div>
-    <flexbox>
-      <flexbox-item>
-        <div class="detail-pointBtn flex-demo" v-if="detailObj.sellType==0">
-          <span class="font-10">￥ </span><span v-text="detailObj.cash"></span>
-        </div>
-        <div class="detail-pointBtn flex-demo font-20" v-if="detailObj.sellType==1">
-          <span v-text="detailObj.point"></span> <span class="detail-pointBtn-point">积分</span>
-        </div>
-      </flexbox-item>
-    </flexbox>
-    <div class="detail-btn">
-      <flexbox-item>
-        <div class="detail-cartBtn flex-demo font-20" @click="doChange(1)">
-          加入购物车
-        </div>
-      </flexbox-item>
-      <flexbox-item>
-        <div class="flex-demo detail-changeBtn font-20" @click="doChange">
-          {{detailObj.sellType==0?'立即购买':'立即兑换'}}
-        </div>
-      </flexbox-item>
-    </div>
-    <div>
-      <div v-html="detailObj.content" class="innerDetail font-12"></div>
-    </div>
-    <div v-transfer-dom>
-      <popup v-model="popShow" position="bottom" height="120vw" class="detailPop">
-        <div class="pop-title">
-          <div class="pop-left">
-            <img :src="detailObj.pic">
-          </div>
-          <div class="pop-right">
-            <div class="pop-right-title font-18" v-text="detailObj.name"></div>
-            <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
-            <div class="pop-right-point font-18" v-if="detailObj.sellType==1"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
-            <div class="pop-right-point font-18" v-if="detailObj.sellType==0"><span class="font-9">￥</span><span class="basicColor" v-text="detailObj.cash"></span></div>
-          </div>
-        </div>
-        <div class="pop-size fff">
-          <div v-for="(items,n) in chooses" key=n>
-            <div class="pop-size-title font-15" v-text="items.title"></div>
-            <div class="box">
-              <checker v-model="checkedList[n]" default-item-class="demo1-item" selected-item-class="demo1-item-selected" type="radio">
-                <checker-item :value="item" v-for="(item, index) in items.checks" :key="index">{{item.value}}</checker-item>
-              </checker>
+    <div class="vsn-main">
+      <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
+        <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
+      </swiper>
+      <div class="detail-title">
+        <div class="detail-title-cn font-20" v-text="detailObj.name"></div>
+        <!-- <div class="detail-title-en">Merdeces me</div> -->
+      </div>
+      <div class="detail-pointBtn" v-if="detailObj.sellType==0">
+        <span class="font-10">￥ </span><span v-text="detailObj.cash" class="font-22"></span>
+      </div>
+      <div class="detail-pointBtn font-20" v-if="detailObj.sellType==1">
+        <span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point">积分</span>
+      </div>
+      <div style="text-align:left" class="sevenBox" v-if="detailObj.sellType==0">
+        <img src="../assets/imgs/seven.png">
+        <span class="ba seven font-10">支持七天无理由退换货</span>
+      </div>
+      <div>
+        <div v-html="detailObj.content" class="innerDetail font-12"></div>
+      </div>
+      <div v-transfer-dom>
+        <popup v-model="popShow" position="bottom" height="120vw" class="detailPop">
+          <div class="pop-title">
+            <div class="pop-left">
+              <img :src="detailObj.pic">
+            </div>
+            <div class="pop-right">
+              <div class="pop-right-title font-18" v-text="detailObj.name"></div>
+              <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
+              <div class="pop-right-point font-18" v-if="detailObj.sellType==1"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
+              <div class="pop-right-point font-18" v-if="detailObj.sellType==0"><span class="font-9">￥</span><span class="basicColor" v-text="detailObj.cash"></span></div>
             </div>
           </div>
-          <div class="pop-num">
-            <div class="pop-num-zi font-15">数量</div>
-            <div class="pop-num-shu">
-              <div class="left" @click="plus(-1)">-</div>
-              <div v-text="countNum" class="count"></div>
-              <div class="right" @click="plus(1)">+</div>
+          <div class="pop-size fff">
+            <div v-for="(items,n) in chooses" key=n>
+              <div class="pop-size-title font-15" v-text="items.title"></div>
+              <div class="box">
+                <checker v-model="checkedList[n]" default-item-class="demo1-item" selected-item-class="demo1-item-selected" type="radio">
+                  <checker-item :value="item" v-for="(item, index) in items.checks" :key="index">{{item.value}}</checker-item>
+                </checker>
+              </div>
+            </div>
+            <div class="pop-num">
+              <div class="pop-num-zi font-15">数量</div>
+              <div class="pop-num-shu">
+                <div class="left" @click="plus(-1)">-</div>
+                <div v-text="countNum" class="count"></div>
+                <div class="right" @click="plus(1)">+</div>
+              </div>
             </div>
           </div>
-        </div>
-        <div style="padding: 15px;">
-          <x-button @click.native="goCart" plain class="pop-Btn font-24"> 确定 </x-button>
-        </div>
-      </popup>
+          <div style="padding: 15px;">
+            <x-button @click.native="goCart" plain class="pop-Btn font-24"> 确定 </x-button>
+          </div>
+        </popup>
+      </div>
+    </div>
+    <div class="vsn-footer">
+      <div class="detail-btn">
+        <flexbox :gutter="0">
+          <flexbox-item>
+            <div class="detail-cartBtn flex-demo font-16" @click="doChange(1)">
+              加入购物车
+            </div>
+          </flexbox-item>
+          <flexbox-item>
+            <div class="flex-demo detail-changeBtn font-16" @click="doChange">
+              {{detailObj.sellType==0?'立即购买':'立即兑换'}}
+            </div>
+          </flexbox-item>
+        </flexbox>
+      </div>
     </div>
   </div>
   <!-- 选择规格 -->
@@ -189,7 +194,7 @@ export default {
           emulateJSON: true
         }).then(function(data) { //es5写法
           if (this.isCart) {
-            this.$router.push({ path: '/cart' })
+            this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
           } else {
             this.$router.push({ path: '/sureOrder', query: { 'selectIds': data.data } })
           }
@@ -258,10 +263,14 @@ export default {
 @import '../assets/css/detail.less';
 @import '../assets/css/global.less';
 .innerDetail {
-  padding: 0 5px;
+  .px2vw(padding-left, 16);
+  .px2vw(padding-right, 16);
 }
 
 .detail-title {
+  .px2vw(padding-left, 16);
+  .px2vw(padding-right, 16);
+  box-sizing: border-box;
   color: #fff;
   .detail-title-cn {
     margin: 8px auto;
@@ -272,23 +281,21 @@ export default {
 }
 
 .detail-cartBtn {
-  height: 14.6vw;
-  width: 40.8vw;
+  .px2vw(height, 50);
   background: #4a4a4a;
   line-height: 14.6vw;
   color: #fff;
+  text-align: center;
 }
 
 .detail-pointBtn {
-  margin: 5vw auto 0;
-  height: 14.6vw;
-  line-height: 14.6vw;
-  border: 1px solid #1dafed;
-  width: 40.8vw;
+  .px2vw(margin-top, 12);
   text-align: center;
   color: #1dafed;
   box-sizing: border-box;
   font-size: 24px;
+  text-align: left;
+  .px2vw(padding-left, 16);
   .detail-pointBtn-point {
     font-size: 13px
   }
@@ -296,20 +303,13 @@ export default {
 
 .detail-btn {
   width: 100%;
-  padding: 8vw 6.4vw 8vw;
   box-sizing: border-box;
   overflow: hidden;
-  div:nth-child(1) {
-    float: left
-  }
-  div:nth-child(2) {
-    float: right
-  }
 }
 
 .detail-changeBtn {
+  .px2vw(height, 50);
   height: 14.6vw;
-  width: 40.8vw;
   line-height: 14.6vw;
   color: #fff;
 
@@ -451,6 +451,22 @@ export default {
     img {
       width: 100%
     }
+  }
+}
+
+.seven {
+  text-align: left;
+  vertical-align: middle
+
+}
+
+.sevenBox {
+  .px2vw(padding-left, 16);
+  .px2vw(margin-bottom, 5);
+  img{
+    .px2vw(height, 13);
+    .px2vw(width, 13);
+    vertical-align: middle
   }
 }
 

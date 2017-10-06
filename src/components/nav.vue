@@ -15,10 +15,10 @@
             <!-- Price：￥<span v-text="item.cash"></span> -->
           </div>
           <div v-if="item.sellType==1" class="font-10">
-            积分：<span v-text="item.point" class="font-10"> </span>
+            <span v-text="item.point" class="font-10"> </span>积分
           </div>
           <div v-if="item.sellType==0" class="font-10">
-            现金：
+            价格：
             <span class="font-10">￥</span>
             <span v-text="item.cash" class="font-10 points"></span>
           

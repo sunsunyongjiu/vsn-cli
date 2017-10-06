@@ -1,95 +1,9 @@
 <template>
-  <scroller lock-x scrollbar-y use-pullup height="-10.66vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: '加载中...',content: '松开刷新'}">
-    <div class="index-page">
-      <search v-model="searchValue" position="absolute" :auto-fixed="autoFixed" @on-focus="submit" placeholder="搜索" auto-scroll-to-top ref="search"></search>
-      <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
-        <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
-      </swiper>
-      <div class="index-middle-tittle font-10">
-        {{"会员信息"|tr}}
-      </div>
-      <flexbox class="index-page-mypoints flex1">
-        <flexbox-item>
-          <div class="flex-demo">
-            <img :src="myCardSrc" class="myCard">
-          </div>
-          <div class="my-club">
-            <span v-if="login" class="font-9">{{"Mercedes me 车主俱乐部"|tr}}</span>
-          </div>
-        </flexbox-item>
-        <flexbox-item v-show="login">
-          <div class="flex-demo myPoints">
-            <div class="font-11 pointTitle">{{"当前积分"|tr}}</div>
-            <div>
-              <!-- <span v-text="loginUser.score"></span> -->
-              <span class="font-20">{{loginUser.score}}</span>
-            </div>
-            <!-- <div>
-            <button class="soonBtn">{{"为您甄选"|tr}}</button>
-          </div> -->
-          </div>
-        </flexbox-item>
-        <flexbox-item v-show="!login">
-          <div class="flex-demo myPoints">
-            <div class="font-11">您好，欢迎来到</div>
-            <div>
-              <span class="font-13">积分商城</span>
-            </div>
-            <div>
-              <button class="soonBtn" @click="goLogin()">{{"登录/注册"|tr}}</button>
-            </div>
-          </div>
-        </flexbox-item>
-      </flexbox>
-      <flexbox class="index-page-mypoints2" :gutter="0">
-        <flexbox-item v-for="(item,index) in indexBtns" :key="index">
-          <div class="flex-demo" @click="goNext(item.path)">
-            <div :class="item.class" class="index-icon"></div>
-            <div v-text="" class="font-12">
-              {{item.title|tr}}
-            </div>
-          </div>
-          <!--         <a href="tel:4008-332-711" v-if="item.title=='联系客服'">
-          <div class="flex-demo english" @click="goNext(item.path)">
-            <div :class="item.class" class="index-icon"></div>
-            <div v-text="" class="font-12">
-              {{item.title|tr}}
-            </div>
-          </div>
-        </a> -->
-        </flexbox-item>
-      </flexbox>
-      <div class="index-middle-tittle font-10">
-        {{"分类推荐"|tr}}
-      </div>
-      <flexbox :gutter="0" wrap="wrap" class="index-page-classification">
-        <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index">
-          <div class="flex-demo fenleiBox" @click="goList(item.title,item.id,item.path)">
-            <div>
-              <img :src="item.src" :class="item.class">
-              <div class="index-bottom">
-                <div>
-                  {{item.title|tr}}
-                </div>
-                <!-- <div v-text="item.titleEn"></div> -->
-              </div>
-            </div>
-          </div>
-        </flexbox-item>
-      </flexbox>
-      <div class="index-middle-tittle font-10" v-if=false>
-        {{"主编推荐"|tr}}
-      </div>
-      <swiper :aspect-ratio="160/375" auto v-if=false>
-        <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
-      </swiper>
-      <div class="index-middle-tittle font-10">
-        {{"精品推荐"|tr}}
-      </div>
-      <my-nav :items="myBoutique"></my-nav>
-      <div class="contactBox" v-if="showContact">
-        <div class="phoneBox">
-          <img src="../assets/imgs/cha.png" class="cha" @click="showContact=false">
+  <div>
+    <div class="contactBox" v-if="showContact">
+      <div class="phoneBox">
+        <img src="../assets/imgs/cha.png" class="cha" @click="showContact=false">
+        <div v-if="showBox=='phone'">
           <div class="font-12 color-91 phone-title">客服热线</div>
           <div class="font-14 fff phone">4008-332-711</div>
           <a href="tel:4008-332-711">
@@ -97,9 +11,114 @@
             </div>
           </a>
         </div>
+        <div v-if="showBox=='zun'">
+          <div class="zunxiangImg">
+          </div>
+          <div class="font-12 color-88">敬请期待...</div>
+        </div>
+        <div v-if="showBox=='bin'">
+          <div class="binfenImg">
+          </div>
+          <div class="font-14 fff margin-bottom-9">缤纷旅途</div>
+          <div class="font-12 color-88">敬请期待...</div>
+        </div>
       </div>
     </div>
-  </scroller>
+    <scroller lock-x scrollbar-y use-pullup height="-10.66vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
+  downContent: '',
+  upContent: '',
+  loadingContent: '加载中...',
+  }">
+      <div class="index-page">
+        <search v-model="searchValue" position="absolute" :auto-fixed="autoFixed" @on-focus="submit" placeholder="搜索" auto-scroll-to-top ref="search"></search>
+        <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
+          <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
+        </swiper>
+        <div class="index-middle-tittle font-10">
+          {{"会员信息"|tr}}
+        </div>
+        <flexbox class="index-page-mypoints flex1">
+          <flexbox-item>
+            <div class="flex-demo">
+              <img :src="myCardSrc" class="myCard">
+            </div>
+            <div class="my-club">
+              <span v-if="login" class="font-9">{{"Mercedes me 车主俱乐部"|tr}}</span>
+            </div>
+          </flexbox-item>
+          <flexbox-item v-show="login">
+            <div class="flex-demo myPoints">
+              <div class="font-11 pointTitle">{{"当前积分"|tr}}</div>
+              <div>
+                <!-- <span v-text="loginUser.score"></span> -->
+                <span class="font-20">{{loginUser.score}}</span>
+              </div>
+              <!-- <div>
+            <button class="soonBtn">{{"为您甄选"|tr}}</button>
+          </div> -->
+            </div>
+          </flexbox-item>
+          <flexbox-item v-show="!login">
+            <div class="flex-demo myPoints">
+              <div class="font-11">您好，欢迎来到</div>
+              <div>
+                <span class="font-13">积分商城</span>
+              </div>
+              <div>
+                <button class="soonBtn" @click="goLogin()">{{"登录/注册"|tr}}</button>
+              </div>
+            </div>
+          </flexbox-item>
+        </flexbox>
+        <flexbox class="index-page-mypoints2" :gutter="0">
+          <flexbox-item v-for="(item,index) in indexBtns" :key="index">
+            <div class="flex-demo" @click="goNext(item.path)">
+              <div :class="item.class" class="index-icon"></div>
+              <div v-text="" class="font-12">
+                {{item.title|tr}}
+              </div>
+            </div>
+            <!--         <a href="tel:4008-332-711" v-if="item.title=='联系客服'">
+          <div class="flex-demo english" @click="goNext(item.path)">
+            <div :class="item.class" class="index-icon"></div>
+            <div v-text="" class="font-12">
+              {{item.title|tr}}
+            </div>
+          </div>
+        </a> -->
+          </flexbox-item>
+        </flexbox>
+        <div class="index-middle-tittle font-10">
+          {{"分类推荐"|tr}}
+        </div>
+        <flexbox :gutter="0" wrap="wrap" class="index-page-classification">
+          <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index">
+            <div class="flex-demo fenleiBox" @click="goList(item.title,item.id,item.path)">
+              <div>
+                <img :src="item.src" :class="item.class">
+                <div class="index-bottom">
+                  <div>
+                    {{item.title|tr}}
+                  </div>
+                  <!-- <div v-text="item.titleEn"></div> -->
+                </div>
+              </div>
+            </div>
+          </flexbox-item>
+        </flexbox>
+        <div class="index-middle-tittle font-10" v-if=false>
+          {{"主编推荐"|tr}}
+        </div>
+        <swiper :aspect-ratio="160/375" auto v-if=false>
+          <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
+        </swiper>
+        <div class="index-middle-tittle font-10">
+          {{"精品推荐"|tr}}
+        </div>
+        <my-nav :items="myBoutique"></my-nav>
+      </div>
+    </scroller>
+  </div>
 </template>
 <script>
 import myNav from '../components/nav'
@@ -199,7 +218,8 @@ export default {
 
       ],
       pageNumber: 1,
-      pageSize: 10
+      pageSize: 10,
+      showBox: ''
     }
   },
   components: {
@@ -213,7 +233,8 @@ export default {
     FlexboxItem,
     Divider,
     Search,
-    Scroller
+    Scroller,
+
 
   },
   methods: {
@@ -225,8 +246,12 @@ export default {
           window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/rights'
         } else if (title == '精英课选') {
           window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/activity'
+        } else if (title == '尊享礼券') {
+          this.showContact = true;
+          this.showBox = 'zun'
         } else {
-          alert('敬请期待！')
+          this.showContact = true;
+          this.showBox = 'bin'
         }
         return
       }
@@ -254,7 +279,8 @@ export default {
     goNext: function(pathUrl) {
       if (this.login || pathUrl == "/contact") {
         if (pathUrl == "/contact") {
-          this.showContact = true
+          this.showContact = true;
+          this.showBox = 'phone'
         } else {
           this.$router.push({ path: pathUrl })
         }
@@ -273,10 +299,10 @@ export default {
     },
     init: function() {
       //判断当前用户是否登录
+      console.log(this.$route.query.token)
       let userToken = this.$route.query.token
       let user = this.$route.query.user
       let pandunLogin = this.$store.state.loginUser.name == undefined
-
       if (userToken && user && pandunLogin) {
         Apis.login({ token: userToken, 'user': user }).then(data => {
           console.log(data.code)
@@ -444,6 +470,26 @@ a {
     .px2vw(margin-left, 100);
     background: url(../assets/imgs/contactPhone.png) center center no-repeat;
     background-size: 50%;
+  }
+  .binfenImg {
+    opacity: 0.81;
+    .px2vw(width, 80);
+    .px2vw(height, 110);
+    border-radius: 100%;
+    .px2vw(margin-top, 28);
+    .px2vw(margin-left, 89);
+    background: url(../assets/imgs/binfen.png) center center no-repeat;
+    background-size: 87%;
+  }
+  .zunxiangImg {
+    opacity: 0.81;
+    .px2vw(width, 163);
+    .px2vw(height, 110);
+    border-radius: 100%;
+    .px2vw(margin-top, 28);
+    .px2vw(margin-left, 37);
+    background: url(../assets/imgs/zunxiang.png) center center no-repeat;
+    background-size: 87%;
   }
 }
 

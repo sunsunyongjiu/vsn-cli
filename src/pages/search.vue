@@ -1,5 +1,8 @@
 <template>
   <div class="index-page">
+    <div v-if="goodsList.length==0&&searched" class="noProduct fff">
+      未搜索到该商品
+    </div>
     <div class="searchBar">
       <div class="back" @click="goback"></div>
       <div class="seachBtn" @click="goSearch">
@@ -25,7 +28,11 @@
         <div v-for="(item,index) in searchHistory" key="index" class="historyBox font-14" v-text="item.search_str" @click="doSearchHistory(item.search_str)"></div>
       </div>
     </div>
-    <scroller lock-x scrollbar-y use-pullup height="80vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{upContent: '上拉刷新',loadingContent: 'Loading...',content: '松开刷新'}" v-show="!searchHistoryShow">
+    <scroller lock-x scrollbar-y use-pullup height="80vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
+  downContent: '',
+  upContent: '',
+  loadingContent: '加载中...',
+  }" v-show="!searchHistoryShow">
       <div class="goodsList">
         <div v-for="(item,index) in  goodsList" class="goods" key="index" @click="goWhere(item.name,item)">
           <div class="goods-left">
@@ -93,7 +100,8 @@ export default {
       searchHistoryShow: true,
       n1: 0,
       pageNumber: 1,
-      pageSize: 10
+      pageSize: 10,
+      searched: false
 
     }
   },
@@ -178,6 +186,7 @@ export default {
     },
     // 前往查询
     goSearch: function() {
+
       if (this.isLogin) {
         Apis.insertProdSearch(this.$store.state.loginUser.token, { 'searchStr': this.searchValue }).then(data => {
 
@@ -191,14 +200,15 @@ export default {
         this.goodsList = data.data
         if (!data.isLast) {
           this.pageNumber++
-          this.$refs.demo1.enablePullup()
-        }else{
+            this.$refs.demo1.enablePullup()
+        } else {
           this.$refs.demo1.disablePullup()
         }
         this.$nextTick(() => {
           this.$refs.demo1.reset({
             top: 0
           })
+          this.searched = true
         })
         this.searchHistoryShow = false
       })
@@ -365,6 +375,14 @@ input:focus {
   padding: 0 4vw;
   float: left;
   margin: 5vw 5vw 5vw 0vw
+}
+
+.noProduct {
+  position: absolute;
+  top: 30vh;
+  left: 30vw;
+  width: 40vw;
+  text-align: center;
 }
 
 </style>
