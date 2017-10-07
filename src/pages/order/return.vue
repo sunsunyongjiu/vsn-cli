@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     init: function() {
-      Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
+      Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber,'subItemId': this.$route.query.itemIid }).then(data => {
         console.log(data.data[0])
         this.order = data.data[0];
         this.order.prod.forEach(function(x) {

@@ -1,6 +1,9 @@
 <template>
   <div>
     <back title="确认订单"></back>
+    <div class='blueText font-11 fff' v-if="isCash">
+      温馨提醒：发票需要在签收商品后才能开具。
+    </div>
     <div class="order-title font-15 pd-right2">收货人信息</div>
     <div class="container">
       <div class="orderList">
@@ -15,7 +18,7 @@
           </div>
           <div class="line"></div>
           <div class="order-titles font-14">
-           	 配送方式
+            配送方式
             <div class="right font-14 ">快递免邮&gt;</div>
           </div>
         </div>
@@ -87,8 +90,8 @@ export default {
   methods: {
     goPay: function() {
       this.$vux.loading.show({
-          text: 'loading'
-        })
+        text: 'loading'
+      })
       let header = {
         "token": this.loginUser.token,
         "time": timer,
@@ -111,7 +114,7 @@ export default {
           console.log(data)
           if (data.data.code == 1) {
             this.$vux.loading.hide()
-            this.$router.push({ path: '/pay' , query: { 'subNumber': data.data.data }})
+            this.$router.push({ path: '/pay', query: { 'subNumber': data.data.data } })
           } else {
             this.$vux.loading.hide()
             this.$vux.toast.show({
@@ -216,6 +219,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
+@import '../../assets/css/global.less';
 .order-bottom {
   background: #292929;
   box-shadow: 7px 12px 8px 11px rgba(0, 0, 0, 0.58);
@@ -388,6 +392,15 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.blueText {
+  background: rgba(29,175,237,0.5);
+  .px2vw(height, 32);
+  .px2vw(padding-left, 21);
+  .px2vw(line-height, 32);
+  text-align: left;
+
 }
 
 </style>

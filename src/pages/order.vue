@@ -17,7 +17,10 @@
             <img :src="item.pic">
           </div>
           <div class="orders-mid">
-            <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
+            <div class="font-16 df orders-mid-title" >
+              <img src="../assets/imgs/pointBox.png" v-if="items.sellType==1&&listIndex!=4">
+              <img src="../assets/imgs/cash.png" v-if="items.sellType!=1&&listIndex!=4"><span v-text="item.prod_name"></span>
+            </div>
             <div v-for="(attr,x) in item.attribute">
               <span v-text="attr.key"></span>:
               <span v-text="attr.value"></span>
@@ -35,7 +38,7 @@
           <div class="order-line"></div>
         </div>
         <div>
-          <div class="order-btns">
+          <div class="order-btns"  v-if="listIndex!=4">
             <div class="left font-12">
               共<span v-text="items.totalCount"></span>件商品 小计:
               <span v-if="items.sellType==0" class="font-11">￥</span>
@@ -142,8 +145,12 @@ export default {
       this.init()
     },
     goDetail: function(n) {
-      console.log(n)
-      this.$router.push({ path: '/orderDetail', query: { 'sub_number': n.sub_number } })
+      if(this.listIndex==4){
+        this.$router.push({ path: '/returnDetail', query: { 'subItemId': n.prod[0].sub_item_id } })
+      }else{
+        this.$router.push({ path: '/orderDetail', query: { 'sub_number': n.sub_number } })
+      }
+      
     },
     init: function() {
       let _this = this
@@ -217,6 +224,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
+@import '../assets/css/global.less';
 .vux-tab .vux-tab-item {
   background: none
 }
@@ -261,6 +269,10 @@ export default {
       text-overflow: ellipsis;
       /*超出部分文字以...显示*/
       margin-bottom: 2vw;
+      img{
+        .px2vw(height, 15);
+        vertical-align: middle
+      }
     }
     .orders-mid-bottom {
       position: absolute;

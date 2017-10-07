@@ -1,6 +1,9 @@
 <template>
   <div class="vsn-wrap">
     <back title="发票信息" class="vsn-header"></back>
+    <div class="blueText font-11 fff">
+    	<span>温馨提醒：在提交申请后，发票将在3-5个工作日内开具，开具成功后，我们将尽快为您寄送。</span>
+    </div>
     <div class="vsn-main">
       <div class="ticket-type font-15">
         发票类型
@@ -155,6 +158,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
+@import '../../assets/css/global.less';
 .ticket-type {
   opacity: 0.5;
   background: #292929;
@@ -264,6 +268,15 @@ export default {
 
 .weui-cell:before {
   display: none
+}
+
+.blueText {
+  background: rgba(29,175,237,0.5);
+  .px2vw(height, 32);
+  .px2vw(padding-top, 5);
+  .px2vw(padding-left, 21);
+  text-align: left;
+
 }
 
 </style>

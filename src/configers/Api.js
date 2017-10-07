@@ -52,7 +52,6 @@ export default {
       headers: header('/order/deleteOrder', token),
       emulateJSON: true
     }).then(res => {
-      console.log('-------------')
       return res.data
     })
   },
@@ -62,7 +61,15 @@ export default {
       params: params,
       headers:header('/order/getOrderDetail', token)
     }).then(res => {
-      console.log('-------------')
+      return res.data
+    })
+  },
+  // 获取退换货详情
+  getProdReturnDetail(token,params = {}) {
+    return Vue.http.get(basePath + '/order/getProdReturnDetail', {
+      params: params,
+      headers:header('/order/getProdReturnDetail', token)
+    }).then(res => {
       return res.data
     })
   },

@@ -63,7 +63,8 @@
           <div v-for="(item,index) in reasons" class="reasons">
             <div class="font-14">
               {{item.return_reason}}
-              <input type="radio" name="reson" @click="choose(item)">
+              <input type="radio" name="reson" @click="choose(item)" :id="index" class="option-radios">
+              <label :for="index"></label>
             </div>
           </div>
         </popup>
@@ -117,7 +118,7 @@ export default {
   methods: {
     init: function() {
       let _this = this
-      Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
+      Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'subItemId': this.$route.query.itemIid }).then(data => {
         _this.order = data.data[0];
         _this.order.prod.forEach(function(x) {
           x.attribute = JSON.parse(x.attribute)
@@ -441,6 +442,26 @@ export default {
     float: left;
     .px2vw(margin-right, 20);
   }
+}
+
+label {
+  .px2vw(height, 14);
+  .px2vw(width, 14);
+  .px2vw(margin-top, 13);
+  display: block;
+  float: right;
+  background: #3c3c3c;
+  border: 1px solid #333333;
+  border-radius: 100%;
+}
+
+.option-radios {
+  display: none
+}
+
+.option-radios:checked+label {
+  background: url(../../assets/imgs/choose.png) center center;
+  background-size: 160% 150%;
 }
 
 </style>

@@ -163,6 +163,10 @@ export default {
       }
     },
     saveAdd: function() {
+      if(this.postData.subAdds==''){
+        this.$vux.toast.text('详细地址不能为空', 'middle')
+        return
+      }
       let header = {
         "token": this.$store.state.loginUser.token,
         "time": timer,

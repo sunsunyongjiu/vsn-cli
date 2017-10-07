@@ -67,7 +67,7 @@
                   <span class="font-9" v-if="items.sellType==1">积分</span>
                 </div>
               </div>
-              <div class="tuihuan font-14" v-if="(((items.status==2||items.status==3)&&items.orderTrackReceived==1)||items.status==4)&&items.sellType==0" @click="goReturn(items,item.sub_item_id,items.invoice_sub_id)" :class="{'greyBtn':items.invoice_sub_id>0}">
+              <div class="tuihuan font-14" v-if="item.isShowReturnButton" @click="goReturn(items,item.sub_item_id,items.invoice_sub_id)" :class="{'greyBtn':!item.isReturnButtonEnable}">
                 申请退换货
               </div>
               <div class="order-line"></div>
@@ -122,15 +122,22 @@
     </div>
     <div class="vsn-footer" v-for="(items , key) in orderDetail" key="key">
       <div class="bottom-btn">
-        <div class="bottom-btn-right font-16" v-if='buyBtShow' @click="buyAgain(items.prod[0].prod_id)">
+        <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==4||orderDetail[0].status==5' @click="buyAgain(items.prod[0].prod_id)">
           {{items.sellType==0?'再次购买':'再次兑换'}}
         </div>
-        <div class="bottom-btn-right font-16" v-if='blueShow' v-text="blueText" @click="goPay(items)">
-          去支付
+        <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==1' @click="goPay(items)">
+          {{items.sellType==0?'去支付':'去兑换'}}
         </div>
-        <div class="bottom-btn-left font-16" v-text="btnCancle" v-if="greyShow" @click="cancleOrder(items)">
+        <div class="bottom-btn-right font-16" v-if='items.isShowInvoiceButton>0' @click="goTicket(items)">
+          {{orderDetail[0].invoice_sub_id?'已开具发票':'申请发票'}}
         </div>
-        <div class="bottom-btn-left font-16" v-show="cancleShow" @click="delOrder(items)" v-if="items.delete_status!=1">
+        <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==2||orderDetail[0].status==3' @click="goCheck(items)">
+          确认收货
+        </div>
+        <div class="bottom-btn-left font-16" v-if="orderDetail[0].status==1" @click="cancleOrder(items)">
+          取消订单
+        </div>
+        <div class="bottom-btn-left font-16" v-show="cancleShow" @click="delOrder(items)" v-if="orderDetail[0].status==5 && orderDetail[0].delete_status!=1">
           删除订单
         </div>
       </div>
@@ -163,12 +170,9 @@ export default {
       order: {
         state: "等待付款"
       },
-      btnCancle: '取消订单',
-      blueText: '去兑换',
-      blueShow: true,
-      greyShow: true,
+
+
       show: false,
-      buyBtShow: false,
       cancleShow: false
     }
   },
@@ -187,16 +191,18 @@ export default {
 
     },
     goPay: function(item) {
-      if (this.blueText == "去兑换" || this.blueText == "去支付") {
-        this.$router.push({ path: '/pay', query: { 'subNumber': item.sub_number } })
-      } else if (this.blueText == "申请发票" || this.blueText == "已开具发票") {
-        this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number } })
-      } else if (this.blueText == "确认收货") {
-        this.conifrmText = "确认收货吗？",
-          this.conifrmShowText = "是否确认收货"
-        this.show = true;
-      }
 
+      this.$router.push({ path: '/pay', query: { 'subNumber': item.sub_number } })
+
+
+    },
+    goTicket: function(item) {
+      this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number } })
+    },
+    goCheck: function(item) {
+      this.conifrmText = "确认收货吗？";
+      this.conifrmShowText = "是否确认收货"
+      this.show = true;
     },
     buyAgain: function(num) {
       console.log(num)
@@ -332,43 +338,6 @@ export default {
           })
         })
 
-        if (response.data.data[0].status == 1) {
-          if (response.data.data[0].sellType == 0) {
-            this.blueText = "去支付"
-          }
-        } else if (response.data.data[0].status == 2 || response.data.data[0].status == 3) {
-
-          this.blueShow = true;
-          this.blueText = "确认收货"
-          this.greyShow = false
-        } else if (response.data.data[0].status == 4) {
-          this.blueShow = false
-          this.greyShow = false
-          if (response.data.data[0].sellType == 0) {
-            this.blueShow = true
-          }
-
-          this.timeShow = false
-          this.buyBtShow = true
-          // this.cancleShow = true
-          if (response.data.data[0].invoice_sub_id) {
-            this.blueText = "已开具发票"
-          } else {
-            this.blueText = "申请发票"
-          }
-          this.btnCancle = '申请退换货'
-
-        } else if (response.data.data[0].status == 5) {
-          this.blueShow = false
-          this.timeShow = false
-          this.greyShow = false
-          this.cancleShow = true
-          this.buyBtShow = true
-        } else {
-          this.blueShow = true;
-          this.greyShow = false;
-          this.blueText = "申请发票"
-        }
       }, (response) => {
         // error callback
       });
@@ -554,9 +523,10 @@ export default {
   }
 }
 
-.vsn-footer{
+.vsn-footer {
   height: 14.9vw;
 }
+
 .bottom-btn {
   background: #292929;
   box-shadow: 7px 12px 8px 11px rgba(0, 0, 0, 0.58);
