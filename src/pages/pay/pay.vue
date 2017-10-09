@@ -1,35 +1,37 @@
 <template>
-  <div>
+  <div class="vsn-wrap">
     <div class="pageTitle">
       <span class="font-18">支付订单</span>
       <div class="back" @click="showConfirm"></div>
     </div>
-    <div class="payBtn font-24" @click="goPay">确认支付</div>
-    <div class="orderList">
-      <div class="order-title font-15">订单信息</div>
-      <div class="orderInfo font-14">
-        <div>订单名称： <span v-text="order.prod_name"></span></div>
-        <div>
-          <span>订单金额：</span><span v-if="order.sellType==0">￥</span>
-          <span class="fff" v-text="order.total"></span><span v-if="order.sellType==1">积分</span>
+    <div class="vsn-main">
+      <div class="orderList ">
+        <div class="order-title font-15">订单信息</div>
+        <div class="orderInfo font-14">
+          <div>订单名称： <span v-text="order.prod_name"></span></div>
+          <div>
+            <span>订单金额：</span><span v-if="order.sellType==0">￥</span>
+            <span class="fff" v-text="order.total"></span><span v-if="order.sellType==1">积分</span>
+          </div>
         </div>
-      </div>
-      <div class="order-title font-15">支付方式</div>
-      <div class="payMent" v-if="order.sellType==1">
-        <div class="payMent-left">
-          <img src="../../assets/imgs/point.png">
+        <div class="order-title font-15">支付方式</div>
+        <div class="payMent" v-if="order.sellType==1">
+          <div class="payMent-left">
+            <img src="../../assets/imgs/point.png">
+          </div>
+          <div class="middle font-14">积分支付</div>
+          <div class="choose-btn selected payMent-right"></div>
         </div>
-        <div class="middle font-14">积分支付</div>
-        <div class="choose-btn selected payMent-right"></div>
-      </div>
-      <div class="payMent" v-if="order.sellType==0">
-        <div class="payMent-left">
-          <img src="../../assets/imgs/point.png">
+        <div class="payMent" v-if="order.sellType==0">
+          <div class="payMent-left">
+            <img src="../../assets/imgs/point.png">
+          </div>
+          <div class="middle font-14">微信支付</div>
+          <div class="choose-btn selected payMent-right"></div>
         </div>
-        <div class="middle font-14">微信支付</div>
-        <div class="choose-btn selected payMent-right"></div>
       </div>
     </div>
+    <div class="payBtn font-18" @click="goPay">确认支付</div>
     <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
       <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
         确认取消该订单?
@@ -88,11 +90,11 @@ export default {
     showConfirm: function() {
       this.confirmShow = true
     },
-    onConfirm:function(){
-      this.$router.push({ path: '/order'})
+    onConfirm: function() {
+      this.$router.push({ path: '/order' })
     },
-    onCancel:function(){
-      
+    onCancel: function() {
+
     },
     jsApiCall: function(data) {
       WeixinJSBridge.invoke(
@@ -136,12 +138,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
 .payBtn {
-  position: absolute;
-  left: 6vw;
-  bottom: 6vw;
   background: #1dafed;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  width: 88vw;
+  width: 100vw;
   height: 14.6vw;
   line-height: 14.6vw;
   font-size: 24px;
@@ -160,20 +159,22 @@ export default {
   border-radius: 2px 2px 0 0;
   line-height: 8.5vw;
   color: #fff;
-  padding-left: 2vw
+  padding-left: 5vw;
+  padding-right: 5vw;
   /*box-shadow:0 2px 4px 0 */
 }
 
 .orderList {
-  padding-left: 3vw;
-  padding-right: 5vw;
+  /*padding-left: 3vw;
+  padding-right: 5vw;*/
 }
 
 .orderInfo {
   text-align: left;
   color: #dfdfdf;
   font-size: 14px;
-  padding-left: 2vw;
+  padding-left: 5vw;
+  padding-right: 5vw;
   background: #181818;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
   border-radius: 4px 4px 0 0;
@@ -190,10 +191,12 @@ export default {
 }
 
 .payMent {
-  padding-left: 2vw;
+  overflow: hidden;
+  padding-left: 5vw;
+  padding-right: 5vw;
   margin-top: 2vw;
   background: #181818;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+  /*box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);*/
   .payMent-left {
     width: 6.4vw;
     height: 6.4vw;

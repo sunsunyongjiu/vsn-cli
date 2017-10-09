@@ -4,9 +4,9 @@
       <div class="pageTitle">
         <span class="font-18">购物车</span>
         <div class="back" @click="goback"></div>
-        <div class="pageTitle-deleteBtn" @click="deleteAll">
+        <!-- <div class="pageTitle-deleteBtn" @click="deleteAll">
           <img src="../assets/imgs/delete.png" class="personal-img">
-        </div>
+        </div> -->
       </div>
       <div class="tab">
         <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分</div>
@@ -22,19 +22,19 @@
             </div>
             <div slot="content" style="padding:3.2vw;" class="goods">
               <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)"></div>
-              <div class="goods-left">
+              <div class="goods-left" @click="goWhere(item.title,item)">
                 <img :src="item.pic">
               </div>
               <div class="goods-right">
-                <div v-text="item.title" class="font-18 df goods-title"></div>
+                <div v-text="item.title" class="font-18 df goods-title" @click="goWhere(item.title,item)"></div>
                 <!-- <div class="font-14 df">Merdeces Me</div> -->
-                <div class="font-10 color-92 goods-size-box" v-for="i in item.size">
+                <div class="font-10 color-92 goods-size-box" v-for="i in item.size" @click="goWhere(item.title,item)">
                   <span v-text="i.key"></span>: <span v-text="i.value"></span>
                 </div>
-                <div class="point " v-if="item.sellType==0">
+                <div class="point " v-if="item.sellType==0" @click="goWhere(item.title,item)">
                   <span class="df font-9">￥</span><span v-text="item.cash" class="font-18 df"></span>
                 </div>
-                <div class="point" v-if="item.sellType==1">
+                <div class="point" v-if="item.sellType==1" @click="goWhere(item.title,item)">
                   <span v-text="item.point" class="font-18 df"></span><span class="font-9 color-9b">积分</span>
                 </div>
                 <div class="plus">
@@ -53,16 +53,23 @@
       <!-- <div class="bottom"> -->
       <div @click="selecteAll()">
         <div class="choose-btn" :class="{selectedAll:selectedAll}"></div>
-        <div class="bottom-left">全选</div>
+        <div class="bottom-left">&nbsp;全选</div>
       </div>
-      <div v-if="selectePoint" class="bottom-mid">
+      <div v-if="selectePoint&&!deleteShow" class="bottom-mid">
         <span class="font-14 fff">合计:</span> <span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
       </div>
-      <div v-if="!selectePoint" class="bottom-mid">
+      <div v-if="!selectePoint&&!deleteShow" class="bottom-mid">
         <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-18" v-text="totalPoint"></span>
       </div>
-      <div class="bottom-right" @click="goSure">{{selectePoint?'兑换':'购买'}}</div>
+      <span class="color-91 font-14 " v-if="!deleteShow" @click="deleteShow=true">
+        编辑
+      </span>
+      <div class="bottom-right" @click="goSure" v-if="!deleteShow">{{selectePoint?'兑换':'购买'}}</div>
+      <div class="bottom-right bottom-right-red" @click="deleteAll" v-if="deleteShow">删除</div>
       <!-- </div> -->
+      <span class="font-14 fff" v-if="deleteShow" @click="deleteShow=false" style="float:right;margin-right:5vw">
+        完成
+      </span>
       <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
         <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品</p>
         <p style="text-align:left;color:#737373">确认删除选中的商品吗？</p>
@@ -87,7 +94,8 @@ export default {
       ],
       show: false,
       selectePoint: true,
-      selectedSub: ''
+      selectedSub: '',
+      deleteShow: false
     }
   },
   components: {
@@ -104,15 +112,20 @@ export default {
     onCancel: function() {
       console.log(2)
     },
+    goWhere: function(title, item) {
+      this.$router.push({ path: 'detail', query: { 'title': title, 'prod_id': item.prod_id } })
+
+      // this.$router.push({path: 'detail', query: { 'title': title}})
+    },
     onConfirm: function() {
       let str = ''
       this.goodsList.forEach(function(item) {
-        str += ',' + item.basketId
-        /*
+        // str += ',' + item.basketId
+
         if (item.selected) {
           str += ',' + item.basketId
         }
-        */
+
 
       })
       this.onButtonClick(str.substr(1))
@@ -279,7 +292,8 @@ export default {
               selected: true,
               basketId: item.basket_id,
               sellType: item.sellType,
-              cash: item.cash
+              cash: item.cash,
+              prod_id:item.prod_id
             }
             arr.push(obj)
           }
@@ -479,7 +493,7 @@ export default {
   text-align: center;
   .bottom-left {
     float: left;
-    width: 27.4vw;
+    width: 20.4vw;
     font-size: 14px;
     color: #ffffff;
   }
@@ -492,6 +506,9 @@ export default {
     font-size: 18px;
     color: #ffffff;
   }
+  .bottom-right-red {
+    background: #f7412d;
+  }
 }
 
 .choose-btn {
@@ -502,7 +519,7 @@ export default {
   border-radius: 100%;
   position: absolute;
   top: 50%;
-  margin-top: -3vw;
+  margin-top: -2vw;
   left: 2vw;
 }
 
@@ -531,7 +548,7 @@ export default {
 }
 
 .bottom-mid {
-  width: 45.2vw;
+  width: 33.2vw;
   text-align: center;
   float: left;
 }

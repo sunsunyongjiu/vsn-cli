@@ -56,8 +56,8 @@
               </div>
             </div>
           </div>
-          <div style="padding: 15px;">
-            <x-button @click.native="goCart" plain class="pop-Btn font-24"> 确定 </x-button>
+          <div>
+            <x-button @click.native="goCart" plain class="pop-Btn font-16"> 确定 </x-button>
           </div>
         </popup>
       </div>
@@ -426,15 +426,14 @@ export default {
   background: #1dafed;
   border-radius: 0;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  width: 88vw;
-  height: 14.6vw;
+  width: 100vw;
+  .px2vw(height, 50);
   font-size: 24px;
   color: #ffffff;
   letter-spacing: 0;
   text-align: center;
   position: absolute;
-  bottom: 7vw;
-  left: 6vw
+  bottom: 0;
 }
 
 .pop-right-title {

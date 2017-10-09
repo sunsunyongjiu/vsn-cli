@@ -22,3 +22,6 @@ export const setUserScore = ({ commit }, data) => {
   commit('setUserScore', data)
 }
 
+export const setReturnType = ({ commit }, data) => {
+  commit('setReturnType', data)
+}

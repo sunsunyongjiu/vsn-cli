@@ -137,7 +137,7 @@
         <div class="bottom-btn-left font-16" v-if="orderDetail[0].status==1" @click="cancleOrder(items)">
           取消订单
         </div>
-        <div class="bottom-btn-left font-16" v-show="cancleShow" @click="delOrder(items)" v-if="orderDetail[0].status==5 && orderDetail[0].delete_status!=1">
+        <div class="bottom-btn-left font-16" @click="delOrder(items)" v-if="orderDetail[0].status==5 && orderDetail[0].delete_status!=1">
           删除订单
         </div>
       </div>

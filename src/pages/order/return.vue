@@ -97,7 +97,8 @@ export default {
   },
   methods: {
     init: function() {
-      Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber,'subItemId': this.$route.query.itemIid }).then(data => {
+      this.returnOrder=  this.$store.state.chosenReturnType
+      Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'subItemId': this.$route.query.itemIid }).then(data => {
         console.log(data.data[0])
         this.order = data.data[0];
         this.order.prod.forEach(function(x) {
@@ -110,16 +111,26 @@ export default {
       })
     },
     goLocation: function() {
-      this.$router.push({ path: '/choseLocation', query: { 'from': 'return' } })
+      this.$router.push({ path: '/choseLocation', query: { 'from': 'return', 'returnType': this.returnOrder ? 1 : 2 } })
     },
     goChange: function() {
-      this.$router.push({ path: '/changeOrder', query: { 'subNumber': this.$route.query.subNumber, 'returnType': this.returnOrder ? 1 : 2, 'postType': 1, 'addrId': this.order.address.addrId, 'itemIid': this.$route.query.itemIid } })
+      if (this.order.address!=null) {
+        this.$router.push({ path: '/changeOrder', query: { 'subNumber': this.$route.query.subNumber, 'returnType': this.returnOrder ? 1 : 2, 'postType': 1, 'addrId': this.order.address.addrId, 'itemIid': this.$route.query.itemIid } })
+      } else {
+        this.$vux.toast.text('收件地址不能为空', 'middle')
+      }
+
     }
   },
   mounted: function() {
     this.init()
 
-  }
+  },
+  watch: {
+    returnOrder() {
+      this.$store.dispatch({ type: 'setReturnType', data: this.returnOrder });
+    }
+  },
 }
 
 </script>

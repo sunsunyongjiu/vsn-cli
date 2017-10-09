@@ -4,6 +4,7 @@ const state = {
     addr:{},
     editAddr:{},
     listIndex:'',
-    sessionAddr:{}
+    sessionAddr:{},
+    chosenReturnType:false
 }
 export default state;

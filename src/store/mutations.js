@@ -20,3 +20,7 @@ export function setlistIndex (state, { data }) {
 export function setUserScore (state, { data }) {
   state.loginUser.score = data
 }
+
+export function setReturnType (state, { data }) {
+  state.chosenReturnType = data
+}

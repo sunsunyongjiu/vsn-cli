@@ -9,7 +9,7 @@
         <!-- <img src="../assets/imgs/search.png"> -->
         <i class="weui-icon-search font-14" style="line-height:2"></i>
       </div>
-      <input type="text" ref="serachBox" v-model="searchValue" :placeholder="searchValue">
+      <input type="text" ref="serachBox" v-model="searchValue" :placeholder="searchValue" @keyup.enter="showAlert">
     </div>
     <div class="search-box-ways">
       <div class="font-14 search-titles">兑换方式</div>
@@ -18,7 +18,7 @@
         <img src="../assets/imgs/triangle.png" class="selecters-triangle">
       </div>
       <div class="selecters font-13" :class="{'selecter-selected':selects.isCash}" @click="changeWay('cash')">
-        现金
+        非积分
         <img src="../assets/imgs/triangle.png" class="selecters-triangle">
       </div>
     </div>
@@ -180,9 +180,14 @@ export default {
     changeWay: function(n) {
       if (n == "point") {
         this.selects.isPoint = !this.selects.isPoint
+        this.goSearch()
       } else {
         this.selects.isCash = !this.selects.isCash
+        this.goSearch()
       }
+    },
+    showAlert:function(){
+      this.goSearch()
     },
     // 前往查询
     goSearch: function() {

@@ -18,8 +18,8 @@
           </div>
           <div class="orders-mid">
             <div class="font-16 df orders-mid-title" >
-              <img src="../assets/imgs/pointBox.png" v-if="items.sellType==1&&listIndex!=4">
-              <img src="../assets/imgs/cash.png" v-if="items.sellType!=1&&listIndex!=4"><span v-text="item.prod_name"></span>
+              <img src="../assets/imgs/pointBox.png" v-if="items.sellType==1">
+              <img src="../assets/imgs/cash.png" v-if="items.sellType!=1"><span v-text="item.prod_name"></span>
             </div>
             <div v-for="(attr,x) in item.attribute">
               <span v-text="attr.key"></span>:
@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="orders-right font-12">
-            {{items.status,items.sellType|changeStatus}}
+            {{item.returnStatusRemark}}
           </div>
           <div class="order-line"></div>
         </div>

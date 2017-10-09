@@ -31,14 +31,17 @@
             <div class="goods-right">
               <div class="font-16 df title" v-text="item.prod_name"></div>
               <!-- <div class="font-11 color-92" v-text="">颜色：贵族金，规格：标准</div> -->
-              <div class="font-11 color-92">数量×<span v-text="item.basket_count"></span></div>
-              <div class=" bottom" v-if="item.sellType==1">
+              <div class="font-11 color-92 margin-top-5">数量×<span v-text="item.basket_count"></span></div>
+              <div  v-if="item.sellType==1" class='margin-top-5'>
                 <span class="basicColor font-16" v-text="item.point"></span>
                 <span class="font-9 color-9b">积分</span>
               </div>
-              <div class=" bottom" v-if="item.sellType==0">
+              <div  v-if="item.sellType==0" class="margin-top-5">
                 <span class="font-9 color-9b">￥</span>
                 <span class="basicColor font-16" v-text="item.cash"></span>
+              </div>
+              <div class=" bottom font-10 ba" v-if="item.sellType==0">
+                <img src="../../assets/imgs/sevenY.png"> 支持7天无理由退换货
               </div>
             </div>
           </div>
@@ -322,7 +325,12 @@ export default {
     height: 100%;
     .bottom {
       position: absolute;
-      bottom: 0
+      bottom: 0;
+      img{
+        .px2vw(height, 13);
+        .px2vw(width, 13);
+        vertical-align: middle;
+      }
     }
     .title {
       line-height: 6vw
@@ -401,6 +409,9 @@ export default {
   .px2vw(line-height, 32);
   text-align: left;
 
+}
+.margin-top-5{
+  .px2vw(margin-top, 5);
 }
 
 </style>
