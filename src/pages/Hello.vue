@@ -299,13 +299,11 @@ export default {
     },
     init: function() {
       //判断当前用户是否登录
-      console.log(this.$route.query.token)
       let userToken = this.$route.query.token
       let user = this.$route.query.user
       let pandunLogin = this.$store.state.loginUser.name == undefined
       if (userToken && user && pandunLogin) {
         Apis.login({ token: userToken, 'user': user }).then(data => {
-          console.log(data.code)
           if (data.code === 1) {
             this.login = true
             let userDetail = data.data

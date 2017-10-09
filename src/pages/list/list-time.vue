@@ -4,7 +4,7 @@
       <span class="font-18">秒杀商品</span>
       <div class="back" @click="goback"></div>
     </div>
-    <scroller lock-x scrollbar-y use-pullup height="100vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
+    <scroller lock-x scrollbar-y use-pullup height="94vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
   downContent: '',
   upContent: '',
   loadingContent: '加载中...',
@@ -12,6 +12,7 @@
       <div>
         <div class="hotBox">
           <div class='hotBox-title font-14 fff'>秒杀时间</div>
+          <count-down :endTime="endTimeNum" :callback="callback" endText="已经结束了"></count-down>
           <div>
             <div class="hotBox-item">
               <div v-text="hotObj.startTimeMonth" class="font-10 TimeMonth fff"></div>
@@ -69,6 +70,7 @@
 <script>
 import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm, Scroller } from 'vux'
 import back from '../../components/backNav'
+import countDown from '../../components/time'
 import Apis from '../../configers/Api'
 import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime())
@@ -84,7 +86,9 @@ export default {
       selectedSub: '',
       hotObj: {},
       pageNumber: 1,
-      pageSize: 10
+      pageSize: 10,
+      killId: '',
+      endTimeNum:''
     }
   },
   components: {
@@ -96,17 +100,22 @@ export default {
     SwipeoutButton,
     Confirm,
     Scroller,
-    killId: ''
+    countDown
   },
   methods: {
     init: function() {
       Apis.getSecKillTimeList().then(data => {
         console.log(data.data[0])
+        this.endTimeNum=new Date(data.data[0].start_time).getTime()
+        console.log(new Date(data.data[0].start_time).getTime())
         this.hotObj = data.data[0];
         this.killId = data.data[0].id
         this.getGoods()
       })
 
+
+    },
+    callback:function(){
 
     },
     getGoods: function() {
@@ -127,7 +136,6 @@ export default {
       })
     },
     goback: function() {
-      console.log(1)
       this.$router.go(-1)
     },
     goWhere: function(item) {
@@ -167,11 +175,10 @@ export default {
       this.init()
     },
   },
-  mounted: function() {
+  created: function() {
     this.init()
   },
   computed: {
-
   }
 }
 
