@@ -6,7 +6,7 @@
   }">
     <div class="life">
       <div class="mubu" v-if="show"></div>
-      <back :title="pageTitle"></back>
+    <!-- <back :title="pageTitle"></back> -->
       <!-- <tab :line-width="1" custom-bar-width="60px" active-color='#ffffff' class="life-bar" bar-active-color="#1dafed">
       <tab-item selected @click.native="showMe(1)">男士精品</tab-item>
       <tab-item @click.native="showMe(2)">女士精品</tab-item>

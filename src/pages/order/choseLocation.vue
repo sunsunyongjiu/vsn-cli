@@ -1,6 +1,6 @@
 <template>
   <div class="vsn-wrap">
-    <back title="选择地址"></back>
+   <!-- <back title="选择地址"></back> -->
     <div class='vsn-main'>
       <div class="locationList">
         <swipeout class="vux-1px-tb" v-for="(item,index) in locationList" key=index>

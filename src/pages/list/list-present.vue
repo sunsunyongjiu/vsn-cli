@@ -6,7 +6,7 @@
   }" class="scroller">
     <div class="life">
       <div class="mubu" v-if="show"></div>
-      <back :title="pageTitle"></back>
+      <!-- <back :title="pageTitle"></back> -->
       <div v-if="manShow">
         <div class="life-img">
           <img :src="lifeTopImg">

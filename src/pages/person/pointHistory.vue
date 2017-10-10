@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back title="积分兑换记录"></back>
+  <!--  <back title="积分兑换记录"></back>  -->
     <div class="historyBox">
       <div class="font-16 fff pointTitle">
         当前积分

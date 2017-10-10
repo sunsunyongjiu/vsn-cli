@@ -1,6 +1,6 @@
 <template>
   <div class="vsn-wrap">
-    <back :title="title"></back>
+   <!-- <back :title="title"></back> -->
     <div class="vsn-main">
       <div class="order-goods">
         <div class="order-person-title font-15">

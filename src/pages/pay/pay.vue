@@ -19,7 +19,7 @@
           <div class="payMent-left">
             <img src="../../assets/imgs/point.png">
           </div>
-          <div class="middle font-14">积分支付</div>
+          <div class="middle font-14">积分兑换</div>
           <div class="choose-btn selected payMent-right"></div>
         </div>
         <div class="payMent" v-if="order.sellType==0">
@@ -104,11 +104,11 @@ export default {
           WeixinJSBridge.log(res.errMsg);
           //WeixinJSBridge.log(res.err_msg);
           if (res.err_msg == "get_brand_wcpay_request:ok") {
-            // window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token='+this.$store.state.loginUser.token+'&user'+this.$store.state.loginUser.user+'=OTU5Mw%3D%3D&success=1';
-            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber } })
+            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
+          } else if (res.err_msg == "get_brand_wcpay_request:fail") {
+            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
           } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + this.$store.state.loginUser.token + '&user' + this.$store.state.loginUser.user + '=OTU5Mw%3D%3D&success=0';
-            return false;
+            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 0 } })
           }
         }
       );

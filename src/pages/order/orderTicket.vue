@@ -1,6 +1,6 @@
 <template>
   <div class="vsn-wrap">
-    <back title="发票信息" class="vsn-header"></back>
+   <!-- <back title="发票信息" class="vsn-header"></back> -->
     <div class="blueText font-11 fff">
     	<span>温馨提醒：在提交申请后，发票将在3-5个工作日内开具，开具成功后，我们将尽快为您寄送。</span>
     </div>

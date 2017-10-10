@@ -1,9 +1,11 @@
 <template>
   <div class="vsn-wrap">
+    <!--
     <div class="pageTitle">
       <span class="font-18">商品详情</span>
-      <div class="back" @click="goback"></div>
-    </div>
+       <div class="back" @click="goback"></div> 
+    </div> 
+    -->
     <div class="vsn-main">
       <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
         <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
@@ -18,9 +20,9 @@
       <div class="detail-pointBtn font-20" v-if="detailObj.sellType==1">
         <span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point">积分</span>
       </div>
-      <div style="text-align:left" class="sevenBox" v-if="detailObj.sellType==0">
+      <div style="text-align:left" class="sevenBox" v-if="detailObj.is7return==1">
         <img src="../assets/imgs/seven.png">
-        <span class="ba seven font-10">支持七天无理由退换货</span>
+        <span class="ba seven font-10">支持七天无理由退货</span>
       </div>
       <div>
         <div v-html="detailObj.content" class="innerDetail font-12"></div>
@@ -207,7 +209,7 @@ export default {
         })
       } else {
         this.$vux.toast.show({
-          text: '请先登陆',
+          text: '请先登录',
           type: 'warn',
           isShowMask: true,
           position: 'middle'

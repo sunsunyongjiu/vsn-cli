@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back title="支付成功"></back>
+   <!--   <back title="支付成功"></back> -->
     <div class="payBtn font-24" @click="goBack">返回</div>
     <div class="success">
       <div class="success-logo">

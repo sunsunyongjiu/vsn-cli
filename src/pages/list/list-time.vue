@@ -1,9 +1,11 @@
 <template>
   <div class="container">
+    <!--
     <div class="pageTitle">
       <span class="font-18">秒杀商品</span>
-      <div class="back" @click="goback"></div>
+       <div class="back" @click="goback"></div> 
     </div>
+    -->
     <scroller lock-x scrollbar-y use-pullup height="94vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
   downContent: '',
   upContent: '',
@@ -12,7 +14,6 @@
       <div>
         <div class="hotBox">
           <img src="../../assets/imgs/time_text.png">
-          
         </div>
         <div class="time-date-box">
           <div class="time-date-blue">
@@ -60,7 +61,7 @@
                 <div class="font-11 color-7f" style="text-align:right" v-if="hotObj.status==2">剩<span class="basicColor">{{item.kill_num}}</span>件</div>
                 <div class="buyBtn font-14 fff" @click="goDetail(item)" v-if="hotObj.status==2&&item.kill_num>0">去抢购</div>
                 <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==2&&item.kill_num==0">已售完</div>
-                <div class="buyBtn greyBtn font-14 fff"  v-if="hotObj.status==1">即将开始</div>
+                <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==1">即将开始</div>
               </div>
             </div>
           </div>
@@ -108,7 +109,7 @@ export default {
     init: function() {
       Apis.getSecKillTimeList().then(data => {
         console.log(data.data[0])
-        this.endTimeNum = data.data[0].status==2? new Date(data.data[0].end_time).getTime():new Date(data.data[0].start_time).getTime()
+        this.endTimeNum = data.data[0].status == 2 ? new Date(data.data[0].end_time).getTime() : new Date(data.data[0].start_time).getTime()
         console.log(new Date(data.data[0].start_time).getTime())
         this.hotObj = data.data[0];
         this.killId = data.data[0].id
@@ -432,7 +433,9 @@ export default {
     9);
   }
 }
-.greyBtn{
-  background:#808080 !important;
+
+.greyBtn {
+  background: #808080 !important;
 }
+
 </style>

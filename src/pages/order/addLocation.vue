@@ -1,6 +1,6 @@
 <template>
   <div class="vsn-wrap">
-    <back :title="addTitle"></back>
+   <!-- <back :title="addTitle"></back> -->
     <div class="vsn-main">
       <div class='addLocationBox'>
         <div class="settings">

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mubu" v-if="show"></div>
-    <back :title="pageTitle"></back>
+    <!-- <back :title="pageTitle"></back>  -->
     <my-nav :items="myBoutique"></my-nav>
   </div>
 </template>

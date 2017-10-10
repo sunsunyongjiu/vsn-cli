@@ -1,13 +1,12 @@
 <template>
   <div class="vsn-wrap">
     <div style="height:19.16vw">
+    	 <!--
       <div class="pageTitle">
         <span class="font-18">购物车</span>
-        <div class="back" @click="goback"></div>
-        <!-- <div class="pageTitle-deleteBtn" @click="deleteAll">
-          <img src="../assets/imgs/delete.png" class="personal-img">
-        </div> -->
+        <div class="back" @click="goback"></div
       </div>
+      -->
       <div class="tab">
         <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分</div>
         <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">现金</div>
@@ -142,7 +141,7 @@ export default {
       } else {
         this.$vux.toast.text('请选择要删除的商品', 'middle')
       }
-
+      
 
 
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back title="个人信息"></back>
+   <!--<back title="个人信息"></back>-->
     <div class="personal-title-logo">
       <img src="../assets/imgs/me.png">
     </div>

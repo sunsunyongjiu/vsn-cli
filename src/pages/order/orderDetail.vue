@@ -1,8 +1,8 @@
 <template>
   <div class='vsn-wrap'>
-    <div class="vsn-header">
+    <!--<div class="vsn-header">
       <back title="订单详情"></back>
-    </div>
+    </div> -->
     <div class="vsn-main">
       <div class="paddingBottom" v-for="(items , key) in orderDetail" key="key">
         <div class="order-state">
@@ -50,11 +50,11 @@
             商品信息
           </div>
           <div class="order-goodsText">
-            <div class="orders" v-for="(item,index) in items.prod" key='index' @click="goWhere('',item)">
-              <div class="orders-left">
+            <div class="orders" v-for="(item,index) in items.prod" key='index' >
+              <div class="orders-left" @click="goWhere('',item)">
                 <img :src="item.pic">
               </div>
-              <div class="orders-mid">
+              <div class="orders-mid" @click="goWhere('',item)">
                 <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
                 <div v-for="(attr , n) in item.attribute">
                   <span v-text="attr.key"></span>:

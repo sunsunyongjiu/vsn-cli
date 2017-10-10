@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back title="确认订单"></back>
+    <!-- <back title="确认订单"></back> -->
     <div class='blueText font-11 fff' v-if="isCash">
       温馨提醒：您可在签收商品7天内，申请开具发票／换货／退货。
     </div>
@@ -40,8 +40,8 @@
                 <span class="font-9 color-9b">￥</span>
                 <span class="basicColor font-16" v-text="item.cash"></span>
               </div>
-              <div class=" bottom font-10 ba" v-if="item.sellType==0">
-                <img src="../../assets/imgs/sevenY.png"> 支持7天无理由退换货
+              <div class=" bottom font-10 ba" v-if="item.is7return==1">
+                <img src="../../assets/imgs/sevenY.png"> 支持7天无理由退货
               </div>
             </div>
           </div>
