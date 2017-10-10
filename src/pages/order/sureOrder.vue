@@ -2,7 +2,7 @@
   <div>
     <back title="确认订单"></back>
     <div class='blueText font-11 fff' v-if="isCash">
-      温馨提醒：发票需要在签收商品后才能开具。
+      温馨提醒：您可在签收商品7天内，申请开具发票／换货／退货。
     </div>
     <div class="order-title font-15 pd-right2">收货人信息</div>
     <div class="container">

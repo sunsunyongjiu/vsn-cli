@@ -158,6 +158,10 @@ export default {
       }
     },
     plus: function(n) {
+      if(this.detailObj.isSecKill){
+        this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+        return
+      }
       if (n == 1) {
         this.countNum++
       } else if (this.countNum <= 1) {

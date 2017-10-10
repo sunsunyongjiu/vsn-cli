@@ -41,7 +41,9 @@
       <div class="details">
         <div class="details-left"><img src="../assets/imgs/phone.png" class="personal-img"> 联系方式
         </div>
-        <div v-text="loginUser.mobile" class='details-right'></div>
+        <div class='details-right'>
+          <input type="text" name="country" :value="loginUser.mobile" readonly="readonly"  style="background:none;text-align:right;border:none" class="color-87">
+        </div>
       </div>
       <div class="line"></div>
       <div class="details" @click="goPointHistory">

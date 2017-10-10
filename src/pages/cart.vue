@@ -142,7 +142,7 @@ export default {
       } else {
         this.$vux.toast.text('请选择要删除的商品', 'middle')
       }
-      
+
 
 
 
@@ -179,6 +179,10 @@ export default {
       this.$router.go(-1)
     },
     goPlus: function(item, n) {
+      if (item.isSecKill) {
+        this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+        return
+      }
       item.selected = true
       if (n > 0) {
         item.count++
@@ -304,7 +308,8 @@ export default {
               basketId: item.basket_id,
               sellType: item.sellType,
               cash: item.cash,
-              prod_id: item.prod_id
+              prod_id: item.prod_id,
+              isSecKill: item.isSecKill
             }
             arr.push(obj)
           }
