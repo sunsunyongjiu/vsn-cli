@@ -93,6 +93,8 @@ export default {
 .returnDetailTitle {
   .px2vw(height, 84);
   text-align: left;
+  background: url(../../assets/imgs/time_back.png) no-repeat;
+  background-size: cover;
   .px2vw(line-height, 84);
   .px2vw(padding-left, 19);
   .px2vw(margin-bottom, 6);

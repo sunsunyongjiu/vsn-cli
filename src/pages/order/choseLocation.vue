@@ -34,8 +34,9 @@
       添加新地址
     </div>
     <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
-      <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除地址</p>
-      <p style="text-align:left;color:#737373">确认删除选中的地址吗？</p>
+      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
+        确认删除地址吗？
+      </div>
     </confirm>
   </div>
 </template>

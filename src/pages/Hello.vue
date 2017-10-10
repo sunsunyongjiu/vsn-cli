@@ -260,7 +260,15 @@ export default {
     },
     goWWW: function(url) {
       if (url.indexOf('hot') > 0) {
-        this.$router.push({ path: '/hot' })
+        Apis.getSecKillTimeList().then(data => {
+          console.log(data.data[0])
+          if(data.data[0]&&data.data[0].status!=3){
+            this.$router.push({ path: '/hot' })
+          }else{
+            this.$vux.toast.text('秒杀活动已过期，敬请期待下一期', 'middle')
+          }
+        })
+        
       } else {
         window.location.href = url
       }

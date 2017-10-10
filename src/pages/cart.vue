@@ -131,7 +131,18 @@ export default {
       this.onButtonClick(str.substr(1))
     },
     deleteAll: function() {
-      this.show = true
+      let str = ''
+      this.goodsList.forEach(function(n) {
+        if (n.selected) {
+          str += (',' + n.basketId)
+        }
+      })
+      if (str.slice(1).length > 0) {
+        this.show = true
+      } else {
+        this.$vux.toast.text('请选择要删除的商品', 'middle')
+      }
+      
 
 
 
@@ -293,7 +304,7 @@ export default {
               basketId: item.basket_id,
               sellType: item.sellType,
               cash: item.cash,
-              prod_id:item.prod_id
+              prod_id: item.prod_id
             }
             arr.push(obj)
           }
@@ -417,6 +428,7 @@ export default {
   box-sizing: border-box;
   .selected {
     background: url(../assets/imgs/choose.png) center center;
+    background-color: #1dafed!important;
     background-size: 150% 150%;
     width: 4vw;
     height: 4vw;

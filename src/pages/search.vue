@@ -42,7 +42,7 @@
             <div v-text="item.name" class="title font-16 text-overflow-3"></div>
             <div class="right-point-box">
               <div v-if="item.sellType==0">
-                <span class="font-10">￥</span>
+                <span class="font-10 basicColor">￥</span>
                 <span v-text="item.price" class="font-18 points"></span>
               </div>
               <div v-if="item.sellType==1">
@@ -187,6 +187,8 @@ export default {
       }
     },
     showAlert:function(){
+      // this.$refs.demo1.reset()
+      this.$refs.serachBox.blur()
       this.goSearch()
     },
     // 前往查询
@@ -384,7 +386,7 @@ input:focus {
 
 .noProduct {
   position: absolute;
-  top: 30vh;
+  top: 50vh;
   left: 30vw;
   width: 40vw;
   text-align: center;

@@ -50,7 +50,7 @@
             商品信息
           </div>
           <div class="order-goodsText">
-            <div class="orders" v-for="(item,index) in items.prod" key='index'>
+            <div class="orders" v-for="(item,index) in items.prod" key='index' @click="goWhere('',item)">
               <div class="orders-left">
                 <img :src="item.pic">
               </div>
@@ -81,7 +81,7 @@
                 <div class="order-fee-first-left">实付款（含运费）</div>
                 <div class="order-fee-first-right">
                   <span v-if="items.sellType==0">￥</span>
-                  <span class="font-18 basicColor" v-text="items.actual_total"></span>
+                  <span class="font-18 basicColor" v-text="items.total"></span>
                   <span v-if="items.sellType==1">积分</span>
                 </div>
               </div>
@@ -182,6 +182,11 @@ export default {
     ViewBox
   },
   methods: {
+    goWhere: function(title, item) {
+      this.$router.push({ path: 'detail', query: { 'title': title, 'prod_id': item.prod_id } })
+
+      // this.$router.push({path: 'detail', query: { 'title': title}})
+    },
     goReturn: function(item, itemIid, n) {
       if (n > 0) {
         return
@@ -378,7 +383,9 @@ export default {
   height: 22.4vw;
   text-align: left;
   padding-left: 5vw;
-  padding-top: 5.06vw;
+  line-height: 22.4vw;
+  background: url(../../assets/imgs/time_back.png) no-repeat;
+  background-size: cover;
   box-sizing: border-box;
   font-size: 18px;
   color: #ffffff;
@@ -405,6 +412,9 @@ export default {
   height: 24vw;
   padding-left: 5vw;
   text-align: left;
+  display: table-cell;
+  vertical-align: middle;
+  width: 100vw;
   .px2vw(line-height, 20)
 }
 

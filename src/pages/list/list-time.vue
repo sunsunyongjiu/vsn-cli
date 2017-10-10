@@ -11,28 +11,29 @@
   }">
       <div>
         <div class="hotBox">
-          <div class='hotBox-title font-14 fff'>秒杀时间</div>
-          <count-down :endTime="endTimeNum" :callback="callback" endText="已经结束了"></count-down>
-          <div>
-            <div class="hotBox-item">
-              <div v-text="hotObj.startTimeMonth" class="font-10 TimeMonth fff"></div>
-              <div v-text="hotObj.startTimeDay" class="font-18 TimeDay fff"></div>
+          <img src="../../assets/imgs/time_text.png">
+          
+        </div>
+        <div class="time-date-box">
+          <div class="time-date-blue">
+            <div class=" blue-1">
+              <span class="font-14 fff">{{hotObj.start_time | data}} -</span>
+              <span class="font-14 fff">{{hotObj.end_time | data}}</span>
             </div>
-            <div style="width:10.2vw;float:left;height:10.5vw;line-height:10.5vw" class="fff">
-              -
-            </div>
-            <div class="hotBox-item" style="margin-left:0">
-              <div v-text="hotObj.endTimeMonth" class="font-10 TimeMonth fff"></div>
-              <div v-text="hotObj.endTimeDay" class="font-18 TimeDay fff"></div>
+            <div>
+              <span class="font-11 fff" v-if="hotObj.status==2">距结束</span>
+              <span class="font-11 fff" v-if="hotObj.status==1">距开始</span>
+              <count-down :endTime="endTimeNum" :callback="callback" class="font-11 fff"></count-down>
             </div>
           </div>
         </div>
-        <div class="tab">
+        <!-- <div class="tab">
           <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分精品</div>
           <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">京东商品</div>
-        </div>
+        </div> -->
         <div class="list-box" :class="{'list-box-point':!selectePoint}">
-          <div v-for="(item,index) in goodsList" key=index class="list-box-item" @click="goWhere(item)" :class="{'point-list-box-item':selectePoint}">
+          <div v-for="(item,index) in goodsList" key=index class="list-box-item" :class="{'point-list-box-item':selectePoint}">
+            <!-- <img src="../../assets/imgs/hot.png" class="red-hot" v-if="item.is_hot==='Y'"> -->
             <div class="list-box-item-img" :class="{'list-box-item-img-cash':!selectePoint}">
               <img :src="item.pic">
             </div>
@@ -47,24 +48,25 @@
                   <span class="color-7f  font-11">￥{{item.orig_price}}</span>
                 </div>
                 <div v-if="item.sellType==1" class="list-box-item-price-price basicColor">
-                  <span v-text="item.kill_price" class="list-point  font-18"></span>
-                  <span class=" font-12 ">积分</span>
+                  <span v-text="item.kill_price" class="list-point  font-16"></span>
+                  <span class=" font-9 color-9b">积分</span>
                 </div>
                 <div v-if="item.sellType==0" class="list-box-item-price-price basicColor">
-                  <span class="df  font-12">￥</span>
-                  <span v-text="item.kill_price" class="list-point  font-18"></span>
+                  <span class="df  font-9">￥</span>
+                  <span v-text="item.kill_price" class="list-point  font-16"></span>
                 </div>
               </div>
               <div class="buyBtnBox">
-                <div class="font-11 color-7f" style="text-align:right">剩<span class="basicColor">{{item.kill_num}}</span>件</div>
-                <div class="buyBtn font-15 fff" @click="goDetail(item)">立即秒杀</div>
+                <div class="font-11 color-7f" style="text-align:right" v-if="hotObj.status==2">剩<span class="basicColor">{{item.kill_num}}</span>件</div>
+                <div class="buyBtn font-14 fff" @click="goDetail(item)" v-if="hotObj.status==2&&item.kill_num>0">去抢购</div>
+                <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==2&&item.kill_num==0">已售完</div>
+                <div class="buyBtn greyBtn font-14 fff"  v-if="hotObj.status==1">即将开始</div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </scroller>
-   
   </div>
 </template>
 <script>
@@ -88,7 +90,7 @@ export default {
       pageNumber: 1,
       pageSize: 10,
       killId: '',
-      endTimeNum:''
+      endTimeNum: ''
     }
   },
   components: {
@@ -106,7 +108,7 @@ export default {
     init: function() {
       Apis.getSecKillTimeList().then(data => {
         console.log(data.data[0])
-        this.endTimeNum=new Date(data.data[0].start_time).getTime()
+        this.endTimeNum = data.data[0].status==2? new Date(data.data[0].end_time).getTime():new Date(data.data[0].start_time).getTime()
         console.log(new Date(data.data[0].start_time).getTime())
         this.hotObj = data.data[0];
         this.killId = data.data[0].id
@@ -115,8 +117,8 @@ export default {
 
 
     },
-    callback:function(){
-
+    callback: function() {
+      this.init()
     },
     getGoods: function() {
       this.pageNumber = 1;
@@ -178,7 +180,18 @@ export default {
   created: function() {
     this.init()
   },
-  computed: {
+  computed: {},
+  filters: {
+    data: function(input) {
+      var d = new Date(input);
+      var year = d.getFullYear();
+      var month = d.getMonth() + 1;
+      var day = d.getDate() < 10 ? '0' + d.getDate() : '' + d.getDate();
+      var hour = d.getHours();
+      var minutes = d.getMinutes();
+      var seconds = d.getSeconds();
+      return month + '月' + day + '日';
+    }
   }
 }
 
@@ -209,14 +222,25 @@ export default {
 
 .hotBox {
   background: #181818;
+  position: relative;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
   width: 100%;
-  .px2vw(height, 111);
-  .px2vw(padding-top, 15);
+  .px2vw(height, 95);
+  background: url(../../assets/imgs/time_back.png) no-repeat;
+  background-size: cover;
   box-sizing: border-box;
   .hotBox-title {
     .px2vw(height, 14);
     .px2vw(margin-bottom, 16);
+  }
+  img {
+    .px2vw(height, 76);
+    .px2vw(width, 105);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    .px2vw(margin-top, -38);
+    .px2vw(margin-left, -52.5);
   }
   .hotBox-item {
     width: 13.8vw;
@@ -329,11 +353,11 @@ export default {
     background: #1dafed;
     border-radius: 0 1px 1px 1px;
     .px2vw(width,
-    72);
+    68);
     .px2vw(height,
-    30);
+    26);
     .px2vw(line-height,
-    30);
+    26);
     .px2vw(margin-top,
     6);
   }
@@ -366,4 +390,49 @@ export default {
   20);
 }
 
+.time-date-box {
+  .px2vw(height,
+  48);
+  background: #222222;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+  .time-date-blue {
+    background: #1dafed;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+    margin: 0 auto;
+    position: relative;
+    .px2vw(width,
+    174);
+    text-align: center;
+    .px2vw(height,
+    48);
+  }
+  .time-date-blue:before {
+    display: block;
+    position: absolute;
+    content: '';
+    left: -5.8vw;
+    width: 0;
+    height: 0;
+    border-bottom: 12.8vw solid #1dafed;
+    border-left: 5.8vw solid transparent;
+  }
+  .time-date-blue:after {
+    display: block;
+    position: absolute;
+    content: '';
+    right: -5.8vw;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-top: 12.8vw solid #1dafed;
+    border-right: 5.8vw solid transparent;
+  }
+  .blue-1 {
+    .px2vw(padding-top,
+    9);
+  }
+}
+.greyBtn{
+  background:#808080 !important;
+}
 </style>

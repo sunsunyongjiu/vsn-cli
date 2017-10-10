@@ -42,7 +42,7 @@
             <div class="left font-12">
               共<span v-text="items.totalCount"></span>件商品 小计:
               <span v-if="items.sellType==0" class="font-11">￥</span>
-              <span class="font-14 basicColor" v-text="items.actual_total"></span>
+              <span class="font-14 basicColor" v-text="items.total"></span>
               <span class="font-9 color-9b" v-if="items.sellType==1">积分</span>
             </div>
             <div v-if="btnsShow">
