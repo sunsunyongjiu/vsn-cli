@@ -7,7 +7,7 @@
       <div class="paddingBottom" v-for="(items , key) in orderDetail" key="key">
         <div class="order-state">
           <div style="margin-bottom:2vw;">
-            {{items.status|changeStatus}}
+            {{items.status,items.sellType|changeStatus}}
           </div>
           <!-- <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div> -->
         </div>
@@ -31,7 +31,7 @@
           </div>
           <div class="order-personText">
             <div class="font-16 color-91">
-              <span v-text="items.address.RECEIVER"></span>
+              <span v-text="items.address.RECEIVER" style="margin-right:5vw"></span>
               <span v-text="items.address.moble"></span>
             </div>
             <div class="font-14 color-91">
@@ -67,7 +67,7 @@
                   <span class="font-9" v-if="items.sellType==1">积分</span>
                 </div>
               </div>
-              <div class="tuihuan font-14" v-if="item.isShowReturnButton" @click="goReturn(items,item.sub_item_id,items.invoice_sub_id)" :class="{'greyBtn':!item.isReturnButtonEnable}">
+              <div class="tuihuan font-14" v-if="item.isShowReturnButton" @click="goReturn(items,item.sub_item_id,item.isReturnButtonEnable)" :class="{'greyBtn':!item.isReturnButtonEnable}">
                 申请退换货
               </div>
               <div class="order-line"></div>
@@ -187,8 +187,8 @@ export default {
 
       // this.$router.push({path: 'detail', query: { 'title': title}})
     },
-    goReturn: function(item, itemIid, n) {
-      if (n > 0) {
+    goReturn: function(item, itemIid, isReturnButtonEnable) {
+      if (isReturnButtonEnable == 0) {
         return
       } else {
         this.$router.push({ path: '/returnOrder', query: { 'subNumber': item.sub_number, 'itemIid': itemIid } })
@@ -305,21 +305,15 @@ export default {
 
 
     },
-    cancleOrder: function(item) {
-      if (this.btnCancle == "取消订单") {
-        this.show = true
+    cancleOrder: function(item) {      
         this.conifrmText = "确认取消该订单吗？"
-      } else if (this.btnCancle == "申请退换货") {
-        this.conifrmText = "确认退换该订单吗？";
-        this.show = true;
-
-      }
+        this.show = true
 
     },
     delOrder: function(item) {
       console.log(item)
       this.conifrmText = "确认删除该订单吗？",
-        this.conifrmShowText = "是否确认删除"
+      this.conifrmShowText = "是否确认删除"
       this.show = true;
 
     },
@@ -350,20 +344,39 @@ export default {
     }
   },
   filters: {
-    changeStatus: function(n) {
-      if (n === 1) {
-        return '等待兑换'
-      } else if (n === 2) {
-        return '已兑换'
-      } else if (n === 3) {
-        return '已兑换'
-      } else if (n === 4) {
-        return '交易成功'
-      } else if (n === 5) {
-        return '交易关闭'
-      } else {
-        return '退换货'
-      }
+    changeStatus: function(n,sellType) {
+    	if (parseInt(sellType) === 1) {
+    		if (n === 1) {
+	        return '等待兑换'
+	      } else if (n === 2) {
+	        return '已兑换'
+	      } else if (n === 3) {
+	        return '已兑换'
+	      } else if (n === 4) {
+	        return '交易成功'
+	      } else if (n === 5) {
+	        return '交易关闭'
+	      } else {
+	        return '退换货'
+	      }
+    	}
+    	
+    	if (parseInt(sellType) === 0) {
+    		if (n === 1) {
+	        return '等待支付'
+	      } else if (n === 2) {
+	        return '已支付'
+	      } else if (n === 3) {
+	        return '已支付'
+	      } else if (n === 4) {
+	        return '交易成功'
+	      } else if (n === 5) {
+	        return '交易关闭'
+	      } else {
+	        return '退换货'
+	      }
+    	}
+      
     }
   },
   mounted: function() {
@@ -394,8 +407,7 @@ export default {
 }
 
 .order-person-title {
-  opacity: 0.5;
-  background: #292929;
+  background: rgba(41, 41, 41, 0.5);;
   border-radius: 2px 2px 0 0;
   height: 8.5vw;
   font-size: 15px;

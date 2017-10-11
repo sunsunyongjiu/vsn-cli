@@ -30,7 +30,6 @@ export default {
   },
   watch: {
     endTime() {
-      console.log(this.endTime)
       this.countdowm(this.endTime)
     }
   },

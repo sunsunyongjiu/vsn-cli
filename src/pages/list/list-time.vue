@@ -61,7 +61,7 @@
                 <div class="font-11 color-7f" style="text-align:right" v-if="hotObj.status==2">剩<span class="basicColor">{{item.kill_num}}</span>件</div>
                 <div class="buyBtn font-14 fff" @click="goDetail(item)" v-if="hotObj.status==2&&item.kill_num>0">去抢购</div>
                 <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==2&&item.kill_num==0">已售完</div>
-                <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==1">即将开始</div>
+                <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==1" @click="goDetail(item)">即将开始</div>
               </div>
             </div>
           </div>
@@ -91,7 +91,7 @@ export default {
       pageNumber: 1,
       pageSize: 10,
       killId: '',
-      endTimeNum: ''
+      endTimeNum: '1507721140000'
     }
   },
   components: {
@@ -107,10 +107,9 @@ export default {
   },
   methods: {
     init: function() {
+      // alert(1)
       Apis.getSecKillTimeList().then(data => {
-        console.log(data.data[0])
         this.endTimeNum = data.data[0].status == 2 ? new Date(data.data[0].end_time).getTime() : new Date(data.data[0].start_time).getTime()
-        console.log(new Date(data.data[0].start_time).getTime())
         this.hotObj = data.data[0];
         this.killId = data.data[0].id
         this.getGoods()
@@ -122,6 +121,7 @@ export default {
       this.init()
     },
     getGoods: function() {
+      // alert(2)
       this.pageNumber = 1;
       Apis.getSecKillProdList({ killTimeId: this.killId, sellType: this.selectePoint ? 1 : 0, pageNumber: this.pageNumber, pageSize: this.pageSize }).then(data => {
         this.goodsList = data.data

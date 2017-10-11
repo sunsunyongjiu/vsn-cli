@@ -115,7 +115,7 @@ const router = new Router({
     },
     {
       path: '/changeOrder',
-      name: '申请退款',
+      name: '申请退换货',
       component: changeOrder,
     },
     {

@@ -70,8 +70,7 @@
         完成
       </span>
       <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
-        <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品</p>
-        <p style="text-align:left;color:#737373">确认删除选中的商品吗？</p>
+        <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品吗？</p>
       </confirm>
     </div>
   </div>

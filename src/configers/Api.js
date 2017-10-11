@@ -17,6 +17,14 @@ export default {
       return res.data
     })
   },
+  // 判断秒杀
+  getisByProd(params = {}) {
+    console.log(params)
+    return Vue.http.post(basePath + '/order/getisByProd', params, { emulateJSON: true }).then(res => {
+      // some handling
+      return res.data
+    })
+  },
   // 上传图片
   uploadImage(imageBase64,imageType) {
     var params={

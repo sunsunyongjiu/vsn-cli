@@ -40,7 +40,7 @@
         </div> -->
         </div>
         <div v-if="company||main">
-          <x-input placeholder="请填写单位名字" class="type-hedder-item-input font-14" v-model="ticket.company" v-if="company"></x-input>
+          <x-input placeholder="请填写单位名称" class="type-hedder-item-input font-14" v-model="ticket.company" v-if="company"></x-input>
           <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.tax_number" v-if="company"></x-input>
           <x-input class="type-hedder-item-input font-14" disabled v-model="ticket.main" v-if="main"></x-input>
           <!-- <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.main_tax_number" disabled></x-input> -->
@@ -131,6 +131,10 @@ export default {
       if (this.main) {
         cartData.titleId = 3;
         cartData.company = '杭州驭缘网络科技有限公司';
+      }
+      if(this.company&&(this.ticket.company==''||ticket.company.tax_number=='')){
+        this.$vux.toast.text('不能置空', 'middle')
+        return
       }
       this.$http({
         method: 'POST',

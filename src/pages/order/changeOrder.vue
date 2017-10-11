@@ -118,6 +118,7 @@ export default {
   methods: {
     init: function() {
       let _this = this
+      document.title = this.$route.query.returnType == '2'? '申请换货' : '申请退货'
       Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'subItemId': this.$route.query.itemIid }).then(data => {
         _this.order = data.data[0];
         _this.order.prod.forEach(function(x) {
@@ -175,6 +176,7 @@ export default {
       }
       Apis.exchangeOrder(this.$store.state.loginUser.token, data).then(data => {
         console.log(data)
+        this.$store.dispatch({ type: 'setlistIndex', data: 4 })
         this.$vux.loading.hide()
         this.$router.push({ path: '/order' })
       });

@@ -52,9 +52,9 @@
             <div class="pop-num">
               <div class="pop-num-zi font-15">数量</div>
               <div class="pop-num-shu">
-                <div class="left" @click="plus(-1)">-</div>
+                <div class="pop-num-left" @click="plus(-1)">-</div>
                 <div v-text="countNum" class="count"></div>
-                <div class="right" @click="plus(1)">+</div>
+                <div class="pop-num-right" @click="plus(1)">+</div>
               </div>
             </div>
           </div>
@@ -85,6 +85,7 @@
 </template>
 <script>
 import md5 from 'js-md5';
+import Apis from '../configers/Api'
 import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, ViewBox, TransferDom, Popup, Group, Cell, XButton, Checker, CheckerItem } from 'vux'
 const timer = JSON.stringify(new Date().getTime())
 export default {
@@ -160,7 +161,7 @@ export default {
       }
     },
     plus: function(n) {
-      if(this.detailObj.isSecKill){
+      if (this.detailObj.isSecKill) {
         this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
         return
       }
@@ -192,6 +193,32 @@ export default {
           'isCart': this.isCart
         }
 
+        if (this.detailObj.isSecKill) {
+          Apis.getisByProd({ prodId: this.detailObj.prod_id }).then(data => {
+            console.log(data)
+            if (data.code == 1) {
+              this.$http({
+                method: 'POST',
+                url: this.$Api('/order/insertBasket'),
+                params: cartData,
+                headers: header,
+                emulateJSON: true
+              }).then(function(data) { //es5写法
+                if (this.isCart) {
+                  this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
+                } else {
+                  this.$router.push({ path: '/sureOrder', query: { 'selectIds': data.data } })
+                }
+              }, function(error) {
+                //error
+              })
+            } else {
+              this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+              return
+            }
+
+          })
+        }
         this.$http({
           method: 'POST',
           url: this.$Api('/order/insertBasket'),
@@ -207,6 +234,7 @@ export default {
         }, function(error) {
           //error
         })
+
       } else {
         this.$vux.toast.show({
           text: '请先登录',
@@ -268,10 +296,13 @@ export default {
 <style scoped lang='less' scoped>
 @import '../assets/css/detail.less';
 @import '../assets/css/global.less';
-.innerDetail {
-  .px2vw(padding-left, 16);
-  .px2vw(padding-right, 16);
-}
+
+
+
+
+/*@import '../assets/css/jd.css';*/
+
+.innerDetail {}
 
 .detail-title {
   .px2vw(padding-left, 16);
@@ -413,11 +444,11 @@ export default {
     line-height: 7.4vw;
     text-align: center;
     position: relative;
-    .left {
+    .pop-num-left {
       position: absolute;
       left: 5vw
     }
-    .right {
+    .pop-num-right {
       position: absolute;
       right: 5vw
     }
@@ -462,13 +493,12 @@ export default {
 .seven {
   text-align: left;
   vertical-align: middle
-
 }
 
 .sevenBox {
   .px2vw(padding-left, 16);
   .px2vw(margin-bottom, 5);
-  img{
+  img {
     .px2vw(height, 13);
     .px2vw(width, 13);
     vertical-align: middle
