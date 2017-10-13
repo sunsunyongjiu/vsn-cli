@@ -7,24 +7,12 @@
       <div class="paddingBottom" v-for="(items , key) in orderDetail" key="key">
         <div class="order-state">
           <div style="margin-bottom:2vw;">
-            {{items.status,items.sellType|changeStatus}}
+            <div class="status font-18" style="margin-bottom:2vw">{{items.status,items.sellType|changeStatus}}</div>
+            <div class="font-10">订单将在
+              <count-down :endTime="endTimeNum" :callback="callback" class="font-11 basicColor"></count-down>后被取消</div>
           </div>
           <!-- <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div> -->
         </div>
-        <!--       <div class="order-info" v-if="items.sellType==1">
-        {{items.sellType}}
-        <div class="order-person-title">
-          订单信息
-        </div>
-        <div class="order-infoText">
-          <div class="font-14 color-91">
-            下单时间：<span v-text="items.sub_date"></span>
-          </div>
-          <div class="font-14 color-91">
-            订单编号：<span v-text="items.sub_number"></span>
-          </div>
-        </div>
-      </div> -->
         <div class="order-person" v-if="items.address">
           <div class="order-person-title font-15">
             收货人信息
@@ -50,7 +38,7 @@
             商品信息
           </div>
           <div class="order-goodsText">
-            <div class="orders" v-for="(item,index) in items.prod" key='index' >
+            <div class="orders" v-for="(item,index) in items.prod" key='index'>
               <div class="orders-left" @click="goWhere('',item)">
                 <img :src="item.pic">
               </div>
@@ -148,6 +136,7 @@
 import back from '../../components/backNav'
 import md5 from 'js-md5';
 import Apis from '../../configers/Api'
+import countDown from '../../components/time'
 const timer = JSON.stringify(new Date().getTime());
 import { Confirm, ViewBox } from 'vux'
 export default {
@@ -167,6 +156,7 @@ export default {
       conifrmShowText: '确认删除选中的订单吗？',
       orderDetail: {},
       timeShow: true,
+      endTimeNum: '1507721140000',
       order: {
         state: "等待付款"
       },
@@ -179,13 +169,17 @@ export default {
   components: {
     back,
     Confirm,
-    ViewBox
+    ViewBox,
+    countDown
   },
   methods: {
     goWhere: function(title, item) {
       this.$router.push({ path: 'detail', query: { 'title': title, 'prod_id': item.prod_id } })
 
       // this.$router.push({path: 'detail', query: { 'title': title}})
+    },
+    callback: function() {
+
     },
     goReturn: function(item, itemIid, isReturnButtonEnable) {
       if (isReturnButtonEnable == 0) {
@@ -305,15 +299,15 @@ export default {
 
 
     },
-    cancleOrder: function(item) {      
-        this.conifrmText = "确认取消该订单吗？"
-        this.show = true
+    cancleOrder: function(item) {
+      this.conifrmText = "确认取消该订单吗？"
+      this.show = true
 
     },
     delOrder: function(item) {
       console.log(item)
       this.conifrmText = "确认删除该订单吗？",
-      this.conifrmShowText = "是否确认删除"
+        this.conifrmShowText = "是否确认删除"
       this.show = true;
 
     },
@@ -327,7 +321,8 @@ export default {
         }
       }).then((response) => {
         console.log(response.data.data)
-        console.log(response.data.data[0].orderTrack)
+        console.log(response.data.data[0].end_date)
+        this.endTimeNum = new Date(response.data.data[0].end_date).getTime()
         this.orderDetail = response.data.data
         this.orderDetail.forEach(function(n) {
           n.totalCount = 0
@@ -344,39 +339,39 @@ export default {
     }
   },
   filters: {
-    changeStatus: function(n,sellType) {
-    	if (parseInt(sellType) === 1) {
-    		if (n === 1) {
-	        return '等待兑换'
-	      } else if (n === 2) {
-	        return '已兑换'
-	      } else if (n === 3) {
-	        return '已兑换'
-	      } else if (n === 4) {
-	        return '交易成功'
-	      } else if (n === 5) {
-	        return '交易关闭'
-	      } else {
-	        return '退换货'
-	      }
-    	}
-    	
-    	if (parseInt(sellType) === 0) {
-    		if (n === 1) {
-	        return '等待支付'
-	      } else if (n === 2) {
-	        return '已支付'
-	      } else if (n === 3) {
-	        return '已支付'
-	      } else if (n === 4) {
-	        return '交易成功'
-	      } else if (n === 5) {
-	        return '交易关闭'
-	      } else {
-	        return '退换货'
-	      }
-    	}
-      
+    changeStatus: function(n, sellType) {
+      if (parseInt(sellType) === 1) {
+        if (n === 1) {
+          return '等待兑换'
+        } else if (n === 2) {
+          return '已兑换'
+        } else if (n === 3) {
+          return '已兑换'
+        } else if (n === 4) {
+          return '交易成功'
+        } else if (n === 5) {
+          return '交易关闭'
+        } else {
+          return '退换货'
+        }
+      }
+
+      if (parseInt(sellType) === 0) {
+        if (n === 1) {
+          return '等待支付'
+        } else if (n === 2) {
+          return '已支付'
+        } else if (n === 3) {
+          return '已支付'
+        } else if (n === 4) {
+          return '交易成功'
+        } else if (n === 5) {
+          return '交易关闭'
+        } else {
+          return '退换货'
+        }
+      }
+
     }
   },
   mounted: function() {
@@ -392,22 +387,24 @@ export default {
 @import '../../assets/css/global.less';
 
 .order-state {
-  width: 100%;
+  width: 100vw;
   height: 22.4vw;
   text-align: left;
   padding-left: 5vw;
-  line-height: 22.4vw;
+  display: table-cell;
+  vertical-align: middle;
   background: url(../../assets/imgs/time_back.png) no-repeat;
   background-size: cover;
   box-sizing: border-box;
-  font-size: 18px;
   color: #ffffff;
   letter-spacing: 0;
   box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.50);
+  position: relative;
 }
 
 .order-person-title {
-  background: rgba(41, 41, 41, 0.5);;
+  background: rgba(41, 41, 41, 0.5);
+  ;
   border-radius: 2px 2px 0 0;
   height: 8.5vw;
   font-size: 15px;
@@ -641,6 +638,14 @@ export default {
 
 .padding-bottom-15 {
   padding-bottom: 14.5vw!important
+}
+
+.blueText {
+  background: rgba(29, 175, 237, 0.5);
+  .px2vw(height, 32);
+  .px2vw(padding-left, 21);
+  .px2vw(line-height, 32);
+  text-align: left;
 }
 
 </style>

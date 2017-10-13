@@ -91,7 +91,7 @@ export default {
       pageNumber: 1,
       pageSize: 10,
       killId: '',
-      endTimeNum: '1507721140000'
+      endTimeNum: ''
     }
   },
   components: {

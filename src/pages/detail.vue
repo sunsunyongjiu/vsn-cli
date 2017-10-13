@@ -7,78 +7,78 @@
     </div> 
     -->
     <div class="vsn-main">
-      <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
-        <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
-      </swiper>
-      <div class="detail-title">
-        <div class="detail-title-cn font-20" v-text="detailObj.name"></div>
-        <!-- <div class="detail-title-en">Merdeces me</div> -->
-      </div>
-      <div class="detail-pointBtn" v-if="detailObj.sellType==0">
-        <span class="font-10">￥ </span><span v-text="detailObj.cash" class="font-22"></span>
-      </div>
-      <div class="detail-pointBtn font-20" v-if="detailObj.sellType==1">
-        <span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point">积分</span>
-      </div>
-      <div style="text-align:left" class="sevenBox" v-if="detailObj.is7return==1">
-        <img src="../assets/imgs/seven.png">
-        <span class="ba seven font-10">支持七天无理由退货</span>
-      </div>
-      <div>
-        <div v-html="detailObj.content" class="innerDetail font-12"></div>
-      </div>
-      <div v-transfer-dom>
-        <popup v-model="popShow" position="bottom" height="120vw" class="detailPop">
-          <div class="pop-title">
-            <div class="pop-left">
-              <img :src="detailObj.pic">
-            </div>
-            <div class="pop-right">
-              <div class="pop-right-title font-18" v-text="detailObj.name"></div>
-              <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
-              <div class="pop-right-point font-18" v-if="detailObj.sellType==1"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
-              <div class="pop-right-point font-18" v-if="detailObj.sellType==0"><span class="font-9">￥</span><span class="basicColor" v-text="detailObj.cash"></span></div>
-            </div>
-          </div>
-          <div class="pop-size fff">
-            <div v-for="(items,n) in chooses" key=n>
-              <div class="pop-size-title font-15" v-text="items.title"></div>
-              <div class="box">
-                <checker v-model="checkedList[n]" default-item-class="demo1-item" selected-item-class="demo1-item-selected" type="radio">
-                  <checker-item :value="item" v-for="(item, index) in items.checks" :key="index">{{item.value}}</checker-item>
-                </checker>
+      <div class="detail-padding-bottom-50">
+        <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
+          <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
+        </swiper>
+        <div class="detail-title">
+          <div class="detail-title-cn font-20" v-text="detailObj.name"></div>
+          <!-- <div class="detail-title-en">Merdeces me</div> -->
+        </div>
+        <div class="detail-pointBtn" v-if="detailObj.sellType==0">
+          <span class="font-10">￥ </span><span v-text="detailObj.cash" class="font-22"></span>
+        </div>
+        <div class="detail-pointBtn font-20" v-if="detailObj.sellType==1">
+          <span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point">积分</span>
+        </div>
+        <div style="text-align:left" class="sevenBox" v-if="detailObj.is7return==1">
+          <img src="../assets/imgs/seven.png">
+          <span class="ba seven font-10">支持七天无理由退货</span>
+        </div>
+        <div>
+          <div v-html="detailObj.content" class="innerDetail font-12"></div>
+        </div>
+        <div v-transfer-dom>
+          <popup v-model="popShow" position="bottom" height="120vw" class="detailPop">
+            <div class="pop-title">
+              <div class="pop-left">
+                <img :src="detailObj.pic">
+              </div>
+              <div class="pop-right">
+                <div class="pop-right-title font-18" v-text="detailObj.name"></div>
+                <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
+                <div class="pop-right-point font-18" v-if="detailObj.sellType==1"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
+                <div class="pop-right-point font-18" v-if="detailObj.sellType==0"><span class="font-9">￥</span><span class="basicColor" v-text="detailObj.cash"></span></div>
               </div>
             </div>
-            <div class="pop-num">
-              <div class="pop-num-zi font-15">数量</div>
-              <div class="pop-num-shu">
-                <div class="pop-num-left" @click="plus(-1)">-</div>
-                <div v-text="countNum" class="count"></div>
-                <div class="pop-num-right" @click="plus(1)">+</div>
+            <div class="pop-size fff">
+              <div v-for="(items,n) in chooses" key=n>
+                <div class="pop-size-title font-15" v-text="items.title"></div>
+                <div class="box">
+                  <checker v-model="checkedList[n]" default-item-class="demo1-item" selected-item-class="demo1-item-selected" type="radio">
+                    <checker-item :value="item" v-for="(item, index) in items.checks" :key="index">{{item.value}}</checker-item>
+                  </checker>
+                </div>
+              </div>
+              <div class="pop-num">
+                <div class="pop-num-zi font-15">数量</div>
+                <div class="pop-num-shu">
+                  <div class="pop-num-left" @click="plus(-1)">-</div>
+                  <div v-text="countNum" class="count"></div>
+                  <div class="pop-num-right" @click="plus(1)">+</div>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-            <x-button @click.native="goCart" plain class="pop-Btn font-16"> 确定 </x-button>
-          </div>
-        </popup>
+            <div>
+              <x-button @click.native="goCart" plain class="pop-Btn font-16"> 确定 </x-button>
+            </div>
+          </popup>
+        </div>
       </div>
     </div>
-    <div class="vsn-footer">
-      <div class="detail-btn">
-        <flexbox :gutter="0">
-          <flexbox-item>
-            <div class="detail-cartBtn flex-demo font-16" @click="doChange(1)">
-              加入购物车
-            </div>
-          </flexbox-item>
-          <flexbox-item>
-            <div class="flex-demo detail-changeBtn font-16" @click="doChange">
-              {{detailObj.sellType==0?'立即购买':'立即兑换'}}
-            </div>
-          </flexbox-item>
-        </flexbox>
-      </div>
+    <div class="detail-btn">
+      <flexbox :gutter="0">
+        <flexbox-item>
+          <div class="detail-cartBtn flex-demo font-16" @click="doChange(1)">
+            加入购物车
+          </div>
+        </flexbox-item>
+        <flexbox-item>
+          <div class="flex-demo detail-changeBtn font-16" @click="doChange">
+            {{detailObj.sellType==0?'立即购买':'立即兑换'}}
+          </div>
+        </flexbox-item>
+      </flexbox>
     </div>
   </div>
   <!-- 选择规格 -->
@@ -119,7 +119,8 @@ export default {
       detailObj: '',
 
       chooses: [],
-      checkedList: []
+      checkedList: [],
+      bottomShow: false
     }
   },
   components: {
@@ -178,13 +179,6 @@ export default {
     goCart: function() {
       if (this.$store.state.loginUser["ucid"] != undefined) {
         // 在登陆条件下跳转购物车
-        // 设置header
-
-        let header = {
-          "token": this.$store.state.loginUser.token,
-          "time": timer,
-          "sign": md5("/order/insertBasket" + this.$store.state.loginUser.token + timer).toUpperCase()
-        }
         // 设置传值
         let cartData = {
           'prodId': this.detailObj.prod_id,
@@ -194,47 +188,35 @@ export default {
         }
 
         if (this.detailObj.isSecKill) {
-          Apis.getisByProd({ prodId: this.detailObj.prod_id }).then(data => {
+          //秒杀商品要判断是否已经购买过
+          Apis.getisByProd(this.$store.state.loginUser.token, { 'prodId': this.detailObj.prod_id }).then(data => {
             console.log(data)
-            if (data.code == 1) {
-              this.$http({
-                method: 'POST',
-                url: this.$Api('/order/insertBasket'),
-                params: cartData,
-                headers: header,
-                emulateJSON: true
-              }).then(function(data) { //es5写法
+            if (data.data == 0) {
+              //添加到购物车
+              Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
+                console.log(data)
                 if (this.isCart) {
                   this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
                 } else {
-                  this.$router.push({ path: '/sureOrder', query: { 'selectIds': data.data } })
+                  this.$router.push({ path: '/sureOrder', query: { 'selectIds': data } })
                 }
-              }, function(error) {
-                //error
-              })
+              });
             } else {
               this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
               return
             }
-
           })
+        } else {
+          //添加到购物车
+          Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
+            console.log(data)
+            if (this.isCart) {
+              this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
+            } else {
+              this.$router.push({ path: '/sureOrder', query: { 'selectIds': data } })
+            }
+          });
         }
-        this.$http({
-          method: 'POST',
-          url: this.$Api('/order/insertBasket'),
-          params: cartData,
-          headers: header,
-          emulateJSON: true
-        }).then(function(data) { //es5写法
-          if (this.isCart) {
-            this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
-          } else {
-            this.$router.push({ path: '/sureOrder', query: { 'selectIds': data.data } })
-          }
-        }, function(error) {
-          //error
-        })
-
       } else {
         this.$vux.toast.show({
           text: '请先登录',
@@ -280,13 +262,7 @@ export default {
     this.init()
   },
   updated: function() {
-    var ssd = document.getElementsByClassName('ssd-module');
-    console.log(ssd)
-    for (var i = 0; i < ssd.length; i++) {
-      var h = ssd[i].clientHeight
-      ssd[i].style.height = h / 2 + "px"
-    }
-
+    this.bottomShow = true
   },
 
 }
@@ -296,8 +272,6 @@ export default {
 <style scoped lang='less' scoped>
 @import '../assets/css/detail.less';
 @import '../assets/css/global.less';
-
-
 
 
 /*@import '../assets/css/jd.css';*/
@@ -343,6 +317,7 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
 }
+
 
 .detail-changeBtn {
   .px2vw(height, 50);

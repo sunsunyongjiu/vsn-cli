@@ -18,7 +18,7 @@ export default {
     },
     endText: {
       type: String,
-      default: '已结束'
+      default: '0秒'
     },
     callback: {
       type: Function,
@@ -26,10 +26,12 @@ export default {
     }
   },
   mounted() {
-    
+    console.log(this.endTime)
+    this.countdowm(this.endTime)
   },
   watch: {
     endTime() {
+      
       this.countdowm(this.endTime)
     }
   },

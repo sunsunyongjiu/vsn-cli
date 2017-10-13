@@ -112,9 +112,7 @@ export default {
       console.log(this.ticket)
     },
     sureTicket: function() {
-      this.$vux.loading.show({
-        text: 'loading'
-      })
+      
       let header = {
         "token": this.$store.state.loginUser.token,
         "time": timer,
@@ -132,10 +130,14 @@ export default {
         cartData.titleId = 3;
         cartData.company = '杭州驭缘网络科技有限公司';
       }
-      if(this.company&&(this.ticket.company==''||ticket.company.tax_number=='')){
+      if(this.company&&(this.ticket.company==''||this.ticket.tax_number=='')){
         this.$vux.toast.text('不能置空', 'middle')
         return
       }
+      
+      this.$vux.loading.show({
+        text: 'loading'
+      })
       this.$http({
         method: 'POST',
         url: this.$Api('/order/updateOrderInvoice'),

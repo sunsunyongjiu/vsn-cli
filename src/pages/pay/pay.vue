@@ -63,12 +63,12 @@ export default {
 
     goPay: function() {
       if (this.order.sellType == 0) {
-        Apis.unifiedorder({ 'subNumber': this.$route.query.subNumber }).then(data => {
+      	
+      	
+      	Apis.unifiedorder(this.$store.state.loginUser.token,{'subNumber': this.$route.query.subNumber }).then(data => {
           this.callpay(data.data.jsApiParams)
         })
-
-        //window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com?subNumber='+ this.$route.query.subNumber;
-        //return false;
+      	
 
       } else {
         Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'score': this.order.total, token: this.$store.state.loginUser.token }).then(data => {

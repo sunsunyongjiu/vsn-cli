@@ -1,7 +1,7 @@
 <template>
   <div class="vsn-wrap">
-    <div style="height:19.16vw">
-    	 <!--
+    <div style="">
+      <!--
       <div class="pageTitle">
         <span class="font-18">购物车</span>
         <div class="back" @click="goback"></div
@@ -20,7 +20,9 @@
               <swipeout-button @click.native="onButtonClick(item.basketId)" type="warn" :width="70"><span class="font-30">×</span></swipeout-button>
             </div>
             <div slot="content" style="padding:3.2vw;" class="goods">
-              <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)"></div>
+              <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)" v-if="item.status==1||deleteShow"></div>
+              <img src="../assets/imgs/off.png" v-if="item.status!=1&&!deleteShow" class="xiajia">
+              <!-- <div class="choose-btn xiajia"  v-if="item.status!=1"></div> -->
               <div class="goods-left" @click="goWhere(item.title,item)">
                 <img :src="item.pic">
               </div>
@@ -140,7 +142,7 @@ export default {
       } else {
         this.$vux.toast.text('请选择要删除的商品', 'middle')
       }
-      
+
 
 
 
@@ -263,7 +265,7 @@ export default {
       if (this.sameShop != false) {
         let str = ''
         this.goodsList.forEach(function(n) {
-          if (n.selected) {
+          if (n.selected&&n.status==1) {
             str += (',' + n.basketId)
           }
         })
@@ -307,7 +309,8 @@ export default {
               sellType: item.sellType,
               cash: item.cash,
               prod_id: item.prod_id,
-              isSecKill: item.isSecKill
+              isSecKill: item.isSecKill,
+              status: item.status
             }
             arr.push(obj)
           }
@@ -532,6 +535,15 @@ export default {
   width: 4vw;
   height: 4vw;
   border-radius: 100%;
+  position: absolute;
+  top: 50%;
+  margin-top: -2vw;
+  left: 2vw;
+}
+
+.xiajia {
+  width: 8vw;
+  height: 4vw;
   position: absolute;
   top: 50%;
   margin-top: -2vw;

@@ -18,10 +18,15 @@ export default {
     })
   },
   // 判断秒杀
-  getisByProd(params = {}) {
-    console.log(params)
-    return Vue.http.post(basePath + '/order/getisByProd', params, { emulateJSON: true }).then(res => {
-      // some handling
+  getisByProd(token, params = {}) {
+    // some handling
+    return Vue.http({
+      method: 'POST',
+      url: basePath + '/order/getisByProd',
+      params: params,
+      headers: header('/order/getisByProd', token),
+      emulateJSON: true
+    }).then(res => {
       return res.data
     })
   },
@@ -137,10 +142,27 @@ export default {
       return res.data
     })
   },
+  // 添加购物车
+  insertBasket(token, params = {}) {
+    // some handling
+    return Vue.http({
+      method: 'POST',
+      url: basePath + '/order/insertBasket',
+      params: params,
+      headers: header('/order/insertBasket', token),
+      emulateJSON: true
+    }).then(res => {
+      console.log('-------------')
+      return res.data
+    })
+  },
   // 获取微信支付订单信息
-  unifiedorder(params = {}) {
-    return Vue.http.get(basePath + '/wxpay/unifiedorder', { params }).then(res => {
-      // some handling
+  unifiedorder(token,params = {}) {
+    return Vue.http.get(basePath + '/wxpay/unifiedorder', {
+      params: params,
+      headers:header('/order/getPointList', token)
+    }).then(res => {
+      console.log('-------------')
       return res.data
     })
   },
