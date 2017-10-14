@@ -309,6 +309,12 @@ export default {
       //判断当前用户是否登录
       let userToken = this.$route.query.token
       let user = this.$route.query.user
+      let subNumber = "";
+      let success = 0;
+      if(this.$route.query.subNumber){
+      	subNumber = this.$route.query.subNumber
+      	success  = this.$route.query.success
+      }      
       let pandunLogin = this.$store.state.loginUser.name == undefined
       if (userToken && user && pandunLogin) {
         Apis.login({ token: userToken, 'user': user }).then(data => {
@@ -318,6 +324,11 @@ export default {
             userDetail.token = this.$route.query.token
             userDetail.user = this.$route.query.user
             this.$store.dispatch({ type: 'setLogin', data: userDetail })
+            
+            if(subNumber!=""){
+							this.$router.push({ path: '/success', query: { 'subNumber': subNumber, "success": success } })
+						}
+			
           }
         })
       } else if (!pandunLogin) {
@@ -326,7 +337,7 @@ export default {
         this.login = false
       }
 
-
+			
       //初始化时候调取imgurl
       this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
         let imgList = response.data.data

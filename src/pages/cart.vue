@@ -354,7 +354,7 @@ export default {
 
         })
       }
-      return total
+      return total.toFixed(2)
     },
     selectedAll: function() {
       let arr = []

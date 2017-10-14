@@ -63,13 +63,11 @@ export default {
 
     goPay: function() {
       if (this.order.sellType == 0) {
-      	
-      	
+
       	Apis.unifiedorder(this.$store.state.loginUser.token,{'subNumber': this.$route.query.subNumber }).then(data => {
           this.callpay(data.data.jsApiParams)
         })
       	
-
       } else {
         Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'score': this.order.total, token: this.$store.state.loginUser.token }).then(data => {
           if (data) {
@@ -85,7 +83,11 @@ export default {
       Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
         console.log(data.data[0])
         this.order = data.data[0]
-      })
+      }),
+
+      localStorage.setItem("token", this.$store.state.loginUser.token);
+      localStorage.setItem("user", this.$store.state.loginUser.user);
+      localStorage.setItem("subNumber", this.$route.query.subNumber);
     },
     showConfirm: function() {
       this.confirmShow = true
@@ -102,14 +104,28 @@ export default {
         data,
         function(res) {
           WeixinJSBridge.log(res.errMsg);
-          //WeixinJSBridge.log(res.err_msg);
+          
+           var token = localStorage.getItem("token");
+		         var user = localStorage.getItem("user");
+		         var subNumber = localStorage.getItem("subNumber");
+		         
           if (res.err_msg == "get_brand_wcpay_request:ok") {
-            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
+             
+		         window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=1';
+         
           } else if (res.err_msg == "get_brand_wcpay_request:fail") {
-            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
+            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=0';
           } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 0 } })
+            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=0';
           }
+         
+        //alert(res.err_msg);
+				//alert(this.$store.state.loginUser.token);
+        //alert(this.$store.state.loginUser.user);
+         
+         //alert(res.err_msg);
+         
+         
         }
       );
     },

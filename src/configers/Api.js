@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime());
+// const basePath = 'https://mall-test.mercedesmeclub.yuyuanhz.com/api'
 const basePath = 'http://123.57.157.212:9090'
 export default {
   get(params = {}) {
@@ -77,11 +78,29 @@ export default {
       return res.data
     })
   },
+  // 获取物流详情
+  getProdTrackDetail(token,params = {}) {
+    return Vue.http.get(basePath + '/order/getProdTrackDetail', {
+      params: params,
+      headers:header('/order/getProdTrackDetail', token)
+    }).then(res => {
+      return res.data
+    })
+  },
   // 获取退换货详情
   getProdReturnDetail(token,params = {}) {
     return Vue.http.get(basePath + '/order/getProdReturnDetail', {
       params: params,
       headers:header('/order/getProdReturnDetail', token)
+    }).then(res => {
+      return res.data
+    })
+  },
+   // 获取运费
+  getBasketListTrackFee(token,params = {}) {
+    return Vue.http.get(basePath + '/order/getBasketListTrackFee', {
+      params: params,
+      headers:header('/order/getBasketListTrackFee', token)
     }).then(res => {
       return res.data
     })
@@ -160,7 +179,7 @@ export default {
   unifiedorder(token,params = {}) {
     return Vue.http.get(basePath + '/wxpay/unifiedorder', {
       params: params,
-      headers:header('/order/getPointList', token)
+      headers:header('/wxpay/unifiedorder', token)
     }).then(res => {
       console.log('-------------')
       return res.data

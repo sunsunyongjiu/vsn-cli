@@ -18,8 +18,8 @@
           </div>
           <div class="line"></div>
           <div class="order-titles font-14">
-            配送方式
-            <div class="right font-14 ">快递免邮&gt;</div>
+            运费
+            <div class="right-show font-14 ">{{trackFee>0?trackFee:'免费&gt;'}}</div>
           </div>
         </div>
         <div class="order-title font-15 top-5 pd-right2 pd-left-2">商品信息</div>
@@ -32,11 +32,11 @@
               <div class="font-16 df title" v-text="item.prod_name"></div>
               <!-- <div class="font-11 color-92" v-text="">颜色：贵族金，规格：标准</div> -->
               <div class="font-11 color-92 margin-top-5">数量×<span v-text="item.basket_count"></span></div>
-              <div  v-if="item.sellType==1" class='margin-top-5'>
+              <div v-if="item.sellType==1" class='margin-top-5'>
                 <span class="basicColor font-16" v-text="item.point"></span>
                 <span class="font-9 color-9b">积分</span>
               </div>
-              <div  v-if="item.sellType==0" class="margin-top-5">
+              <div v-if="item.sellType==0" class="margin-top-5">
                 <span class="font-9 color-9b">￥</span>
                 <span class="basicColor font-16" v-text="item.cash"></span>
               </div>
@@ -66,6 +66,7 @@
 <script>
 import back from '../../components/backNav'
 import md5 from 'js-md5';
+import Apis from '../../configers/Api';
 import { mapGetters } from 'vuex'
 const timer = JSON.stringify(new Date().getTime())
 export default {
@@ -84,7 +85,8 @@ export default {
         area: '',
         town: '',
         subAdds: ''
-      }
+      },
+      trackFee: ''
     }
   },
   components: {
@@ -104,7 +106,8 @@ export default {
       let cartData = {
         basketIds: this.$route.query.selectIds,
         addrId: this.commonAdd.addrId,
-        token: this.loginUser.token
+        token: this.loginUser.token,
+        trackFee:this.trackFee
       }
       if (this.isCash || this.total <= parseInt(this.loginUser.score)) {
         this.$http({
@@ -146,6 +149,12 @@ export default {
     goLocation: function() {
       this.$router.push({ path: '/choseLocation' })
     },
+    getFee: function() {
+      Apis.getBasketListTrackFee(this.$store.state.loginUser.token, { 'basketIds': this.$route.query.selectIds, 'addrId': this.commonAdd.addrId }).then(data => {
+        console.log(data.data)
+        this.trackFee=data.data.trackFee
+      });
+    },
     init: function() {
       // 根据购物车id取数据
       this.$http.get(this.$Api('/order/getBasketListSelected'), {
@@ -173,12 +182,14 @@ export default {
         }
       }
       if (this.addr.CITY) {
-        this.commonAdd = this.addr
+        this.commonAdd = this.addr;
+        this.getFee()
       } else {
         this.$http.get(this.$Api('/address/getDefaultAddress'), header).then((response) => {
 
           if (response.data.data != null) {
             this.commonAdd = response.data.data
+            this.getFee()
           } else {
 
           }
@@ -296,7 +307,7 @@ export default {
   margin-top: 2.3vw;
 }
 
-.right {
+.right-show {
   float: right;
   color: #888888
 }
@@ -326,7 +337,7 @@ export default {
     .bottom {
       position: absolute;
       bottom: 0;
-      img{
+      img {
         .px2vw(height, 13);
         .px2vw(width, 13);
         vertical-align: middle;
@@ -403,14 +414,14 @@ export default {
 }
 
 .blueText {
-  background: rgba(29,175,237,0.5);
+  background: rgba(29, 175, 237, 0.5);
   .px2vw(height, 32);
   .px2vw(padding-left, 21);
   .px2vw(line-height, 32);
   text-align: left;
-
 }
-.margin-top-5{
+
+.margin-top-5 {
   .px2vw(margin-top, 5);
 }
 

@@ -191,7 +191,7 @@ export default {
           //秒杀商品要判断是否已经购买过
           Apis.getisByProd(this.$store.state.loginUser.token, { 'prodId': this.detailObj.prod_id }).then(data => {
             console.log(data)
-            if (data.data == 0) {
+            if (data == 0) {
               //添加到购物车
               Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
                 console.log(data)

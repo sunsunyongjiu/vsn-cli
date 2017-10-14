@@ -1,5 +1,6 @@
 export default class AppConfig {
   install(Vue, options) {
+    // let basePath = 'https://mall-test.mercedesmeclub.yuyuanhz.com/api'
     let basePath = 'http://123.57.157.212:9090'
     // 1. 添加全局方法或属性
     Vue.appConstant = () => {

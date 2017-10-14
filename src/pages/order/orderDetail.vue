@@ -8,7 +8,7 @@
         <div class="order-state">
           <div style="margin-bottom:2vw;">
             <div class="status font-18" style="margin-bottom:2vw">{{items.status,items.sellType|changeStatus}}</div>
-            <div class="font-10">订单将在
+            <div class="font-10" v-if="items.status==1">订单将在
               <count-down :endTime="endTimeNum" :callback="callback" class="font-11 basicColor"></count-down>后被取消</div>
           </div>
           <!-- <div class="font-12" v-if='timeShow'>剩<span class="basicColor">29分20秒</span>自动关闭</div> -->
@@ -55,8 +55,13 @@
                   <span class="font-9" v-if="items.sellType==1">积分</span>
                 </div>
               </div>
-              <div class="tuihuan font-14" v-if="item.isShowReturnButton" @click="goReturn(items,item.sub_item_id,item.isReturnButtonEnable)" :class="{'greyBtn':!item.isReturnButtonEnable}">
-                申请退换货
+              <div class="tuihuan-box">
+                <div class="tuihuan font-14" v-if="item.isShowReturnButton" @click="goReturn(items,item.sub_item_id,item.isReturnButtonEnable)" :class="{'greyBtn':!item.isReturnButtonEnable}">
+                  申请退换货
+                </div>
+                <div class="tuihuan font-14" v-if="item.isShowTrackButton||items" @click="goTrack(items,item.sub_item_id,item.isTrackButtonEnable)" :class="{'greyBtn':!item.isTrackButtonEnable}">
+                  查看物流
+                </div>
               </div>
               <div class="order-line"></div>
             </div>
@@ -89,19 +94,6 @@
             </div>
           </div>
         </div>
-        <div class="order-info" v-if="(items.status==3||items.status==2)&&(items.orderTrack!=null)">
-          <div class="order-person-title">
-            物流信息
-          </div>
-          <div class="order-infoText padding-bottom-15">
-            <div v-for="item in items.orderTrack" class="sendMsgBox">
-              <div class="sendMsgBoxItem">
-                <div v-text="item.content" class="font-13"></div>
-                <div v-text="item.msgTime" class="font-11"></div>
-              </div>
-            </div>
-          </div>
-        </div>
         <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm(items)" confirm-text="是" cancel-text="否">
           <div v-text="conifrmText" style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
           </div>
@@ -116,7 +108,7 @@
         <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==1' @click="goPay(items)">
           {{items.sellType==0?'去支付':'去兑换'}}
         </div>
-        <div class="bottom-btn-right font-16" v-if='items.isShowInvoiceButton>0' @click="goTicket(items)">
+        <div class="bottom-btn-right font-16" v-if='items.isShowInvoiceButton>0' @click="goTicket(items)" :class="{'greyBtn':!items.isInvoiceButtonEnable}">
           {{orderDetail[0].invoice_sub_id?'已开具发票':'申请发票'}}
         </div>
         <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==2||orderDetail[0].status==3' @click="goCheck(items)">
@@ -174,7 +166,7 @@ export default {
   },
   methods: {
     goWhere: function(title, item) {
-      this.$router.push({ path: 'detail', query: { 'title': title, 'prod_id': item.prod_id } })
+      this.$router.push({ path: 'detail', query: { 'prod_id': item.prod_id } })
 
       // this.$router.push({path: 'detail', query: { 'title': title}})
     },
@@ -189,6 +181,13 @@ export default {
       }
 
     },
+    goTrack:function(item, itemIid, isReturnButtonEnable){
+      // if (isReturnButtonEnable == 0) {
+      //   return
+      // } else {
+        this.$router.push({ path: '/trackDetail', query: { 'subNumber': item.sub_number, 'itemIid': itemIid } })
+      // }
+    },
     goPay: function(item) {
 
       this.$router.push({ path: '/pay', query: { 'subNumber': item.sub_number } })
@@ -196,7 +195,12 @@ export default {
 
     },
     goTicket: function(item) {
-      this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number } })
+      if (isInvoiceButtonEnable == 0) {
+        return
+      } else {
+        this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number } })
+      }
+
     },
     goCheck: function(item) {
       this.conifrmText = "确认收货吗？";
@@ -618,12 +622,17 @@ export default {
 }
 
 .tuihuan {
+  float: right;
+  border: 1px solid #1dafed;
+  .px2vw(margin-left, 6);
+  color: #1dafed;
+  padding: 1vw
+}
+
+.tuihuan-box {
   position: absolute;
   bottom: 5.06vw;
   right: 0;
-  border: 1px solid #1dafed;
-  color: #1dafed;
-  padding: 1vw
 }
 
 .greyBtn {
