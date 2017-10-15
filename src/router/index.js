@@ -23,12 +23,13 @@ import changeOrder from '@/pages/order/changeOrder'
 import listTime from '@/pages/list/list-time'
 import pay from '@/pages/pay/pay'
 import paySc from '@/pages/pay/paySuccess'
+import store from '../store';
 
 
 Vue.use(Router)
 // name为页面跳转后的页面标题
 const router = new Router({
-	 mode: 'history',
+  mode: 'history',
   routes: [{
       path: '/search',
       name: '搜索列表',
@@ -68,6 +69,7 @@ const router = new Router({
       path: '/path',
       name: '积分商城',
       component: Hello,
+      meta: { allowBack: false }
     },
     {
       path: '/lists',
@@ -133,6 +135,7 @@ const router = new Router({
       path: '/pay',
       name: '支付订单',
       component: pay,
+      meta: { allowBack: false }
     },
     {
       path: '/success',
@@ -156,5 +159,14 @@ router.beforeEach((to, from, next) => {
   Vue.$vux.loading.hide()
   document.title = to.name
   next()
+  let allowBack = true //    给个默认值true
+  if (to.meta.allowBack !== undefined) {
+    allowBack = to.meta.allowBack
+  }
+
+  if (!allowBack) {
+    history.pushState(null, null, location.href)
+  }
+  store.dispatch({ type: 'updateAppSetting', data: allowBack })
 })
 export default router;

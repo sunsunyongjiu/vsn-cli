@@ -1,6 +1,6 @@
 <template>
   <div class="vsn-wrap">
-   <!--  <back title="退换货申请"></back> -->
+    <!--  <back title="退换货申请"></back> -->
     <div class="vsn-main">
       <div class="order-goods">
         <div class="order-person-title font-15">
@@ -79,6 +79,7 @@
 <script>
 import back from '../../components/backNav';
 import Apis from '../../configers/Api'
+
 export default {
   name: '',
   data() {
@@ -89,15 +90,19 @@ export default {
           moble: ''
         }
       },
-      returnOrder: false
+      returnOrder: false,
+      Confirm: false,
+
     }
   },
   components: {
-    back
+    back,
+
   },
   methods: {
+
     init: function() {
-      this.returnOrder=  this.$store.state.chosenReturnType
+      this.returnOrder = this.$store.state.chosenReturnType
       Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'subItemId': this.$route.query.itemIid }).then(data => {
         console.log(data.data[0])
         this.order = data.data[0];
@@ -114,7 +119,7 @@ export default {
       this.$router.push({ path: '/choseLocation', query: { 'from': 'return', 'returnType': this.returnOrder ? 1 : 2 } })
     },
     goChange: function() {
-      if (this.order.address!=null) {
+      if (this.order.address != null) {
         this.$router.push({ path: '/changeOrder', query: { 'subNumber': this.$route.query.subNumber, 'returnType': this.returnOrder ? 1 : 2, 'postType': 1, 'addrId': this.order.address.addrId, 'itemIid': this.$route.query.itemIid } })
       } else {
         this.$vux.toast.text('收件地址不能为空', 'middle')

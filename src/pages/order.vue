@@ -12,7 +12,7 @@
     </div>
     <div>
       <div class="orderList" v-for="(items,key ) in orderLists" key="key">
-        <div class="orders" v-for="(item,index) in items.prod" key='index' @click="goDetail(items)">
+        <div class="orders" v-for="(item,index) in items.prod" key='index' @click="goDetail(items,item)">
           <div class="orders-left">
             <img :src="item.pic">
           </div>
@@ -144,10 +144,12 @@ export default {
       console.log(this.status)
       this.init()
     },
-    goDetail: function(n) {
+    goDetail: function(n,item) {
       if(this.listIndex==4){
-        this.$router.push({ path: '/returnDetail', query: { 'subItemId': n.prod[0].sub_item_id } })
+        
+        this.$router.push({ path: '/returnDetail', query: { 'subItemId': item.sub_item_id } })
       }else{
+        
         this.$router.push({ path: '/orderDetail', query: { 'sub_number': n.sub_number } })
       }
       

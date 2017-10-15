@@ -25,3 +25,11 @@ export const setUserScore = ({ commit }, data) => {
 export const setReturnType = ({ commit }, data) => {
   commit('setReturnType', data)
 }
+
+export const updateAppSetting = ({ commit }, data) => {
+  commit('updateAppSetting', data)
+}
+export const setPayConfirmShow = ({ commit }, data) => {
+  commit('setPayConfirmShow', data)
+}
+

@@ -19,7 +19,7 @@
           <div class="line"></div>
           <div class="order-titles font-14">
             运费
-            <div class="right-show font-14 ">{{trackFee>0?trackFee:'免费&gt;'}}</div>
+            <div class="right-show font-14 ">{{trackFee>0?trackFee:'免邮&gt;'}}</div>
           </div>
         </div>
         <div class="order-title font-15 top-5 pd-right2 pd-left-2">商品信息</div>
@@ -55,7 +55,7 @@
         <span class="font-18 basicColor" v-text="total" v-if="!isCash"></span>
         <span class="font-18 basicColor" v-text="totalCash" v-if="isCash"></span>
         <span class="font-9 basicColor" v-if="!isCash">积分</span>
-        <div class="font-9 color-9b">
+        <div class="font-9 color-9b" v-if="!isCash">
           积分商品限量兑换，不支持退换货
         </div>
       </div>
@@ -225,6 +225,7 @@ export default {
       this.goods.forEach(function(n) {
         num += (n.basket_count * n.cash)
       })
+      num=num+parseInt(this.trackFee)
       return num
     }
   }

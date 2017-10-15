@@ -13,3 +13,11 @@ export const getEditAddr = (state) => {
 export const getlistIndex = (state) => {
    return state.listIndex
 }
+
+export const getallowBack = (state) => {
+   return state.allowBack
+}
+
+export const getPayConfirmShow = (state) => {
+   return state.payConfirmShow
+}

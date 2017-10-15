@@ -1,9 +1,5 @@
 <template>
   <div class="vsn-wrap">
-    <div class="pageTitle">
-      <span class="font-18">支付订单</span>
-      <div class="back" @click="showConfirm"></div>
-    </div>
     <div class="vsn-main">
       <div class="orderList ">
         <div class="order-title font-15">订单信息</div>
@@ -43,6 +39,7 @@
 import back from '../../components/backNav'
 import Apis from '../../configers/Api'
 import { Confirm } from 'vux'
+import { mapGetters } from 'vuex'
 export default {
   name: '',
   data() {
@@ -52,7 +49,6 @@ export default {
         total: '',
         sellType: ''
       },
-      confirmShow: false
     }
   },
   components: {
@@ -64,10 +60,10 @@ export default {
     goPay: function() {
       if (this.order.sellType == 0) {
 
-      	Apis.unifiedorder(this.$store.state.loginUser.token,{'subNumber': this.$route.query.subNumber }).then(data => {
+        Apis.unifiedorder(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
           this.callpay(data.data.jsApiParams)
         })
-      	
+
       } else {
         Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'score': this.order.total, token: this.$store.state.loginUser.token }).then(data => {
           if (data) {
@@ -81,11 +77,11 @@ export default {
     },
     init: function() {
       Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
-        console.log(data.data[0])
-        this.order = data.data[0]
-      }),
+          console.log(data.data[0])
+          this.order = data.data[0]
+        }),
 
-      localStorage.setItem("token", this.$store.state.loginUser.token);
+        localStorage.setItem("token", this.$store.state.loginUser.token);
       localStorage.setItem("user", this.$store.state.loginUser.user);
       localStorage.setItem("subNumber", this.$route.query.subNumber);
     },
@@ -93,10 +89,11 @@ export default {
       this.confirmShow = true
     },
     onConfirm: function() {
-      this.$router.push({ path: '/order' })
+      this.$store.dispatch({ type: 'setPayConfirmShow', data: false })
+      this.$router.push({ path: '/path' })
     },
     onCancel: function() {
-
+      this.$store.dispatch({ type: 'setPayConfirmShow', data: false })
     },
     jsApiCall: function(data) {
       WeixinJSBridge.invoke(
@@ -104,28 +101,28 @@ export default {
         data,
         function(res) {
           WeixinJSBridge.log(res.errMsg);
-          
-           var token = localStorage.getItem("token");
-		         var user = localStorage.getItem("user");
-		         var subNumber = localStorage.getItem("subNumber");
-		         
+
+          var token = localStorage.getItem("token");
+          var user = localStorage.getItem("user");
+          var subNumber = localStorage.getItem("subNumber");
+
           if (res.err_msg == "get_brand_wcpay_request:ok") {
-             
-		         window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=1';
-         
+
+            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=1';
+
           } else if (res.err_msg == "get_brand_wcpay_request:fail") {
             window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=0';
           } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
             window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=0';
           }
-         
-        //alert(res.err_msg);
-				//alert(this.$store.state.loginUser.token);
-        //alert(this.$store.state.loginUser.user);
-         
-         //alert(res.err_msg);
-         
-         
+
+          //alert(res.err_msg);
+          //alert(this.$store.state.loginUser.token);
+          //alert(this.$store.state.loginUser.user);
+
+          //alert(res.err_msg);
+
+
         }
       );
     },
@@ -147,7 +144,14 @@ export default {
   mounted: function() {
     this.init()
 
-  }
+  },
+  computed: {
+    // 使用对象展开运算符将 getters 混入 computed 对象中
+    ...mapGetters({
+      confirmShow: 'getPayConfirmShow'
+
+    })
+  },
 }
 
 </script>

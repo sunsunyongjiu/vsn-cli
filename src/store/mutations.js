@@ -24,3 +24,11 @@ export function setUserScore (state, { data }) {
 export function setReturnType (state, { data }) {
   state.chosenReturnType = data
 }
+
+export function updateAppSetting (state, { data }) {
+  state.allowBack = data
+}
+
+export function setPayConfirmShow (state, { data }) {
+  state.payConfirmShow = data
+}

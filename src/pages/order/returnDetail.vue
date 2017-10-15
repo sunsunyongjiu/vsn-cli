@@ -102,13 +102,19 @@ export default {
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.50)
 }
 
+
 .returnDetailText {
   background: #181818;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  .px2vw(height, 52);
-  .px2vw(line-height, 52);
+  width: 100vw;
+  box-sizing: border-box;
+  overflow: hidden;
   .px2vw(padding-left, 19);
+  .px2vw(padding-right, 19);
+  .px2vw(padding-top, 16);
+  .px2vw(padding-bottom, 12);
   .px2vw(margin-bottom, 7);
+
   text-align: left;
 }
 

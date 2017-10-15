@@ -113,6 +113,10 @@ export default {
       console.log(2)
     },
     goWhere: function(title, item) {
+      if(item.status!=1){
+        this.$vux.toast.text('商品已下架', 'middle')
+        return
+      }
       this.$router.push({ path: 'detail', query: { 'title': title, 'prod_id': item.prod_id } })
 
       // this.$router.push({path: 'detail', query: { 'title': title}})

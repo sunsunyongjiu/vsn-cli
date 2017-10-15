@@ -40,8 +40,8 @@
         </div> -->
         </div>
         <div v-if="company||main">
-          <x-input placeholder="请填写单位名称" class="type-hedder-item-input font-14" v-model="ticket.company" v-if="company"></x-input>
-          <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.tax_number" v-if="company"></x-input>
+          <x-input placeholder="请填写单位名称" class="type-hedder-item-input font-14" v-model="ticket.company" v-if="company" :disabled="!showSure"></x-input>
+          <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.tax_number" v-if="company" :disabled="!showSure"></x-input>
           <x-input class="type-hedder-item-input font-14" disabled v-model="ticket.main" v-if="main"></x-input>
           <!-- <x-input placeholder="请填写纳税人识别号" class="type-hedder-item-input font-14" v-model="ticket.main_tax_number" disabled></x-input> -->
         </div>

@@ -57,9 +57,9 @@
               </div>
               <div class="tuihuan-box">
                 <div class="tuihuan font-14" v-if="item.isShowReturnButton" @click="goReturn(items,item.sub_item_id,item.isReturnButtonEnable)" :class="{'greyBtn':!item.isReturnButtonEnable}">
-                  申请退换货
+                  退换货
                 </div>
-                <div class="tuihuan font-14" v-if="item.isShowTrackButton||items" @click="goTrack(items,item.sub_item_id,item.isTrackButtonEnable)" :class="{'greyBtn':!item.isTrackButtonEnable}">
+                <div class="tuihuan font-14" v-if="item.isShowTrackButton" @click="goTrack(items,item.sub_item_id,item.isTrackButtonEnable)" :class="{'greyBtn':!item.isTrackButtonEnable}">
                   查看物流
                 </div>
               </div>
@@ -108,7 +108,7 @@
         <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==1' @click="goPay(items)">
           {{items.sellType==0?'去支付':'去兑换'}}
         </div>
-        <div class="bottom-btn-right font-16" v-if='items.isShowInvoiceButton>0' @click="goTicket(items)" :class="{'greyBtn':!items.isInvoiceButtonEnable}">
+        <div class="bottom-btn-right font-16" v-if='items.isShowInvoiceButton>0' @click="goTicket(items,items.isInvoiceButtonEnable)" :class="{'greyBtn':!items.isInvoiceButtonEnable}">
           {{orderDetail[0].invoice_sub_id?'已开具发票':'申请发票'}}
         </div>
         <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==2||orderDetail[0].status==3' @click="goCheck(items)">
@@ -173,20 +173,20 @@ export default {
     callback: function() {
 
     },
-    goReturn: function(item, itemIid, isReturnButtonEnable) {
-      if (isReturnButtonEnable == 0) {
+    goReturn: function(item, itemIid, isEnable) {
+      if (isEnable == 0) {
         return
       } else {
         this.$router.push({ path: '/returnOrder', query: { 'subNumber': item.sub_number, 'itemIid': itemIid } })
       }
 
     },
-    goTrack:function(item, itemIid, isReturnButtonEnable){
-      // if (isReturnButtonEnable == 0) {
-      //   return
-      // } else {
+    goTrack:function(item, itemIid, isEnable){
+       if (isEnable == 0) {
+         return
+       } else {
         this.$router.push({ path: '/trackDetail', query: { 'subNumber': item.sub_number, 'itemIid': itemIid } })
-      // }
+       }
     },
     goPay: function(item) {
 
@@ -194,8 +194,8 @@ export default {
 
 
     },
-    goTicket: function(item) {
-      if (isInvoiceButtonEnable == 0) {
+    goTicket: function(item,isEnable) {
+      if (isEnable == 0) {
         return
       } else {
         this.$router.push({ path: '/orderTicket', query: { 'subNumber': item.sub_number } })
@@ -324,8 +324,6 @@ export default {
           "sign": md5("/order/getOrderDetail" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }).then((response) => {
-        console.log(response.data.data)
-        console.log(response.data.data[0].end_date)
         this.endTimeNum = new Date(response.data.data[0].end_date).getTime()
         this.orderDetail = response.data.data
         this.orderDetail.forEach(function(n) {

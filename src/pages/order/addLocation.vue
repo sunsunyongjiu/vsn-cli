@@ -1,6 +1,6 @@
 <template>
   <div class="vsn-wrap">
-   <!-- <back :title="addTitle"></back> -->
+    <!-- <back :title="addTitle"></back> -->
     <div class="vsn-main">
       <div class='addLocationBox'>
         <div class="settings">
@@ -10,7 +10,7 @@
         <div class="line"></div>
         <div class="settings">
           <div class="settings-left font-14">联系电话</div>
-          <input type="text" v-model="postData.mobile" class="addLocationBox-input font-14">
+          <input type="tel" v-model="postData.mobile" class="addLocationBox-input font-14" maxlength="11" pattern="^1[3|4|5|7|8]\d{9}$">
         </div>
         <div class="line"></div>
         <div class="settings">
@@ -104,6 +104,7 @@ export default {
     TabItem
   },
   methods: {
+
     // 初始化调用数据
     init: function() {
       let _this = this
@@ -163,7 +164,18 @@ export default {
       }
     },
     saveAdd: function() {
-      if(this.postData.subAdds==''){
+      let re = /^1\d{10}$/;
+
+      if (this.postData.receiver == '') {
+        this.$vux.toast.text('收货人不能为空', 'middle')
+        return
+      }
+      if (!re.test(this.postData.mobile)) {
+        this.$vux.toast.text('手机号格式错误，请重新填写', 'middle')
+        this.postData.mobile = '';
+        return
+      }
+      if (this.postData.subAdds == '') {
         this.$vux.toast.text('详细地址不能为空', 'middle')
         return
       }

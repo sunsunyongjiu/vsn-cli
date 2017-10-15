@@ -1,6 +1,6 @@
 <template>
   <div class="vsn-wrap">
-   <!-- <back :title="title"></back> -->
+    <!-- <back :title="title"></back> -->
     <div class="vsn-main">
       <div class="order-goods">
         <div class="order-person-title font-15">
@@ -70,6 +70,11 @@
         </popup>
       </div>
     </div>
+    <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
+      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
+        提交{{$route.query.returnType=='2'?'换货':'退货'}}申请后不可取消，是否确认提交
+      </div>
+    </confirm>
     <div class="submitBtn font-18 fff" @click="exchangeOrder">
       提交
     </div>
@@ -79,7 +84,7 @@
 import back from '../../components/backNav';
 import imgUploader from '../../components/imgUploader';
 import Apis from '../../configers/Api'
-import { TransferDom, Popup, XButton } from 'vux'
+import { TransferDom, Popup, XButton, Confirm } from 'vux'
 export default {
   name: '',
   directives: {
@@ -106,19 +111,49 @@ export default {
         photoFile3: '',
         phptoFile4: ''
       },
-      title: this.$route.query.returnType == '2' ? '申请换货' : '申请退货'
+      title: this.$route.query.returnType == '2' ? '申请换货' : '申请退货',
+      show: false,
     }
   },
   components: {
     back,
     imgUploader,
     Popup,
-    XButton
+    XButton,
+    Confirm
   },
   methods: {
+    onConfirm: function() {
+      this.$vux.loading.show({
+        text: 'loading'
+      })
+      let data = {
+        subNumber: this.$route.query.subNumber,
+        returnType: this.$route.query.returnType,
+        postType: this.$route.query.postType,
+        addrId: this.$route.query.addrId,
+        returnReason: this.resonText,
+        returnDescription: this.textareaText,
+        subItemID: this.$route.query.itemIid,
+        photoFile1: this.photoFile.photoFile1,
+        photoFile2: this.photoFile.photoFile2,
+        photoFile3: this.photoFile.photoFile3,
+        photoFile4: this.photoFile.photoFile4,
+
+      }
+      Apis.exchangeOrder(this.$store.state.loginUser.token, data).then(data => {
+        console.log(data)
+        this.$store.dispatch({ type: 'setlistIndex', data: 4 })
+        this.$vux.loading.hide()
+        this.$router.push({ path: '/order' })
+      });
+    },
+    onCancel:function(){
+
+    },
     init: function() {
       let _this = this
-      document.title = this.$route.query.returnType == '2'? '申请换货' : '申请退货'
+      document.title = this.$route.query.returnType == '2' ? '申请换货' : '申请退货'
       Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'subItemId': this.$route.query.itemIid }).then(data => {
         _this.order = data.data[0];
         _this.order.prod.forEach(function(x) {
@@ -157,29 +192,8 @@ export default {
       this.$router.push({ path: '/choseLocation' })
     },
     exchangeOrder: function() {
-      this.$vux.loading.show({
-        text: 'loading'
-      })
-      let data = {
-        subNumber: this.$route.query.subNumber,
-        returnType: this.$route.query.returnType,
-        postType: this.$route.query.postType,
-        addrId: this.$route.query.addrId,
-        returnReason: this.resonText,
-        returnDescription: this.textareaText,
-        subItemID: this.$route.query.itemIid,
-        photoFile1: this.photoFile.photoFile1,
-        photoFile2: this.photoFile.photoFile2,
-        photoFile3: this.photoFile.photoFile3,
-        photoFile4: this.photoFile.photoFile4,
+      this.show = true
 
-      }
-      Apis.exchangeOrder(this.$store.state.loginUser.token, data).then(data => {
-        console.log(data)
-        this.$store.dispatch({ type: 'setlistIndex', data: 4 })
-        this.$vux.loading.hide()
-        this.$router.push({ path: '/order' })
-      });
     },
   },
   mounted: function() {

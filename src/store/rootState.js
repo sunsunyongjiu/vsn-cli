@@ -5,6 +5,8 @@ const state = {
     editAddr:{},
     listIndex:'',
     sessionAddr:{},
-    chosenReturnType:false
+    chosenReturnType:false,
+    allowBack:true,
+    payConfirmShow:false,
 }
 export default state;
