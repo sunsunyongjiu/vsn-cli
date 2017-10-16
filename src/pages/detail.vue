@@ -188,24 +188,43 @@ export default {
         }
 
         if (this.detailObj.isSecKill) {
-          //秒杀商品要判断是否已经购买过
-          Apis.getisByProd(this.$store.state.loginUser.token, { 'prodId': this.detailObj.prod_id }).then(data => {
-            console.log(data)
-            if (data == 0) {
-              //添加到购物车
-              Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
-                console.log(data)
-                if (this.isCart) {
-                  this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
-                } else {
-                  this.$router.push({ path: '/sureOrder', query: { 'selectIds': data } })
-                }
-              });
-            } else {
-              this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
-              return
-            }
-          })
+    
+        	Apis.getSecKillTimeList().then(data => {
+	          
+	          //秒杀没开始不允许添加
+	          if(data.data[0]&&data.data[0].status==1){
+	            this.$vux.toast.text('秒杀活动未开始', 'middle')
+	            return
+	          }else if(data.data[0]&&data.data[0].status==2){
+	            
+	          }else if(data.data[0]&&data.data[0].status==3){
+	            this.$vux.toast.text('秒杀活动已结束', 'middle')
+	            return
+	          }else{
+	            this.$vux.toast.text('秒杀活动已结束', 'middle')
+	            return
+	          }
+	          
+	          //秒杀商品要判断是否已经购买过
+	          Apis.getisByProd(this.$store.state.loginUser.token, { 'prodId': this.detailObj.prod_id }).then(data => {
+	            console.log(data)
+	            if (data == 0) {
+	              //添加到购物车
+	              Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
+	                console.log(data)
+	                if (this.isCart) {
+	                  this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
+	                } else {
+	                  this.$router.push({ path: '/sureOrder', query: { 'selectIds': data } })
+	                }
+	              });
+	            } else {
+	              this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+	              return
+	            }
+	          })
+	        })
+          
         } else {
           //添加到购物车
           Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {

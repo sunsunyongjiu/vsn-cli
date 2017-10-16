@@ -86,7 +86,7 @@ export default {
         town: '',
         subAdds: ''
       },
-      trackFee: ''
+      trackFee: '0'
     }
   },
   components: {
@@ -107,7 +107,7 @@ export default {
         basketIds: this.$route.query.selectIds,
         addrId: this.commonAdd.addrId,
         token: this.loginUser.token,
-        trackFee:this.trackFee
+        freightAmount:this.trackFee
       }
       if (this.isCash || this.total <= parseInt(this.loginUser.score)) {
         this.$http({

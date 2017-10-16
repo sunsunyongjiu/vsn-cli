@@ -323,6 +323,8 @@ export default {
             let userDetail = data.data
             userDetail.token = this.$route.query.token
             userDetail.user = this.$route.query.user
+            console.log(data.data.carImg)
+            this.myCardSrc = require("../assets/imgs/"+data.data.carImg+".png"),
             this.$store.dispatch({ type: 'setLogin', data: userDetail })
             
             if(subNumber!=""){

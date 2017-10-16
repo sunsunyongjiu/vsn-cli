@@ -139,7 +139,7 @@ const router = new Router({
     },
     {
       path: '/success',
-      name: '支付成功',
+      name: '支付结果',
       component: paySc,
     },
     {

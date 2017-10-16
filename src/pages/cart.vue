@@ -345,14 +345,14 @@ export default {
       let total = 0
       if (this.checkType) {
         this.goodsList.forEach(function(item) {
-          if (item.selected) {
+          if (item.selected&&item.status==1) {
             total += (item.point * item.count)
           }
 
         })
       } else {
         this.goodsList.forEach(function(item) {
-          if (item.selected) {
+          if (item.selected&&item.status==1) {
             total += (item.cash * item.count)
           }
 

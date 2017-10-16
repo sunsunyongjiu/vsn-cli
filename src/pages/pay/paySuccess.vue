@@ -49,7 +49,7 @@ export default {
       order: {
 
       },
-      success:this.$route.query.success
+      success:0
     }
   },
   components: {
@@ -61,6 +61,7 @@ export default {
     },
     init: function() {
       let _this=this
+      this.data.success=this.$route.query.success
       Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
         console.log(data.data[0])
         this.order = data.data[0]
