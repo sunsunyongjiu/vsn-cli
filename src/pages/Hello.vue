@@ -324,16 +324,21 @@ export default {
             userDetail.token = this.$route.query.token
             userDetail.user = this.$route.query.user
             console.log(data.data.carImg)
-            this.myCardSrc = require("../assets/imgs/"+data.data.carImg+".png"),
+            this.myCardSrc = require("../assets/imgs/"+data.data.carImg+".png");
             this.$store.dispatch({ type: 'setLogin', data: userDetail })
             
             if(subNumber!=""){
-							this.$router.push({ path: '/success', query: { 'subNumber': subNumber, "success": success } })
+            	if(success==1){
+            		this.$router.push({ path: '/success', query: { 'subNumber': subNumber, "success": success } })	
+            	}else{
+            		this.$router.push({ path: '/fail', query: { 'subNumber': subNumber, "success": success } })            		
+            	}							
 						}
 			
           }
         })
       } else if (!pandunLogin) {
+        this.myCardSrc = require("../assets/imgs/"+this.$store.state.loginUser.carImg+".png"),
         this.login = true
       } else {
         this.login = false

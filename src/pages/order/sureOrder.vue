@@ -7,8 +7,8 @@
     <div class="order-title font-15 pd-right2">收货人信息</div>
     <div class="container">
       <div class="orderList">
-        <div class="order-location font-14" @click="goLocation">
-          <div class="order-location-text">
+        <div class="order-location font-14">
+          <div class="order-location-text"  @click="goLocation">
             <span v-text="commonAdd.RECEIVER"></span><span v-text="commonAdd.moble"></span>
             <br>
             <span>
@@ -321,7 +321,6 @@ export default {
     width: 22.9vw;
     height: 100%;
     float: left;
-    background: #292929;
     border-radius: 2px;
     img {
       height: 100%;

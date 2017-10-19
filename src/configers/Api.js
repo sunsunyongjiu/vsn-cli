@@ -31,6 +31,19 @@ export default {
       return res.data
     })
   },
+  // 判断秒杀订单
+  getisByProdInOrder(token, params = {}) {
+    // some handling
+    return Vue.http({
+      method: 'POST',
+      url: basePath + '/order/getisByProdInOrder',
+      params: params,
+      headers: header('/order/getisByProdInOrder', token),
+      emulateJSON: true
+    }).then(res => {
+      return res.data
+    })
+  },
   // 上传图片
   uploadImage(imageBase64,imageType) {
     var params={

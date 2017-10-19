@@ -13,6 +13,7 @@
         </swiper>
         <div class="detail-title">
           <div class="detail-title-cn font-20" v-text="detailObj.name"></div>
+          <div v-text="detailObj.brief" class="font-11 color-91"></div>
           <!-- <div class="detail-title-en">Merdeces me</div> -->
         </div>
         <div class="detail-pointBtn" v-if="detailObj.sellType==0">
@@ -29,8 +30,9 @@
           <div v-html="detailObj.content" class="innerDetail font-12"></div>
         </div>
         <div v-transfer-dom>
-          <popup v-model="popShow" position="bottom" height="120vw" class="detailPop">
+          <popup v-model="popShow" position="bottom" height="100vw" class="detailPop">
             <div class="pop-title">
+              <img src="../assets/imgs/cha.png" class="cha" @click="changePopShow()">
               <div class="pop-left">
                 <img :src="detailObj.pic">
               </div>
@@ -45,8 +47,8 @@
               <div v-for="(items,n) in chooses" key=n>
                 <div class="pop-size-title font-15" v-text="items.title"></div>
                 <div class="box">
-                  <checker v-model="checkedList[n]" default-item-class="demo1-item" selected-item-class="demo1-item-selected" type="radio">
-                    <checker-item :value="item" v-for="(item, index) in items.checks" :key="index">{{item.value}}</checker-item>
+                  <checker v-model="checkedList[n]" default-item-class="demo1-item" selected-item-class="demo1-item-selected" type="radio" radio-required>
+                    <checker-item :value="item" v-for="(item, index) in items.checks" :key="index" radio-required>{{item.value}}</checker-item>
                   </checker>
                 </div>
               </div>
@@ -176,6 +178,10 @@ export default {
 
 
     },
+    changePopShow:function(){
+      console.log(1)
+      this.popShow=false
+    },
     goCart: function() {
       if (this.$store.state.loginUser["ucid"] != undefined) {
         // 在登陆条件下跳转购物车
@@ -188,43 +194,64 @@ export default {
         }
 
         if (this.detailObj.isSecKill) {
-    
-        	Apis.getSecKillTimeList().then(data => {
-	          
-	          //秒杀没开始不允许添加
-	          if(data.data[0]&&data.data[0].status==1){
-	            this.$vux.toast.text('秒杀活动未开始', 'middle')
-	            return
-	          }else if(data.data[0]&&data.data[0].status==2){
-	            
-	          }else if(data.data[0]&&data.data[0].status==3){
-	            this.$vux.toast.text('秒杀活动已结束', 'middle')
-	            return
-	          }else{
-	            this.$vux.toast.text('秒杀活动已结束', 'middle')
-	            return
-	          }
-	          
-	          //秒杀商品要判断是否已经购买过
-	          Apis.getisByProd(this.$store.state.loginUser.token, { 'prodId': this.detailObj.prod_id }).then(data => {
-	            console.log(data)
-	            if (data == 0) {
-	              //添加到购物车
-	              Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
-	                console.log(data)
-	                if (this.isCart) {
-	                  this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
-	                } else {
-	                  this.$router.push({ path: '/sureOrder', query: { 'selectIds': data } })
-	                }
-	              });
-	            } else {
-	              this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
-	              return
-	            }
-	          })
-	        })
-          
+
+          Apis.getSecKillTimeList().then(data => {
+
+            //秒杀没开始不允许添加
+            if (data.data[0] && data.data[0].status == 1) {
+              this.$vux.toast.text('秒杀活动未开始', 'middle')
+              return
+            } else if (data.data[0] && data.data[0].status == 2) {
+
+            } else if (data.data[0] && data.data[0].status == 3) {
+              this.$vux.toast.text('秒杀活动已结束', 'middle')
+              return
+            } else {
+              this.$vux.toast.text('秒杀活动已结束', 'middle')
+              return
+            }
+
+            //秒杀商品要判断是否已经购买过
+            if (this.isCart) {
+              Apis.getisByProd(this.$store.state.loginUser.token, { 'prodId': this.detailObj.prod_id }).then(data => {
+                console.log(data)
+                if (data == 0) {
+                  //添加到购物车
+                  Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
+                    console.log(data)
+                    if (this.isCart) {
+                      this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
+                    } else {
+                      this.$router.push({ path: '/sureOrder', query: { 'selectIds': data } })
+                    }
+                  });
+                } else {
+                  this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+                  return
+                }
+              })
+            } else {
+              Apis.getisByProdInOrder(this.$store.state.loginUser.token, { 'prodId': this.detailObj.prod_id }).then(data => {
+                console.log(data)
+                if (data == 0) {
+                  //添加到购物车
+                  Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
+                    console.log(data)
+                    if (this.isCart) {
+                      this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
+                    } else {
+                      this.$router.push({ path: '/sureOrder', query: { 'selectIds': data } })
+                    }
+                  });
+                } else {
+                  this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+                  return
+                }
+              })
+            }
+
+          })
+
         } else {
           //添加到购物车
           Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
@@ -293,6 +320,8 @@ export default {
 @import '../assets/css/global.less';
 
 
+
+
 /*@import '../assets/css/jd.css';*/
 
 .innerDetail {}
@@ -302,6 +331,7 @@ export default {
   .px2vw(padding-right, 16);
   box-sizing: border-box;
   color: #fff;
+  text-align: left;
   .detail-title-cn {
     margin: 8px auto;
   }
@@ -382,6 +412,7 @@ export default {
   letter-spacing: 0;
   text-align: left;
   margin-bottom: 6vw;
+  position: relative;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
   .pop-right {
     height: 21.2vw;
@@ -497,6 +528,14 @@ export default {
     .px2vw(width, 13);
     vertical-align: middle
   }
+}
+
+.cha {
+  position: absolute;
+  right: 4vw;
+  top: 4vw;
+  height: 6vw;
+  z-index: 500
 }
 
 </style>

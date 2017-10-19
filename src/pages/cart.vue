@@ -27,7 +27,10 @@
                 <img :src="item.pic">
               </div>
               <div class="goods-right">
-                <div v-text="item.title" class="font-18 df goods-title" @click="goWhere(item.title,item)"></div>
+                <div  class="font-18 df goods-title" @click="goWhere(item.title,item)">
+                  <img src="../assets/imgs/seckill.png" v-if="item.isSecKill">
+                  <span v-text="item.title"></span>
+                </div>
                 <!-- <div class="font-14 df">Merdeces Me</div> -->
                 <div class="font-10 color-92 goods-size-box" v-for="i in item.size" @click="goWhere(item.title,item)">
                   <span v-text="i.key"></span>: <span v-text="i.value"></span>
@@ -57,10 +60,10 @@
         <div class="bottom-left">&nbsp;全选</div>
       </div>
       <div v-if="selectePoint&&!deleteShow" class="bottom-mid">
-        <span class="font-14 fff">合计:</span> <span class="color-1dafed font-18" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
+        <span class="font-14 fff">合计:</span> <span class="color-1dafed font-16" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
       </div>
       <div v-if="!selectePoint&&!deleteShow" class="bottom-mid">
-        <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-18" v-text="totalPoint"></span>
+        <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-16" v-text="totalPoint"></span>
       </div>
       <span class="color-91 font-14 " v-if="!deleteShow" @click="deleteShow=true">
         编辑
@@ -82,6 +85,7 @@
 <script>
 import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm, ViewBox } from 'vux'
 import back from '../components/backNav'
+import Apis from '../configers/Api'
 
 import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime())
@@ -184,40 +188,87 @@ export default {
     },
     goPlus: function(item, n) {
       if (item.isSecKill) {
-        this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
-        return
+      	Apis.getSecKillTimeList().then(data => {
+      		
+          console.log(data.data[0])
+          if(data.data[0]&&data.data[0].status==1){
+            this.$vux.toast.text('秒杀活动尚未开始', 'middle')
+       		  return
+          }else if(data.data[0]&&data.data[0].status==2){
+            this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+       		  return
+          }else if(data.data[0]&&data.data[0].status==3){
+            
+          }else{
+          	
+          }
+          
+          item.selected = true
+		      if (n > 0) {
+		        item.count++
+		      } else if (item.count <= 1) {
+		        return
+		      } else {
+		        item.count--
+		      }
+		
+		      let header = {
+		        "token": this.$store.state.loginUser.token,
+		        "time": timer,
+		        "sign": md5("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
+		      }
+		      // 设置传值
+		      let cartData = {
+		        'basketId': item.basketId,
+		        'basketCount': item.count
+		      }
+		
+		      this.$http({
+		        method: 'POST',
+		        url: this.$Api('/order/updateBasketCount'),
+		        params: cartData,
+		        headers: header,
+		        emulateJSON: true
+		      }).then(function(data) {
+		        console.log(data)
+		      }, function(error) {
+		        //error
+		      })
+		      
+        })   
+      }else{
+      	 item.selected = true
+		      if (n > 0) {
+		        item.count++
+		      } else if (item.count <= 1) {
+		        return
+		      } else {
+		        item.count--
+		      }
+		
+		      let header = {
+		        "token": this.$store.state.loginUser.token,
+		        "time": timer,
+		        "sign": md5("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
+		      }
+		      // 设置传值
+		      let cartData = {
+		        'basketId': item.basketId,
+		        'basketCount': item.count
+		      }
+		
+		      this.$http({
+		        method: 'POST',
+		        url: this.$Api('/order/updateBasketCount'),
+		        params: cartData,
+		        headers: header,
+		        emulateJSON: true
+		      }).then(function(data) {
+		        console.log(data)
+		      }, function(error) {
+		        //error
+		      })
       }
-      item.selected = true
-      if (n > 0) {
-        item.count++
-      } else if (item.count <= 1) {
-        return
-      } else {
-        item.count--
-      }
-
-      let header = {
-        "token": this.$store.state.loginUser.token,
-        "time": timer,
-        "sign": md5("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
-      }
-      // 设置传值
-      let cartData = {
-        'basketId': item.basketId,
-        'basketCount': item.count
-      }
-
-      this.$http({
-        method: 'POST',
-        url: this.$Api('/order/updateBasketCount'),
-        params: cartData,
-        headers: header,
-        emulateJSON: true
-      }).then(function(data) {
-        console.log(data)
-      }, function(error) {
-        //error
-      })
 
     },
     doSelect(item) {
@@ -350,6 +401,7 @@ export default {
           }
 
         })
+        return total.toFixed(0)
       } else {
         this.goodsList.forEach(function(item) {
           if (item.selected&&item.status==1) {
@@ -357,8 +409,9 @@ export default {
           }
 
         })
+        return total.toFixed(2)
       }
-      return total.toFixed(2)
+      
     },
     selectedAll: function() {
       let arr = []
@@ -447,7 +500,6 @@ export default {
   }
   .goods-left {
     float: left;
-    background: #292929;
     border-radius: 2px;
     width: 26.6vw;
     height: 26.6vw;
@@ -500,7 +552,11 @@ export default {
       width: 43.3vw;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis
+      text-overflow: ellipsis;
+      img{
+        height: 4.5vw;
+        vertical-align: middle;
+      }
     }
   }
 }

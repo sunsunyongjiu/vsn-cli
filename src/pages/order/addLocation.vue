@@ -361,6 +361,8 @@ export default {
   width: 100%;
   height: 13.3vw;
   line-height: 13.3vw;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .settings-left {
@@ -494,7 +496,6 @@ export default {
 }
 
 .addLocationBox-input {
-  float: left;
   background: none;
   color: white;
   border: none;

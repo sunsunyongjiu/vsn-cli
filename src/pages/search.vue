@@ -4,7 +4,6 @@
       未搜索到该商品
     </div>
     <div class="searchBar">
-      <div class="back" @click="goback"></div>
       <div class="seachBtn" @click="goSearch">
         <!-- <img src="../assets/imgs/search.png"> -->
         <i class="weui-icon-search font-14" style="line-height:2"></i>
@@ -250,7 +249,7 @@ input:focus {
     background: #4a4a4a !important;
     border: none;
     color: #fff;
-    width: 85%;
+    width: 92%;
     float: right;
     border-radius: 2px 0 0 2px;
     height: 100%;

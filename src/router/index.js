@@ -23,6 +23,7 @@ import changeOrder from '@/pages/order/changeOrder'
 import listTime from '@/pages/list/list-time'
 import pay from '@/pages/pay/pay'
 import paySc from '@/pages/pay/paySuccess'
+import payfail from '@/pages/pay/payFail'
 import store from '../store';
 
 
@@ -139,8 +140,13 @@ const router = new Router({
     },
     {
       path: '/success',
-      name: '支付结果',
+      name: '支付成功',
       component: paySc,
+    },
+    {
+      path: '/fail',
+      name: '支付失败',
+      component: payfail,
     },
     {
       path: '/pointHistory',

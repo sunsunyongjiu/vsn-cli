@@ -114,7 +114,7 @@
         <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==2||orderDetail[0].status==3' @click="goCheck(items)">
           确认收货
         </div>
-        <div class="bottom-btn-left font-16" v-if="orderDetail[0].status==1" @click="cancleOrder(items)">
+        <div class="bottom-btn-right font-16" v-if="orderDetail[0].status==1" @click="cancleOrder(items)">
           取消订单
         </div>
         <div class="bottom-btn-left font-16" @click="delOrder(items)" v-if="orderDetail[0].status==5 && orderDetail[0].delete_status!=1">

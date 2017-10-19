@@ -4,37 +4,16 @@
     <div class="vsn-main">
       <div class="success">
         <div class="success-logo">
-          <img src="../../assets/imgs/success.png">
+          <img src="../../assets/imgs/fail.png">
         </div>
         <div class="font-18 fff pay-suc">
-          {{'支付成功'}}
+          {{'支付失败'}}
         </div>
-        <div class="font-14 color-7f">{{'我们将尽快为您发货'}}</div>
+        <div class="font-14 color-7f">{{'请重新支付'}}</div>
       </div>
-      <div class="orderInfo" v-if="success">
-        <div class="order font-15 color-7f">
-          <div class="order-left">订单号：</div>
-          <div class="order-right" v-text="order.sub_number">1</div>
-        </div>
-        <div class="order font-15 color-7f">
-          <div class="order-left">支付方式：</div>
-          <div class="order-right">{{order.sellType==0?'微信支付':'积分支付'}}</div>
-        </div>
-        <!--       <div class="order font-15 color-7f">
-        <div class="order-left">支付账号：</div>
-        <div class="order-right">sweetie_love</div>
-      </div> -->
-        <!--       <div class="order font-15 color-7f">
-        <div class="order-left">收件人：</div>
-        <div class="order-right">Lucy</div>
-      </div> -->
-        <div class="order font-15 color-7f">
-          <div class="order-left">订单总额：</div>
-          <div class="order-right">
-            <span v-if="order.sellType==0">￥</span>
-            <span class="" v-text="order.total"></span>
-            <span v-if="order.sellType==1">积分</span></div>
-        </div>
+      <div class="fail-mid">
+        该订单会为您保留30分钟（从下单时间算起），30分钟如果还未支付，系统将自动取消该订单。
+        <br>如需帮助，请联系我们客服。
       </div>
     </div>
     <div class="payBtn font-18" @click="goBack">返回</div>
@@ -219,6 +198,24 @@ export default {
     text-align: left;
     padding-left: 5%
   }
+}
+
+.fail-mid {
+  background: #181818;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+  .px2vw(height, 200);
+  .px2vw(width, 350);
+  .px2vw(margin-top, 40);
+  .px2vw(padding-left, 44);
+  .px2vw(padding-right, 41);
+  .px2vw(padding-top, 46);
+  .px2vw(font-size, 14);
+  .px2vw(line-height, 25);
+  box-sizing: border-box;
+  color: #919191;
+
+  margin: 0 auto;
+  text-align: left;
 }
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="vsn-wrap">
-   <!-- <back title="选择地址"></back> -->
+    <!-- <back title="选择地址"></back> -->
     <div class='vsn-main'>
       <div class="locationList">
         <swipeout class="vux-1px-tb" v-for="(item,index) in locationList" key=index>
@@ -147,29 +147,34 @@ export default {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
   width: 100%;
   height: 26.6vw;
-  color: #7a7a7a;
+  color: #fff;
   box-sizing: border-box;
   padding: 5.3vw 0;
   margin-bottom: 4px;
-  margin-top: 10px;
+  display: table;
+  position: relative;
   .locationsLeft {
-    float: left;
+    /*float: left;*/
     width: 83vw;
+    height: 16vw;
     padding-left: 5vw;
     text-align: left;
-    line-height: 20px;
-    .px2vw(line-height, 20);
+    /*line-height: 20px;
+    .px2vw(line-height, 20);*/
     box-sizing: border-box;
+    display: table-cell;
+    vertical-align: middle;
   }
   .locationsRight {
-    float: right;
+    right: 0;
+    top: 50%;
     width: 17vw;
-
+    position: absolute;
     padding-right: 3vw;
     box-sizing: border-box;
+    margin-top: -2.2vw;
     img {
       height: 4.5vw;
-      margin-top: 6.0vw
     }
   }
 }

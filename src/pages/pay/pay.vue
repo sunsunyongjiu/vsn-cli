@@ -29,8 +29,8 @@
     </div>
     <div class="payBtn font-18" @click="goPay">确认支付</div>
     <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
-      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
-        确认取消该订单?
+      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
+        确认取消支付?
       </div>
     </confirm>
   </div>
@@ -69,7 +69,7 @@ export default {
           if (data) {
             this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
           } else {
-            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 0 } })
+            this.$router.push({ path: '/fail', query: { 'subNumber': this.$route.query.subNumber, success: 0 } })
           }
         })
 

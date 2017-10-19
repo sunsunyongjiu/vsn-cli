@@ -81,9 +81,12 @@ export default {
   },
   methods: {
     check: function(num) {
-      this.person = num == 1 ? true : false;
-      this.company = num == 2 ? true : false;
-      this.main = num == 3 ? true : false;
+      if(this.showSure){
+        this.person = num == 1 ? true : false;
+        this.company = num == 2 ? true : false;
+        this.main = num == 3 ? true : false;
+      }
+      
 
     },
     init: function() {

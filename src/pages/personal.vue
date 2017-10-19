@@ -8,7 +8,7 @@
       <span v-text="loginUser.name" class="font-16 fff"></span>
     </div>
     <div class="personal-title-point font-10">
-      <img src="../assets/imgs/s_integral.png">
+      <div class="personal-title-point-diamond"></div>
       <span v-text="loginUser.score">
         
       </span>
@@ -16,13 +16,13 @@
         积分
       </span>
     </div>
-    <!--
+    
     <div class="personal-title-googsBox">
-      <div class="personal-title-googs font-11">
+      <!-- <div class="personal-title-googs font-11">
         查看可以兑换的商品
-      </div>
+      </div> -->
     </div>
- 		-->
+ 		
     <div class="detailBox">
       <div class="details">
         <div class="details-left">
@@ -42,7 +42,8 @@
         <div class="details-left"><img src="../assets/imgs/phone.png" class="personal-img"> 联系方式
         </div>
         <div class='details-right'>
-          <input type="text" name="country" :value="loginUser.mobile" readonly="readonly"  style="background:none;text-align:right;border:none" class="color-87">
+          <x-input class="color-87 font-14 tel-input" v-model="loginUser.mobile" disabled></x-input>
+          <!-- <input type="text" name="country" :value="loginUser.mobile" readonly="readonly"  style="background:none;text-align:right;border:none" class="color-87"> -->
         </div>
       </div>
       <div class="line"></div>
@@ -68,6 +69,7 @@
 <script>
 import back from '../components/backNav'
 import { mapGetters } from 'vuex'
+import { XInput } from 'vux';
 export default {
   name: '',
   data() {
@@ -76,7 +78,8 @@ export default {
     }
   },
   components: {
-    back
+    back,
+    XInput
   },
   methods: {
     init: function() {
@@ -151,18 +154,37 @@ export default {
 .personal-title-point {
   background: #292929;
   border-radius: 100px;
-  width: 20.7vw;
+  /*width: 20.7vw;*/
+  padding: 0 1vw;
+  display: inline-block;
   .px2vw(height, 18);
   .px2vw(line-height, 18);
   margin: 4vw auto 0;
-
+  
   font-size: 10px;
   color: #ffffff;
   letter-spacing: 0;
   text-align: center;
+  vertical-align: middle;
   img {
-    height: 100%;
+    .px2vw(height, 12);
     vertical-align: middle;
+    vertical-align: middle;
+    .px2vw(margin-top, -2);
+  }
+  .personal-title-point-diamond{
+    .px2vw(height, 16);
+    .px2vw(width, 16);
+    .px2vw(margin-top, 1);
+    vertical-align: middle;
+    display: inline-block;
+    background: url(../assets/imgs/s_integral.png) center center no-repeat;
+    background-size: 75%;
+    border-radius: 100%;
+    background-color: #888;
+  }
+  span{
+    .px2vw(line-height, 18);
   }
 }
 
@@ -188,6 +210,7 @@ export default {
   overflow: hidden;
   background: url('../assets/imgs/loading.png') no-repeat bottom;
   background-size: 100%;
+  opacity: 0.7;
 }
 
 .personal-img {
@@ -195,5 +218,13 @@ export default {
   18);
   vertical-align: middle;
 }
-
+.tel-input{
+  height: 100%;
+  padding: 0;
+  float: right;
+  text-align: right;
+  input{
+    text-align: right !important;
+  }
+}
 </style>
