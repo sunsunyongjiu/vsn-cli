@@ -66,7 +66,7 @@ export default {
 
       } else {
         Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'score': this.order.total, token: this.$store.state.loginUser.token }).then(data => {
-          if (data) {
+          if (data.code == 1) {
             this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
           } else {
             this.$router.push({ path: '/fail', query: { 'subNumber': this.$route.query.subNumber, success: 0 } })

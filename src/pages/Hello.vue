@@ -42,9 +42,11 @@
             <div class="flex-demo">
               <img :src="myCardSrc" class="myCard">
             </div>
+            <!--
             <div class="my-club">
               <span v-if="login" class="font-9">{{"Mercedes me 车主俱乐部"|tr}}</span>
             </div>
+            -->
           </flexbox-item>
           <flexbox-item v-show="login">
             <div class="flex-demo myPoints">

@@ -102,13 +102,15 @@
     </div>
     <div class="vsn-footer" v-for="(items , key) in orderDetail" key="key">
       <div class="bottom-btn">
-        <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==4||orderDetail[0].status==5' @click="buyAgain(items.prod[0].prod_id)">
+      	<!--
+          <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==4||orderDetail[0].status==5' @click="buyAgain(items.prod[0].prod_id)">
           {{items.sellType==0?'再次购买':'再次兑换'}}
         </div>
+        -->
         <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==1' @click="goPay(items)">
           {{items.sellType==0?'去支付':'去兑换'}}
         </div>
-        <div class="bottom-btn-right font-16" v-if='items.isShowInvoiceButton>0' @click="goTicket(items,items.isInvoiceButtonEnable)" :class="{'greyBtn':!items.isInvoiceButtonEnable}">
+        <div class="bottom-btn-right font-16" v-if='items.isShowInvoiceButton>0' @click="goTicket(items,items.isInvoiceButtonEnable)" :class="{'greyBtn':(!items.isInvoiceButtonEnable||orderDetail[0].invoice_sub_id)}">
           {{orderDetail[0].invoice_sub_id?'已开具发票':'申请发票'}}
         </div>
         <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==2||orderDetail[0].status==3' @click="goCheck(items)">
@@ -166,6 +168,10 @@ export default {
   },
   methods: {
     goWhere: function(title, item) {
+    	if(item.prodStatus!=1){
+        this.$vux.toast.text('商品已下架', 'middle')
+        return
+      }
       this.$router.push({ path: 'detail', query: { 'prod_id': item.prod_id } })
 
       // this.$router.push({path: 'detail', query: { 'title': title}})
@@ -190,7 +196,7 @@ export default {
     },
     goPay: function(item) {
 
-      this.$router.push({ path: '/pay', query: { 'subNumber': item.sub_number } })
+      this.$router.replace({ path: '/pay', query: { 'subNumber': item.sub_number } })
 
 
     },
@@ -387,7 +393,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
 @import '../../assets/css/global.less';
-
+.order-goodsText{
+  overflow: hidden;
+}
 .order-state {
   width: 100vw;
   height: 22.4vw;

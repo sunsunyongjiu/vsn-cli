@@ -19,10 +19,10 @@
           <div class="line"></div>
           <div class="order-titles font-14">
             运费
-            <div class="right-show font-14 ">{{trackFee>0?trackFee:'免邮&gt;'}}</div>
+            <div class="right-show font-14 ">{{trackFee>0?trackFee:'免邮'}}</div>
           </div>
         </div>
-        <div class="order-title font-15 top-5 pd-right2 pd-left-2">商品信息</div>
+        <div class="order-title font-15 top-5 pd-right2">商品信息</div>
         <div class="order-goods-box">
           <div class="order-goods" v-for="(item,key) in goods" key=index>
             <div class="goods-left">
@@ -265,25 +265,19 @@ export default {
   }
 }
 
-.container {
-  padding-left: 3vw;
-  padding-right: 3vw;
-}
 
 .order-title {
   text-align: left;
   box-sizing: border-box;
   width: 100%;
   height: 8.5vw;
-  opacity: 0.5;
-  background: #292929;
+  background: rgba(49,49,49,0.5);
   border-radius: 2px 2px 0 0;
   line-height: 8.5vw;
   color: #fff;
   padding-left: 2vw;
   padding-left: 5.3vw;
   position: relative;
-  margin-top: 2.3vw;
   font-size: 15px;
   /*box-shadow:0 2px 4px 0 */
 }
@@ -295,7 +289,8 @@ export default {
   width: 100%;
   line-height: 6.5vw;
   color: #7a7a7a;
-  padding-left: 2vw;
+  padding-left: 5vw;
+  padding-right: 3vw;
   position: relative;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
 }
@@ -351,11 +346,12 @@ export default {
 
 .order-goods-box {
   padding-bottom: 14.9333vw;
+  padding-left: 5vw;
 }
 
 .order-location-text {
   position: relative;
-  padding: 5vw 0;
+  padding: 5vw 0vw;
   .right {
     position: absolute;
     height: 5vw;
@@ -398,7 +394,6 @@ export default {
   border-radius: 2px 2px 0 0;
   line-height: 8.5vw;
   color: #fff;
-  opacity: 0.5;
   position: relative
 }
 

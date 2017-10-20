@@ -499,9 +499,7 @@ export default {
   background: none;
   color: white;
   border: none;
-  height: 13.3vw;
   width: 70.2vw;
-  line-height: 13.3vw;
   outline: none !important;
 }
 

@@ -68,12 +68,17 @@
       <span class="color-91 font-14 " v-if="!deleteShow" @click="deleteShow=true">
         编辑
       </span>
-      <div class="bottom-right" @click="goSure" v-if="!deleteShow">{{selectePoint?'兑换':'购买'}}</div>
-      <div class="bottom-right bottom-right-red" @click="deleteAll" v-if="deleteShow">删除</div>
-      <!-- </div> -->
-      <span class="font-14 fff" v-if="deleteShow" @click="deleteShow=false" style="float:right;margin-right:5vw">
+      <div class="bottom-mid" v-if="deleteShow"></div>
+      <span class="fff font-14 " v-if="deleteShow" @click="deleteShow=false">
         完成
       </span>
+      <div class="bottom-right" :class="{'bottom-right-red':deleteShow}" @click="goSure()">{{deleteShow?'删除':(selectePoint?'兑换':'购买')}}</div>
+      <!-- <div class="bottom-right" @click="goSure" v-if="!deleteShow">{{selectePoint?'兑换':'购买'}}</div>
+      <div class="bottom-right bottom-right-red" @click="deleteAll" v-if="deleteShow">删除</div>
+      <!-- </div> -->
+      <!-- <span class="font-14 fff" v-if="deleteShow" @click="deleteShow=false" style="float:right;margin-right:5vw">
+        完成
+      </span> -->
       <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
         <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品吗？</p>
       </confirm>
@@ -295,6 +300,10 @@ export default {
 
     },
     goSure: function() {
+      if(this.deleteShow){
+        this.deleteAll()
+        return
+      }
       console.log(this.sameShop != false)
       /*
       console.log(this.goodsList.length)
@@ -638,6 +647,7 @@ export default {
   width: 33.2vw;
   text-align: center;
   float: left;
+  height: 100%;
 }
 
 .goods-size-box {

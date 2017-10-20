@@ -532,9 +532,9 @@ export default {
 
 .cha {
   position: absolute;
-  right: 4vw;
-  top: 4vw;
-  height: 6vw;
+  right: 3vw;
+  top: 2vw;
+  height: 2vw;
   z-index: 500
 }
 

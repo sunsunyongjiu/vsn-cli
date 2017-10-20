@@ -35,7 +35,7 @@
           <div class="orders-right font-12">
             {{item.returnStatusRemark}}
           </div>
-          <div class="order-line"></div>
+          <div class="order-line" v-if="listIndex!=4"></div>
         </div>
         <div>
           <div class="order-btns"  v-if="listIndex!=4">
