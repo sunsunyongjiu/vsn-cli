@@ -71,7 +71,7 @@
       </div>
     </div>
     <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
-      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
+      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
         提交{{$route.query.returnType=='2'?'换货':'退货'}}申请后不可取消，是否确认提交
       </div>
     </confirm>

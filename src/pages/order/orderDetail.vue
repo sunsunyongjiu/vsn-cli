@@ -95,14 +95,14 @@
           </div>
         </div>
         <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm(items)" confirm-text="是" cancel-text="否">
-          <div v-text="conifrmText" style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
+          <div v-text="conifrmText" style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
           </div>
         </confirm>
       </div>
     </div>
     <div class="vsn-footer" v-for="(items , key) in orderDetail" key="key">
       <div class="bottom-btn">
-      	<!--
+        <!--
           <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==4||orderDetail[0].status==5' @click="buyAgain(items.prod[0].prod_id)">
           {{items.sellType==0?'再次购买':'再次兑换'}}
         </div>
@@ -122,6 +122,12 @@
         <div class="bottom-btn-left font-16" @click="delOrder(items)" v-if="orderDetail[0].status==5 && orderDetail[0].delete_status!=1">
           删除订单
         </div>
+      </div>
+    </div>
+    <div class="mubu" v-if="mubuShow">
+      <div class="mubu-textBox">
+        <div class="mubu-text">您的订单未在规定时间内支付，已为您取消，点击确定将为您跳转~</div>
+        <div @click="goList()" class="mubuSureBtn font-16">确定</div>
       </div>
     </div>
   </div>
@@ -157,7 +163,8 @@ export default {
 
 
       show: false,
-      cancleShow: false
+      cancleShow: false,
+      mubuShow: false
     }
   },
   components: {
@@ -168,7 +175,7 @@ export default {
   },
   methods: {
     goWhere: function(title, item) {
-    	if(item.prodStatus!=1){
+      if (item.prodStatus != 1) {
         this.$vux.toast.text('商品已下架', 'middle')
         return
       }
@@ -177,7 +184,7 @@ export default {
       // this.$router.push({path: 'detail', query: { 'title': title}})
     },
     callback: function() {
-
+      this.mubuShow = true;
     },
     goReturn: function(item, itemIid, isEnable) {
       if (isEnable == 0) {
@@ -187,12 +194,12 @@ export default {
       }
 
     },
-    goTrack:function(item, itemIid, isEnable){
-       if (isEnable == 0) {
-         return
-       } else {
+    goTrack: function(item, itemIid, isEnable) {
+      if (isEnable == 0) {
+        return
+      } else {
         this.$router.push({ path: '/trackDetail', query: { 'subNumber': item.sub_number, 'itemIid': itemIid } })
-       }
+      }
     },
     goPay: function(item) {
 
@@ -200,7 +207,7 @@ export default {
 
 
     },
-    goTicket: function(item,isEnable) {
+    goTicket: function(item, isEnable) {
       if (isEnable == 0) {
         return
       } else {
@@ -219,6 +226,10 @@ export default {
     },
     onCancel: function() {
 
+    },
+    goList: function() {
+      this.$store.dispatch({ type: 'setlistIndex', data: 3 })
+      this.$router.replace({ path: 'order' })
     },
     onConfirm: function(items) {
       if (this.conifrmText == "确认收货吗？") {
@@ -393,9 +404,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
 @import '../../assets/css/global.less';
-.order-goodsText{
+.order-goodsText {
   overflow: hidden;
 }
+
 .order-state {
   width: 100vw;
   height: 22.4vw;
@@ -661,6 +673,45 @@ export default {
   .px2vw(padding-left, 21);
   .px2vw(line-height, 32);
   text-align: left;
+}
+
+.mubu {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  ;
+  position: fixed;
+  top: 0;
+  z-index: 200;
+  .mubu-textBox {
+    position: absolute;
+    .px2vw(width, 250);
+    .px2vw(height, 192);
+    top: 50vh;
+    left: 50%;
+    .px2vw(margin-left, -125);
+    .px2vw(margin-top, -96);
+    border-radius: 2px;
+    background: #292929;
+    .mubuSureBtn{
+      width: 100%;
+      height: 9vw;
+      background-color: #1dafed;
+      position: absolute;
+      bottom: 0;
+      color: #fff;
+      line-height: 9vw;
+    }
+    .mubu-text{
+      width: 100%;
+      text-align: center;
+      height: 42.2vw;
+      display: table-cell;
+      vertical-align: middle;
+      padding: 0 4vw;
+      color: #fff
+    }
+  }
 }
 
 </style>

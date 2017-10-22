@@ -42,7 +42,7 @@
         <div class="details-left"><img src="../assets/imgs/phone.png" class="personal-img"> 联系方式
         </div>
         <div class='details-right'>
-          <x-input class="color-87 font-14 tel-input" v-model="loginUser.mobile" disabled></x-input>
+          <x-input class="color-87 font-14 tel-input" v-model="tel" disabled></x-input>
           <!-- <input type="text" name="country" :value="loginUser.mobile" readonly="readonly"  style="background:none;text-align:right;border:none" class="color-87"> -->
         </div>
       </div>
@@ -52,7 +52,7 @@
         </div>
         <div style="float:right"></div>
         <div  class='details-right'>
-          <span v-text="loginUser.score"></span> &gt;
+          <span v-text="loginUser.score"></span> <span class="right-icon"></span>
         </div>
 
       </div>
@@ -61,7 +61,7 @@
         <div class="details-left">
           <img src="../assets/imgs/location.png" class="personal-img"> 收货地址
         </div>
-        <div class='details-right' @click="goLocation">管理我的收货地址 &gt;</div>
+        <div class='details-right' @click="goLocation">管理我的收货地址<span class="right-icon"></span></div>
       </div>
     </div>
   </div>
@@ -102,8 +102,13 @@ export default {
     ...mapGetters({
       loginUser: 'getLogin'
 
-    })
-  }
+    }),
+    tel:function(){
+      // return this.loginUser.mobile
+      return `${this.loginUser.mobile.substr(0,3)}****${this.loginUser.mobile.substr(-4)}`;
+
+    }
+  },
 }
 
 </script>
@@ -226,5 +231,14 @@ export default {
   input{
     text-align: right !important;
   }
+}
+.right-icon{
+  display: inline-block;
+  vertical-align: middle;
+  transform: rotate(45deg);
+  border-top: 1px solid #888;
+  border-right: 1px solid #888;
+  .px2vw(height, 8);
+  .px2vw(width, 8);
 }
 </style>

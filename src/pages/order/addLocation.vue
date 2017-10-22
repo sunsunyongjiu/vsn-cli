@@ -92,7 +92,7 @@ export default {
         status: 1
 
       },
-      common: false
+      common: this.$route.query.edit?false:true
     }
   },
   components: {
@@ -397,9 +397,11 @@ export default {
   letter-spacing: 0;
   text-align: left;
   .setMorenCircle {
-    background: #1dafed !important;
-    width: 4.2vw;
-    height: 4.2vw;
+    background: url(../../assets/imgs/choose.png) center center !important;
+    background-color: #1dafed!important;
+    background-size: 170% 170% !important;
+    width: 4vw;
+    height: 4vw;
     border-radius: 100%;
     float: left;
     margin-top: 4.5vw;
@@ -410,8 +412,8 @@ export default {
     background: none;
     border: 1px solid #1dafed;
     box-sizing: border-box;
-    width: 4.2vw;
-    height: 4.2vw;
+    width: 4vw;
+    height: 4vw;
     border-radius: 100%;
     float: left;
     margin-top: 4.5vw;

@@ -50,7 +50,7 @@
                 <span v-if="items.status==1||items.status==4" @click="goPay(items)" class="font-12">{{items.sellType==0?'去支付':'去兑换'}}</span>
                 <span v-if="items.status==3||items.status==2" @click="goGet(items.sub_number)" class="font-12">确认收货</span>
                 <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
-                  <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
+                  <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
                     确认收货么？
                   </div>
                 </confirm>
@@ -165,6 +165,9 @@ export default {
           this.status = _this.listIndex + 2
         }
       }
+      this.$vux.loading.show({
+        text: 'loading'
+      })
       this.$http.get(this.$Api('/order/getOrderList'), {
         params: { 'status': this.status },
         headers: {
@@ -182,7 +185,7 @@ export default {
             n.totalCount += x.basket_count
           })
         })
-
+        this.$vux.loading.hide()
       }, (response) => {
         // error callback
       });

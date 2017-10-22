@@ -247,7 +247,7 @@ export default {
         if (title == '无忧出行') {
           window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/rights'
         } else if (title == '精英课选') {
-          window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/activity'
+          window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/activityDetail?id=12'
         } else if (title == '尊享礼券') {
           this.showContact = true;
           this.showBox = 'zun'

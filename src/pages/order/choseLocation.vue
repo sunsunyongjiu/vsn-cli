@@ -6,7 +6,7 @@
         <swipeout class="vux-1px-tb" v-for="(item,index) in locationList" key=index>
           <swipeout-item transition-mode="follow">
             <div slot="right-menu">
-              <swipeout-button type="warn" class="cha" @click.native="deleteItem(item)">×</swipeout-button>
+              <swipeout-button type="warn" class="cha font-30" @click.native="deleteItem(item)">×</swipeout-button>
             </div>
             <div slot="content" class="locations">
               <div>
@@ -34,7 +34,7 @@
       添加新地址
     </div>
     <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
-      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-12">
+      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
         确认删除地址吗？
       </div>
     </confirm>

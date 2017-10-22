@@ -32,3 +32,7 @@ export function updateAppSetting (state, { data }) {
 export function setPayConfirmShow (state, { data }) {
   state.payConfirmShow = data
 }
+
+export function setIsCash (state, { data }) {
+  state.isCashCart = data
+}

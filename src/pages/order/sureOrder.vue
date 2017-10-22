@@ -31,7 +31,7 @@
             <div class="goods-right">
               <div class="font-16 df title" v-text="item.prod_name"></div>
               <!-- <div class="font-11 color-92" v-text="">颜色：贵族金，规格：标准</div> -->
-              <div class="font-11 color-92 margin-top-5">数量×<span v-text="item.basket_count"></span></div>
+              <div class="font-13 color-92 margin-top-5">数量×<span v-text="item.basket_count"></span></div>
               <div v-if="item.sellType==1" class='margin-top-5'>
                 <span class="basicColor font-16" v-text="item.point"></span>
                 <span class="font-9 color-9b">积分</span>
@@ -94,6 +94,10 @@ export default {
   },
   methods: {
     goPay: function() {
+      if(this.commonAdd.province==''){
+        this.$vux.toast.text('收件地址不能为空', 'middle');
+        return
+      }
       this.$vux.loading.show({
         text: 'loading'
       })
@@ -109,6 +113,7 @@ export default {
         token: this.loginUser.token,
         freightAmount:this.trackFee
       }
+
       if (this.isCash || this.total <= parseInt(this.loginUser.score)) {
         this.$http({
           method: 'POST',

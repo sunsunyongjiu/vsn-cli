@@ -7,66 +7,74 @@
     </div> 
     -->
     <div class="vsn-main">
-      <div class="detail-padding-bottom-50">
-        <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
-          <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
-        </swiper>
-        <div class="detail-title">
-          <div class="detail-title-cn font-20" v-text="detailObj.name"></div>
-          <div v-text="detailObj.brief" class="font-11 color-91"></div>
-          <!-- <div class="detail-title-en">Merdeces me</div> -->
-        </div>
-        <div class="detail-pointBtn" v-if="detailObj.sellType==0">
-          <span class="font-10">￥ </span><span v-text="detailObj.cash" class="font-22"></span>
-        </div>
-        <div class="detail-pointBtn font-20" v-if="detailObj.sellType==1">
-          <span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point">积分</span>
-        </div>
-        <div style="text-align:left" class="sevenBox" v-if="detailObj.is7return==1">
-          <img src="../assets/imgs/seven.png">
-          <span class="ba seven font-10">支持七天无理由退货</span>
-        </div>
-        <div>
-          <div v-html="detailObj.content" class="innerDetail font-12"></div>
-        </div>
-        <div v-transfer-dom>
-          <popup v-model="popShow" position="bottom" height="100vw" class="detailPop">
-            <div class="pop-title">
-              <img src="../assets/imgs/cha.png" class="cha" @click="changePopShow()">
-              <div class="pop-left">
-                <img :src="detailObj.pic">
-              </div>
-              <div class="pop-right">
-                <div class="pop-right-title font-18" v-text="detailObj.name"></div>
-                <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
-                <div class="pop-right-point font-18" v-if="detailObj.sellType==1"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
-                <div class="pop-right-point font-18" v-if="detailObj.sellType==0"><span class="font-9">￥</span><span class="basicColor" v-text="detailObj.cash"></span></div>
-              </div>
-            </div>
-            <div class="pop-size fff">
-              <div v-for="(items,n) in chooses" key=n>
-                <div class="pop-size-title font-15" v-text="items.title"></div>
-                <div class="box">
-                  <checker v-model="checkedList[n]" default-item-class="demo1-item" selected-item-class="demo1-item-selected" type="radio" radio-required>
-                    <checker-item :value="item" v-for="(item, index) in items.checks" :key="index" radio-required>{{item.value}}</checker-item>
-                  </checker>
+      <scroller lock-x scrollbar-y height="-14vw" ref="scroller">
+        <div class="detail-padding-bottom-50">
+          <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
+            <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
+          </swiper>
+          <div class="detail-title">
+            <div class="detail-title-cn font-20" v-text="detailObj.name"></div>
+            <div v-text="detailObj.brief" class="font-11 color-91"></div>
+            <!-- <div class="detail-title-en">Merdeces me</div> -->
+          </div>
+          <div v-if="detailObj.sellType==1&&detailObj.isShowOrigPrice==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through;text-align:left">
+            <span class=" font-11 color-7f">{{detailObj.orig_price}}积分</span>
+          </div>
+          <div v-if="detailObj.sellType==0&&detailObj.isShowOrigPrice==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through;">
+            <span class="color-7f  font-11">￥{{detailObj.orig_price}}</span>
+          </div>
+          <div class="detail-pointBtn" v-if="detailObj.sellType==0">
+            <span class="font-10">￥ </span><span v-text="detailObj.cash" class="font-22"></span>
+          </div>
+          <div class="detail-pointBtn font-20" v-if="detailObj.sellType==1">
+            <span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point">积分</span>
+          </div>
+          <div style="text-align:left" class="sevenBox" v-if="detailObj.is7return==1">
+            <img src="../assets/imgs/seven.png">
+            <span class="ba seven font-10">支持七天无理由退货</span>
+          </div>
+          <div>
+            <div v-html="detailObj.content" class="innerDetail font-12"></div>
+          </div>
+          <div v-transfer-dom>
+            <popup v-model="popShow" position="bottom" height="100vw" class="detailPop">
+              <div class="pop-title">
+                <img src="../assets/imgs/cha.png" class="cha" @click="changePopShow()">
+                <div class="pop-left">
+                  <img :src="detailObj.pic">
+                </div>
+                <div class="pop-right">
+                  <div class="pop-right-title font-18" v-text="detailObj.name"></div>
+                  <!-- <div class="pop-right-en font-14">Merdeces Me</div> -->
+                  <div class="pop-right-point font-18" v-if="detailObj.sellType==1"><span class="basicColor" v-text="detailObj.point"></span><span class="font-9">积分</span></div>
+                  <div class="pop-right-point font-18" v-if="detailObj.sellType==0"><span class="font-9">￥</span><span class="basicColor" v-text="detailObj.cash"></span></div>
                 </div>
               </div>
-              <div class="pop-num">
-                <div class="pop-num-zi font-15">数量</div>
-                <div class="pop-num-shu">
-                  <div class="pop-num-left" @click="plus(-1)">-</div>
-                  <div v-text="countNum" class="count"></div>
-                  <div class="pop-num-right" @click="plus(1)">+</div>
+              <div class="pop-size fff">
+                <div v-for="(items,n) in chooses" key=n>
+                  <div class="pop-size-title font-15" v-text="items.title"></div>
+                  <div class="box">
+                    <checker v-model="checkedList[n]" default-item-class="demo1-item" selected-item-class="demo1-item-selected" type="radio" radio-required>
+                      <checker-item :value="item" v-for="(item, index) in items.checks" :key="index" radio-required>{{item.value}}</checker-item>
+                    </checker>
+                  </div>
+                </div>
+                <div class="pop-num">
+                  <div class="pop-num-zi font-15">数量</div>
+                  <div class="pop-num-shu">
+                    <div class="pop-num-left" @click="plus(-1)">-</div>
+                    <div v-text="countNum" class="count"></div>
+                    <div class="pop-num-right" @click="plus(1)">+</div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
-              <x-button @click.native="goCart" plain class="pop-Btn font-16"> 确定 </x-button>
-            </div>
-          </popup>
+              <div>
+                <x-button @click.native="goCart" plain class="pop-Btn font-16"> 确定 </x-button>
+              </div>
+            </popup>
+          </div>
         </div>
-      </div>
+      </scroller>
     </div>
     <div class="detail-btn">
       <flexbox :gutter="0">
@@ -88,7 +96,7 @@
 <script>
 import md5 from 'js-md5';
 import Apis from '../configers/Api'
-import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, ViewBox, TransferDom, Popup, Group, Cell, XButton, Checker, CheckerItem } from 'vux'
+import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, ViewBox, TransferDom, Popup, Group, Cell, XButton, Checker, CheckerItem, Scroller } from 'vux'
 const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
@@ -141,7 +149,8 @@ export default {
     Cell,
     XButton,
     Checker,
-    CheckerItem
+    CheckerItem,
+    Scroller
   },
   methods: {
     goback: function() {
@@ -165,22 +174,35 @@ export default {
     },
     plus: function(n) {
       if (this.detailObj.isSecKill) {
-        this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
-        return
-      }
-      if (n == 1) {
-        this.countNum++
-      } else if (this.countNum <= 1) {
-        return
-      } else {
-        this.countNum--
-      }
 
+        Apis.getSecKillTimeList().then(data => {
+
+          //秒杀没开始不允许添加
+          if (data.data[0] && data.data[0].status == 1) {
+            this.$vux.toast.text('秒杀活动未开始', 'middle')
+            return
+          }
+
+          this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+          return
+
+        })
+
+      } else {
+
+        if (n == 1) {
+          this.countNum++
+        } else if (this.countNum <= 1) {
+          return
+        } else {
+          this.countNum--
+        }
+      }
 
     },
-    changePopShow:function(){
+    changePopShow: function() {
       console.log(1)
-      this.popShow=false
+      this.popShow = false
     },
     goCart: function() {
       if (this.$store.state.loginUser["ucid"] != undefined) {
@@ -215,14 +237,14 @@ export default {
             if (this.isCart) {
               Apis.getisByProd(this.$store.state.loginUser.token, { 'prodId': this.detailObj.prod_id }).then(data => {
                 console.log(data)
-                if (data == 0) {
+                if (data.code == 1) {
                   //添加到购物车
                   Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
                     console.log(data)
                     if (this.isCart) {
                       this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
                     } else {
-                      this.$router.push({ path: '/sureOrder', query: { 'selectIds': data } })
+                      this.$router.push({ path: '/sureOrder', query: { 'selectIds': data.data.basketId } })
                     }
                   });
                 } else {
@@ -233,14 +255,14 @@ export default {
             } else {
               Apis.getisByProdInOrder(this.$store.state.loginUser.token, { 'prodId': this.detailObj.prod_id }).then(data => {
                 console.log(data)
-                if (data == 0) {
+                if (data.code == 1) {
                   //添加到购物车
                   Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
                     console.log(data)
                     if (this.isCart) {
                       this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
                     } else {
-                      this.$router.push({ path: '/sureOrder', query: { 'selectIds': data } })
+                      this.$router.push({ path: '/sureOrder', query: { 'selectIds': data.data.basketId } })
                     }
                   });
                 } else {
@@ -257,9 +279,10 @@ export default {
           Apis.insertBasket(this.$store.state.loginUser.token, cartData).then(data => {
             console.log(data)
             if (this.isCart) {
+
               this.$router.push({ path: '/cart', query: { 'isCash': this.detailObj.sellType } })
             } else {
-              this.$router.push({ path: '/sureOrder', query: { 'selectIds': data } })
+              this.$router.push({ path: '/sureOrder', query: { 'selectIds': data.data.basketId } })
             }
           });
         }
@@ -282,6 +305,7 @@ export default {
         if (this.detailObj.topImg.length > 1) {
           this.dotShow = true
         }
+        this.$store.dispatch({ type: 'setIsCash', data: this.detailObj.sellType == 0 ? true : false })
         let chooses = JSON.parse(this.detailObj.user_parameter)
         chooses.forEach(function(item, index) {
           let choseArr = item.value.split("/");
@@ -297,7 +321,14 @@ export default {
         // error callback
       });
       this.$vux.loading.hide()
-      this.show = false
+      this.show = false;
+      let that = this;
+      setTimeout(function() {
+        that.$nextTick(() => {
+          that.$refs.scroller.reset()
+        })
+      }, 1000)
+
     },
     changedValue: function(value) {}
   },
@@ -308,7 +339,8 @@ export default {
     this.init()
   },
   updated: function() {
-    this.bottomShow = true
+    this.bottomShow = true;
+
   },
 
 }
@@ -318,6 +350,13 @@ export default {
 <style scoped lang='less' scoped>
 @import '../assets/css/detail.less';
 @import '../assets/css/global.less';
+
+
+
+
+
+
+
 
 
 
@@ -359,6 +398,10 @@ export default {
   .detail-pointBtn-point {
     font-size: 13px
   }
+}
+.list-box-item-price-price{
+  .px2vw(padding-left, 16);
+  
 }
 
 .detail-btn {

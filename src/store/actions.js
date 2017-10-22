@@ -32,4 +32,7 @@ export const updateAppSetting = ({ commit }, data) => {
 export const setPayConfirmShow = ({ commit }, data) => {
   commit('setPayConfirmShow', data)
 }
+export const setIsCash = ({ commit }, data) => {
+  commit('setIsCash', data)
+}
 

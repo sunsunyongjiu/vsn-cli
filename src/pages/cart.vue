@@ -80,7 +80,7 @@
         完成
       </span> -->
       <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
-        <p style="text-align:center;margin-bottom:10px;color:#737373">确认删除商品吗？</p>
+        <p style="text-align:center;margin-bottom:10px;color:#737373" class="font-18">确认删除商品吗？</p>
       </confirm>
     </div>
   </div>
@@ -394,8 +394,8 @@ export default {
     }
   },
   mounted: function() {
-    this.selectePoint = this.$route.query.isCash == 0 ? false : true
-    this.init()
+    this.selectePoint = this.$store.state.isCashCart == false ? true : false;
+    this.init();
     this.$vux.loading.show({
       text: 'loading'
     })
@@ -536,7 +536,7 @@ export default {
       border-radius: 10px;
       text-align: center;
       line-height: 26.4vw;
-      right: 4.8vw;
+     /* right: 4.8vw;*/
       .jia {
         position: absolute;
         top: 2vw;

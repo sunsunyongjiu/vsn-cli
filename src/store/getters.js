@@ -21,3 +21,7 @@ export const getallowBack = (state) => {
 export const getPayConfirmShow = (state) => {
    return state.payConfirmShow
 }
+
+export const getIsCash = (state) => {
+   return state.isCashCart
+}

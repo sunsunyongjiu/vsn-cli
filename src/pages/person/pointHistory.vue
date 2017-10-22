@@ -138,7 +138,7 @@ export default {
   .px2vw(margin-top,
   -7);
   .px2vw(right,
-  18);
+  2);
 }
 
 .historyItem {
