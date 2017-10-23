@@ -16,7 +16,7 @@
         <br>如需帮助，请联系我们客服。
       </div>
     </div>
-    <div class="payBtn font-18" @click="goBack">返回</div>
+    <div class="payBtn font-18" @click="goBack">返回首页</div>
   </div>
 </template>
 <script>

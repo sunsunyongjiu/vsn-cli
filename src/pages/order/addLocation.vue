@@ -10,17 +10,17 @@
         <div class="line"></div>
         <div class="settings">
           <div class="settings-left font-14">联系电话</div>
-          <input type="tel" v-model="postData.mobile" class="addLocationBox-input font-14" maxlength="11" pattern="^1[3|4|5|7|8]\d{9}$">
+          <input type="tel" v-model="postData.mobile" class="addLocationBox-input font-14" maxlength="11" pattern="^1[3|4|5|7|8]\d{9}$" placeholder="请填写11位手机号码">
         </div>
         <div class="line"></div>
         <div class="settings">
           <div class="settings-left font-14">所在地区</div>
-          <div @click="popShow" class="settings-right font-14" v-text="locationDetail"></div>
+          <div @click="popShow" class="settings-right font-14" :class="{locationPlaceHolder:!locationShow}" v-text="locationDetail"></div>
         </div>
         <div class="line"></div>
         <div class="settings">
           <div class="settings-left font-14">详细地址</div>
-          <input type="text" v-model="postData.subAdds" class="addLocationBox-input font-14">
+          <input type="text" v-model="postData.subAdds" class="addLocationBox-input font-14" placeholder="详细地址具体到门牌号">
         </div>
         <div class="line"></div>
         <div class="settings setMoren  font-14">
@@ -92,7 +92,8 @@ export default {
         status: 1
 
       },
-      common: this.$route.query.edit?false:true
+      common: this.$route.query.edit ? false : true,
+      locationShow: false
     }
   },
   components: {
@@ -124,8 +125,10 @@ export default {
           this.common = true
         }
         if (this.editAddr.town) {
+          this.locationShow = true
           this.locationDetail = this.editAddr.province + this.editAddr.CITY + this.editAddr.area + this.editAddr.town
         } else {
+          this.locationShow = true
           this.locationDetail = this.editAddr.province + this.editAddr.CITY + this.editAddr.area
         }
 
@@ -173,6 +176,10 @@ export default {
       if (!re.test(this.postData.mobile)) {
         this.$vux.toast.text('手机号格式错误，请重新填写', 'middle')
         this.postData.mobile = '';
+        return
+      }
+      if (!this.locationShow) {
+        this.$vux.toast.text('请填写所在地区', 'middle')
         return
       }
       if (this.postData.subAdds == '') {
@@ -327,6 +334,11 @@ export default {
     this.init()
 
   },
+  watch:{
+    locationDetail (){
+      this.locationShow=true
+    }
+  },
   computed: {
     dataLast: function() {
       let data = this.postData
@@ -351,6 +363,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang='less' scoped>
+@import '../../assets/css/global.less';
 .line {
   opacity: 0.3;
   width: 100%;
@@ -503,6 +516,16 @@ export default {
   border: none;
   width: 70.2vw;
   outline: none !important;
+}
+
+input::-webkit-input-placeholder {
+  .px2vw(font-size, 12);
+  color: #888;
+}
+
+.locationPlaceHolder {
+  .px2vw(font-size, 12);
+  color: #888;
 }
 
 </style>

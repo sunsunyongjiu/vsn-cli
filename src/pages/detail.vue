@@ -7,7 +7,7 @@
     </div> 
     -->
     <div class="vsn-main">
-      <scroller lock-x scrollbar-y height="-14vw" ref="scroller">
+      <scroller lock-x scrollbar-y ref="scroller" class="detail-scroller" height="-55">
         <div class="detail-padding-bottom-50">
           <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
             <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
@@ -328,6 +328,11 @@ export default {
           that.$refs.scroller.reset()
         })
       }, 1000)
+      setTimeout(function() {
+        that.$nextTick(() => {
+          that.$refs.scroller.reset()
+        })
+      }, 2000)
 
     },
     changedValue: function(value) {}

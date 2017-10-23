@@ -56,7 +56,7 @@
         <span class="font-18 basicColor" v-text="totalCash" v-if="isCash"></span>
         <span class="font-9 basicColor" v-if="!isCash">积分</span>
         <div class="font-9 color-9b" v-if="!isCash">
-          积分商品限量兑换，不支持退换货
+          积分商品不支持退换货和开发票
         </div>
       </div>
       <div class="commit-btn font-18" @click="goPay">提交订单</div>

@@ -33,6 +33,11 @@
         确认取消支付?
       </div>
     </confirm>
+    <confirm v-model="confirmShow2" @on-cancel="onPayCancel" @on-confirm="onPayConfirm()" confirm-text="是" cancel-text="否">
+      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
+        确定支付吗？
+      </div>
+    </confirm>
   </div>
 </template>
 <script>
@@ -49,6 +54,7 @@ export default {
         total: '',
         sellType: ''
       },
+      confirmShow2: false
     }
   },
   components: {
@@ -56,8 +62,7 @@ export default {
     Confirm
   },
   methods: {
-
-    goPay: function() {
+    onPayConfirm: function() {
       if (this.order.sellType == 0) {
 
         Apis.unifiedorder(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
@@ -75,6 +80,13 @@ export default {
         })
 
       }
+    },
+    onPayCancel: function() {
+
+    },
+    goPay: function() {
+      this.confirmShow2 = true
+
     },
     init: function() {
       Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
