@@ -18,10 +18,10 @@
             <!-- <div class="detail-title-en">Merdeces me</div> -->
           </div>
           <div v-if="detailObj.sellType==1&&detailObj.isShowOrigPrice==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through;text-align:left">
-            <span class=" font-11 color-7f">{{detailObj.orig_price}}积分</span>
+            <span class=" font-13 color-7f">{{detailObj.orig_price}}积分</span>
           </div>
           <div v-if="detailObj.sellType==0&&detailObj.isShowOrigPrice==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through;">
-            <span class="color-7f  font-11">￥{{detailObj.orig_price}}</span>
+            <span class="color-7f  font-13">￥{{detailObj.orig_price}}</span>
           </div>
           <div class="detail-pointBtn" v-if="detailObj.sellType==0">
             <span class="font-10">￥ </span><span v-text="detailObj.cash" class="font-22"></span>
@@ -90,6 +90,13 @@
         </flexbox-item>
       </flexbox>
     </div>
+    <div class="toast-mubu" v-if="mubuShow">
+      <!-- <div class="toast-mubu" v-if="true"> -->
+      <div class="mubu-textBox">
+        <div class="mubu-text font-14">秒杀商品请立即兑换</div>
+        <div @click="doChange()" class="mubuSureBtn font-15">确定</div>
+      </div>
+    </div>
   </div>
   <!-- 选择规格 -->
 </template>
@@ -127,6 +134,7 @@ export default {
       countNum: 1,
       path: "",
       detailObj: '',
+      mubuShow:false,
 
       chooses: [],
       checkedList: [],
@@ -160,9 +168,14 @@ export default {
       return 'background:url(' + item + ') no-repeat center center;background-size:50% auto'
     },
     doChange: function(n) {
+      this.mubuShow=false;
       // 如果没登录
       if (this.$store.state.loginUser.name == undefined) {
         window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href);
+        return
+      }
+      if(this.detailObj.isSecKill==1&&n==1){
+        this.mubuShow=true;
         return
       }
       this.popShow = true
@@ -301,7 +314,8 @@ export default {
       let _this = this
       this.$http.get(this.$Api('/home/getProdDetail'), { params: { 'prodId': this.$route.query.prod_id } }).then((response) => {
 
-        this.detailObj = response.data.data
+        this.detailObj = response.data.data;
+
         if (this.detailObj.topImg.length > 1) {
           this.dotShow = true
         }
@@ -317,6 +331,9 @@ export default {
           _this.checkedList.push(arr[0])
           // this.chooses.push({"key":})
         });
+        if(this.detailObj.isSecKill==1){
+          this.mubuShow=true;
+        }
       }, (response) => {
         // error callback
       });
@@ -366,6 +383,7 @@ export default {
 
 
 
+
 /*@import '../assets/css/jd.css';*/
 
 .innerDetail {}
@@ -404,9 +422,9 @@ export default {
     font-size: 13px
   }
 }
-.list-box-item-price-price{
+
+.list-box-item-price-price {
   .px2vw(padding-left, 16);
-  
 }
 
 .detail-btn {

@@ -60,7 +60,7 @@
               <div class="buyBtnBox">
                 <div class="font-11 color-7f" style="text-align:right" v-if="hotObj.status==2">剩<span class="basicColor">{{item.kill_num}}</span>件</div>
                 <div class="buyBtn font-14 fff" @click="goDetail(item)" v-if="hotObj.status==2&&item.kill_num>0">去抢购</div>
-                <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==2&&item.kill_num==0">已售完</div>
+                <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==2&&item.kill_num<=0">已售完</div>
                 <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==1" @click="goDetail(item)">即将开始</div>
               </div>
             </div>
@@ -111,7 +111,8 @@ export default {
       Apis.getSecKillTimeList().then(data => {
         this.endTimeNum = data.data[0].status == 2 ? new Date(data.data[0].end_time).getTime() : new Date(data.data[0].start_time).getTime()
         this.hotObj = data.data[0];
-        this.killId = data.data[0].id
+        this.killId = data.data[0].id;
+        console.log('触发了')
         this.getGoods()
       })
 

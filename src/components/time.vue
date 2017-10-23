@@ -64,7 +64,10 @@ export default {
         } else {
           clearInterval(timer);
           self.content = self.endText;
-          self._callback();
+          if(timestamp!=''){
+            self._callback();
+          }
+          
         }
       }, 1000);
     },

@@ -53,7 +53,7 @@
               <div class="font-11 pointTitle">{{"当前积分"|tr}}</div>
               <div>
                 <!-- <span v-text="loginUser.score"></span> -->
-                <span class="font-20">{{loginUser.score}}</span>
+                <span class="font-20">{{loginUser.points}}</span>
               </div>
               <!-- <div>
             <button class="soonBtn">{{"为您甄选"|tr}}</button>
@@ -466,7 +466,8 @@ a {
   z-index: 10;
   .phoneBox {
     position: absolute;
-    background: #292929;
+    background: #414141;
+    opacity: 0.8;
     border-radius: 4px;
     .px2vw(width, 250);
     .px2vw(height, 192);

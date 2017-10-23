@@ -18,7 +18,7 @@ export function setlistIndex (state, { data }) {
   state.listIndex = data
 }
 export function setUserScore (state, { data }) {
-  state.loginUser.score = data
+  state.loginUser.points = data
 }
 
 export function setReturnType (state, { data }) {

@@ -2,7 +2,7 @@
   <div>
    <!--<back title="个人信息"></back>-->
     <div class="personal-title-logo">
-      <img src="../assets/imgs/me.png">
+      <img :src="headUrl">
     </div>
     <div>
       <span v-text="loginUser.name" class="font-16 fff"></span>
@@ -74,7 +74,7 @@ export default {
   name: '',
   data() {
     return {
-
+      headUrl:this.$store.state.loginUser.headimgurl==null?require('../assets/imgs/me.png'):this.$store.state.loginUser.headimgurl
     }
   },
   components: {

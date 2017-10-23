@@ -124,10 +124,11 @@
         </div>
       </div>
     </div>
-    <div class="mubu" v-if="mubuShow">
+    <div class="toast-mubu" v-if="mubuShow">
+    <!-- <div class="toast-mubu" v-if="true"> -->
       <div class="mubu-textBox">
-        <div class="mubu-text">您的订单未在规定时间内支付，已为您取消，点击确定将为您跳转~</div>
-        <div @click="goList()" class="mubuSureBtn font-16">确定</div>
+        <div class="mubu-text font-14">您的订单未在规定时间内支付，已取消，点击查看</div>
+        <div @click="goList()" class="mubuSureBtn font-15">确定</div>
       </div>
     </div>
   </div>
@@ -675,43 +676,6 @@ export default {
   text-align: left;
 }
 
-.mubu {
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
-  ;
-  position: fixed;
-  top: 0;
-  z-index: 200;
-  .mubu-textBox {
-    position: absolute;
-    .px2vw(width, 250);
-    .px2vw(height, 192);
-    top: 50vh;
-    left: 50%;
-    .px2vw(margin-left, -125);
-    .px2vw(margin-top, -96);
-    border-radius: 2px;
-    background: #292929;
-    .mubuSureBtn{
-      width: 100%;
-      height: 9vw;
-      background-color: #1dafed;
-      position: absolute;
-      bottom: 0;
-      color: #fff;
-      line-height: 9vw;
-    }
-    .mubu-text{
-      width: 100%;
-      text-align: center;
-      height: 42.2vw;
-      display: table-cell;
-      vertical-align: middle;
-      padding: 0 4vw;
-      color: #fff
-    }
-  }
-}
+
 
 </style>

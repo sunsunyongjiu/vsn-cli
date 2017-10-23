@@ -52,7 +52,7 @@ export default {
         Apis.login({ token: _this.loginUser.token, 'user': _this.loginUser.user, isLogin: 'N' }).then(data => {
           console.log(data.code)
           if (data.code === 1) {
-            this.$store.dispatch({ type: 'setUserScore', data: data.data.score })
+            this.$store.dispatch({ type: 'setUserScore', data: data.data.points })
           }
         })
       }

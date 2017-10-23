@@ -409,3 +409,47 @@ body {
     text-align: right;
   }
 }
+
+.toast-mubu {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  ;
+  position: fixed;
+  top: 0;
+  z-index: 200;
+  .mubu-textBox {
+    position: absolute;
+    .px2vw(width, 250);
+    .px2vw(height, 192);
+    top: 50vh;
+    left: 50%;
+    .px2vw(margin-left, -125);
+    .px2vw(margin-top, -96);
+    border-radius: 4px;
+    opacity: 0.8;
+    background: #414141;
+    .mubuSureBtn {
+      width: 100%;
+      .px2vw(height, 45);
+      .px2vw(line-height, 45);
+      border-top: 1px solid #444;
+      position: absolute;
+      bottom: 0;
+      color: #fff;
+
+      color: #1dafed;
+    }
+    .mubu-text {
+      width: 100%;
+      text-align: left;
+      height: 42.2vw;
+      display: table-cell;
+      vertical-align: middle;
+      .px2vw(padding-left, 33);
+      .px2vw(padding-right, 33);
+      padding: 0 4vw;
+      color: #fff
+    }
+  }
+}

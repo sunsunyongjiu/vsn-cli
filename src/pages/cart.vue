@@ -199,7 +199,7 @@ export default {
           if(data.data[0]&&data.data[0].status==1){
             this.$vux.toast.text('秒杀活动尚未开始', 'middle')
        		  return
-          }else if(data.data[0]&&data.data[0].status==2){
+          }else if(data.data[0]&&data.data[0].status==2&&n>0){
             this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
        		  return
           }else if(data.data[0]&&data.data[0].status==3){
@@ -304,37 +304,24 @@ export default {
         this.deleteAll()
         return
       }
-      console.log(this.sameShop != false)
-      /*
-      console.log(this.goodsList.length)
-      let i = 0
-      this.goodsList.forEach(function(n) {
-        if (n.selected) {
-          i++
-        }
-      })
-      
-      console.log(this.selectedSub)
-      if (i == 1) {
-        this.$router.push({ path: '/sureOrder', query: { 'selectIds': this.selectedSub } })
-      } else {
-        this.$vux.toast.show({
-          text: '一次只能选择一个商品提交！',
-          type: 'warn',
-          isShowMask: true,
-          position: 'middle'
-        })
-      }
-      return*/
+      let canGo=true;
       if (this.sameShop != false) {
         let str = ''
         this.goodsList.forEach(function(n) {
           if (n.selected&&n.status==1) {
-            str += (',' + n.basketId)
+            str += (',' + n.basketId);
+            
+            if(n.isSecKill==1&&n.count>1){
+              
+              this.canGo=false
+              return
+            }
           }
         })
-        if (str.slice(1).length > 0) {
+        if (str.slice(1).length > 0&&canGo) {
           this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
+        }else if(canGo==false){
+          this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
         } else {
           this.$vux.toast.text('您还没有选择商品', 'middle')
         }
@@ -360,12 +347,14 @@ export default {
 
         let arr = []
         console.log(response.data.data)
-        response.data.data.forEach(function(item) {
+        response.data.data.forEach(function(item,index) {
+
           if (item.sellType == _this.checkType) {
             let obj = {
               pic: item.pic,
               title: item.prod_name,
               size: JSON.parse(item.attribute),
+              // size: item.attribute,
               point: item.point,
               count: item.basket_count,
               selected: true,
