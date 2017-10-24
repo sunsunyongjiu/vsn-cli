@@ -9,11 +9,8 @@
     </div>
     <div class="personal-title-point font-10">
       <div class="personal-title-point-diamond"></div>
-      <span v-text="loginUser.score">
-        
-      </span>
       <span>
-        积分
+        {{loginUser.score}}积分
       </span>
     </div>
     
@@ -178,18 +175,20 @@ export default {
     .px2vw(margin-top, -2);
   }
   .personal-title-point-diamond{
-    .px2vw(height, 16);
-    .px2vw(width, 16);
-    .px2vw(margin-top, 1);
+    .px2vw(height, 18);
+    .px2vw(width, 18);
+    .px2vw(margin-top, 0);
     vertical-align: middle;
     display: inline-block;
-    background: url(../assets/imgs/s_integral.png) center center no-repeat;
+    background: url(../assets/imgs/diamond.png) center center no-repeat;
     background-size: 75%;
     border-radius: 100%;
-    background-color: #888;
+    
   }
   span{
     .px2vw(line-height, 18);
+    height: 100%;
+    vertical-align: middle;
   }
 }
 
@@ -215,7 +214,7 @@ export default {
   overflow: hidden;
   background: url('../assets/imgs/loading.png') no-repeat bottom;
   background-size: 100%;
-  opacity: 0.7;
+  opacity: 0.4;
 }
 
 .personal-img {
@@ -235,10 +234,9 @@ export default {
 .right-icon{
   display: inline-block;
   vertical-align: middle;
-  transform: rotate(45deg);
-  border-top: 1px solid #888;
-  border-right: 1px solid #888;
-  .px2vw(height, 8);
-  .px2vw(width, 8);
+  background: url(../assets/imgs/arrow.png) no-repeat center center;
+  background-size: 70%;
+  .px2vw(height, 25);
+  .px2vw(width, 10);
 }
 </style>

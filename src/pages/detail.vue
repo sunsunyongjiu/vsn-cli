@@ -331,9 +331,6 @@ export default {
           _this.checkedList.push(arr[0])
           // this.chooses.push({"key":})
         });
-        if(this.detailObj.isSecKill==1){
-          this.mubuShow=true;
-        }
       }, (response) => {
         // error callback
       });

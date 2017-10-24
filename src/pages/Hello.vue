@@ -22,6 +22,12 @@
           <div class="font-14 fff margin-bottom-9">缤纷旅途</div>
           <div class="font-12 color-88">敬请期待...</div>
         </div>
+        <div v-if="showBox=='expire'">
+          <div class="expireImg">
+          </div>
+          <div class="font-14 fff margin-bottom-9">秒杀活动已过期</div>
+          <div class="font-12 color-88">敬请期待下一期…</div>
+        </div>
       </div>
     </div>
     <scroller lock-x scrollbar-y use-pullup height="-10.66vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
@@ -267,7 +273,8 @@ export default {
           if(data.data[0]&&data.data[0].status!=3){
             this.$router.push({ path: '/hot' })
           }else{
-            this.$vux.toast.text('秒杀活动已过期，敬请期待下一期', 'middle')
+            this.showBox='expire';
+            this.showContact=true
           }
         })
         
@@ -466,8 +473,7 @@ a {
   z-index: 10;
   .phoneBox {
     position: absolute;
-    background: #414141;
-    opacity: 0.8;
+    background:rgba(65,65,65,0.8);
     border-radius: 4px;
     .px2vw(width, 250);
     .px2vw(height, 192);
@@ -488,7 +494,6 @@ a {
     .px2vw(top, 13);
   }
   .phoneImg {
-    opacity: 0.81;
     background-color: #1dafed !important;
     .px2vw(width, 50);
     .px2vw(height, 50);
@@ -499,7 +504,6 @@ a {
     background-size: 50%;
   }
   .binfenImg {
-    opacity: 0.81;
     .px2vw(width, 80);
     .px2vw(height, 110);
     border-radius: 100%;
@@ -509,13 +513,21 @@ a {
     background-size: 87%;
   }
   .zunxiangImg {
-    opacity: 0.81;
     .px2vw(width, 163);
     .px2vw(height, 110);
     border-radius: 100%;
     .px2vw(margin-top, 28);
     .px2vw(margin-left, 37);
     background: url(../assets/imgs/zunxiang.png) center center no-repeat;
+    background-size: 87%;
+  }
+  .expireImg {
+    .px2vw(width, 94);
+    .px2vw(height, 94);
+    border-radius: 100%;
+    .px2vw(margin-top, 28);
+    .px2vw(margin-left, 78);
+    background: url(../assets/imgs/expire.png) center center no-repeat;
     background-size: 87%;
   }
 }

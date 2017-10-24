@@ -313,7 +313,7 @@ export default {
             
             if(n.isSecKill==1&&n.count>1){
               
-              this.canGo=false
+              canGo=false
               return
             }
           }
