@@ -8,7 +8,7 @@
     <div class="container">
       <div class="orderList">
         <div class="order-location font-14">
-          <div class="order-location-text"  @click="goLocation">
+          <div class="order-location-text" @click="goLocation">
             <span v-text="commonAdd.RECEIVER"></span><span v-text="commonAdd.moble"></span>
             <br>
             <span>
@@ -100,8 +100,13 @@ export default {
   },
   methods: {
     goPay: function() {
-      if(this.commonAdd.province==''){
-        this.$vux.toast.text('收件地址不能为空', 'middle');
+      if (this.commonAdd.province == '') {
+        // this.$vux.toast.text('收件地址不能为空', 'middle');
+        this.$toast.show({
+          text: '收件地址不能为空',
+          position: 'middle',
+          value: true
+        })
         return
       }
       this.$vux.loading.show({
@@ -117,7 +122,7 @@ export default {
         basketIds: this.$route.query.selectIds,
         addrId: this.commonAdd.addrId,
         token: this.loginUser.token,
-        freightAmount:this.trackFee
+        freightAmount: this.trackFee
       }
 
       if (this.isCash || this.total <= parseInt(this.loginUser.score)) {
@@ -134,23 +139,33 @@ export default {
             this.$router.push({ path: '/pay', query: { 'subNumber': data.data.data } })
           } else {
             this.$vux.loading.hide()
-            this.$vux.toast.show({
+            this.$toast.show({
               text: data.data.msg,
-              type: 'warn',
-              isShowMask: true,
-              position: 'middle'
+              position: 'middle',
+              value: true
             })
+            // this.$vux.toast.show({
+            //   text: data.data.msg,
+            //   type: 'warn',
+            //   isShowMask: true,
+            //   position: 'middle'
+            // })
           }
         }, function(error) {
           //error
         })
       } else {
         this.$vux.loading.hide()
-        this.$vux.toast.show({
+        // this.$vux.toast.show({
+        //   text: '您当前的积分不足',
+        //   type: 'warn',
+        //   isShowMask: true,
+        //   position: 'middle'
+        // })
+        this.$toast.show({
           text: '您当前的积分不足',
-          type: 'warn',
-          isShowMask: true,
-          position: 'middle'
+          position: 'middle',
+          value: true
         })
       }
 
@@ -163,7 +178,7 @@ export default {
     getFee: function() {
       Apis.getBasketListTrackFee(this.$store.state.loginUser.token, { 'basketIds': this.$route.query.selectIds, 'addrId': this.commonAdd.addrId }).then(data => {
         console.log(data.data)
-        this.trackFee=data.data.trackFee
+        this.trackFee = data.data.trackFee
       });
     },
     init: function() {
@@ -177,8 +192,8 @@ export default {
         }
       }).then((response) => {
         this.goods = response.data.data;
-        this.goods.forEach(function(item,index){
-          item.attribute=JSON.parse(item.attribute)
+        this.goods.forEach(function(item, index) {
+          item.attribute = JSON.parse(item.attribute)
         })
         console.log(this.goods[0].sellType)
         if (this.goods[0].sellType == 0) {
@@ -239,7 +254,7 @@ export default {
       this.goods.forEach(function(n) {
         num += (n.basket_count * n.cash)
       })
-      num=num+parseInt(this.trackFee)
+      num = num + parseInt(this.trackFee)
       return num
     }
   }
@@ -285,7 +300,7 @@ export default {
   box-sizing: border-box;
   width: 100%;
   height: 8.5vw;
-  background: rgba(49,49,49,0.5);
+  background: rgba(49, 49, 49, 0.5);
   border-radius: 2px 2px 0 0;
   line-height: 8.5vw;
   color: #fff;
@@ -434,7 +449,9 @@ export default {
 .margin-top-5 {
   .px2vw(margin-top, 5);
 }
-.count{
+
+.count {
   .px2vw(line-height, 21);
 }
+
 </style>

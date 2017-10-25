@@ -109,7 +109,7 @@
 <script>
 import md5 from 'js-md5';
 import Apis from '../configers/Api'
-import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, ViewBox, TransferDom, Popup, Group, Cell, XButton, Checker, CheckerItem, Scroller,Confirm } from 'vux'
+import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, ViewBox, TransferDom, Popup, Group, Cell, XButton, Checker, CheckerItem, Scroller, Confirm } from 'vux'
 const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
@@ -119,7 +119,7 @@ export default {
   data() {
     return {
       isCart: false,
-      confirmShow:false,
+      confirmShow: false,
       show: true,
       dotShow: false,
       pageTitle: this.$route.query.title,
@@ -171,10 +171,10 @@ export default {
     goback: function() {
       this.$router.go(-1)
     },
-    onConfirm:function(){
+    onConfirm: function() {
       window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href);
     },
-    onCancel:function(){
+    onCancel: function() {
 
     },
     background: function(item) {
@@ -184,8 +184,8 @@ export default {
       this.mubuShow = false;
       // 如果没登录
       if (this.$store.state.loginUser.name == undefined) {
-        this.confirmShow=true
-        
+        this.confirmShow = true
+
         return
       }
       if (this.detailObj.isSecKill == 1 && n == 1) {
@@ -206,11 +206,21 @@ export default {
 
           //秒杀没开始不允许添加
           if (data.data[0] && data.data[0].status == 1) {
-            this.$vux.toast.text('秒杀活动未开始', 'middle')
+            // this.$vux.toast.text('秒杀活动未开始', 'middle')
+            this.$toast.show({
+              text: '秒杀活动未开始',
+              position: 'middle',
+              value: true
+            })
             return
           }
 
-          this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+          // this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+          this.$toast.show({
+            text: '同一商品只能秒杀一件',
+            position: 'middle',
+            value: true
+          })
           return
 
         })
@@ -248,15 +258,30 @@ export default {
 
             //秒杀没开始不允许添加
             if (data.data[0] && data.data[0].status == 1) {
-              this.$vux.toast.text('秒杀活动未开始', 'middle')
+              // this.$vux.toast.text('秒杀活动未开始', 'middle')
+              this.$toast.show({
+                text: '秒杀活动未开始',
+                position: 'middle',
+                value: true
+              })
               return
             } else if (data.data[0] && data.data[0].status == 2) {
 
             } else if (data.data[0] && data.data[0].status == 3) {
-              this.$vux.toast.text('秒杀活动已结束', 'middle')
+              this.$toast.show({
+                text: '秒杀活动已结束',
+                position: 'middle',
+                value: true
+              })
+              // this.$vux.toast.text('秒杀活动已结束', 'middle')
               return
             } else {
-              this.$vux.toast.text('秒杀活动已结束', 'middle')
+              this.$toast.show({
+                text: '秒杀活动已结束',
+                position: 'middle',
+                value: true
+              })
+              // this.$vux.toast.text('秒杀活动已结束', 'middle')
               return
             }
 
@@ -275,7 +300,12 @@ export default {
                     }
                   });
                 } else {
-                  this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+                  // this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+                  this.$toast.show({
+                    text: '同一商品只能秒杀一件',
+                    position: 'middle',
+                    value: true
+                  })
                   return
                 }
               })
@@ -293,7 +323,12 @@ export default {
                     }
                   });
                 } else {
-                  this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+                  // this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+                  this.$toast.show({
+                    text: '同一商品只能秒杀一件',
+                    position: 'middle',
+                    value: true
+                  })
                   return
                 }
               })
@@ -314,9 +349,9 @@ export default {
           });
         }
       } else {
-        this.confirmShow=true;
+        this.confirmShow = true;
         return
-        
+
       }
 
 
@@ -380,6 +415,9 @@ export default {
 <style scoped lang='less' scoped>
 @import '../assets/css/detail.less';
 @import '../assets/css/global.less';
+
+
+
 
 
 

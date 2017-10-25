@@ -27,7 +27,7 @@
                 <img :src="item.pic">
               </div>
               <div class="goods-right">
-                <div  class="font-18 df goods-title" @click="goWhere(item.title,item)">
+                <div class="font-18 df goods-title" @click="goWhere(item.title,item)">
                   <img src="../assets/imgs/seckill.png" v-if="item.isSecKill">
                   <span v-text="item.title"></span>
                 </div>
@@ -122,8 +122,13 @@ export default {
       console.log(2)
     },
     goWhere: function(title, item) {
-      if(item.status!=1){
-        this.$vux.toast.text('商品已下架', 'middle')
+      if (item.status != 1) {
+        // this.$vux.toast.text('商品已下架', 'middle')
+        this.$toast.show({
+          text: '商品已下架',
+          position: 'middle',
+          value: true
+        })
         return
       }
       this.$router.push({ path: 'detail', query: { 'title': title, 'prod_id': item.prod_id } })
@@ -153,7 +158,12 @@ export default {
       if (str.slice(1).length > 0) {
         this.show = true
       } else {
-        this.$vux.toast.text('请选择要删除的商品', 'middle')
+        // this.$vux.toast.text('请选择要删除的商品', 'middle')
+        this.$toast.show({
+          text: '请选择要删除的商品',
+          position: 'middle',
+          value: true
+        })
       }
 
 
@@ -193,86 +203,96 @@ export default {
     },
     goPlus: function(item, n) {
       if (item.isSecKill) {
-      	Apis.getSecKillTimeList().then(data => {
-      		
+        Apis.getSecKillTimeList().then(data => {
+
           console.log(data.data[0])
-          if(data.data[0]&&data.data[0].status==1){
-            this.$vux.toast.text('秒杀活动尚未开始', 'middle')
-       		  return
-          }else if(data.data[0]&&data.data[0].status==2&&n>0){
-            this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
-       		  return
-          }else if(data.data[0]&&data.data[0].status==3){
-            
-          }else{
-          	
+          if (data.data[0] && data.data[0].status == 1) {
+            // this.$vux.toast.text('秒杀活动尚未开始', 'middle')
+            this.$toast.show({
+              text: '秒杀活动尚未开始',
+              position: 'middle',
+              value: true
+            })
+            return
+          } else if (data.data[0] && data.data[0].status == 2 && n > 0) {
+            // this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+            this.$toast.show({
+              text: '同一商品只能秒杀一件',
+              position: 'middle',
+              value: true
+            })
+            return
+          } else if (data.data[0] && data.data[0].status == 3) {
+
+          } else {
+
           }
-          
+
           item.selected = true
-		      if (n > 0) {
-		        item.count++
-		      } else if (item.count <= 1) {
-		        return
-		      } else {
-		        item.count--
-		      }
-		
-		      let header = {
-		        "token": this.$store.state.loginUser.token,
-		        "time": timer,
-		        "sign": md5("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
-		      }
-		      // 设置传值
-		      let cartData = {
-		        'basketId': item.basketId,
-		        'basketCount': item.count
-		      }
-		
-		      this.$http({
-		        method: 'POST',
-		        url: this.$Api('/order/updateBasketCount'),
-		        params: cartData,
-		        headers: header,
-		        emulateJSON: true
-		      }).then(function(data) {
-		        console.log(data)
-		      }, function(error) {
-		        //error
-		      })
-		      
-        })   
-      }else{
-      	 item.selected = true
-		      if (n > 0) {
-		        item.count++
-		      } else if (item.count <= 1) {
-		        return
-		      } else {
-		        item.count--
-		      }
-		
-		      let header = {
-		        "token": this.$store.state.loginUser.token,
-		        "time": timer,
-		        "sign": md5("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
-		      }
-		      // 设置传值
-		      let cartData = {
-		        'basketId': item.basketId,
-		        'basketCount': item.count
-		      }
-		
-		      this.$http({
-		        method: 'POST',
-		        url: this.$Api('/order/updateBasketCount'),
-		        params: cartData,
-		        headers: header,
-		        emulateJSON: true
-		      }).then(function(data) {
-		        console.log(data)
-		      }, function(error) {
-		        //error
-		      })
+          if (n > 0) {
+            item.count++
+          } else if (item.count <= 1) {
+            return
+          } else {
+            item.count--
+          }
+
+          let header = {
+            "token": this.$store.state.loginUser.token,
+            "time": timer,
+            "sign": md5("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
+          }
+          // 设置传值
+          let cartData = {
+            'basketId': item.basketId,
+            'basketCount': item.count
+          }
+
+          this.$http({
+            method: 'POST',
+            url: this.$Api('/order/updateBasketCount'),
+            params: cartData,
+            headers: header,
+            emulateJSON: true
+          }).then(function(data) {
+            console.log(data)
+          }, function(error) {
+            //error
+          })
+
+        })
+      } else {
+        item.selected = true
+        if (n > 0) {
+          item.count++
+        } else if (item.count <= 1) {
+          return
+        } else {
+          item.count--
+        }
+
+        let header = {
+          "token": this.$store.state.loginUser.token,
+          "time": timer,
+          "sign": md5("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
+        }
+        // 设置传值
+        let cartData = {
+          'basketId': item.basketId,
+          'basketCount': item.count
+        }
+
+        this.$http({
+          method: 'POST',
+          url: this.$Api('/order/updateBasketCount'),
+          params: cartData,
+          headers: header,
+          emulateJSON: true
+        }).then(function(data) {
+          console.log(data)
+        }, function(error) {
+          //error
+        })
       }
 
     },
@@ -300,30 +320,40 @@ export default {
 
     },
     goSure: function() {
-      if(this.deleteShow){
+      if (this.deleteShow) {
         this.deleteAll()
         return
       }
-      let canGo=true;
+      let canGo = true;
       if (this.sameShop != false) {
         let str = ''
         this.goodsList.forEach(function(n) {
-          if (n.selected&&n.status==1) {
+          if (n.selected && n.status == 1) {
             str += (',' + n.basketId);
-            
-            if(n.isSecKill==1&&n.count>1){
-              
-              canGo=false
+
+            if (n.isSecKill == 1 && n.count > 1) {
+
+              canGo = false
               return
             }
           }
         })
-        if (str.slice(1).length > 0&&canGo) {
+        if (str.slice(1).length > 0 && canGo) {
           this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
-        }else if(canGo==false){
-          this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+        } else if (canGo == false) {
+          // this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
+          this.$toast.show({
+            text: '同一商品只能秒杀一件',
+            position: 'middle',
+            value: true
+          })
         } else {
-          this.$vux.toast.text('您还没有选择商品', 'middle')
+          // this.$vux.toast.text('您还没有选择商品', 'middle')
+          this.$toast.show({
+            text: '您还没有选择商品',
+            position: 'middle',
+            value: true
+          })
         }
 
       } else {
@@ -347,7 +377,7 @@ export default {
 
         let arr = []
         console.log(response.data.data)
-        response.data.data.forEach(function(item,index) {
+        response.data.data.forEach(function(item, index) {
 
           if (item.sellType == _this.checkType) {
             let obj = {
@@ -394,7 +424,7 @@ export default {
       let total = 0
       if (this.checkType) {
         this.goodsList.forEach(function(item) {
-          if (item.selected&&item.status==1) {
+          if (item.selected && item.status == 1) {
             total += (item.point * item.count)
           }
 
@@ -402,14 +432,14 @@ export default {
         return total.toFixed(0)
       } else {
         this.goodsList.forEach(function(item) {
-          if (item.selected&&item.status==1) {
+          if (item.selected && item.status == 1) {
             total += (item.cash * item.count)
           }
 
         })
         return total.toFixed(2)
       }
-      
+
     },
     selectedAll: function() {
       let arr = []
@@ -525,7 +555,7 @@ export default {
       border-radius: 10px;
       text-align: center;
       line-height: 26.4vw;
-     /* right: 4.8vw;*/
+      /* right: 4.8vw;*/
       .jia {
         position: absolute;
         top: 2vw;
@@ -551,7 +581,7 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      img{
+      img {
         height: 4.5vw;
         vertical-align: middle;
       }
