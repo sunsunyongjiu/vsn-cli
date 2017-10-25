@@ -1,6 +1,6 @@
 <template>
   <div>
-   <!--  <back title="我的订单" go="/path"></back> -->
+    <!--  <back title="我的订单" go="/path"></back> -->
     <div>
       <tab :line-width="1" custom-bar-width="16vw" defaultColor="#787878" active-color="white" style="background:#181818">
         <tab-item :selected="listIndex==0" @on-item-click="changeItem" class=" font-14">未支付</tab-item>
@@ -17,7 +17,7 @@
             <img :src="item.pic">
           </div>
           <div class="orders-mid">
-            <div class="font-16 df orders-mid-title" >
+            <div class="font-16 df orders-mid-title">
               <img src="../assets/imgs/pointBox.png" v-if="items.sellType==1">
               <img src="../assets/imgs/cash.png" v-if="items.sellType!=1"><span v-text="item.prod_name"></span>
             </div>
@@ -38,7 +38,7 @@
           <div class="order-line" v-if="listIndex!=4"></div>
         </div>
         <div>
-          <div class="order-btns"  v-if="listIndex!=4">
+          <div class="order-btns" v-if="listIndex!=4">
             <div class="left font-12">
               共<span v-text="items.totalCount"></span>件商品 小计:
               <span v-if="items.sellType==0" class="font-11">￥</span>
@@ -49,12 +49,6 @@
               <div class="order-btns-goChange" v-if="items.status==1||items.status==3||items.status==2">
                 <span v-if="items.status==1||items.status==4" @click="goPay(items)" class="font-12">{{items.sellType==0?'去支付':'去兑换'}}</span>
                 <span v-if="items.status==3||items.status==2" @click="goGet(items.sub_number)" class="font-12">确认收货</span>
-                <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
-                  <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
-                    确认收货么？
-                  </div>
-                </confirm>
-                
               </div>
               <!-- <div class="order-btns-cancle1" v-if="items.status==3">已自动确认收货</div> -->
               <!-- <div class="order-btns-goChange" v-text="returnText" v-if="items.status==2||items.status==3">退换货</div> -->
@@ -63,6 +57,12 @@
         </div>
       </div>
     </div>
+    <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
+      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
+        <img src="../assets/imgs/tanhao.png" class="confirm-tanhao">
+        <div class="confirm-text">确认收货吗？</div>
+      </div>
+    </confirm>
   </div>
 </template>
 <script>
@@ -144,15 +144,15 @@ export default {
       console.log(this.status)
       this.init()
     },
-    goDetail: function(n,item) {
-      if(this.listIndex==4){
-        
+    goDetail: function(n, item) {
+      if (this.listIndex == 4) {
+
         this.$router.push({ path: '/returnDetail', query: { 'subItemId': item.sub_item_id } })
-      }else{
-        
+      } else {
+
         this.$router.push({ path: '/orderDetail', query: { 'sub_number': n.sub_number } })
       }
-      
+
     },
     init: function() {
       let _this = this
@@ -203,7 +203,7 @@ export default {
     })
   },
   filters: {
-    changeStatus: function(n,sellType) {
+    changeStatus: function(n, sellType) {
       if (n === 1) {
         return '等待兑换'
       } else if (n === 2 && sellType == 0) {
@@ -274,7 +274,7 @@ export default {
       text-overflow: ellipsis;
       /*超出部分文字以...显示*/
       margin-bottom: 2vw;
-      img{
+      img {
         .px2vw(height, 15);
         vertical-align: middle
       }

@@ -1,6 +1,6 @@
 <template>
   <span :endTime="endTime" :callback="callback" :endText="endText">
-    <slot>
+    <slot v-if="showTime">
       {{content}}
     </slot>
   </span>
@@ -10,6 +10,7 @@ export default {
   data() {
     return {
       content: '',
+      showTime:false
     }
   },
   props: {
@@ -30,8 +31,8 @@ export default {
     this.countdowm(this.endTime)
   },
   watch: {
-    endTime() {
-      
+    endTime(value) {
+      console.log(`value:${value}`)
       this.countdowm(this.endTime)
     }
   },
@@ -61,11 +62,13 @@ export default {
             format = `${min}分${sec}秒`;
           }
           self.content = format;
+            setTimeout(function(){if(!self.showTime){self.showTime=true}},500)
         } else {
           clearInterval(timer);
           self.content = self.endText;
           if(timestamp!=''){
             self._callback();
+
           }
           
         }

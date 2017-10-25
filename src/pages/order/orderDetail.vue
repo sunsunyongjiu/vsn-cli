@@ -95,7 +95,9 @@
           </div>
         </div>
         <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm(items)" confirm-text="是" cancel-text="否">
-          <div v-text="conifrmText" style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
+          <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
+            <img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">
+            <div class="confirm-text" v-text="conifrmText">确定支付吗？?</div>
           </div>
         </confirm>
       </div>
@@ -119,13 +121,13 @@
         <div class="bottom-btn-right font-16" v-if="orderDetail[0].status==1" @click="cancleOrder(items)">
           取消订单
         </div>
-        <div class="bottom-btn-left font-16" @click="delOrder(items)" v-if="orderDetail[0].status==5 && orderDetail[0].delete_status!=1">
+        <div class="bottom-btn-right font-16" @click="delOrder(items)" v-if="orderDetail[0].status==5 && orderDetail[0].delete_status!=1">
           删除订单
         </div>
       </div>
     </div>
     <div class="toast-mubu" v-if="mubuShow">
-    <!-- <div class="toast-mubu" v-if="true"> -->
+      <!-- <div class="toast-mubu" v-if="true"> -->
       <div class="mubu-textBox">
         <div class="mubu-text font-14">您的订单未在规定时间内支付，已取消，点击查看</div>
         <div @click="goList()" class="mubuSureBtn font-15">确定</div>
@@ -675,7 +677,5 @@ export default {
   .px2vw(line-height, 32);
   text-align: left;
 }
-
-
 
 </style>

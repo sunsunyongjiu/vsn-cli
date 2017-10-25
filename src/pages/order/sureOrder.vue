@@ -31,10 +31,16 @@
             <div class="goods-right">
               <div class="font-16 df title" v-text="item.prod_name"></div>
               <!-- <div class="font-11 color-92" v-text="">颜色：贵族金，规格：标准</div> -->
-              <div class="font-13 color-92 margin-top-5">数量×<span v-text="item.basket_count"></span></div>
-              <div v-if="item.sellType==1" class='margin-top-5'>
+              <!-- <div class="font-13 color-92 margin-top-5">数量×<span v-text="item.basket_count"></span></div> -->
+              <div>
+                <span v-for="(size,index) in item.attribute" class="font-11 color-92">
+                  {{size.key}}:{{size.value}}
+                </span>
+              </div>
+              <div v-if="item.sellType==1" class='margin-top-5' style="position:relative">
                 <span class="basicColor font-16" v-text="item.point"></span>
                 <span class="font-9 color-9b">积分</span>
+                <span class="font-12 color-92 count" style="float:right;vertical-align:bottom">×{{item.basket_count}}</span>
               </div>
               <div v-if="item.sellType==0" class="margin-top-5">
                 <span class="font-9 color-9b">￥</span>
@@ -170,7 +176,10 @@ export default {
           "sign": md5("/order/getBasketListSelected" + this.loginUser.token + timer).toUpperCase()
         }
       }).then((response) => {
-        this.goods = response.data.data
+        this.goods = response.data.data;
+        this.goods.forEach(function(item,index){
+          item.attribute=JSON.parse(item.attribute)
+        })
         console.log(this.goods[0].sellType)
         if (this.goods[0].sellType == 0) {
           this.isCash = true
@@ -330,7 +339,7 @@ export default {
   .goods-right {
     float: left;
     text-align: left;
-    width: 50vw;
+    width: 63vw;
     padding-left: 5vw;
     position: relative;
     height: 100%;
@@ -344,7 +353,8 @@ export default {
       }
     }
     .title {
-      line-height: 6vw
+      line-height: 7vw;
+      /*.px2vw(margin-bottom, 10);*/
     }
   }
 }
@@ -424,5 +434,7 @@ export default {
 .margin-top-5 {
   .px2vw(margin-top, 5);
 }
-
+.count{
+  .px2vw(line-height, 21);
+}
 </style>

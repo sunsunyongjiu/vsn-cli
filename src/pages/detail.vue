@@ -17,16 +17,16 @@
             <div v-text="detailObj.brief" class="font-11 color-91"></div>
             <!-- <div class="detail-title-en">Merdeces me</div> -->
           </div>
-          <div v-if="detailObj.sellType==1&&detailObj.isShowOrigPrice==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through;text-align:left">
-            <span class=" font-13 color-7f">{{detailObj.orig_price}}积分</span>
-          </div>
-          <div v-if="detailObj.sellType==0&&detailObj.isShowOrigPrice==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through;">
-            <span class="color-7f  font-13">￥{{detailObj.orig_price}}</span>
-          </div>
           <div class="detail-pointBtn" v-if="detailObj.sellType==0">
+            <div v-if="detailObj.sellType==0&&detailObj.isShowOrigPrice==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through;">
+              <span class="color-7f  font-13">￥{{detailObj.orig_price}}</span>
+            </div>
             <span class="font-10">￥ </span><span v-text="detailObj.cash" class="font-22"></span>
           </div>
           <div class="detail-pointBtn font-20" v-if="detailObj.sellType==1">
+            <div v-if="detailObj.sellType==1&&detailObj.isShowOrigPrice==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through;text-align:left">
+              <span class=" font-13 color-7f">{{detailObj.orig_price}}积分</span>
+            </div>
             <span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point">积分</span>
           </div>
           <div style="text-align:left" class="sevenBox" v-if="detailObj.is7return==1">
@@ -79,7 +79,7 @@
     <div class="detail-btn">
       <flexbox :gutter="0">
         <flexbox-item>
-          <div class="detail-cartBtn flex-demo font-16" @click="doChange(1)">
+          <div class="detail-changeBtn flex-demo font-16" @click="doChange(1)">
             加入购物车
           </div>
         </flexbox-item>
@@ -97,13 +97,19 @@
         <div @click="doChange()" class="mubuSureBtn font-15">确定</div>
       </div>
     </div>
+    <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
+      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
+        <img src="../assets/imgs/tanhao.png" class="confirm-tanhao">
+        <div class="confirm-text">请先登录</div>
+      </div>
+    </confirm>
   </div>
   <!-- 选择规格 -->
 </template>
 <script>
 import md5 from 'js-md5';
 import Apis from '../configers/Api'
-import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, ViewBox, TransferDom, Popup, Group, Cell, XButton, Checker, CheckerItem, Scroller } from 'vux'
+import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, ViewBox, TransferDom, Popup, Group, Cell, XButton, Checker, CheckerItem, Scroller,Confirm } from 'vux'
 const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
@@ -113,7 +119,7 @@ export default {
   data() {
     return {
       isCart: false,
-
+      confirmShow:false,
       show: true,
       dotShow: false,
       pageTitle: this.$route.query.title,
@@ -134,7 +140,7 @@ export default {
       countNum: 1,
       path: "",
       detailObj: '',
-      mubuShow:false,
+      mubuShow: false,
 
       chooses: [],
       checkedList: [],
@@ -158,24 +164,32 @@ export default {
     XButton,
     Checker,
     CheckerItem,
-    Scroller
+    Scroller,
+    Confirm
   },
   methods: {
     goback: function() {
       this.$router.go(-1)
     },
+    onConfirm:function(){
+      window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href);
+    },
+    onCancel:function(){
+
+    },
     background: function(item) {
       return 'background:url(' + item + ') no-repeat center center;background-size:50% auto'
     },
     doChange: function(n) {
-      this.mubuShow=false;
+      this.mubuShow = false;
       // 如果没登录
       if (this.$store.state.loginUser.name == undefined) {
-        window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href);
+        this.confirmShow=true
+        
         return
       }
-      if(this.detailObj.isSecKill==1&&n==1){
-        this.mubuShow=true;
+      if (this.detailObj.isSecKill == 1 && n == 1) {
+        this.mubuShow = true;
         return
       }
       this.popShow = true
@@ -300,12 +314,9 @@ export default {
           });
         }
       } else {
-        this.$vux.toast.show({
-          text: '请先登录',
-          type: 'warn',
-          isShowMask: true,
-          position: 'middle'
-        })
+        this.confirmShow=true;
+        return
+        
       }
 
 
@@ -381,6 +392,8 @@ export default {
 
 
 
+
+
 /*@import '../assets/css/jd.css';*/
 
 .innerDetail {}
@@ -418,10 +431,6 @@ export default {
   .detail-pointBtn-point {
     font-size: 13px
   }
-}
-
-.list-box-item-price-price {
-  .px2vw(padding-left, 16);
 }
 
 .detail-btn {

@@ -9,8 +9,8 @@
     </div>
     <div class="personal-title-point font-10">
       <div class="personal-title-point-diamond"></div>
-      <span>
-        {{loginUser.score}}积分
+      <span style="font-family:none">
+        {{loginUser.points}} 积分
       </span>
     </div>
     
@@ -49,7 +49,7 @@
         </div>
         <div style="float:right"></div>
         <div  class='details-right'>
-          <span v-text="loginUser.score"></span> <span class="right-icon"></span>
+          <span v-text="loginUser.points"></span> <span class="right-icon"></span>
         </div>
 
       </div>
@@ -71,7 +71,7 @@ export default {
   name: '',
   data() {
     return {
-      headUrl:this.$store.state.loginUser.headimgurl==null?require('../assets/imgs/me.png'):this.$store.state.loginUser.headimgurl
+      headUrl:this.$store.state.loginUser.headimgurl==null?require('../assets/imgs/head_img.png'):this.$store.state.loginUser.headimgurl
     }
   },
   components: {
@@ -236,7 +236,7 @@ export default {
   vertical-align: middle;
   background: url(../assets/imgs/arrow.png) no-repeat center center;
   background-size: 70%;
-  .px2vw(height, 25);
-  .px2vw(width, 10);
+  .px2vw(height, 30);
+  .px2vw(width, 12);
 }
 </style>

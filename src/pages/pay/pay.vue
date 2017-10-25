@@ -13,7 +13,7 @@
         <div class="order-title font-15">支付方式</div>
         <div class="payMent" v-if="order.sellType==1">
           <div class="payMent-left">
-            <img src="../../assets/imgs/point.png">
+            <img src="../../assets/imgs/pointBox.png">
           </div>
           <div class="middle font-14">积分兑换</div>
           <div class="choose-btn selected payMent-right"></div>
@@ -30,12 +30,14 @@
     <div class="payBtn font-18" @click="goPay">确认支付</div>
     <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
       <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
-        确认取消支付?
+        <img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">
+        <div class="confirm-text">确认取消支付?</div>
       </div>
     </confirm>
     <confirm v-model="confirmShow2" @on-cancel="onPayCancel" @on-confirm="onPayConfirm()" confirm-text="是" cancel-text="否">
       <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
-        确定支付吗？
+        <img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">
+        <div class="confirm-text">确定支付吗?</div>
       </div>
     </confirm>
   </div>

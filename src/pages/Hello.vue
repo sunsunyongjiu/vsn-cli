@@ -126,12 +126,18 @@
         <my-nav :items="myBoutique"></my-nav>
       </div>
     </scroller>
+    <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
+      <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
+        <img src="../assets/imgs/tanhao.png" class="confirm-tanhao">
+        <div class="confirm-text">请先登录</div>
+      </div>
+    </confirm>
   </div>
 </template>
 <script>
 import myNav from '../components/nav'
 import { state } from 'vuex'
-import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, Search, Scroller } from 'vux'
+import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, Search, Scroller, Confirm } from 'vux'
 import { mapGetters } from 'vuex'
 import Apis from '../configers/Api'
 import EnJson from "../configers/En"
@@ -156,6 +162,7 @@ export default {
       myCardSrc: require('../assets/imgs/bccard.png'),
       imgList: [],
       showContact: false,
+      confirmShow: false,
       indexBtns: [{
           title: '购物车',
           path: '/cart',
@@ -242,10 +249,16 @@ export default {
     Divider,
     Search,
     Scroller,
-
+    Confirm
 
   },
   methods: {
+    onConfirm: function() {
+      this.goLogin()
+    },
+    onCancel: function() {
+
+    },
     //跳转分类列表页
     goList: function(title, id, path) {
       let p = path == undefined ? 'lists' : path
@@ -270,14 +283,14 @@ export default {
       if (url.indexOf('hot') > 0) {
         Apis.getSecKillTimeList().then(data => {
           console.log(data.data[0])
-          if(data.data[0]&&data.data[0].status!=3){
+          if (data.data[0] && data.data[0].status != 3) {
             this.$router.push({ path: '/hot' })
-          }else{
-            this.showBox='expire';
-            this.showContact=true
+          } else {
+            this.showBox = 'expire';
+            this.showContact = true
           }
         })
-        
+
       } else {
         window.location.href = url
       }
@@ -303,12 +316,19 @@ export default {
         }
 
       } else {
-        this.$vux.toast.show({
+        // this.confirmShow=true;
+        this.$toast.show({
           text: '请先登陆',
-          type: 'warn',
-          isShowMask: true,
-          position: 'middle'
+          position: 'middle',
+          value: true
         })
+        return
+        // this.$vux.toast.show({
+        //   text: '请先登陆',
+        //   type: 'warn',
+        //   isShowMask: true,
+        //   position: 'middle'
+        // })
       }
     },
     submit: function() {
@@ -316,14 +336,19 @@ export default {
     },
     init: function() {
       //判断当前用户是否登录
+      // this.$toast.show({
+      //   text: '测试',
+      //   position: 'middle',
+      //   value:true
+      // })
       let userToken = this.$route.query.token
       let user = this.$route.query.user
       let subNumber = "";
       let success = 0;
-      if(this.$route.query.subNumber){
-      	subNumber = this.$route.query.subNumber
-      	success  = this.$route.query.success
-      }      
+      if (this.$route.query.subNumber) {
+        subNumber = this.$route.query.subNumber
+        success = this.$route.query.success
+      }
       let pandunLogin = this.$store.state.loginUser.name == undefined
       if (userToken && user && pandunLogin) {
         Apis.login({ token: userToken, 'user': user }).then(data => {
@@ -333,27 +358,27 @@ export default {
             userDetail.token = this.$route.query.token
             userDetail.user = this.$route.query.user
             console.log(data.data.carImg)
-            this.myCardSrc = require("../assets/imgs/"+data.data.carImg+".png");
+            this.myCardSrc = require("../assets/imgs/" + data.data.carImg + ".png");
             this.$store.dispatch({ type: 'setLogin', data: userDetail })
-            
-            if(subNumber!=""){
-            	if(success==1){
-            		this.$router.push({ path: '/success', query: { 'subNumber': subNumber, "success": success } })	
-            	}else{
-            		this.$router.push({ path: '/fail', query: { 'subNumber': subNumber, "success": success } })            		
-            	}							
-						}
-			
+            this.$router.push({ path: '/path' })
+            if (subNumber != "") {
+              if (success == 1) {
+                this.$router.push({ path: '/success', query: { 'subNumber': subNumber, "success": success } })
+              } else {
+                this.$router.push({ path: '/fail', query: { 'subNumber': subNumber, "success": success } })
+              }
+            }
+
           }
         })
       } else if (!pandunLogin) {
-        this.myCardSrc = require("../assets/imgs/"+this.$store.state.loginUser.carImg+".png"),
-        this.login = true
+        this.myCardSrc = require("../assets/imgs/" + this.$store.state.loginUser.carImg + ".png"),
+          this.login = true
       } else {
         this.login = false
       }
 
-			
+
       //初始化时候调取imgurl
       this.$http.get(this.$Api('/home/getIndexPicList')).then((response) => {
         let imgList = response.data.data
@@ -473,7 +498,7 @@ a {
   z-index: 10;
   .phoneBox {
     position: absolute;
-    background:rgba(65,65,65,0.8);
+    background: rgba(65, 65, 65, 0.8);
     border-radius: 4px;
     .px2vw(width, 250);
     .px2vw(height, 192);
