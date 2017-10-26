@@ -12,8 +12,7 @@
         <div class="font-14 color-7f">{{'请重新支付'}}</div>
       </div>
       <div class="fail-mid">
-        该订单会为您保留30分钟（从下单时间算起），30分钟如果还未支付，系统将自动取消该订单。
-        <br>如需帮助，请联系我们客服。
+        请您于订单提交的30分钟内完成支付，超时订单将被自动取消。如需帮助，请点击首页-联系客服。
       </div>
     </div>
     <div class="payBtn font-18" @click="goBack">返回首页</div>

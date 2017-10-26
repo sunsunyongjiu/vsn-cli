@@ -168,22 +168,54 @@ export default {
     },
     saveAdd: function() {
       let re = /^1\d{10}$/;
-
+      this.postData.receiver = this.postData.receiver.replace(/\s/g, "");
+      console.log(this.postData.receiver)
       if (this.postData.receiver == '') {
-        this.$vux.toast.text('收货人不能为空', 'middle')
+        // this.$vux.toast.text('收货人不能为空', 'middle')
+        this.$toast.show({
+          text: '收货人不能为空',
+          position: 'middle',
+          value: true
+        })
         return
+      } else {
+        if (this.postData.receiver.length < 2) {
+          // this.$vux.toast.text('请输入大于2字符的名字', 'middle')
+          this.$toast.show({
+            text: '请输入大于2字符的名字',
+            position: 'middle',
+            value: true
+          })
+          return
+        }
       }
+
       if (!re.test(this.postData.mobile)) {
-        this.$vux.toast.text('手机号格式错误，请重新填写', 'middle')
+        // this.$vux.toast.text('手机号格式错误，请重新填写', 'middle')
+        this.$toast.show({
+          text: '手机号格式错误，请重新填写',
+          position: 'middle',
+          value: true
+        })
         this.postData.mobile = '';
         return
       }
       if (!this.locationShow) {
-        this.$vux.toast.text('请填写所在地区', 'middle')
+        this.$toast.show({
+          text: '请填写所在地区',
+          position: 'middle',
+          value: true
+        })
+        // this.$vux.toast.text('请填写所在地区', 'middle')
         return
       }
       if (this.postData.subAdds == '') {
-        this.$vux.toast.text('详细地址不能为空', 'middle')
+        // this.$vux.toast.text('详细地址不能为空', 'middle')
+        this.$toast.show({
+          text: '详细地址不能为空',
+          position: 'middle',
+          value: true
+        })
         return
       }
       let header = {
@@ -334,9 +366,9 @@ export default {
     this.init()
 
   },
-  watch:{
-    locationDetail (){
-      this.locationShow=true
+  watch: {
+    locationDetail() {
+      this.locationShow = true
     }
   },
   computed: {

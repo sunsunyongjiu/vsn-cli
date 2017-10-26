@@ -80,7 +80,10 @@
         完成
       </span> -->
       <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
-        <p style="text-align:center;margin-bottom:10px;color:#737373" class="font-18">确认删除商品吗？</p>
+        <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
+          <img src="../assets/imgs/tanhao.png" class="confirm-tanhao">
+          <div class="confirm-text">确认删除商品吗？</div>
+        </div>
       </confirm>
     </div>
   </div>

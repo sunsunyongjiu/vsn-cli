@@ -16,10 +16,13 @@
           <img src="../../assets/imgs/time_text.png">
         </div>
         <div class="time-date-box">
-          <div class="time-date-blue">
-            <div class=" blue-1">
+          <div class="time-date-blue " :class="{'bg-basic':hotObj.status==2}">
+            <div class=" blue-1" v-if="hotObj.status==1">
               <span class="font-14 fff">{{hotObj.start_time | data}} -</span>
               <span class="font-14 fff">{{hotObj.end_time | data}}</span>
+            </div>
+            <div class=" blue-1" v-if="hotObj.status==2">
+              <span class="font-14 fff">正在秒杀</span>
             </div>
             <div>
               <span class="font-11 fff" v-if="hotObj.status==2">距结束</span>
@@ -71,7 +74,7 @@
     <div class="toast-mubu" v-if="mubuShow">
       <!-- <div class="toast-mubu" v-if="true"> -->
       <div class="mubu-textBox">
-        <div class="mubu-text font-14">秒杀活动已结束 请期待下一期</div>
+        <div class="mubu-text font-14"><img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">秒杀活动已结束，请期待下一期</div>
         <div @click="goPath()" class="mubuSureBtn font-15">确定</div>
       </div>
     </div>
@@ -99,7 +102,8 @@ export default {
       pageSize: 10,
       killId: '',
       endTimeNum: '',
-      mubuShow: false
+      mubuShow: false,
+      killStatus: 0
     }
   },
   components: {
@@ -117,6 +121,7 @@ export default {
     init: function() {
       // alert(1)
       Apis.getSecKillTimeList().then(data => {
+      	
         if (data.data[0].status == 3) {
           this.mubuShow = true
         } else {
@@ -126,7 +131,12 @@ export default {
           console.log('触发了')
           this.getGoods()
         }
-
+				
+				//记录初始化进来的秒杀状态
+				if(this.killStatus==0){
+					this.killStatus = data.data[0].status;
+				}
+				
       })
 
 
@@ -135,7 +145,13 @@ export default {
       this.$router.push({path:'/path'})
     },
     callback: function() {
-      this.init()
+      //如果刚进来是进行中，说明现在结束了
+      if(this.killStatus==2){
+					this.mubuShow = true;
+			}else{
+					this.init()
+			}
+      
     },
     getGoods: function() {
       // alert(2)
@@ -413,8 +429,17 @@ export default {
   48);
   background: #222222;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+  .bg-basic{
+    background: #1dafed !important;
+  }
+  .bg-basic:before{
+    border-bottom-color:#1dafed !important;
+  }
+  .bg-basic:after{
+    border-top-color:#1dafed !important;
+  }
   .time-date-blue {
-    background: #1dafed;
+    background: #4e4e4e;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
     margin: 0 auto;
     position: relative;
@@ -431,7 +456,7 @@ export default {
     left: -5.8vw;
     width: 0;
     height: 0;
-    border-bottom: 12.8vw solid #1dafed;
+    border-bottom: 12.8vw solid #4e4e4e;
     border-left: 5.8vw solid transparent;
   }
   .time-date-blue:after {
@@ -442,7 +467,7 @@ export default {
     top: 0;
     width: 0;
     height: 0;
-    border-top: 12.8vw solid #1dafed;
+    border-top: 12.8vw solid #4e4e4e;
     border-right: 5.8vw solid transparent;
   }
   .blue-1 {

@@ -2,7 +2,7 @@
   <div class="vsn-main">
     <div v-for="(item , key) in orderDetail">
     	<div class="trackDrtail-title-jd font-13 color-91">
-    		<span>京东物流：</span>
+    		<span>商品信息：</span>
     		<span v-text="item.jdOrderId"></span>
     	</div>
       <div class="trackDrtail-title-box">

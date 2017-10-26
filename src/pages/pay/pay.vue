@@ -4,7 +4,7 @@
       <div class="orderList ">
         <div class="order-title font-15">订单信息</div>
         <div class="orderInfo font-14">
-          <div>订单名称： <span v-text="order.prod_name"></span></div>
+          <div>商品名称： <span v-text="order.prod_name"></span></div>
           <div>
             <span>订单金额：</span><span v-if="order.sellType==0">￥</span>
             <span class="fff" v-text="order.total"></span><span v-if="order.sellType==1">积分</span>
@@ -31,13 +31,13 @@
     <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
       <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
         <img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">
-        <div class="confirm-text">确认取消支付?</div>
+        <div class="confirm-text">确认取消支付吗?</div>
       </div>
     </confirm>
     <confirm v-model="confirmShow2" @on-cancel="onPayCancel" @on-confirm="onPayConfirm()" confirm-text="是" cancel-text="否">
       <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
         <img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">
-        <div class="confirm-text">确定支付吗?</div>
+        <div class="confirm-text">确认支付吗?</div>
       </div>
     </confirm>
   </div>
@@ -73,12 +73,24 @@ export default {
 
       } else {
         Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'score': this.order.total, token: this.$store.state.loginUser.token }).then(data => {
-          //alert(data.code);
+
           if (data.code == 1) {
-            this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
+          	
+          	Apis.login({ token: this.$store.state.loginUser.token, 'user': this.$store.state.loginUser.user, "isLogin": "N" }).then(data => {
+		          if (data.code === 1) {
+		            let userDetail = data.data
+		            userDetail.token = this.$store.state.loginUser.token
+		            userDetail.user = this.$store.state.loginUser.user
+		            this.$store.dispatch({ type: 'setLogin', data: userDetail })	
+		          }
+		          
+		          this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
+	       		})	          	
+            
           } else {
             this.$router.push({ path: '/fail', query: { 'subNumber': this.$route.query.subNumber, success: 0 } })
           }
+          
         })
 
       }
@@ -217,14 +229,22 @@ export default {
   margin-bottom: 5vw;
 }
 
-.selected {
+/*.selected {
   background: #1dafed;
   width: 4vw;
   height: 4vw;
   border-radius: 100%;
   color: #fff
-}
-
+}*/
+.selected {
+    background: url(../../assets/imgs/choose.png) center center;
+    background-color: #1dafed!important;
+    background-size: 150% 150%;
+    width: 4vw;
+    height: 4vw;
+    border-radius: 100%;
+    color: #fff
+  }
 .payMent {
   overflow: hidden;
   padding-left: 5vw;

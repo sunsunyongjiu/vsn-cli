@@ -35,6 +35,12 @@
             <span class="" v-text="order.total"></span>
             <span v-if="order.sellType==1">积分</span></div>
         </div>
+        <div class="order font-15 color-7f" v-if="order.sellType==1">
+          <div class="order-left">剩余：</div>
+          <div class="order-right">
+            <span class="" v-text="loginUser.points"></span>
+            <span v-if="order.sellType==1">积分</span></div>
+        </div>
       </div>
     </div>
     <div class="payBtn font-18" @click="goBack">返回首页</div>

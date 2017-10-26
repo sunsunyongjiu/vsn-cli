@@ -93,7 +93,9 @@
     <div class="toast-mubu" v-if="mubuShow">
       <!-- <div class="toast-mubu" v-if="true"> -->
       <div class="mubu-textBox">
-        <div class="mubu-text font-14">秒杀商品请立即兑换</div>
+        <div class="mubu-text font-14">
+          <img src="../assets/imgs/tanhao.png" class="confirm-tanhao"> 秒杀商品请立即兑换
+        </div>
         <div @click="doChange()" class="mubuSureBtn font-15">确定</div>
       </div>
     </div>
@@ -415,6 +417,7 @@ export default {
 <style scoped lang='less' scoped>
 @import '../assets/css/detail.less';
 @import '../assets/css/global.less';
+
 
 
 

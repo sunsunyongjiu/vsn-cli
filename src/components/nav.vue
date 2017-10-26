@@ -8,8 +8,12 @@
       <div class="index-Boutique-div-right ">
         <div v-text="item.name" class="index-Boutique-div-right-name">
         </div>
-        <div v-text="item.brief" class="text">
+        
+        <div v-if="item.sellType==0" class="font-10">
+	        <div v-text="item.brief" class="text">
+	        </div>
         </div>
+        
         <div class="index-Boutique-div-right-points">
           <div>
             <!-- Price：￥<span v-text="item.cash"></span> -->

@@ -103,7 +103,7 @@
       </div>
     </div>
     <div class="vsn-footer" v-for="(items , key) in orderDetail" key="key">
-      <div class="bottom-btn">
+      <div class="bottom-btn" v-if='orderDetail[0].status==1 || orderDetail[0].status==2 || orderDetail[0].status==3 || (orderDetail[0].status==4 && items.isShowInvoiceButton>0) || orderDetail[0].status==5'>
         <!--
           <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==4||orderDetail[0].status==5' @click="buyAgain(items.prod[0].prod_id)">
           {{items.sellType==0?'再次购买':'再次兑换'}}
@@ -129,7 +129,7 @@
     <div class="toast-mubu" v-if="mubuShow">
       <!-- <div class="toast-mubu" v-if="true"> -->
       <div class="mubu-textBox">
-        <div class="mubu-text font-14">您的订单未在规定时间内支付，已取消，点击查看</div>
+        <div class="mubu-text font-14"><img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">您的订单未在规定时间内支付，已取消，点击查看</div>
         <div @click="goList()" class="mubuSureBtn font-15">确定</div>
       </div>
     </div>

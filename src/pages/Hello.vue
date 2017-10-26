@@ -192,6 +192,7 @@ export default {
           id: '767',
           path: '/life'
         },
+        /*
         {
           src: require('../assets/imgs/gift.png'),
           title: '超值礼品',
@@ -199,6 +200,14 @@ export default {
           class: 'index-page-classification-img1',
           id: '776',
           path: '/present'
+        },
+        */
+        {
+          src: require('../assets/imgs/kill.png'),
+          title: '限时秒杀',
+          titleEn: 'Mercedes me',
+          class: 'index-page-classification-img1',
+          id: '776'
         },
         {
           src: require('../assets/imgs/class.png'),
@@ -267,6 +276,18 @@ export default {
           window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/rights'
         } else if (title == '精英课选') {
           window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/activityDetail?id=12'
+        } else if (title == '限时秒杀') {
+        	
+	         Apis.getSecKillTimeList().then(data => {
+	          console.log(data.data[0])
+	          if (data.data[0] && data.data[0].status != 3) {
+	            this.$router.push({ path: '/hot' })
+	          } else {
+	            this.showBox = 'expire';
+	            this.showContact = true
+	          }
+	        })
+	         
         } else if (title == '尊享礼券') {
           this.showContact = true;
           this.showBox = 'zun'
@@ -318,7 +339,7 @@ export default {
       } else {
         // this.confirmShow=true;
         this.$toast.show({
-          text: '请先登陆',
+          text: '请先登录',
           position: 'middle',
           value: true
         })
