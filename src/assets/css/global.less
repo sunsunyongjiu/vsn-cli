@@ -129,20 +129,29 @@
   .px2vw(margin-bottom, 9)
 }
 
-.text-overflow-3 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+
+
+.bgimgwhile(@counter) when (@counter < 4) {
+  .text-overflow-@{counter} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: @counter;
+    -webkit-box-orient: vertical;
+  }
+  .bgimgwhile(( @counter + 1)); // 递归调用自身
 }
+
+.bgimgwhile(1);
 
 @font-face {
   font-family: chinese;
   src: url('font/chinese.ttf'); // font-family: english;
   // src: url('font/corpoa.ttf');
 }
-
+.toastText{
+  font-family: chinese;
+}
 .index-page .vux-slider>.vux-indicator>a>.vux-icon-dot.active,
 .vux-slider .vux-indicator-right>a>.vux-icon-dot.active {
   background-color: #fff
@@ -453,9 +462,9 @@ body {
       display: table-cell;
       vertical-align: middle;
       .px2vw(padding-left,
-      33);
+      25);
       .px2vw(padding-right,
-      33);
+      25);
       padding: 0 4vw;
       color: #fff
     }
@@ -512,4 +521,11 @@ body {
 
 .weui-mask {
   background: rgba(0, 0, 0, 0.8) !important;
+}
+
+.weui-search-bar:before {
+  border-top: none !important
+}
+.vux-swipeout-button{
+  .px2vw(width,60);
 }

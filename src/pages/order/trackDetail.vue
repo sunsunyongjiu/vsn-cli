@@ -1,8 +1,8 @@
 <template>
   <div class="vsn-main">
     <div v-for="(item , key) in orderDetail">
-    	<div class="trackDrtail-title-jd font-13 color-91">
-    		<span>商品信息：</span>
+    	<div class="color-91 order-person-title">
+    		<span>商品信息</span>
     		<span v-text="item.jdOrderId"></span>
     	</div>
       <div class="trackDrtail-title-box">
@@ -18,9 +18,11 @@
                 <span v-text="attr.value"></span>
               </div>
               <div class=" font-11">数量：x<span v-text="item.basket_count">1</span></div>
-              <div class="orders-mid-bottom">
+              <!--
+              	<div class="orders-mid-bottom">
                 <span class="font-14 basicColor">{{item.orderTrackReceived?'已签收':'未签收'}}</span>
               </div>
+              --> 
             </div>
             <div class="order-line"></div>
           </div>

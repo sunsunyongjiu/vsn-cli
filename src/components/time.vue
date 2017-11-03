@@ -6,6 +6,7 @@
   </span>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -29,6 +30,7 @@ export default {
   mounted() {
     console.log(this.endTime)
     this.countdowm(this.endTime)
+    console.log(this.serverTime)
   },
   watch: {
     endTime(value) {
@@ -36,13 +38,20 @@ export default {
       this.countdowm(this.endTime)
     }
   },
+  computed: {
+    // 使用对象展开运算符将 getters 混入 computed 对象中
+    ...mapGetters({
+      serverTime: 'getTime'
+
+    })
+  },
   methods: {
     countdowm(timestamp) {
       let self = this;
       let timer = setInterval(function() {
-        let nowTime = new Date();
+        // let nowTime = new Date();
         let endTime = timestamp;
-        let t = endTime - nowTime.getTime();
+        let t = endTime - self.serverTime;
         if (t > 0) {
           let day = Math.floor(t / 86400000);
           let hour = Math.floor((t / 3600000) % 24);

@@ -35,4 +35,12 @@ export const setPayConfirmShow = ({ commit }, data) => {
 export const setIsCash = ({ commit }, data) => {
   commit('setIsCash', data)
 }
-
+export const setGoHome = ({ commit }, data) => {
+  commit('setGoHome', data)
+}
+export const setTime = ({ commit }, data) => {
+  commit('setTime', data)
+}
+export const changeTime = ({ commit }, data) => {
+  commit('changeTime', data)
+}

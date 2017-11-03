@@ -43,7 +43,10 @@
                 <img :src="item.pic">
               </div>
               <div class="orders-mid" @click="goWhere('',item)">
-                <div class="font-16 df orders-mid-title" v-text="item.prod_name"></div>
+                <div class="font-16 df orders-mid-title">
+                  <img src="../../assets/imgs/seckill.png" v-if="item.isSecKill">
+                  <span v-text="item.prod_name"></span>
+                </div>
                 <div v-for="(attr , n) in item.attribute">
                   <span v-text="attr.key"></span>:
                   <span v-text="attr.value"></span>
@@ -129,7 +132,8 @@
     <div class="toast-mubu" v-if="mubuShow">
       <!-- <div class="toast-mubu" v-if="true"> -->
       <div class="mubu-textBox">
-        <div class="mubu-text font-14"><img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">您的订单未在规定时间内支付，已取消，点击查看</div>
+        <div class="mubu-text font-14"><img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">您的订单未在规定时间内支付，
+          <br>已取消，点击查看</div>
         <div @click="goList()" class="mubuSureBtn font-15">确定</div>
       </div>
     </div>
@@ -179,7 +183,11 @@ export default {
   methods: {
     goWhere: function(title, item) {
       if (item.prodStatus != 1) {
-        this.$vux.toast.text('商品已下架', 'middle')
+        this.$toast.show({
+          text: '商品已下架',
+          position: 'middle',
+          value: true
+        })
         return
       }
       this.$router.push({ path: 'detail', query: { 'prod_id': item.prod_id } })
@@ -492,6 +500,10 @@ export default {
       text-overflow: ellipsis;
       /*超出部分文字以...显示*/
       margin-bottom: 2vw;
+      img {
+        height: 4.5vw;
+        vertical-align: middle;
+      }
     }
     .orders-mid-bottom {
       position: absolute;
@@ -556,7 +568,7 @@ export default {
 }
 
 .order-info {
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  /*box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);*/
   margin-bottom: 5vw;
   .order-infoText {
     padding-top: 5vw;

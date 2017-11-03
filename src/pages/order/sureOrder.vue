@@ -19,7 +19,8 @@
           <div class="line"></div>
           <div class="order-titles font-14">
             运费
-            <div class="right-show font-14 ">{{trackFee>0?trackFee:'免邮'}}</div>
+            <span class="right-show font-14 ">{{trackFee>0?trackFee:'包邮'}}</span>
+            <div class="font-9 color-9b">*本商品由第三方卖家提供物流及售后服务</div>
           </div>
         </div>
         <div class="order-title font-15 top-5 pd-right2">商品信息</div>
@@ -29,7 +30,10 @@
               <img :src="item.pic">
             </div>
             <div class="goods-right">
-              <div class="font-16 df title" v-text="item.prod_name"></div>
+              <div class="font-16 df title">
+                <img src="../../assets/imgs/seckill.png" v-if="item.isSecKill">
+                <span v-text="item.prod_name"></span>
+              </div>
               <!-- <div class="font-11 color-92" v-text="">颜色：贵族金，规格：标准</div> -->
               <!-- <div class="font-13 color-92 margin-top-5">数量×<span v-text="item.basket_count"></span></div> -->
               <div>
@@ -40,7 +44,7 @@
               <div v-if="item.sellType==1" class='margin-top-5' style="position:relative">
                 <span class="basicColor font-16" v-text="item.point"></span>
                 <span class="font-9 color-9b">积分</span>
-                <span class="font-12 color-92 count" style="float:right;vertical-align:bottom">×{{item.basket_count}}</span>
+                <span class="font-14 color-92 count" style="float:right;vertical-align:bottom">×{{item.basket_count}}</span>
               </div>
               <div v-if="item.sellType==0" class="margin-top-5">
                 <span class="font-9 color-9b">￥</span>
@@ -125,7 +129,7 @@ export default {
         freightAmount: this.trackFee
       }
 
-      if (this.isCash || this.total <= parseInt(this.loginUser.score)) {
+      if (this.isCash || this.total <= parseInt(this.loginUser.points)) {
         this.$http({
           method: 'POST',
           url: this.$Api('/order/insertOrderNoNew'),
@@ -334,7 +338,9 @@ export default {
 
 .right-show {
   float: right;
-  color: #888888
+  .px2vw(line-height, 14);
+  
+  color: #888888;
 }
 
 .order-goods {
@@ -369,6 +375,10 @@ export default {
     }
     .title {
       line-height: 7vw;
+      img {
+        height: 4.5vw;
+        vertical-align: middle;
+      }
       /*.px2vw(margin-bottom, 10);*/
     }
   }
@@ -417,14 +427,19 @@ export default {
 }
 
 .order-titles {
+  .px2vw(padding-top, 7);
   text-align: left;
   box-sizing: border-box;
+  position: relative;
   width: 100%;
-  height: 8.5vw;
+  .px2vw(line-height, 16);
+  .px2vw(height, 50);
   border-radius: 2px 2px 0 0;
-  line-height: 8.5vw;
   color: #fff;
-  position: relative
+  position: relative;
+  div{
+    .px2vw(margin-top,5);
+  }
 }
 
 .pd-left-2 {

@@ -8,6 +8,8 @@ const state = {
     chosenReturnType:false,
     allowBack:true,
     payConfirmShow:false,
-    isCashCart:false
+    isCashCart:false,
+    home:false,
+    server_time:''
 }
 export default state;

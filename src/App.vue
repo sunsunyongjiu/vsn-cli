@@ -11,29 +11,37 @@
 <script>
 import { ViewBox } from 'vux'
 import { mapGetters } from 'vuex'
+import Apis from './configers/Api'
 export default {
   name: 'app',
   components: {
     ViewBox
   },
   mounted: function() {
+    let _this=this
+    Apis.getServerTime().then(data => {
+      console.log(data.serverTime)
+      this.$store.dispatch({ type: 'setTime', data: data.serverTime })
+    });
+
+
+    let serverTimeInter=setInterval(function(){
+      _this.$store.dispatch({ type: 'changeTime'})
+    },1000)
     window.onpopstate = () => {
-      console.log(this.$route.path=='/path')
-      if(this.$route.path=='/path'){
-        history.go(1)
-        return
-      }
       if (!this.allowBack) { //    这个allowBack 是存在vuex里面的变量
         history.go(1)
-        this.$store.dispatch({ type: 'setPayConfirmShow', data: true })
+        // this.$store.dispatch({ type: 'setPayConfirmShow', data: true })
       }
+      
     }
   },
   computed: {
     // 使用对象展开运算符将 getters 混入 computed 对象中
     ...mapGetters({
       allowBack: 'getallowBack',
-      goHome:'getHome'
+      goHome: 'getHome',
+      pathHome: 'getPathHome'
     })
   },
 }

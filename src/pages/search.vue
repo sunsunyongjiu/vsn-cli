@@ -10,7 +10,7 @@
       </div>
       <input type="text" ref="serachBox" v-model="searchValue" :placeholder="searchValue" @keyup.enter="showAlert">
     </div>
-    <div class="search-box-ways">
+    <!-- <div class="search-box-ways">
       <div class="font-14 search-titles">兑换方式</div>
       <div class="selecters font-13" :class="{'selecter-selected':selects.isPoint}" @click="changeWay('point')">
         积分
@@ -20,14 +20,14 @@
         非积分
         <img src="../assets/imgs/triangle.png" class="selecters-triangle">
       </div>
-    </div>
+    </div> -->
     <div class="search-box-ways" v-if="searchHistoryShow">
       <div class="font-14 search-titles">历史搜索</div>
       <div>
         <div v-for="(item,index) in searchHistory" key="index" class="historyBox font-14" v-text="item.search_str" @click="doSearchHistory(item.search_str)"></div>
       </div>
     </div>
-    <scroller lock-x scrollbar-y use-pullup height="80vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
+    <scroller lock-x scrollbar-y use-pullup height="90vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
   downContent: '',
   upContent: '',
   loadingContent: '加载中...',

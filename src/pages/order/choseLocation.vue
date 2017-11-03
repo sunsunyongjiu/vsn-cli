@@ -33,7 +33,7 @@
     <div class='addLocation font-18' @click="addLocation(0)">
       添加新地址
     </div>
-    <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
+    <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm" confirm-text="是" cancel-text="否">
       <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
           <img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">
           <div class="confirm-text">确认删除地址吗？</div>

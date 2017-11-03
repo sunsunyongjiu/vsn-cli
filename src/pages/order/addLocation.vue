@@ -79,7 +79,7 @@ export default {
         { 'text': '街道', select: false, citys: [], index: 3, show: false },
       ],
       citys: { citys: [] },
-      locationDetail: '请选择地址',
+      locationDetail: '请选择省市地区',
       postData: {
         receiver: '',
         mobile: '',

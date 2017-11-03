@@ -6,7 +6,7 @@
        <div class="back" @click="goback"></div> 
     </div>
     -->
-    <scroller lock-x scrollbar-y use-pullup height="94vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
+    <scroller lock-x scrollbar-y use-pullup height="100vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
   downContent: '',
   upContent: '',
   loadingContent: '加载中...',
@@ -74,7 +74,7 @@
     <div class="toast-mubu" v-if="mubuShow">
       <!-- <div class="toast-mubu" v-if="true"> -->
       <div class="mubu-textBox">
-        <div class="mubu-text font-14"><img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">秒杀活动已结束，请期待下一期</div>
+        <div class="mubu-text font-14"><img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">秒杀活动已结束<br>敬请期待下一期</div>
         <div @click="goPath()" class="mubuSureBtn font-15">确定</div>
       </div>
     </div>
@@ -323,7 +323,7 @@ export default {
       20);
       .px2vw(margin-right,
       20);
-      background: #292929;
+      /*background: #292929;*/
       border-radius: 2px;
       margin: 0 auto;
       img {

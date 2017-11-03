@@ -41,13 +41,12 @@ export default {
     }
   },
   created() { // 时间控制
-    console.log('进来了')
+    
     setTimeout(() => {
-        console.log(1111111111111)
+        
       this.show = false
     }, this.time)
-    console.log(this.time)
-    console.log(this.position)
+   
   },
   computed: {
     translate() { // 根据props，生成相对应的动画

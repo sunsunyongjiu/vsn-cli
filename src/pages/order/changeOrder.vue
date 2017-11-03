@@ -70,10 +70,11 @@
         </popup>
       </div>
     </div>
-    <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
+    <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm" confirm-text="是" cancel-text="否">
       <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
-        提交{{$route.query.returnType=='2'?'换货':'退货'}}申请后不可取消，是否确认提交
-      </div>
+          <img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">
+          <div class="confirm-text"> 提交{{$route.query.returnType=='2'?'换货':'退货'}}申请后不可取消，确认提交吗？</div>
+        </div>
     </confirm>
     <div class="submitBtn font-18 fff" @click="exchangeOrder">
       提交

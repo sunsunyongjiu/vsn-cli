@@ -50,6 +50,7 @@ const router = new Router({
       path: '/order',
       name: '个人订单',
       component: order,
+      meta: { back: 'home' }
     },
     {
       path: '/contact',
@@ -69,8 +70,7 @@ const router = new Router({
     {
       path: '/path',
       name: '积分商城',
-      component: Hello,
-      meta: { allowBack: false }
+      component: Hello
     },
     {
       path: '/lists',
@@ -142,11 +142,13 @@ const router = new Router({
       path: '/success',
       name: '支付成功',
       component: paySc,
+      meta: { allowBack: false }
     },
     {
       path: '/fail',
       name: '支付失败',
       component: payfail,
+      meta: { allowBack: false }
     },
     {
       path: '/pointHistory',
@@ -162,17 +164,30 @@ const router = new Router({
 })
 // 页面跳转后修改网页title
 router.beforeEach((to, from, next) => {
-  Vue.$vux.loading.hide()
-  document.title = to.name
+  Vue.$vux.loading.hide();
+  document.title = to.name;
+  let json = JSON.parse(sessionStorage.getItem("setLogin"))
+  console.log(json)
+  if(json!==null){
+    store.dispatch({ type: 'setLogin', data: json })
+  }
   next()
   let allowBack = true //    给个默认值true
   if (to.meta.allowBack !== undefined) {
     allowBack = to.meta.allowBack
   }
 
+  console.log
   if (!allowBack) {
     history.pushState(null, null, location.href)
   }
+
+  // let home=false;
+  // if(to.meta.back!==undefined){
+  //   home=true
+  //   // history.pushState(null, null, location.href)
+  // }
+  // store.dispatch({ type: 'setGoHome', data: home })
   store.dispatch({ type: 'updateAppSetting', data: allowBack })
 })
 export default router;

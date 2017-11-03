@@ -8,11 +8,9 @@
       <div class="index-Boutique-div-right ">
         <div v-text="item.name" class="index-Boutique-div-right-name">
         </div>
-        
-        <div v-if="item.sellType==0" class="font-10">
-	        <div v-text="item.brief" class="text">
+
+	        <div v-text="item.brief" class="text text-overflow-2">
 	        </div>
-        </div>
         
         <div class="index-Boutique-div-right-points">
           <div>
@@ -52,7 +50,7 @@ export default {
     }
   },
   mounted: function() {
-    console.log(this.items)
+
   },
   watch: {
     items() {
@@ -107,7 +105,7 @@ export default {
         font-size: 4vw;
         line-height: 5vw;
         margin-top: 0.6vh;
-        height: 9vw;
+        height: 7vw;
         font-weight: 800;
         overflow: hidden;
         text-overflow: -o-ellipsis-lastline;

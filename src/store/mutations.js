@@ -36,3 +36,15 @@ export function setPayConfirmShow (state, { data }) {
 export function setIsCash (state, { data }) {
   state.isCashCart = data
 }
+
+export function setGoHome (state, { data }) {
+  state.home = data
+}
+
+export function setTime (state, { data }) {
+  state.server_time = data
+}
+
+export function changeTime (state, { data }) {
+  state.server_time +=1000
+}

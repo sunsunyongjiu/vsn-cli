@@ -73,7 +73,8 @@
                 <span class="font-13">积分商城</span>
               </div>
               <div>
-                <button class="soonBtn" @click="goLogin()">{{"登录/注册"|tr}}</button>
+                <!-- <button class="soonBtn" @click="goLogin()">{{"登录/注册"|tr}}</button> -->
+                <a :href='loginUrl' class="soonBtn" @click="goLogin()">{{"登录/注册"|tr}}</a>
               </div>
             </div>
           </flexbox-item>
@@ -103,7 +104,7 @@
           <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index">
             <div class="flex-demo fenleiBox" @click="goList(item.title,item.id,item.path)">
               <div>
-                <img :src="item.src" :class="item.class">
+                <img :src="item.src" class="index-page-classification-img">
                 <div class="index-bottom">
                   <div>
                     {{item.title|tr}}
@@ -243,7 +244,8 @@ export default {
       ],
       pageNumber: 1,
       pageSize: 10,
-      showBox: ''
+      showBox: '',      
+      loginUrl:this.$BasePayUrl(this.$baseEncode(this.$BaseUrl()))
     }
   },
   components: {
@@ -273,21 +275,21 @@ export default {
       let p = path == undefined ? 'lists' : path
       if (path == undefined) {
         if (title == '无忧出行') {
-          window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/rights'
+          window.location.href =this.$BenzUrl('/wechat/main/rights')
         } else if (title == '精英课选') {
-          window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/main/activityDetail?id=12'
+          window.location.href =this.$BenzUrl('/wechat/main/activityDetail?id=12')
         } else if (title == '限时秒杀') {
-        	
-	         Apis.getSecKillTimeList().then(data => {
-	          console.log(data.data[0])
-	          if (data.data[0] && data.data[0].status != 3) {
-	            this.$router.push({ path: '/hot' })
-	          } else {
-	            this.showBox = 'expire';
-	            this.showContact = true
-	          }
-	        })
-	         
+
+          Apis.getSecKillTimeList().then(data => {
+            console.log(data.data[0])
+            if (data.data[0] && data.data[0].status != 3) {
+              this.$router.push({ path: '/hot' })
+            } else {
+              this.showBox = 'expire';
+              this.showContact = true
+            }
+          })
+
         } else if (title == '尊享礼券') {
           this.showContact = true;
           this.showBox = 'zun'
@@ -324,7 +326,8 @@ export default {
 
     },
     goLogin: function() {
-      window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode("http://mall-test.mercedesmeclub.yuyuanhz.com/index.html")
+    	localStorage.setItem("prod_id", "");  //先把用于区分首页还是商品详情登陆的id清空，否则会跳到商品详情页面
+      // window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode("http://mall-test.mercedesmeclub.yuyuanhz.com/index.html")
 
     },
     goNext: function(pathUrl) {
@@ -364,13 +367,21 @@ export default {
       // })
       let userToken = this.$route.query.token
       let user = this.$route.query.user
+      
       let subNumber = "";
       let success = 0;
       if (this.$route.query.subNumber) {
         subNumber = this.$route.query.subNumber
         success = this.$route.query.success
       }
+      
+      let prod_id = "";
+      if (localStorage.getItem("prod_id")) {
+      	prod_id = localStorage.getItem("prod_id");
+      }
+      
       let pandunLogin = this.$store.state.loginUser.name == undefined
+      console.log(pandunLogin)
       if (userToken && user && pandunLogin) {
         Apis.login({ token: userToken, 'user': user }).then(data => {
           if (data.code === 1) {
@@ -380,8 +391,10 @@ export default {
             userDetail.user = this.$route.query.user
             console.log(data.data.carImg)
             this.myCardSrc = require("../assets/imgs/" + data.data.carImg + ".png");
+            sessionStorage.setItem("setLogin", JSON.stringify(userDetail))
             this.$store.dispatch({ type: 'setLogin', data: userDetail })
             this.$router.push({ path: '/path' })
+            
             if (subNumber != "") {
               if (success == 1) {
                 this.$router.push({ path: '/success', query: { 'subNumber': subNumber, "success": success } })
@@ -389,12 +402,17 @@ export default {
                 this.$router.push({ path: '/fail', query: { 'subNumber': subNumber, "success": success } })
               }
             }
-
+	
+						if (prod_id != "") {
+							localStorage.setItem("prod_id", "");  //把用于区分首页还是商品详情登陆的id清空
+              this.$router.push({ path: '/detail', query: { 'prod_id': prod_id} })
+            }
           }
         })
       } else if (!pandunLogin) {
         this.myCardSrc = require("../assets/imgs/" + this.$store.state.loginUser.carImg + ".png"),
           this.login = true
+          this.$router.push({ path: '/path' })
       } else {
         this.login = false
       }
@@ -420,6 +438,7 @@ export default {
         } else {
           this.$refs.demo1.disablePullup()
         }
+
       })
     },
     load1: function() {
@@ -443,8 +462,12 @@ export default {
       }, 1000)
     }
   },
-  mounted: function() {
 
+  mounted: function() {
+    if (this.$route.query.fromPay !== undefined) {
+      this.$router.push({ path: '/path' })
+      this.$router.push({ path: '/order' })
+    }
     this.init()
   },
   computed: {

@@ -5,7 +5,7 @@
       <div class="font-16 fff pointTitle">
         当前积分
       </div>
-      <div v-text="loginUser.score" class="font-36 basicColor pointText">
+      <div v-text="loginUser.points" class="font-36 basicColor pointText">
       </div>
       <div class="personal-title-googsBox">
       </div>

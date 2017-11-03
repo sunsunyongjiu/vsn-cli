@@ -36,7 +36,7 @@
             <span v-if="order.sellType==1">积分</span></div>
         </div>
         <div class="order font-15 color-7f" v-if="order.sellType==1">
-          <div class="order-left">剩余：</div>
+          <div class="order-left">积分余额：</div>
           <div class="order-right">
             <span class="" v-text="loginUser.points"></span>
             <span v-if="order.sellType==1">积分</span></div>

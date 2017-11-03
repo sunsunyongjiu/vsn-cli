@@ -1,16 +1,11 @@
 <template>
   <div class="vsn-wrap">
     <div style="">
-      <!--
-      <div class="pageTitle">
-        <span class="font-18">购物车</span>
-        <div class="back" @click="goback"></div
-      </div>
-      -->
-      <div class="tab">
+      
+      <!-- <div class="tab">
         <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分</div>
         <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">现金</div>
-      </div>
+      </div> -->
     </div>
     <div class="vsn-main">
       <div class="goods-list">
@@ -60,10 +55,10 @@
         <div class="bottom-left">&nbsp;全选</div>
       </div>
       <div v-if="selectePoint&&!deleteShow" class="bottom-mid">
-        <span class="font-14 fff">合计:</span> <span class="color-1dafed font-16" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
+        <span class="font-14 fff">合计:</span> <span class="color-1dafed font-14" v-text="totalPoint"></span> <span class="font-9 color-9b">积分</span>
       </div>
       <div v-if="!selectePoint&&!deleteShow" class="bottom-mid">
-        <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-16" v-text="totalPoint"></span>
+        <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-14" v-text="totalPoint"></span>
       </div>
       <span class="color-91 font-14 " v-if="!deleteShow" @click="deleteShow=true">
         编辑
@@ -79,7 +74,7 @@
       <!-- <span class="font-14 fff" v-if="deleteShow" @click="deleteShow=false" style="float:right;margin-right:5vw">
         完成
       </span> -->
-      <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm">
+      <confirm v-model="show" @on-cancel="onCancel" @on-confirm="onConfirm" confirm-text="是" cancel-text="否">
         <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
           <img src="../assets/imgs/tanhao.png" class="confirm-tanhao">
           <div class="confirm-text">确认删除商品吗？</div>

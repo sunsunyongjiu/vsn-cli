@@ -7,7 +7,7 @@
         <tab-item :selected="listIndex==1" @on-item-click="changeItem" class=" font-14">已支付</tab-item>
         <tab-item :selected="listIndex==2" @on-item-click="changeItem" class=" font-14">已完成</tab-item>
         <tab-item :selected="listIndex==3" @on-item-click="changeItem" class=" font-14">已取消</tab-item>
-        <tab-item :selected="listIndex==4" @on-item-click="changeItem" class=" font-14">退换货</tab-item>
+        <!-- <tab-item :selected="listIndex==4" @on-item-click="changeItem" class=" font-14">退换货</tab-item> -->
       </tab>
     </div>
     <div>
@@ -18,18 +18,20 @@
           </div>
           <div class="orders-mid">
             <div class="font-16 df orders-mid-title">
-              <img src="../assets/imgs/pointBox.png" v-if="items.sellType==1">
-              <img src="../assets/imgs/cash.png" v-if="items.sellType!=1"><span v-text="item.prod_name"></span>
+              <img src="../assets/imgs/pointBox.png" v-if="items.sellType==1&&item.isSecKill!=1">
+              <img src="../assets/imgs/cash.png" v-if="items.sellType!=1&&item.isSecKill!=1">
+              <img src="../assets/imgs/seckill.png" v-if="item.isSecKill">
+              <span v-text="item.prod_name"></span>
             </div>
-            <div v-for="(attr,x) in item.attribute">
+            <div v-for="(attr,x) in item.attribute" class="font-13">
               <span v-text="attr.key"></span>:
               <span v-text="attr.value"></span>
             </div>
-            <div class="font-11">数量：x<span v-text="item.basket_count"></span></div>
             <div class="orders-mid-bottom">
               <span v-if="items.sellType==0" class="font-11">￥</span>
               <span class="basicColor font-16" v-text="item.product_total_amout"></span>
               <span class="font-9" v-if="items.sellType==1">积分</span>
+              <span class="font-14 color-92 count" style="position:absolute;right:0;bottom:0">×{{item.basket_count}}</span>
             </div>
           </div>
           <div class="orders-right font-12">
@@ -93,7 +95,7 @@ export default {
   },
   methods: {
     goPay: function(item) {
-      this.$router.push({ path: '/pay', query: { 'subNumber': item.sub_number } })
+      this.$router.replace({ path: '/pay', query: { 'subNumber': item.sub_number } })
     },
     goGet: function(num) {
       this.deleteNm = num
@@ -255,7 +257,7 @@ export default {
     }
   }
   .orders-mid {
-    width: 46.6vw;
+    width: 66.6vw;
     float: left;
     text-align: left;
     box-sizing: border-box;
@@ -281,7 +283,8 @@ export default {
     }
     .orders-mid-bottom {
       position: absolute;
-      bottom: 0
+      bottom: 0;
+      width: 64.2vw;
     }
   }
   .orders-right {

@@ -27,7 +27,11 @@
         </div>
       </div>
     </div>
-    <div class="payBtn font-18" @click="goPay">确认支付</div>
+    <div class="bottom-btn">
+      <div class="payBtn font-18" @click="cancelPay">取消支付</div>
+      <div class="payBtn font-18" @click="goPay">确认支付</div>
+    </div>
+    
     <confirm v-model="confirmShow" @on-cancel="onCancel" @on-confirm="onConfirm()" confirm-text="是" cancel-text="否">
       <div style="height:100%;color:#737373;line-height:1;text-align:center;" class="confirmBox font-18">
         <img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">
@@ -56,7 +60,8 @@ export default {
         total: '',
         sellType: ''
       },
-      confirmShow2: false
+      confirmShow2: false,
+      confirmShow:false
     }
   },
   components: {
@@ -65,35 +70,52 @@ export default {
   },
   methods: {
     onPayConfirm: function() {
-      if (this.order.sellType == 0) {
-
-        Apis.unifiedorder(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
-          this.callpay(data.data.jsApiParams)
-        })
-
-      } else {
-        Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'score': this.order.total, token: this.$store.state.loginUser.token }).then(data => {
-
-          if (data.code == 1) {
-          	
-          	Apis.login({ token: this.$store.state.loginUser.token, 'user': this.$store.state.loginUser.user, "isLogin": "N" }).then(data => {
-		          if (data.code === 1) {
-		            let userDetail = data.data
-		            userDetail.token = this.$store.state.loginUser.token
-		            userDetail.user = this.$store.state.loginUser.user
-		            this.$store.dispatch({ type: 'setLogin', data: userDetail })	
+    	
+    	Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
+          
+          if (data.data[0].status != 1) {
+		      	this.$toast.show({
+		          text: '订单已支付，请勿重复支付',
+		          position: 'middle',
+		          value: true
+		        })
+		      	
+		      	return
+		      }
+		      
+		      if (this.order.sellType == 0) {
+		
+		        Apis.unifiedorder(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
+		          this.callpay(data.data.jsApiParams)
+		        })
+		
+		      } else {
+		        Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'score': this.order.total, token: this.$store.state.loginUser.token }).then(data => {
+		
+		          if (data.code == 1) {
+		          	
+		          	Apis.login({ token: this.$store.state.loginUser.token, 'user': this.$store.state.loginUser.user, "isLogin": "N" }).then(data => {
+				          if (data.code === 1) {
+				            let userDetail = data.data
+				            userDetail.token = this.$store.state.loginUser.token
+				            userDetail.user = this.$store.state.loginUser.user
+				            sessionStorage.setItem("setLogin", JSON.stringify(userDetail))
+				            this.$store.dispatch({ type: 'setLogin', data: userDetail })	
+				          }
+				          
+				          this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
+			       		})	          	
+		            
+		          } else {
+		            this.$router.push({ path: '/fail', query: { 'subNumber': this.$route.query.subNumber, success: 0 } })
 		          }
 		          
-		          this.$router.push({ path: '/success', query: { 'subNumber': this.$route.query.subNumber, success: 1 } })
-	       		})	          	
-            
-          } else {
-            this.$router.push({ path: '/fail', query: { 'subNumber': this.$route.query.subNumber, success: 0 } })
-          }
-          
-        })
-
-      }
+		        })
+		
+		      }
+       })
+        
+      
     },
     onPayCancel: function() {
 
@@ -112,15 +134,15 @@ export default {
       localStorage.setItem("user", this.$store.state.loginUser.user);
       localStorage.setItem("subNumber", this.$route.query.subNumber);
     },
-    showConfirm: function() {
+    cancelPay:function(){
       this.confirmShow = true
     },
     onConfirm: function() {
-      this.$store.dispatch({ type: 'setPayConfirmShow', data: false })
-      this.$router.push({ path: '/path' })
+      
+      this.$router.replace({ path: '/path',query: { 'fromPay': true } })
     },
     onCancel: function() {
-      this.$store.dispatch({ type: 'setPayConfirmShow', data: false })
+      
     },
     jsApiCall: function(data) {
       WeixinJSBridge.invoke(
@@ -135,12 +157,12 @@ export default {
 
           if (res.err_msg == "get_brand_wcpay_request:ok") {
 
-            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=1';
+            window.location.href =this.$BaseUrl('?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=1');
 
           } else if (res.err_msg == "get_brand_wcpay_request:fail") {
-            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=0';
+            window.location.href =this.$BaseUrl('?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=0');
           } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-            window.location.href = 'http://mall-test.mercedesmeclub.yuyuanhz.com/index.html?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=0';
+            window.location.href =this.BaseUrl('?token=' + token + '&user=' + user + '&subNumber=' + subNumber + '&success=0');
           }
 
           //alert(res.err_msg);
@@ -172,13 +194,6 @@ export default {
     this.init()
 
   },
-  computed: {
-    // 使用对象展开运算符将 getters 混入 computed 对象中
-    ...mapGetters({
-      confirmShow: 'getPayConfirmShow'
-
-    })
-  },
 }
 
 </script>
@@ -187,13 +202,21 @@ export default {
 .payBtn {
   background: #1dafed;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  width: 100vw;
+  width: 50vw;
   height: 14.6vw;
   line-height: 14.6vw;
   font-size: 24px;
   color: #ffffff;
   letter-spacing: 0;
   text-align: center;
+}
+.bottom-btn{
+  width: 100vw;
+  height: 14.6vw;
+  overflow: hidden;
+  div{
+    float: left;
+  }
 }
 
 .order-title {

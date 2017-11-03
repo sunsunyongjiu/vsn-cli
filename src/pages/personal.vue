@@ -8,10 +8,13 @@
       <span v-text="loginUser.name" class="font-16 fff"></span>
     </div>
     <div class="personal-title-point font-10">
-      <div class="personal-title-point-diamond"></div>
-      <span style="font-family:none">
-        {{loginUser.points}} 积分
-      </span>
+      <img src="../assets/imgs/diamond.png" class="personal-title-point-diamond">
+      <div class='pointsText'>
+        {{loginUser.points}} 
+      </div>
+      <div class="points">
+         &nbsp;积分
+      </div>
     </div>
     
     <div class="personal-title-googsBox">
@@ -156,33 +159,34 @@ export default {
 .personal-title-point {
   background: #292929;
   border-radius: 100px;
+  overflow: hidden;
+  position: relative;
   /*width: 20.7vw;*/
   padding: 0 1vw;
   display: inline-block;
   .px2vw(height, 18);
   .px2vw(line-height, 18);
+  .px2vw(padding-left, 18);
   margin: 4vw auto 0;
-  
-  font-size: 10px;
   color: #ffffff;
-  letter-spacing: 0;
   text-align: center;
-  vertical-align: middle;
-  img {
-    .px2vw(height, 12);
-    vertical-align: middle;
-    vertical-align: middle;
-    .px2vw(margin-top, -2);
+  .pointsText{
+    .px2vw(padding-top, 1);
+    .px2vw(line-height, 19);
+    
+    float: left;
+  }
+  .points{
+    float: right;
   }
   .personal-title-point-diamond{
-    .px2vw(height, 18);
-    .px2vw(width, 18);
-    .px2vw(margin-top, 0);
-    vertical-align: middle;
-    display: inline-block;
-    background: url(../assets/imgs/diamond.png) center center no-repeat;
-    background-size: 75%;
-    border-radius: 100%;
+    .px2vw(height, 12);
+    .px2vw(width, 12);
+    .px2vw(left, 4);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    .px2vw(margin-top, -6);
     
   }
   span{

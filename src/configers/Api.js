@@ -2,10 +2,32 @@ import Vue from 'vue'
 import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime());
 // const basePath = 'https://mall-test.mercedesmeclub.yuyuanhz.com/api'
-const basePath = 'http://123.57.157.212:9090'
+const basePath = 'http://123.57.157.212:9090';
+const baseUrl = 'https://mall-test.mercedesmeclub.yuyuanhz.com/index.html';
+const benzUrl = 'https://meclub-cn-test.mercedes-benz.com';
+const basePayUrl = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=';
+Vue.prototype.$Api = (url) => {
+  return basePath + url
+};
+Vue.prototype.$BaseUrl = (url) => {
+  return baseUrl + url
+};
+Vue.prototype.$BasePayUrl = (url) => {
+  return basePayUrl + url
+};
+Vue.prototype.$BenzUrl = (url) => {
+  return benzUrl + url
+};
 export default {
+  
   get(params = {}) {
     return Vue.http.get(basePath + '/home/getCommendProdList', { params }).then(res => {
+      // some handling
+      return res.data
+    })
+  },
+  getServerTime(params = {}) {
+    return Vue.http.get(basePath + '/home/getServerTime', { params }).then(res => {
       // some handling
       return res.data
     })
@@ -45,10 +67,10 @@ export default {
     })
   },
   // 上传图片
-  uploadImage(imageBase64,imageType) {
-    var params={
-      imageBase64:imageBase64,
-      imageType:imageType
+  uploadImage(imageBase64, imageType) {
+    var params = {
+      imageBase64: imageBase64,
+      imageType: imageType
     }
     return Vue.http.post(basePath + '/order/uploadImage', params, { emulateJSON: true }).then(res => {
       // some handling
@@ -83,37 +105,37 @@ export default {
     })
   },
   // 获取订单详情
-  getOrderDetail(token,params = {}) {
+  getOrderDetail(token, params = {}) {
     return Vue.http.get(basePath + '/order/getOrderDetail', {
       params: params,
-      headers:header('/order/getOrderDetail', token)
+      headers: header('/order/getOrderDetail', token)
     }).then(res => {
       return res.data
     })
   },
   // 获取物流详情
-  getProdTrackDetail(token,params = {}) {
+  getProdTrackDetail(token, params = {}) {
     return Vue.http.get(basePath + '/order/getProdTrackDetail', {
       params: params,
-      headers:header('/order/getProdTrackDetail', token)
+      headers: header('/order/getProdTrackDetail', token)
     }).then(res => {
       return res.data
     })
   },
   // 获取退换货详情
-  getProdReturnDetail(token,params = {}) {
+  getProdReturnDetail(token, params = {}) {
     return Vue.http.get(basePath + '/order/getProdReturnDetail', {
       params: params,
-      headers:header('/order/getProdReturnDetail', token)
+      headers: header('/order/getProdReturnDetail', token)
     }).then(res => {
       return res.data
     })
   },
-   // 获取运费
-  getBasketListTrackFee(token,params = {}) {
+  // 获取运费
+  getBasketListTrackFee(token, params = {}) {
     return Vue.http.get(basePath + '/order/getBasketListTrackFee', {
       params: params,
-      headers:header('/order/getBasketListTrackFee', token)
+      headers: header('/order/getBasketListTrackFee', token)
     }).then(res => {
       return res.data
     })
@@ -148,14 +170,14 @@ export default {
   },
   // 获取退换货原因列表
   getProdReturnReasonList() {
-    return Vue.http.get(basePath + '/order/getProdReturnReasonList',).then(res => {
+    return Vue.http.get(basePath + '/order/getProdReturnReasonList', ).then(res => {
       // some handling
       return res.data
     })
   },
-   // 获取精品推荐列表
+  // 获取精品推荐列表
   getCommendProdList(params = {}) {
-    return Vue.http.get(basePath + '/home/getCommendProdList',{ params }).then(res => {
+    return Vue.http.get(basePath + '/home/getCommendProdList', { params }).then(res => {
       // some handling
       return res.data
     })
@@ -189,20 +211,20 @@ export default {
     })
   },
   // 获取微信支付订单信息
-  unifiedorder(token,params = {}) {
+  unifiedorder(token, params = {}) {
     return Vue.http.get(basePath + '/wxpay/unifiedorder', {
       params: params,
-      headers:header('/wxpay/unifiedorder', token)
+      headers: header('/wxpay/unifiedorder', token)
     }).then(res => {
       console.log('-------------')
       return res.data
     })
   },
   // 获取积分记录
-  getPointList(token,params = {}) {
+  getPointList(token, params = {}) {
     return Vue.http.get(basePath + '/order/getPointList', {
       params: params,
-      headers:header('/order/getPointList', token)
+      headers: header('/order/getPointList', token)
     }).then(res => {
       console.log('-------------')
       return res.data
@@ -217,7 +239,7 @@ export default {
   },
   // 获取秒杀商品
   getSecKillProdList(params = {}) {
-    return Vue.http.get(basePath + '/home/getSecKillProdList',{ params }).then(res => {
+    return Vue.http.get(basePath + '/home/getSecKillProdList', { params }).then(res => {
       // some handling
       return res.data
     })

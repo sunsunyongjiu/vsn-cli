@@ -9,7 +9,7 @@
     <div class="vsn-main">
       <scroller lock-x scrollbar-y ref="scroller" class="detail-scroller" height="-55">
         <div class="detail-padding-bottom-50">
-          <swiper :aspect-ratio="300/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
+          <swiper :aspect-ratio="400/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
             <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
           </swiper>
           <div class="detail-title">
@@ -174,7 +174,12 @@ export default {
       this.$router.go(-1)
     },
     onConfirm: function() {
-      window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href);
+      //window.location.href = 'https://meclub-cn-test.mercedes-benz.com/wechat/index/gotoLogin?pointsmall_url=' + this.$baseEncode(window.location.href);
+      
+      localStorage.setItem("prod_id", this.$route.query.prod_id);  //用于区分是详情页登陆还是首页登录的标识
+      
+      let pointsmall_url =this.$BaseUrl();
+      window.location.href =this.$BasePayUrl(this.$baseEncode(pointsmall_url));
     },
     onCancel: function() {
 
@@ -190,16 +195,47 @@ export default {
 
         return
       }
-      if (this.detailObj.isSecKill == 1 && n == 1) {
-        this.mubuShow = true;
-        return
-      }
-      this.popShow = true
-      if (n == 1) {
-        this.isCart = true
-      } else {
-        this.isCart = false
-      }
+      
+      if (this.detailObj.isSecKill == 1) {
+        Apis.getSecKillTimeList().then(data => {
+
+          //秒杀没开始不允许添加
+          if (data.data[0] && data.data[0].status == 1) {
+            // this.$vux.toast.text('秒杀活动未开始', 'middle')
+            this.$toast.show({
+              text: '秒杀活动未开始',
+              position: 'middle',
+              value: true
+            })
+            return
+            
+          }else{
+          	
+          	if (this.detailObj.isSecKill == 1 && n == 1) {
+			        this.mubuShow = true;
+			        return
+			      }
+          	
+          	this.popShow = true
+			      if (n == 1) {
+			        this.isCart = true
+			      } else {
+			        this.isCart = false
+			      }
+			      
+          }
+
+        })
+      }else{
+      	
+	      this.popShow = true
+	      if (n == 1) {
+	        this.isCart = true
+	      } else {
+	        this.isCart = false
+	      }
+      }      
+      
     },
     plus: function(n) {
       if (this.detailObj.isSecKill) {
@@ -503,7 +539,7 @@ export default {
 .pop-left {
   width: 34.2vw;
   height: 31.2vw;
-  background: #292929;
+  /*background: #292929;*/
   position: absolute;
   top: -5vw;
   left: 5vw;
