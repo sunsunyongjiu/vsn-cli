@@ -6,7 +6,7 @@
   }">
     <div class="life">
       <div class="mubu" v-if="show"></div>
-    <!-- <back :title="pageTitle"></back> -->
+      <!-- <back :title="pageTitle"></back> -->
       <!-- <tab :line-width="1" custom-bar-width="60px" active-color='#ffffff' class="life-bar" bar-active-color="#1dafed">
       <tab-item selected @click.native="showMe(1)">男士精品</tab-item>
       <tab-item @click.native="showMe(2)">女士精品</tab-item>
@@ -40,6 +40,10 @@
             </div>
           </div>
         </div>
+        <div v-if="lastShow" class="font-12 color-80 lastDiv">
+          本频道由驭缘精品合作运营<br>
+          客服热线4008-332-711
+        </div>
       </div>
     </div>
   </scroller>
@@ -67,7 +71,8 @@ export default {
       lifeTopImg: require('../../assets/imgs/life-top.png'),
       manShow: true,
       pageNumber: 1,
-      pageSize: 10
+      pageSize: 10,
+      lastShow: false
     }
   },
   methods: {
@@ -86,6 +91,7 @@ export default {
         if (!data.isLast) {
           this.pageNumber++
         } else {
+          this.lastShow = true
           this.$refs.demo1.disablePullup()
         }
         this.$vux.loading.hide()
@@ -116,6 +122,7 @@ export default {
           if (!data.isLast) {
             this.pageNumber++
           } else {
+            this.lastShow = true
             this.$refs.demo1.disablePullup()
           }
 
@@ -136,6 +143,10 @@ export default {
 </script>
 <style lang='less' scoped>
 @import '../../assets/css/global.less';
+.lastDiv{
+  .px2vw(line-height, 20);
+  .px2vw(padding-bottom, 15);
+}
 .life-img {
   width: 100%;
   img {

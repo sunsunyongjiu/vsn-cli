@@ -80,6 +80,10 @@
   color: #888
 }
 
+.color-80 {
+  color: #808080
+}
+
 .color-33 {
   color: #333;
 }
@@ -129,7 +133,11 @@
   .px2vw(margin-bottom, 9)
 }
 
-
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .bgimgwhile(@counter) when (@counter < 4) {
   .text-overflow-@{counter} {
@@ -149,9 +157,11 @@
   src: url('font/chinese.ttf'); // font-family: english;
   // src: url('font/corpoa.ttf');
 }
-.toastText{
+
+.toastText {
   font-family: chinese;
 }
+
 .index-page .vux-slider>.vux-indicator>a>.vux-icon-dot.active,
 .vux-slider .vux-indicator-right>a>.vux-icon-dot.active {
   background-color: #fff
@@ -526,6 +536,8 @@ body {
 .weui-search-bar:before {
   border-top: none !important
 }
-.vux-swipeout-button{
-  .px2vw(width,60);
+
+.vux-swipeout-button {
+  .px2vw(width,
+  60);
 }

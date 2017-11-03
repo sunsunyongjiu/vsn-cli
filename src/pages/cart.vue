@@ -60,11 +60,11 @@
       <div v-if="!selectePoint&&!deleteShow" class="bottom-mid">
         <span class="font-14 fff">合计:</span> <span class="color-1dafed">￥</span><span class="color-1dafed font-14" v-text="totalPoint"></span>
       </div>
-      <span class="color-91 font-14 " v-if="!deleteShow" @click="deleteShow=true">
+      <span class="basicColor font-14 " v-if="!deleteShow" @click="deleteShow=true">
         编辑
       </span>
       <div class="bottom-mid" v-if="deleteShow"></div>
-      <span class="fff font-14 " v-if="deleteShow" @click="deleteShow=false">
+      <span class="basicColor font-14 " v-if="deleteShow" @click="deleteShow=false">
         完成
       </span>
       <div class="bottom-right" :class="{'bottom-right-red':deleteShow}" @click="goSure()">{{deleteShow?'删除':(selectePoint?'兑换':'购买')}}</div>
@@ -545,18 +545,22 @@ export default {
     .plus {
       position: absolute;
       right: 0;
-      top: 0;
-      height: 26.4vw;
-      width: 5.3vw;
+      bottom: 0;
+      
+      .px2vw(width, 99);
+      .px2vw(height, 28);
       background: #292929;
       color: #1ea7ef;
-      border-radius: 10px;
       text-align: center;
-      line-height: 26.4vw;
+      .px2vw(line-height, 28);
+      .px2vw(border-radius, 100);
+     /* line-height: 26.4vw;*/
       /* right: 4.8vw;*/
       .jia {
         position: absolute;
         top: 2vw;
+
+        .px2vw(right, 7);
         width: 5.3vw;
         text-align: center;
         line-height: 1
@@ -564,6 +568,7 @@ export default {
       .jian {
         position: absolute;
         bottom: 2vw;
+        .px2vw(left, 7);
         width: 5.3vw;
         text-align: center;
         line-height: 1

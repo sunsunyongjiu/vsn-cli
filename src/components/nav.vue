@@ -8,10 +8,8 @@
       <div class="index-Boutique-div-right ">
         <div v-text="item.name" class="index-Boutique-div-right-name">
         </div>
-
-	        <div v-text="item.brief" class="text text-overflow-2">
-	        </div>
-        
+        <div v-text="item.brief" class="text text-overflow-2">
+        </div>
         <div class="index-Boutique-div-right-points">
           <div>
             <!-- Price：￥<span v-text="item.cash"></span> -->
@@ -23,11 +21,10 @@
             价格：
             <span class="font-10">￥</span>
             <span v-text="item.cash" class="font-10 points"></span>
-          
           </div>
         </div>
         <button>
-        	{{item.sellType==0?'立即购买':'立即兑换'|tr}}
+          {{item.sellType==0?'立即购买':'立即兑换'|tr}}
         </button>
       </div>
     </div>
@@ -108,19 +105,16 @@ export default {
         height: 7vw;
         font-weight: 800;
         overflow: hidden;
-        text-overflow: -o-ellipsis-lastline;
         text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
+        white-space: nowrap;
       }
       .index-Boutique-div-right-points {
         position: absolute;
         bottom: 2px;
         div {
-          
+
           font-family: .AppleSystemUIFont;
-          
+
           color: #9b9b9b;
           letter-spacing: 0;
         }

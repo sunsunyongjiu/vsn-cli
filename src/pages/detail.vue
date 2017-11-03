@@ -26,8 +26,9 @@
           <div class="detail-pointBtn font-20" v-if="detailObj.sellType==1">
             <div v-if="detailObj.sellType==1&&detailObj.isShowOrigPrice==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through;text-align:left">
               <span class=" font-13 color-7f">{{detailObj.orig_price}}积分</span>
+
             </div>
-            <span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point">积分</span>
+            <span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point color-80">积分</span><span class="color-80 font-12">（官方指导价：￥{{detailObj.price}}）</span>
           </div>
           <div style="text-align:left" class="sevenBox" v-if="detailObj.is7return==1">
             <img src="../assets/imgs/seven.png">
