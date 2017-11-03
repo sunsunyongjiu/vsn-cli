@@ -8,7 +8,7 @@
         <!-- <img src="../assets/imgs/search.png"> -->
         <i class="weui-icon-search font-14" style="line-height:2"></i>
       </div>
-      <input type="text" ref="serachBox" v-model="searchValue" :placeholder="searchValue" @keyup.enter="showAlert">
+      <input type="text" ref="serachBox" v-model="searchValue" :placeholder="searchValue" @keyup.enter="showAlert" maxlength="100">
     </div>
     <!-- <div class="search-box-ways">
       <div class="font-14 search-titles">兑换方式</div>
