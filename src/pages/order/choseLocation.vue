@@ -13,6 +13,7 @@
                 <div class="locationsLeft" @click="setAddr(item)">
                   <span v-text="item.RECEIVER" class="font-16"></span>
                   <span v-text="item.moble" class="font-16"></span>
+                  <img src="../../assets/imgs/defaultAddress.png" class="morenImg" v-if="item.commonAddr==1">
                   <div>
                     <span class="font-14">
                     {{item.province}}{{item.CITY}}{{item.area}}{{item.town}}{{item.subAdds}}
@@ -197,6 +198,12 @@ export default {
 
 .cha {
   font-size: 26px
+}
+
+.morenImg{
+  .px2vw(width, 34);
+  .px2vw(height, 14);
+  .px2vw(margin-left, 5);
 }
 
 </style>

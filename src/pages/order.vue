@@ -27,11 +27,13 @@
               <span v-text="attr.key"></span>:
               <span v-text="attr.value"></span>
             </div>
+            <div class=" font-11">数量：x<span v-text="item.basket_count">1</span></div>
             <div class="orders-mid-bottom">
               <span v-if="items.sellType==0" class="font-11">￥</span>
               <span class="basicColor font-16" v-text="item.product_total_amout"></span>
               <span class="font-9" v-if="items.sellType==1">积分</span>
-              <span class="font-14 color-92 count" style="position:absolute;right:0;bottom:0">×{{item.basket_count}}</span>
+              <!-- <span class="font-14 color-92 count" style="position:absolute;right:0;bottom:0">×{{item.basket_count}}</span> -->
+              <span class="font-12 basicColor" style="position:absolute;right:0;bottom:0" v-if="item.isShowTrackButton" @click.stop="goTrack(items,item.sub_item_id,item.isTrackButtonEnable)">查看物流</span>
             </div>
           </div>
           <div class="orders-right font-12">
@@ -94,6 +96,13 @@ export default {
     Confirm
   },
   methods: {
+    goTrack: function(item, itemIid, isEnable) {
+      if (isEnable == 0) {
+        return
+      } else {
+        this.$router.push({ path: '/trackDetail', query: { 'subNumber': item.sub_number, 'itemIid': itemIid } })
+      }
+    },
     goPay: function(item) {
       this.$router.replace({ path: '/pay', query: { 'subNumber': item.sub_number } })
     },

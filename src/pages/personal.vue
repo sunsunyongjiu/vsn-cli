@@ -9,7 +9,7 @@
     </div>
     <div class="personal-title-point font-10">
       <img src="../assets/imgs/diamond.png" class="personal-title-point-diamond">
-      <div class='pointsText'>
+      <div class='pointsText font-11-5'>
         {{loginUser.points}} 
       </div>
       <div class="points">
@@ -171,8 +171,8 @@ export default {
   color: #ffffff;
   text-align: center;
   .pointsText{
-    .px2vw(padding-top, 1);
-    .px2vw(line-height, 19);
+   
+    .px2vw(line-height, 18);
     
     float: left;
   }

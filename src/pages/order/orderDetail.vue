@@ -62,9 +62,9 @@
                 <div class="tuihuan font-14" v-if="item.isShowReturnButton" @click="goReturn(items,item.sub_item_id,item.isReturnButtonEnable)" :class="{'greyBtn':!item.isReturnButtonEnable}">
                   退换货
                 </div>
-                <div class="tuihuan font-14" v-if="item.isShowTrackButton" @click="goTrack(items,item.sub_item_id,item.isTrackButtonEnable)" :class="{'greyBtn':!item.isTrackButtonEnable}">
+                <!-- <div class="tuihuan font-14" v-if="item.isShowTrackButton" @click="goTrack(items,item.sub_item_id,item.isTrackButtonEnable)" :class="{'greyBtn':!item.isTrackButtonEnable}">
                   查看物流
-                </div>
+                </div> -->
               </div>
               <div class="order-line"></div>
             </div>
