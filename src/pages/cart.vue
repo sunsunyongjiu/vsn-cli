@@ -2,21 +2,22 @@
   <div class="vsn-wrap">
     <div style="">
       
-      <!-- <div class="tab">
-        <div class="tab-bar" :class="{selected:selectePoint}" @click="selectePoint=true">积分</div>
+      <div class="tab" v-if="$store.state.showCash && $store.state.jdTel.indexOf($store.state.loginUser.mobile)>=0">
+        <div class="tab-bar" :class="{selected:selectePoint}"  @click="selectePoint=true">积分</div>
         <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">现金</div>
-      </div> -->
+      </div>
     </div>
     <div class="vsn-main">
       <div class="goods-list">
         <swipeout class="vux-1px-tb cart-swiper-out" v-for="(item,index) in goodsList" key=index>
           <swipeout-item transition-mode="follow">
             <div slot="right-menu">
-              <swipeout-button @click.native="onButtonClick(item.basketId)" type="warn" :width="70"><span class="font-30">×</span></swipeout-button>
+              <swipeout-button @click.native="onButtonClick(item.basketId)" type="warn" :width="$store.state.screen.width*0.16"><span class="font-16">删除</span></swipeout-button>
             </div>
             <div slot="content" style="padding:3.2vw;" class="goods">
-              <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)" v-if="item.status==1||deleteShow"></div>
+              <div class="choose-btn" :class="{selected:item.selected}" @click="doSelect(item)" v-if="(item.status==1||deleteShow)&&item.stocks!=0"></div>
               <img src="../assets/imgs/off.png" v-if="item.status!=1&&!deleteShow" class="xiajia">
+              <img src="../assets/imgs/over.png" v-if="item.stocks==0" class="xiajia">
               <!-- <div class="choose-btn xiajia"  v-if="item.status!=1"></div> -->
               <div class="goods-left" @click="goWhere(item.title,item)">
                 <img :src="item.pic">
@@ -29,6 +30,9 @@
                 <!-- <div class="font-14 df">Merdeces Me</div> -->
                 <div class="font-10 color-92 goods-size-box" v-for="i in item.size" @click="goWhere(item.title,item)">
                   <span v-text="i.key"></span>: <span v-text="i.value"></span>
+                </div>
+                <div class="font-11 color-92 stocks" v-if="item.sellType==1">
+                  库存：{{item.stocks}}
                 </div>
                 <div class="point " v-if="item.sellType==0" @click="goWhere(item.title,item)">
                   <span class="df font-9">￥</span><span v-text="item.cash" class="font-18 df"></span>
@@ -90,7 +94,6 @@ import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm, ViewBox 
 import back from '../components/backNav'
 import Apis from '../configers/Api'
 
-import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
@@ -173,7 +176,7 @@ export default {
       let header = {
         "token": this.$store.state.loginUser.token,
         "time": timer,
-        "sign": md5("/order/deleteBasket" + this.$store.state.loginUser.token + timer).toUpperCase()
+        "sign": this.$sha256("/order/deleteBasket" + this.$store.state.loginUser.token + timer).toUpperCase()
       }
       // 设置传值
       let cartData = {
@@ -238,7 +241,7 @@ export default {
           let header = {
             "token": this.$store.state.loginUser.token,
             "time": timer,
-            "sign": md5("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
+            "sign": this.$sha256("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
           }
           // 设置传值
           let cartData = {
@@ -260,6 +263,15 @@ export default {
 
         })
       } else {
+      	if (item.sellType==1 && item.stocks<=item.count && n==1) {
+          this.$toast.show({
+            text: '数量超出可售范围',
+            position: 'middle',
+            value: true
+          })
+          return
+        }
+      	
         item.selected = true
         if (n > 0) {
           item.count++
@@ -272,7 +284,7 @@ export default {
         let header = {
           "token": this.$store.state.loginUser.token,
           "time": timer,
-          "sign": md5("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/order/updateBasketCount" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
         // 设置传值
         let cartData = {
@@ -324,36 +336,99 @@ export default {
       }
       let canGo = true;
       if (this.sameShop != false) {
-        let str = ''
+      	
+      	//判断秒杀商品是否只一件
+      	let str = ''
         this.goodsList.forEach(function(n) {
-          if (n.selected && n.status == 1) {
+          if (n.selected && n.status == 1 && n.stocks > 0) {
             str += (',' + n.basketId);
 
             if (n.isSecKill == 1 && n.count > 1) {
-
               canGo = false
               return
             }
           }
         })
-        if (str.slice(1).length > 0 && canGo) {
-          this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
-        } else if (canGo == false) {
-          // this.$vux.toast.text('同一商品只能秒杀一件', 'middle')
-          this.$toast.show({
-            text: '同一商品只能秒杀一件',
-            position: 'middle',
-            value: true
-          })
-        } else {
-          // this.$vux.toast.text('您还没有选择商品', 'middle')
+        
+        //是否状态还是秒杀商品，秒杀活动未开始或已结束的情况下，isSecKill会被改为0，但是isSecKillReal还是保持1，用于判断
+        let isSecKillReal = false
+        this.goodsList.forEach(function(n) {
+          if (n.selected && n.status == 1 && n.stocks > 0) {
+            if (n.isSecKillReal == 1) {
+            	isSecKillReal = true
+            }
+          }
+        })
+        
+        if (str.slice(1).length == 0) {
           this.$toast.show({
             text: '您还没有选择商品',
             position: 'middle',
             value: true
           })
+          
+          return
         }
 
+        if(isSecKillReal){
+        	//包含秒杀商品，则要判断秒杀是否未开始或已结束
+        	Apis.getSecKillTimeList().then(data => {
+
+							//秒杀没开始不允许添加
+							if(data.data[0] && data.data[0].status == 1) {
+								// this.$vux.toast.text('秒杀活动未开始', 'middle')
+								this.$toast.show({
+									text: '秒杀活动未开始',
+									position: 'middle',
+									value: true
+								})
+								return
+							} else if(data.data[0] && data.data[0].status == 2) {
+
+							} else if(data.data[0] && data.data[0].status == 3) {
+								this.$toast.show({
+										text: '秒杀活动已结束，敬请期待下一期',
+										position: 'middle',
+										value: true
+								})
+								return
+							} else {
+								this.$toast.show({
+										text: '秒杀活动已结束，敬请期待下一期',
+										position: 'middle',
+										value: true
+								})
+								return
+							}
+							
+							//确认订单
+							if (canGo) {
+			          this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
+			        } else if (canGo == false) {
+			          this.$toast.show({
+			            text: '同一商品只能秒杀一件',
+			            position: 'middle',
+			            value: true
+			          })
+			        } 
+			        
+					})	
+					
+        }else{
+        	
+        	//不包含秒杀商品，直接确认订单
+        	if (canGo) {
+	          this.$router.push({ path: '/sureOrder', query: { 'selectIds': str.slice(1) } })
+	        } else if (canGo == false) {
+	          this.$toast.show({
+	            text: '同一商品只能秒杀一件',
+	            position: 'middle',
+	            value: true
+	          })
+	        } 
+			        
+        }
+        
       } else {
         alert('请选择同一家店的产品！')
       }
@@ -362,13 +437,14 @@ export default {
 
     init: function() {
       // 设置header
+      console.log(this.$store.state.screen.width)
       let _this = this
       let timer = JSON.stringify(new Date().getTime())
       let header = {
         headers: {
           "token": this.$store.state.loginUser.token,
           "time": timer,
-          "sign": md5("/order/getBasketList" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/order/getBasketList" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }
       this.$http.get(this.$Api('/order/getBasketList'), header).then((response) => {
@@ -391,7 +467,9 @@ export default {
               cash: item.cash,
               prod_id: item.prod_id,
               isSecKill: item.isSecKill,
-              status: item.status
+              isSecKillReal: item.isSecKillReal,
+              status: item.status,
+              stocks:item.stocks
             }
             arr.push(obj)
           }
@@ -504,7 +582,8 @@ export default {
 }
 
 .selected {
-  color: #fff;
+	color: #fff;
+  background: #1cafed;
 }
 
 .goods {
@@ -616,7 +695,7 @@ export default {
     color: #ffffff;
   }
   .bottom-right-red {
-    background: #f7412d;
+    background: #e64340;
   }
 }
 
@@ -678,5 +757,7 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-
+.stocks{
+  .px2vw(margin-top, 5);
+}
 </style>

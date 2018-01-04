@@ -1,11 +1,11 @@
 <template>
-  <transition :name="fadeIn">
+  <transition>
     <div class="alertBox" v-show="show">
       <div class="alert-mask" v-show="isShowMask"></div>
       <transition :name="translate">
         <div class="box" :class="position" v-show="show">
           <img src="../../assets/imgs/tanhao.png" class="toast-tanhao"> 
-          <div class="toastText font-14">{{text}}</div>
+          <div class="toastText font-14" v-html="text"></div>
         </div>
       </transition>
     </div>

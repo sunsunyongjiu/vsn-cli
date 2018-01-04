@@ -48,3 +48,7 @@ export function setTime (state, { data }) {
 export function changeTime (state, { data }) {
   state.server_time +=1000
 }
+
+export function setScreen (state, { data }) {
+  state.screen =data
+}

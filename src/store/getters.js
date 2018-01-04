@@ -33,3 +33,7 @@ export const getPathHome = (state) => {
 export const getTime = (state) => {
    return state.server_time
 }
+
+export const getScreen = (state) => {
+   return state.screen
+}

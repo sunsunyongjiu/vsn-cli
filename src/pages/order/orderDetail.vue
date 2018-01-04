@@ -62,9 +62,9 @@
                 <div class="tuihuan font-14" v-if="item.isShowReturnButton" @click="goReturn(items,item.sub_item_id,item.isReturnButtonEnable)" :class="{'greyBtn':!item.isReturnButtonEnable}">
                   退换货
                 </div>
-                <!-- <div class="tuihuan font-14" v-if="item.isShowTrackButton" @click="goTrack(items,item.sub_item_id,item.isTrackButtonEnable)" :class="{'greyBtn':!item.isTrackButtonEnable}">
+                <div class="tuihuan font-14" v-if="item.isShowTrackButton" @click="goTrack(items,item.sub_item_id,item.isTrackButtonEnable)" :class="{'greyBtn':!item.isTrackButtonEnable}">
                   查看物流
-                </div> -->
+                </div>
               </div>
               <div class="order-line"></div>
             </div>
@@ -141,7 +141,6 @@
 </template>
 <script>
 import back from '../../components/backNav'
-import md5 from 'js-md5';
 import Apis from '../../configers/Api'
 import countDown from '../../components/time'
 const timer = JSON.stringify(new Date().getTime());
@@ -250,7 +249,7 @@ export default {
         let header = {
           "token": this.$store.state.loginUser.token,
           "time": timer,
-          "sign": md5("/order/finishOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/order/finishOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
         // 设置传值
         let cartData = {
@@ -281,7 +280,7 @@ export default {
         let header = {
           "token": this.$store.state.loginUser.token,
           "time": timer,
-          "sign": md5("/order/exchangeOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/order/exchangeOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
         // 设置传值
         let cartData = {
@@ -308,7 +307,7 @@ export default {
         let header = {
           "token": this.$store.state.loginUser.token,
           "time": timer,
-          "sign": md5("/order/cancelOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/order/cancelOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
         // 设置传值
         let cartData = {
@@ -349,7 +348,7 @@ export default {
         headers: {
           "token": this.$store.state.loginUser.token,
           "time": timer,
-          "sign": md5("/order/getOrderDetail" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/order/getOrderDetail" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }).then((response) => {
         this.endTimeNum = new Date(response.data.data[0].end_date).getTime()
@@ -365,7 +364,10 @@ export default {
       }, (response) => {
         // error callback
       });
-
+      Apis.getServerTime().then(data => {
+        console.log(data.serverTime)
+        this.$store.dispatch({ type: 'setTime', data: data.serverTime })
+      });
     }
   },
   filters: {

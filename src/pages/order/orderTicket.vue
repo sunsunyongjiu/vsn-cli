@@ -57,7 +57,6 @@
 <script>
 import back from '../../components/backNav';
 import { XInput } from 'vux';
-import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime());
 export default {
   name: '',
@@ -95,7 +94,7 @@ export default {
         headers: {
           "token": this.$store.state.loginUser.token,
           "time": timer,
-          "sign": md5("/order/getOrderInvoice" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/order/getOrderInvoice" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }).then((response) => {
         console.log(response.data.data)
@@ -119,7 +118,7 @@ export default {
       let header = {
         "token": this.$store.state.loginUser.token,
         "time": timer,
-        "sign": md5("/order/updateOrderInvoice" + this.$store.state.loginUser.token + timer).toUpperCase()
+        "sign": this.$sha256("/order/updateOrderInvoice" + this.$store.state.loginUser.token + timer).toUpperCase()
       }
       // 设置传值
       let cartData = {

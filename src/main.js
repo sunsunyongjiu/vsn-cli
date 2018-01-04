@@ -5,11 +5,9 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import store from './store';
-import  { AlertPlugin,LoadingPlugin,ToastPlugin   } from 'vux';
+import { AlertPlugin, LoadingPlugin, ToastPlugin } from 'vux';
 import AppConfig from './configers/appconfig';
 import Toast from './components/toast/toast';
-
-
 
 Vue.use(new AppConfig())
 Vue.use(AlertPlugin)
@@ -17,6 +15,7 @@ Vue.use(ToastPlugin)
 Vue.use(VueResource);
 Vue.use(LoadingPlugin)
 Vue.use(Toast)
+
 
 Vue.config.productionTip = false
 

@@ -50,7 +50,6 @@
 import back from '../../components/backNav'
 import { TransferDom, Popup, Scroller, Tab, TabItem } from 'vux'
 import { mapGetters } from 'vuex'
-import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
@@ -221,13 +220,13 @@ export default {
       let header = {
         "token": this.$store.state.loginUser.token,
         "time": timer,
-        "sign": md5("/address/insertUserAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
+        "sign": this.$sha256("/address/insertUserAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
       }
 
       let header1 = {
         "token": this.$store.state.loginUser.token,
         "time": timer,
-        "sign": md5("/address/updateUserAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
+        "sign": this.$sha256("/address/updateUserAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
       }
       // 当为编辑模式时
       if (this.$route.query.edit) {
@@ -319,14 +318,32 @@ export default {
           _this.area[3].citys = []
           this.$http.get(this.$Api('/address/getAllTowns'), { params: { 'id': nm.id } }).then((response) => {
 
-            if (response.data.data) {
-
-              _this.area[3].show = true
-              for (var i in response.data.data) {
-                let obj = { text: i, id: response.data.data[i], select: false }
-                _this.area[3].citys.push(obj)
-
+            if (response.data.data ) {
+							
+							var jsonLength = 0
+							for (var i in response.data.data) {
+                jsonLength = jsonLength + 1;
               }
+							
+							if(jsonLength==0){
+								this.show2 = false
+	              _this.locationDetail = ''
+	              _this.area[3].text = ''
+	              _this.area[3].selectedId = 0
+	               
+	              this.area.forEach(function(n) {
+	
+	                _this.locationDetail += n.text
+	              })
+							}else{
+								_this.area[3].show = true
+	              for (var i in response.data.data) {
+	                let obj = { text: i, id: response.data.data[i], select: false }
+	                _this.area[3].citys.push(obj)
+	
+	              }
+							}
+              
             } else {
               this.show2 = false
               _this.locationDetail = ''

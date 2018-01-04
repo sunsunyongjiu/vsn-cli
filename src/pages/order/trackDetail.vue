@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="order-person-title">
-        物流信息
+        	物流信息
       </div>
       <div class="order-infoText padding-bottom-15">
         <div v-for="ite in item.orderTrack" class="sendMsgBox" v-if="item.orderTrack!=null">
@@ -37,6 +37,9 @@
             <div v-text="ite.content" class="font-13"></div>
             <div v-text="ite.msgTime" class="font-11"></div>
           </div>
+        </div>
+         <div class="font-12 basicColor" v-if="item.orderTrack==null">
+          	物流信息正在升级中......
         </div>
       </div>
     </div>

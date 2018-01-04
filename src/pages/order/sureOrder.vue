@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="vsn-wrap">
     <!-- <back title="确认订单"></back> -->
     <div class='blueText font-11 fff' v-if="isCash">
       温馨提醒：您可在签收商品7天内，申请开具发票／换货／退货。
     </div>
     <div class="order-title font-15 pd-right2">收货人信息</div>
-    <div class="container">
+    <div class="vsn-main">
       <div class="orderList">
         <div class="order-location font-14">
           <div class="order-location-text" @click="goLocation">
@@ -75,7 +75,6 @@
 </template>
 <script>
 import back from '../../components/backNav'
-import md5 from 'js-md5';
 import Apis from '../../configers/Api';
 import { mapGetters } from 'vuex'
 const timer = JSON.stringify(new Date().getTime())
@@ -119,7 +118,7 @@ export default {
       let header = {
         "token": this.loginUser.token,
         "time": timer,
-        "sign": md5("/order/insertOrderNoNew" + this.loginUser.token + timer).toUpperCase()
+        "sign": this.$sha256("/order/insertOrderNoNew" + this.loginUser.token + timer).toUpperCase()
       }
       // 设置传值
       let cartData = {
@@ -192,7 +191,7 @@ export default {
         headers: {
           "token": this.loginUser.token,
           "time": timer,
-          "sign": md5("/order/getBasketListSelected" + this.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/order/getBasketListSelected" + this.loginUser.token + timer).toUpperCase()
         }
       }).then((response) => {
         this.goods = response.data.data;
@@ -211,7 +210,7 @@ export default {
         headers: {
           "token": this.loginUser.token,
           "time": timer,
-          "sign": md5("/address/getDefaultAddress" + this.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/address/getDefaultAddress" + this.loginUser.token + timer).toUpperCase()
         }
       }
       if (this.addr.CITY) {
@@ -273,8 +272,7 @@ export default {
   box-shadow: 7px 12px 8px 11px rgba(0, 0, 0, 0.58);
   width: 100vw;
   height: 14.933vw;
-  position: absolute;
-  bottom: 0;
+  position: relative;
   .commit-btn {
     background: #1dafed;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
@@ -385,7 +383,6 @@ export default {
 }
 
 .order-goods-box {
-  padding-bottom: 14.9333vw;
   padding-left: 5vw;
 }
 

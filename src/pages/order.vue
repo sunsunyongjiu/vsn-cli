@@ -7,7 +7,7 @@
         <tab-item :selected="listIndex==1" @on-item-click="changeItem" class=" font-14">已支付</tab-item>
         <tab-item :selected="listIndex==2" @on-item-click="changeItem" class=" font-14">已完成</tab-item>
         <tab-item :selected="listIndex==3" @on-item-click="changeItem" class=" font-14">已取消</tab-item>
-        <!-- <tab-item :selected="listIndex==4" @on-item-click="changeItem" class=" font-14">退换货</tab-item> -->
+        <tab-item :selected="listIndex==4" @on-item-click="changeItem" class=" font-14" v-if="$store.state.showCash && $store.state.jdTel.indexOf(this.$store.state.loginUser.mobile)>=0">退换货</tab-item>
       </tab>
     </div>
     <div>
@@ -72,7 +72,6 @@
 <script>
 import back from '../components/backNav'
 import { Tab, TabItem, Confirm } from 'vux'
-import md5 from 'js-md5';
 import { mapGetters } from 'vuex'
 const timer = JSON.stringify(new Date().getTime())
 export default {
@@ -118,7 +117,7 @@ export default {
       let header = {
         "token": this.$store.state.loginUser.token,
         "time": timer,
-        "sign": md5("/order/finishOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
+        "sign": this.$sha256("/order/finishOrder" + this.$store.state.loginUser.token + timer).toUpperCase()
       }
       // 设置传值
       let cartData = {
@@ -184,7 +183,7 @@ export default {
         headers: {
           "token": this.$store.state.loginUser.token,
           "time": timer,
-          "sign": md5("/order/getOrderList" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/order/getOrderList" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }).then((response) => {
         console.log(response)
@@ -286,7 +285,7 @@ export default {
       /*超出部分文字以...显示*/
       margin-bottom: 2vw;
       img {
-        .px2vw(height, 15);
+        .px2vw(height, 20);
         vertical-align: middle
       }
     }

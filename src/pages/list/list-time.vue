@@ -18,15 +18,16 @@
         <div class="time-date-box">
           <div class="time-date-blue " :class="{'bg-basic':hotObj.status==2}">
             <div class=" blue-1" v-if="hotObj.status==1">
-              <span class="font-14 fff">{{hotObj.start_time | data}} -</span>
-              <span class="font-14 fff">{{hotObj.end_time | data}}</span>
+              <span class="font-14 fff">{{hotObj.title}} </span>
+              <span class="font-14 fff">{{hotObj.start_time | data}}-</span><span class="font-14 fff">{{hotObj.end_time | data}}</span>
             </div>
             <div class=" blue-1" v-if="hotObj.status==2">
+              <span class="font-14 fff">{{hotObj.title}} </span>
               <span class="font-14 fff">正在秒杀</span>
             </div>
-            <div>
-              <span class="font-11 fff" v-if="hotObj.status==2">距结束</span>
-              <span class="font-11 fff" v-if="hotObj.status==1">距开始</span>
+            <div class="blue-1">
+              <span class="font-11 fff" v-if="hotObj.status==2">距本场结束</span>
+              <span class="font-11 fff" v-if="hotObj.status==1">距本场开始</span>
               <count-down :endTime="endTimeNum" :callback="callback" class="font-11 fff"></count-down>
             </div>
           </div>
@@ -36,7 +37,7 @@
           <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">京东商品</div>
         </div> -->
         <div class="list-box" :class="{'list-box-point':!selectePoint}">
-          <div v-for="(item,index) in goodsList" key=index class="list-box-item" :class="{'point-list-box-item':selectePoint}">
+          <div v-for="(item,index) in goodsList" key=index class="list-box-item" :class="{'point-list-box-item':selectePoint}" @click="goDetail(item)">
             <!-- <img src="../../assets/imgs/hot.png" class="red-hot" v-if="item.is_hot==='Y'"> -->
             <div class="list-box-item-img" :class="{'list-box-item-img-cash':!selectePoint}">
               <img :src="item.pic">
@@ -45,6 +46,9 @@
               <div v-text="item.name" class="font-16 list-box-item-price-title " :class="{'color-33':!selectePoint,'fff':selectePoint}">
               </div>
               <div class="list-box-item-priceBox">
+                <div class="list-box-item-price-price basicColor">
+                  <span class="list-point  font-12">进入商品详情</span> <span class="right-icon"></span>
+                </div>
                 <div v-if="item.sellType==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through">
                   <span class=" font-11 color-7f">{{item.orig_price}}积分</span>
                 </div>
@@ -61,7 +65,7 @@
                 </div>
               </div>
               <div class="buyBtnBox">
-                <div class="font-11 color-7f" style="text-align:right" v-if="hotObj.status==2">剩<span class="basicColor">{{item.kill_num}}</span>件</div>
+                <div class="font-11 color-7f" style="text-align:right" v-if="hotObj.status==2">剩<span class="basicColor">{{item.kill_num}}</span>件 </div>
                 <div class="buyBtn font-14 fff" @click="goDetail(item)" v-if="hotObj.status==2&&item.kill_num>0">去抢购</div>
                 <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==2&&item.kill_num<=0">已抢光</div>
                 <div class="buyBtn greyBtn font-14 fff" v-if="hotObj.status==1" @click="goDetail(item)">即将开始</div>
@@ -74,7 +78,8 @@
     <div class="toast-mubu" v-if="mubuShow">
       <!-- <div class="toast-mubu" v-if="true"> -->
       <div class="mubu-textBox">
-        <div class="mubu-text font-14"><img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">秒杀活动已结束<br>敬请期待下一期</div>
+        <div class="mubu-text font-14"><img src="../../assets/imgs/tanhao.png" class="confirm-tanhao">秒杀活动已结束
+          <br>敬请期待下一期</div>
         <div @click="goPath()" class="mubuSureBtn font-15">确定</div>
       </div>
     </div>
@@ -85,7 +90,6 @@ import { Swipeout, SwipeoutItem, SwipeoutButton, Tab, TabItem, Confirm, Scroller
 import back from '../../components/backNav'
 import countDown from '../../components/time'
 import Apis from '../../configers/Api'
-import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
@@ -121,7 +125,7 @@ export default {
     init: function() {
       // alert(1)
       Apis.getSecKillTimeList().then(data => {
-      	
+
         if (data.data[0].status == 3) {
           this.mubuShow = true
         } else {
@@ -131,27 +135,33 @@ export default {
           console.log('触发了')
           this.getGoods()
         }
-				
-				//记录初始化进来的秒杀状态
-				if(this.killStatus==0){
-					this.killStatus = data.data[0].status;
-				}
-				
+
+        //记录初始化进来的秒杀状态
+        if (this.killStatus == 0) {
+          this.killStatus = data.data[0].status;
+        }
+
       })
 
 
     },
-    goPath:function(){
-      this.$router.push({path:'/path'})
+    goPath: function() {
+      this.$router.push({ path: '/path' })
     },
     callback: function() {
       //如果刚进来是进行中，说明现在结束了
-      if(this.killStatus==2){
-					this.mubuShow = true;
-			}else{
-					this.init()
-			}
-      
+      if (this.killStatus == 2) {        
+        //this.mubuShow = true;
+        
+        Apis.getSecKillTimeList().then(data => {	
+	        if (data.data[0].status == 3) {
+	          this.mubuShow = true
+	        }	
+	      })        
+      } else {
+        this.init()
+      }
+
     },
     getGoods: function() {
       // alert(2)
@@ -181,6 +191,10 @@ export default {
       // this.$router.push({path: 'detail'})
     },
     goDetail: function(item) {
+      if (this.hotObj.status == 2 && item.kill_num <= 0) {
+        return
+      }
+
       this.$router.push({ path: 'detail', query: { prod_id: item.prod_id } })
     },
     load1: function() {
@@ -354,7 +368,7 @@ export default {
       .list-box-item-price-title {
         overflow: hidden;
         .px2vw(margin-top,
-        21);
+        11);
         .px2vw(margin-bottom,
         30);
         text-overflow: -o-ellipsis-lastline;
@@ -365,12 +379,21 @@ export default {
         text-align: left;
       }
       .list-box-item-price-price {
+        .px2vw(line-height, 18);
         text-align: left;
-        margin-top: 5px;
+        /*margin-top: 1px;*/
         color: #1dafed;
         span {
           color: #1dafed;
         }
+      }
+      .right-icon {
+        display: inline-block;
+        vertical-align: middle;
+        background: url(../../assets/imgs/time_right_arrow.png) no-repeat center center;
+        background-size: 70%;
+        .px2vw(height, 14);
+        .px2vw(width, 16);
       }
     }
   }
@@ -429,14 +452,14 @@ export default {
   48);
   background: #222222;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
-  .bg-basic{
+  .bg-basic {
     background: #1dafed !important;
   }
-  .bg-basic:before{
-    border-bottom-color:#1dafed !important;
+  .bg-basic:before {
+    border-bottom-color: #1dafed !important;
   }
-  .bg-basic:after{
-    border-top-color:#1dafed !important;
+  .bg-basic:after {
+    border-top-color: #1dafed !important;
   }
   .time-date-blue {
     background: #4e4e4e;
@@ -453,26 +476,28 @@ export default {
     display: block;
     position: absolute;
     content: '';
-    left: -5.8vw;
+    left: -34px;
     width: 0;
     height: 0;
     border-bottom: 12.8vw solid #4e4e4e;
-    border-left: 5.8vw solid transparent;
+    border-left: 34px solid transparent;
   }
   .time-date-blue:after {
     display: block;
     position: absolute;
     content: '';
-    right: -5.8vw;
+    right: -34px;
     top: 0;
     width: 0;
     height: 0;
     border-top: 12.8vw solid #4e4e4e;
-    border-right: 5.8vw solid transparent;
+    border-right: 34px solid transparent;
   }
   .blue-1 {
-    .px2vw(padding-top,
-    9);
+    .px2vw(height,
+    24);
+    .px2vw(line-height,
+    24);
   }
 }
 

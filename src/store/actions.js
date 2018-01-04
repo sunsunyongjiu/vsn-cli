@@ -44,3 +44,6 @@ export const setTime = ({ commit }, data) => {
 export const changeTime = ({ commit }, data) => {
   commit('changeTime', data)
 }
+export const setScreen = ({ commit }, data) => {
+  commit('setScreen', data)
+}

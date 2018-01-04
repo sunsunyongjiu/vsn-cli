@@ -6,7 +6,7 @@
         <swipeout class="vux-1px-tb" v-for="(item,index) in locationList" key=index>
           <swipeout-item transition-mode="follow">
             <div slot="right-menu">
-              <swipeout-button type="warn" class="cha font-30" @click.native="deleteItem(item)">×</swipeout-button>
+              <swipeout-button type="warn" :width="$store.state.screen.width*0.16" class="cha font-16" @click.native="deleteItem(item)">删除</swipeout-button>
             </div>
             <div slot="content" class="locations">
               <div>
@@ -45,7 +45,6 @@
 <script>
 import back from '../../components/backNav'
 import { Swipeout, SwipeoutItem, SwipeoutButton, Confirm } from 'vux'
-import md5 from 'js-md5';
 const timer = JSON.stringify(new Date().getTime())
 export default {
   name: '',
@@ -77,7 +76,7 @@ export default {
       let header = {
         "token": this.$store.state.loginUser.token,
         "time": timer,
-        "sign": md5("/address/deleteUserCommonAdd" + this.$store.state.loginUser.token + timer).toUpperCase()
+        "sign": this.$sha256("/address/deleteUserCommonAdd" + this.$store.state.loginUser.token + timer).toUpperCase()
       }
       // 设置传值
       let cartData = {
@@ -122,7 +121,7 @@ export default {
         headers: {
           "token": this.$store.state.loginUser.token,
           "time": timer,
-          "sign": md5("/address/getUserAllAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
+          "sign": this.$sha256("/address/getUserAllAddress" + this.$store.state.loginUser.token + timer).toUpperCase()
         }
       }
       this.$http.get(this.$Api('/address/getUserAllAddress'), header).then((response) => {

@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "js-md5": "^0.5.0",
+    "js-sha256": "^0.7.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
     "vue": "^2.2.6",

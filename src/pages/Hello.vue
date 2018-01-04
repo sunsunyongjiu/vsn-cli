@@ -277,18 +277,21 @@ export default {
         if (title == '无忧出行') {
           window.location.href =this.$BenzUrl('/wechat/main/rights')
         } else if (title == '精英课选') {
-          window.location.href =this.$BenzUrl('/wechat/main/activityDetail?id=12')
+          window.location.href =this.$BenzUrl('/wechat/main/activityDetail?id=31')
         } else if (title == '限时秒杀') {
-
-          Apis.getSecKillTimeList().then(data => {
-            console.log(data.data[0])
-            if (data.data[0] && data.data[0].status != 3) {
-              this.$router.push({ path: '/hot' })
-            } else {
-              this.showBox = 'expire';
-              this.showContact = true
-            }
-          })
+        	if( this.$store.state.showCash && this.$store.state.jdTel.indexOf(this.loginUser.mobile)>=0){
+						this.$router.push({ path: p, query: { 'title': title, 'id': id } })
+					}else{
+						Apis.getSecKillTimeList().then(data => {
+	            console.log(data.data[0])
+	            if (data.data[0] && data.data[0].status != 3) {
+	              this.$router.push({ path: '/hot' })
+	            } else {
+	              this.showBox = 'expire';
+	              this.showContact = true
+	            }
+	          })
+					}
 
         } else if (title == '尊享礼券') {
           this.showContact = true;
@@ -382,7 +385,7 @@ export default {
       
       let pandunLogin = this.$store.state.loginUser.name == undefined
       console.log(pandunLogin)
-      if (userToken && user && pandunLogin) {
+      if (userToken && user ) {
         Apis.login({ token: userToken, 'user': user }).then(data => {
           if (data.code === 1) {
             this.login = true
@@ -393,6 +396,7 @@ export default {
             this.myCardSrc = require("../assets/imgs/" + data.data.carImg + ".png");
             sessionStorage.setItem("setLogin", JSON.stringify(userDetail))
             this.$store.dispatch({ type: 'setLogin', data: userDetail })
+            window.location=location.href.substring(0,location.href.indexOf('?'));
             this.$router.push({ path: '/path' })
             
             if (subNumber != "") {
@@ -412,7 +416,7 @@ export default {
       } else if (!pandunLogin) {
         this.myCardSrc = require("../assets/imgs/" + this.$store.state.loginUser.carImg + ".png"),
           this.login = true
-          this.$router.push({ path: '/path' })
+        
       } else {
         this.login = false
       }

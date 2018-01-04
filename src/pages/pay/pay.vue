@@ -61,7 +61,8 @@ export default {
         sellType: ''
       },
       confirmShow2: false,
-      confirmShow:false
+      confirmShow:false,
+			isClicking: false
     }
   },
   components: {
@@ -70,6 +71,10 @@ export default {
   },
   methods: {
     onPayConfirm: function() {
+    	
+    	if(this.isClicking){
+				return
+			}
     	
     	Apis.getOrderDetail(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
           
@@ -83,15 +88,23 @@ export default {
 		      	return
 		      }
 		      
+		      this.isClicking = true
+		      
 		      if (this.order.sellType == 0) {
 		
 		        Apis.unifiedorder(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber }).then(data => {
+		          
+		          this.isClicking = false
+		          
 		          this.callpay(data.data.jsApiParams)
 		        })
 		
 		      } else {
+
 		        Apis.scorePay(this.$store.state.loginUser.token, { 'subNumber': this.$route.query.subNumber, 'score': this.order.total, token: this.$store.state.loginUser.token }).then(data => {
-		
+							
+							this.isClicking = false
+							
 		          if (data.code == 1) {
 		          	
 		          	Apis.login({ token: this.$store.state.loginUser.token, 'user': this.$store.state.loginUser.user, "isLogin": "N" }).then(data => {
@@ -276,8 +289,8 @@ export default {
   background: #181818;
   /*box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);*/
   .payMent-left {
-    width: 6.4vw;
-    height: 6.4vw;
+    width: 5.4vw;
+    height: 5.4vw;
     float: left;
     img {
       height: 100%

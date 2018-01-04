@@ -16,7 +16,7 @@
           <img :src="lifeTopImg">
         </div>
         <div class="list-box">
-          <div v-for="(item,index) in myBoutique" key=index class="list-box-inner">
+          <div v-for="(item,index) in myBoutique" key=index class="list-box-inner" @click="goWhere(item)">
             <div class="list-box-inner-inner">
               <div class="left">
                 <img :src="item.pic">
@@ -35,15 +35,20 @@
                   <span class="df  font-12">￥</span>
                   <span v-text="item.cash" class="list-point  font-18"></span>
                 </div>
+                <div class="font-12 df stocks">
+                  库存：{{item.stocks}}
+                </div>
                 <div class="changeBtn  font-14" @click="goWhere(item)">立即兑换</div>
               </div>
             </div>
           </div>
         </div>
+   <!--	
         <div v-if="lastShow" class="font-12 color-80 lastDiv">
           本频道由驭缘精品合作运营<br>
           客服热线4008-332-711
         </div>
+        -->
       </div>
     </div>
   </scroller>
@@ -319,6 +324,9 @@ export default {
   img {
     max-height: 38vw
   }
+}
+.stocks{
+  .px2vw(margin-top, 6);
 }
 
 </style>

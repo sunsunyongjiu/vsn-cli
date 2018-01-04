@@ -23,8 +23,14 @@ export default {
       console.log(data.serverTime)
       this.$store.dispatch({ type: 'setTime', data: data.serverTime })
     });
-
-
+    // 获取屏幕宽度,高度
+    let scWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    let scheight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    let screen={
+      width:scWidth,
+      height:scheight
+    }
+    this.$store.dispatch({ type: 'setScreen', data: screen })
     let serverTimeInter=setInterval(function(){
       _this.$store.dispatch({ type: 'changeTime'})
     },1000)

@@ -3,7 +3,6 @@
 .px2vw(@name, @px) {
   @{name}: @px / @baseFontSize * 100vw !important;
 }
-
 .font-20 {
   .px2vw(font-size, 20)
 }
@@ -162,6 +161,7 @@
 
 .toastText {
   font-family: chinese;
+  .px2vw(line-height,20)
 }
 
 .index-page .vux-slider>.vux-indicator>a>.vux-icon-dot.active,
@@ -259,6 +259,9 @@ body {
 
 .detail-swiper .vux-icon-dot.active {
   background-color: #1dafed !important
+}
+.detail-swiper .swiper-demo-img{
+  background-size: 70% !important
 }
 
 .vux-1px-tb:after {
@@ -539,7 +542,9 @@ body {
   border-top: none !important
 }
 
+/*
 .vux-swipeout-button {
   .px2vw(width,
   60);
 }
+*/

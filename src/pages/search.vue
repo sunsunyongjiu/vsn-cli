@@ -10,7 +10,7 @@
       </div>
       <input type="text" ref="serachBox" v-model="searchValue" :placeholder="searchValue" @keyup.enter="showAlert" maxlength="100">
     </div>
-    <!-- <div class="search-box-ways">
+    <div class="search-box-ways" v-if="$store.state.showCash && $store.state.jdTel.indexOf(this.$store.state.loginUser.mobile)>=0">
       <div class="font-14 search-titles">兑换方式</div>
       <div class="selecters font-13" :class="{'selecter-selected':selects.isPoint}" @click="changeWay('point')">
         积分
@@ -20,7 +20,7 @@
         非积分
         <img src="../assets/imgs/triangle.png" class="selecters-triangle">
       </div>
-    </div> -->
+    </div>
     <div class="search-box-ways" v-if="searchHistoryShow">
       <div class="font-14 search-titles">历史搜索</div>
       <div>
@@ -78,7 +78,6 @@
 <script>
 import myNav from '../components/nav'
 import { Search, Scroller } from 'vux'
-import md5 from 'js-md5';
 import Apis from '../configers/Api'
 const timer = JSON.stringify(new Date().getTime())
 export default {
@@ -150,7 +149,7 @@ export default {
           headers: {
             "token": this.$store.state.loginUser.token,
             "time": timer,
-            "sign": md5("/home/getProdSearchList" + this.$store.state.loginUser.token + timer).toUpperCase()
+            "sign": this.$sha256("/home/getProdSearchList" + this.$store.state.loginUser.token + timer).toUpperCase()
           }
         }
         // 获取历史搜索
@@ -222,7 +221,7 @@ export default {
     },
   },
   mounted: function() {
-
+    console.log(this.$sha256('123'))
     this.init()
   },
   computed: {
