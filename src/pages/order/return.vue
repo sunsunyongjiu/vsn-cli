@@ -7,7 +7,7 @@
           商品信息
         </div>
         <div class="order-goodsText">
-          <div class="orders" v-for="(item,index) in order.prod" key='index'>
+          <div class="orders" v-for="(item,index) in order.prod" :key='index'>
             <div class="orders-left">
               <img :src="item.pic">
             </div>

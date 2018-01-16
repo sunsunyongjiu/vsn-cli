@@ -25,7 +25,7 @@
         </div>
         <div class="order-title font-15 top-5 pd-right2">商品信息</div>
         <div class="order-goods-box">
-          <div class="order-goods" v-for="(item,key) in goods" key=index>
+          <div class="order-goods" v-for="(item,key) in goods" :key=index>
             <div class="goods-left">
               <img :src="item.pic">
             </div>

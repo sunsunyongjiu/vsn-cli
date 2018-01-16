@@ -12,7 +12,7 @@
     </div>
     <div class="historyTextBoxTitle font-15">积分兑换纪录</div>
     <div class="historyTextBox">
-      <div v-for="(item,index) in historyList" key=index style="position:relative" class="historyItem">
+      <div v-for="(item,index) in historyList" :key=index style="position:relative" class="historyItem">
         <div v-text="item.log_desc" class="historyListTitle font-14 fff"></div>
         <div v-text="item.add_time" class="font-13 color-87 historyListDate"></div>
         <div v-text="item.integral_num" class="font-14 fff historyListNum"></div>

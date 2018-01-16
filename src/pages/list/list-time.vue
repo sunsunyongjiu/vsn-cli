@@ -37,7 +37,7 @@
           <div class="tab-bar" :class="{selected:!selectePoint}" @click="selectePoint=false">京东商品</div>
         </div> -->
         <div class="list-box" :class="{'list-box-point':!selectePoint}">
-          <div v-for="(item,index) in goodsList" key=index class="list-box-item" :class="{'point-list-box-item':selectePoint}" @click="goDetail(item)">
+          <div v-for="(item,index) in goodsList" :key=index class="list-box-item" :class="{'point-list-box-item':selectePoint}" @click="goDetail(item)">
             <!-- <img src="../../assets/imgs/hot.png" class="red-hot" v-if="item.is_hot==='Y'"> -->
             <div class="list-box-item-img" :class="{'list-box-item-img-cash':!selectePoint}">
               <img :src="item.pic">

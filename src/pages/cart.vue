@@ -9,7 +9,7 @@
     </div>
     <div class="vsn-main">
       <div class="goods-list">
-        <swipeout class="vux-1px-tb cart-swiper-out" v-for="(item,index) in goodsList" key=index>
+        <swipeout class="vux-1px-tb cart-swiper-out" v-for="(item,index) in goodsList" :key=index>
           <swipeout-item transition-mode="follow">
             <div slot="right-menu">
               <swipeout-button @click.native="onButtonClick(item.basketId)" type="warn" :width="$store.state.screen.width*0.16"><span class="font-16">删除</span></swipeout-button>

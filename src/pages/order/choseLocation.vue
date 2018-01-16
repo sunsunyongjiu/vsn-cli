@@ -3,10 +3,10 @@
     <!-- <back title="选择地址"></back> -->
     <div class='vsn-main'>
       <div class="locationList">
-        <swipeout class="vux-1px-tb" v-for="(item,index) in locationList" key=index>
+        <swipeout class="vux-1px-tb" v-for="(item,index) in locationList" :key=index>
           <swipeout-item transition-mode="follow">
             <div slot="right-menu">
-              <swipeout-button type="warn" :width="$store.state.screen.width*0.16" class="cha font-16" @click.native="deleteItem(item)">删除</swipeout-button>
+              <swipeout-button type="warn" :width="$store.state.screen.width*0.18" class="cha font-16" @click.native="deleteItem(item)">删除</swipeout-button>
             </div>
             <div slot="content" class="locations">
               <div>

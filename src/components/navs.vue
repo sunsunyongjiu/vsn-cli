@@ -33,7 +33,7 @@
 <script type="text/javascript">
 import EnJson from "../configers/En"
 export default {
-  name: 'nav',
+  name: 'navs',
   data() {
     return {
       myBoutique: ''

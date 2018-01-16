@@ -11,8 +11,8 @@
       </tab>
     </div>
     <div>
-      <div class="orderList" v-for="(items,key ) in orderLists" key="key">
-        <div class="orders" v-for="(item,index) in items.prod" key='index' @click="goDetail(items,item)">
+      <div class="orderList" v-for="(items,key ) in orderLists" :key="key">
+        <div class="orders" v-for="(item,index) in items.prod" :key='index' @click="goDetail(items,item)">
           <div class="orders-left">
             <img :src="item.pic">
           </div>

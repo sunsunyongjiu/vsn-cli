@@ -70,7 +70,7 @@ export default {
 body,
 html {
   height: 100%;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 body,

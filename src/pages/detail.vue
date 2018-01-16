@@ -7,13 +7,12 @@
     </div> 
     -->
 		<div class="vsn-main">
-			<scroller lock-x scrollbar-y ref="scroller" class="detail-scroller" height="-55">
 				<div class="detail-padding-bottom-50">
 					<swiper :aspect-ratio="375/375" auto dots-position="center" class="detail-swiper" :show-dots="dotShow">
-						<swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index" :style="background(item.file_path)"></swiper-item>
+						<swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg"  :key="index" :style="background(item.file_path)"></swiper-item>
 					</swiper>
 					<!-- <swiper :aspect-ratio="375/375" auto class="detail-swiper" dots-position="center">
-            <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg" :key="index"><img :src="item.file_path"></swiper-item>
+            <swiper-item class="swiper-demo-img" v-for="(item, index) in detailObj.topImg"  :key="index"><img :src="item.file_path"></swiper-item>
           </swiper> -->
 					<div class="detail-title">
 						<div class="detail-title-cn font-20" v-text="detailObj.name"></div>
@@ -33,17 +32,29 @@
 						<div v-if="detailObj.sellType==1&&detailObj.isShowOrigPrice==1" class="list-box-item-price-price color-7f" style="text-decoration:line-through;text-align:left">
 							<span class=" font-13 color-7f">{{detailObj.orig_price}}积分</span>
 						</div>
-						<span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point color-80">积分</span><span class="color-80 font-12">（官方指导价：￥{{detailObj.price}}）</span>
+						<span v-text="detailObj.point" class="font-22"></span> <span class="detail-pointBtn-point color-80">积分</span><!--<span class="color-80 font-12">（官方指导价：￥{{detailObj.price}}）</span>-->
 					</div>
 					<div style="text-align:left" class="sevenBox" v-if="detailObj.is7return==1">
 						<img src="../assets/imgs/seven.png">
 						<span class="ba seven font-10">支持七天无理由退货</span>
 					</div>
 					<div>
-						<div v-html="detailObj.content" class="innerDetail font-12"></div>
+						<div class="content_box">
+							<div class="content_title" :class="searchBarFixed == true ? 'isFixed' :''">
+								<div class="tab_detail">
+									<span :class="procuct_line == true ? 'border_bottom' :''" @click="product_click()" class="detail_span font-15">商品详情</span>
+									
+								</div>
+								<div class="tab_detail">
+									<span :class="buy_line == true ? 'border_bottom' :''" @click="buy_click()" class="detail_span font-15">购物须知</span>
+								</div>
+							</div>
+						</div>
+						<div v-html="detailObj.content" class="innerDetail product font-12" v-if="procuct_detail" :class="getToTop == true ? 'content_fixed' :''"></div>
+						<div class="innerDetail font-12" v-show="buy_detail" v-html="detailObj.contentGuide" :class="getToTop == true ? 'content_fixed' :''" ></div>
 					</div>
 					<div v-transfer-dom>
-						<popup v-model="popShow" position="bottom" height="100vw" class="detailPop">
+						<popup v-model="popShow" position="bottom" height="100vh" class="detailPop">
 							<div class="pop-title">
 								<img src="../assets/imgs/cha.png" class="cha" @click="changePopShow()">
 								<div class="pop-left">
@@ -60,11 +71,11 @@
 								</div>
 							</div>
 							<div class="pop-size fff">
-								<div v-for="(items,n) in chooses" key=n>
+								<div v-for="(items,n) in chooses" :key=n>
 									<div class="pop-size-title font-15" v-text="items.title"></div>
 									<div class="box">
 										<checker v-model="checkedList[n]" default-item-class="demo1-item" selected-item-class="demo1-item-selected" type="radio" radio-required>
-											<checker-item :value="item" v-for="(item, index) in items.checks" :key="index" radio-required>{{item.value}}</checker-item>
+											<checker-item :value="item" v-for="(item, index) in items.checks"  :key="index" radio-required>{{item.value}}</checker-item>
 										</checker>
 									</div>
 								</div>
@@ -83,9 +94,8 @@
 						</popup>
 					</div>
 				</div>
-			</scroller>
 		</div>
-		<div class="detail-btn">
+		<div class="detail-btn btns" style="width100%;position:fixed;left:0;bottom:0;z-index:99999;">
 			<flexbox :gutter="0">
 				<flexbox-item>
 					<div class="detail-changeBtn flex-demo font-16" @click="doChange(1)">
@@ -114,6 +124,7 @@
 				<div class="confirm-text">请先登录</div>
 			</div>
 		</confirm>
+		<!-- <h2 style="height:200px;width100%;background:red;position:fixed;left:0;bottom:0;z-index:99999;">啊啊啊啊啊啊啊</h2> -->
 	</div>
 	<!-- 选择规格 -->
 </template>
@@ -152,6 +163,7 @@
 				show: true,
 				dotShow: false,
 				pageTitle: this.$route.query.title,
+				searchBarFixed : false, // 判断是否固定
 				myPro: {
 					img: require('../assets/imgs/detailPic1.png'),
 					title: '梅赛德斯 车载固定小型香氛喷雾香水运动激情系列',
@@ -174,7 +186,15 @@
 				chooses: [],
 				checkedList: [],
 				bottomShow: false,
-				isClicking: false
+				isClicking: false,
+				procuct_detail: true,
+				buy_detail: false,
+				procuct_line:true,
+				buy_line: false,
+				get_top: false,
+				getToTop:false,
+				last:0,
+				scrollTop:0
 			}
 		},
 		components: {
@@ -198,6 +218,43 @@
 			Confirm
 		},
 		methods: {
+			product_click(){
+				this.buy_line = false
+				this.buy_detail = false
+				this.procuct_line = true
+				this.procuct_detail = true
+				if(this.get_top){
+					document.body.scrollTop = this.last
+					document.documentElement.scrollTop = this.last
+				}
+			},
+			buy_click(){
+				this.procuct_line = false
+				this.procuct_detail = false
+				this.buy_line = true
+				this.buy_detail = true
+				if(this.get_top){
+					document.body.scrollTop = this.last
+					document.documentElement.scrollTop = this.last
+				}
+			},
+			handleScroll:function() {
+		  		this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+		  		 var offsetTop = document.querySelector('.content_title').offsetTop
+		 		 var offsetHeight = document.querySelector('.content_title').offsetHeight
+		 		 var box_offsetTop = document.querySelector('.innerDetail').offsetTop  
+		 		// console.log(this.scrollTop)
+		 		// console.log('导航下图片 scroll' + box_offsetTop)
+		 			 this.last = box_offsetTop - offsetHeight;
+		 		    if (this.scrollTop >= offsetTop) {
+		 		    	 this.get_top = true
+					    this.searchBarFixed = true
+					    if( this.scrollTop < this.last){
+					    	this.get_top = false			    
+					    	this.searchBarFixed = false
+					 	 }
+					  } 
+			},
 			goback: function() {
 				this.$router.go(-1)
 			},
@@ -579,6 +636,13 @@
 			this.bottomShow = true;
 
 		},
+		mounted: function() {
+		  
+		 window.addEventListener('scroll',this.handleScroll)
+		},
+		destroy(){
+		  window.removeEventListener('scroll',this.handleScroll)	
+		}
 
 	}
 </script>
@@ -588,7 +652,6 @@
 	@import '../assets/css/global.less';
 	/*@import '../assets/css/jd.css';*/
 	
-	.innerDetail {}
 	
 	.detail-title {
 		.px2vw(padding-left, 16);
@@ -617,19 +680,14 @@
 		color: #1dafed;
 		box-sizing: border-box;
 		font-size: 24px;
+		margin-bottom: 2vh;
 		text-align: left;
 		.px2vw(padding-left, 16);
 		.detail-pointBtn-point {
 			font-size: 13px
 		}
 	}
-	
-	.detail-btn {
-		width: 100%;
-		box-sizing: border-box;
-		overflow: hidden;
-	}
-	
+		
 	.detail-changeBtn {
 		.px2vw(height, 50);
 		height: 14.6vw;
@@ -770,6 +828,7 @@
 	
 	.innerDetail {
 		color: #fff;
+		height: 100vh;
 		div {
 			width: 100%;
 			img {
@@ -804,4 +863,49 @@
 		height: 2vw;
 		z-index: 500
 	}
+	.content_box{
+		height:6vh;
+		width: 100%
+	}
+	.content_title{
+		height:6vh;
+		background: #1C1C1C;
+		line-height: 6vh;
+		color: #DDDDDD;
+		font-size: 3.2vw;
+	    width: 100%
+	}
+	.isFixed{
+	    position:fixed;
+	    top:0;
+	    z-index:99;
+  }
+ 
+  .btns{ 
+  	 position: fixed;
+     bottom: 0;
+     left: 0;
+  	z-index: 9999999;
+    overflow: hidden;
+    width: 100%;
+	box-sizing: border-box;
+	overflow: hidden;
+  }
+  .tab_detail{
+  	width: 50vw;
+  	height: 6vh;
+  	line-height: 6vh;
+  	float: left;
+  	text-align: center; 
+  }
+  .border_bottom{
+  	border-bottom: 1px solid #1DAFED ;
+  }
+  .detail_span{
+  	padding-bottom:1vh
+  }
+  .content_fixed{
+  	left: 0;
+  	top: -6vh;
+  }
 </style>

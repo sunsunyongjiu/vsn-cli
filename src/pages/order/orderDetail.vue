@@ -4,7 +4,7 @@
       <back title="订单详情"></back>
     </div> -->
     <div class="vsn-main">
-      <div class="paddingBottom" v-for="(items , key) in orderDetail" key="key">
+      <div class="paddingBottom" v-for="(items ,key) in orderDetail" :key="key">
         <div class="order-state">
           <div style="margin-bottom:2vw;">
             <div class="status font-18" style="margin-bottom:2vw">{{items.status,items.sellType|changeStatus}}</div>
@@ -38,7 +38,7 @@
             商品信息
           </div>
           <div class="order-goodsText">
-            <div class="orders" v-for="(item,index) in items.prod" key='index'>
+            <div class="orders" v-for="(item,index) in items.prod" :key='index'>
               <div class="orders-left" @click="goWhere('',item)">
                 <img :src="item.pic">
               </div>
@@ -105,7 +105,7 @@
         </confirm>
       </div>
     </div>
-    <div class="vsn-footer" v-for="(items , key) in orderDetail" key="key">
+    <div class="vsn-footer" v-for="(items , key) in orderDetail" :key="key">
       <div class="bottom-btn" v-if='orderDetail[0].status==1 || orderDetail[0].status==2 || orderDetail[0].status==3 || (orderDetail[0].status==4 && items.isShowInvoiceButton>0) || orderDetail[0].status==5'>
         <!--
           <div class="bottom-btn-right font-16" v-if='orderDetail[0].status==4||orderDetail[0].status==5' @click="buyAgain(items.prod[0].prod_id)">

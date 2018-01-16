@@ -9,7 +9,7 @@
 
 
 <script>
-import myNav from '../components/nav'
+import myNav from '../components/navs'
 import back from '../components/backNav'
 export default {
   

@@ -7,7 +7,7 @@
           商品信息
         </div>
         <div class="order-goodsText">
-          <div class="orders" v-for="(item,index) in order.prod" key='index'>
+          <div class="orders" v-for="(item,index) in order.prod" :key='index'>
             <div class="orders-left">
               <img :src="item.pic">
             </div>
@@ -28,7 +28,7 @@
           </div>
         </div>
       </div>
-      <div class="change-reason" v-for="(item,index) in order.prod" key='index' v-if="$route.query.returnType=='1'">
+      <div class="change-reason" v-for="(item,index) in order.prod" :key='index' v-if="$route.query.returnType=='1'">
         <span class="font-14">退款金额：</span>
         <span v-if="order.sellType==0" class="font-10 basicColor">￥</span>
         <span class="font-18 basicColor" v-text="item.product_total_amout"></span>

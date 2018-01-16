@@ -1,6 +1,6 @@
 <template>
   <div class="vsn-main">
-    <div v-for="(item , key) in orderDetail">
+    <div v-for="(item ,key) in orderDetail">
     	<div class="color-91 order-person-title">
     		<span>商品信息</span>
     		<span v-text="item.jdOrderId"></span>

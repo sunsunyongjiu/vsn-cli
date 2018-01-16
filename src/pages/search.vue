@@ -24,7 +24,7 @@
     <div class="search-box-ways" v-if="searchHistoryShow">
       <div class="font-14 search-titles">历史搜索</div>
       <div>
-        <div v-for="(item,index) in searchHistory" key="index" class="historyBox font-14" v-text="item.search_str" @click="doSearchHistory(item.search_str)"></div>
+        <div v-for="(item,index) in searchHistory" :key="index" class="historyBox font-14" v-text="item.search_str" @click="doSearchHistory(item.search_str)"></div>
       </div>
     </div>
     <scroller lock-x scrollbar-y use-pullup height="90vh" @on-pullup-loading="load1" ref="demo1" :pullup-config="{content: '上拉刷新',
@@ -33,7 +33,7 @@
   loadingContent: '加载中...',
   }" v-show="!searchHistoryShow">
       <div class="goodsList">
-        <div v-for="(item,index) in  goodsList" class="goods" key="index" @click="goWhere(item.name,item)">
+        <div v-for="(item,index) in  goodsList" class="goods" :key="index" @click="goWhere(item.name,item)">
           <div class="goods-left">
             <img :src="item.pic">
           </div>
@@ -54,7 +54,7 @@
       </div>
     </scroller>
     <!-- <div class="goodsList">
-      <div v-for="(item,index) in  goodsList" class="goods" key="index" @click="goWhere(item.name,item)">
+      <div v-for="(item,index) in  goodsList" class="goods" :key="index" @click="goWhere(item.name,item)">
         <div class="goods-left">
           <img :src="item.pic">
         </div>
@@ -76,7 +76,7 @@
   </div>
 </template>
 <script>
-import myNav from '../components/nav'
+import myNav from '../components/navs'
 import { Search, Scroller } from 'vux'
 import Apis from '../configers/Api'
 const timer = JSON.stringify(new Date().getTime())

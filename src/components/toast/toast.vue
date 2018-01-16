@@ -6,6 +6,7 @@
         <div class="box" :class="position" v-show="show">
           <img src="../../assets/imgs/tanhao.png" class="toast-tanhao"> 
           <div class="toastText font-14" v-html="text"></div>
+          <img src="../../assets/imgs/cha.png" class="close_toast" @click="closed()">
         </div>
       </transition>
     </div>
@@ -15,8 +16,7 @@
 export default {
   data() {
     return {
-        time:1500,
-        show:false
+        
     }
   },
   props: {
@@ -41,12 +41,11 @@ export default {
     }
   },
   created() { // 时间控制
-    
-    setTimeout(() => {
-        
+  },
+  methods:{
+    closed(){
       this.show = false
-    }, this.time)
-   
+    }
   },
   computed: {
     translate() { // 根据props，生成相对应的动画
@@ -75,12 +74,6 @@ export default {
       if (val) {
         this.$emit('input', true)
         this.$emit('on-show')
-        clearTimeout(this.timeout)
-        this.timeout = setTimeout(() => {
-          this.show = false
-          this.$emit('input', false)
-          this.$emit('on-hide')
-        }, this.time)
       }
     },
     value (val) {
@@ -185,5 +178,11 @@ export default {
   transform: translateY(100%);
   opacity: 0;
 }
-
+.close_toast{
+  position: absolute;
+    .px2vw(height, 13);
+    .px2vw(width, 13);
+    .px2vw(right, 13);
+    .px2vw(top, 13);
+}
 </style>

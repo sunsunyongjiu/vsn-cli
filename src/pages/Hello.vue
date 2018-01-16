@@ -38,7 +38,7 @@
       <div class="index-page">
         <search v-model="searchValue" position="absolute" :auto-fixed="autoFixed" @on-focus="submit" placeholder="搜索" auto-scroll-to-top ref="search"></search>
         <swiper :aspect-ratio="160/375" auto class="index-swiper" dots-position="center">
-          <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList" :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
+          <swiper-item class="swiper-demo-img" v-for="(item, index) in imgList"  :key="index"><img :src="item.img" :alt='item.title' @click="goWWW(item.link)"></swiper-item>
         </swiper>
         <div class="index-middle-tittle font-10">
           {{"会员信息"|tr}}
@@ -80,7 +80,7 @@
           </flexbox-item>
         </flexbox>
         <flexbox class="index-page-mypoints2" :gutter="0">
-          <flexbox-item v-for="(item,index) in indexBtns" :key="index">
+          <flexbox-item v-for="(item,index) in indexBtns"  :key="index">
             <div class="flex-demo" @click="goNext(item.path)">
               <div :class="item.class" class="index-icon"></div>
               <div v-text="" class="font-12">
@@ -101,7 +101,7 @@
           {{"分类推荐"|tr}}
         </div>
         <flexbox :gutter="0" wrap="wrap" class="index-page-classification">
-          <flexbox-item :span="1/3" v-for="(item,index) in myPics" :key="index">
+          <flexbox-item :span="1/3" v-for="(item,index) in myPics"  :key="index">
             <div class="flex-demo fenleiBox" @click="goList(item.title,item.id,item.path)">
               <div>
                 <img :src="item.src" class="index-page-classification-img">
@@ -119,7 +119,7 @@
           {{"主编推荐"|tr}}
         </div>
         <swiper :aspect-ratio="160/375" auto v-if=false>
-          <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list" :key="index"><img :src="item"></swiper-item>
+          <swiper-item class="swiper-demo-img" v-for="(item, index) in demo05_list"  :key="index"><img :src="item"></swiper-item>
         </swiper>
         <div class="index-middle-tittle font-10">
           {{"精品推荐"|tr}}
@@ -136,7 +136,7 @@
   </div>
 </template>
 <script>
-import myNav from '../components/nav'
+import myNav from '../components/navs'
 import { state } from 'vuex'
 import { Swiper, SwiperItem, Grid, GridItem, GroupTitle, Flexbox, FlexboxItem, Divider, Search, Scroller, Confirm } from 'vux'
 import { mapGetters } from 'vuex'

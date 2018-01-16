@@ -1,7 +1,7 @@
 <template>
   <div class="vsn-wrap">
     <!-- <back :title="title"></back> -->
-    <div class="vsn-main" v-for="(item,key) in detail" key='key'>
+    <div class="vsn-main" v-for="(item,key) in detail" :key='key'>
       <div class="returnDetailTitle">
         <span v-text="item.returnStatusRemark" class="font-18 fff"></span>
       </div>

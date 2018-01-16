@@ -12,7 +12,7 @@
           <img :src="lifeTopImg">
         </div>
         <div class="list-box">
-          <!-- <div v-for="(item,index) in myBoutique" key=index class="list-box-item" @click="goWhere(item)">
+          <!-- <div v-for="(item,index) in myBoutique" :key=index class="list-box-item" @click="goWhere(item)">
             <div class="list-box-item-img">
               <img :src="item.pic">
             </div>
@@ -36,7 +36,7 @@
   </scroller>
 </template>
 <script>
-import myNav from '../../components/nav'
+import myNav from '../../components/navs'
 import back from '../../components/backNav'
 import { Tab, TabItem, Scroller } from 'vux'
 import Apis from '../../configers/Api'
